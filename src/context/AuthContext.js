@@ -79,7 +79,8 @@ const getGoogleInfo = (dispatch) => async ({ email, id }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Main');
+            navigate('Hello');
+            //navigate('Main');
         }
     } catch (err) {
         dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -95,7 +96,8 @@ const getKakaoInfo = (dispatch) => async ({ token }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Main');
+            navigate('Hello');
+            //navigate('Main');
         }
     } catch (err) {
         dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -111,7 +113,8 @@ const getNaverInfo = (dispatch) => async ({ token }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Main');
+            navigate('Hello');
+            //navigate('Main');
         }
     } catch (err) {
         dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });

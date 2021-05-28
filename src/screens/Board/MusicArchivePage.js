@@ -5,11 +5,10 @@ import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import HarmfulModal from '../../components/HarmfulModal';
 
 const SongImage = ({url, play}) => {
     url =url.replace('{w}', '300');
@@ -23,17 +22,17 @@ const SongImage = ({url, play}) => {
 const MusicArchivePage = ({navigation}) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
     const { getSongs } = useContext(DJContext);
-    const { getuserCurationposts } = useContext(CurationContext);
     
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [clickModal, setClickModal] = useState(false);
+    const [storyTok , setStoryTok] = useState(false);
     const [like, setLike] = useState(false);
 
     const [selectedStory, setSelectedStory] = useState(undefined);
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
+    const [harmfulModal, setHarmfulModal] = useState(false);
 
     useEffect(() => {
         const listener =navigation.addListener('didFocus', ()=>{
@@ -62,28 +61,34 @@ const MusicArchivePage = ({navigation}) => {
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        //track.album = data.attributes.albumName;
-        //track.genre = data.attributes.genreNames;
-        //track.date = data.attributes.releaseDate;
-        //track.artwork = data.attributes.artwork.url;
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
 
     const storyClick = async ({item, index}) => {
+        stoptracksong()
         likeCheck({item})
         setClickModal(true);
         setSelectedStory(item);
+        console.log(selectedStory)
         setSelectedIdx(index);
-        addtracksong({data:item.song});
-        await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId});
+        if(item.song.attributes.contentRating != 'explicit')    addtracksong({data:item.song});
+        await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
+
+    useEffect(() => {
+        storyClick
+    }, [storyTok]);
     return (
         <View style={styles.container}>
             {state.musicArchive == null || state.musicArchive == null ? <View style={{justifyContent: 'center', alignItems: 'center' ,flex: 1}}><ActivityIndicator /></View> :
@@ -112,12 +117,16 @@ const MusicArchivePage = ({navigation}) => {
                                         <TouchableOpacity style={styles.songCover} onPress={async ()=>{   {
                                             setOption('archive');
                                             storyClick({item, index})
-                                            addtracksong({data:item.song})
                                         }}} >
                                             <SongImage play={false} url={item.song.attributes.artwork.url}/>
                                         </TouchableOpacity> }
                                         <View style={styles.nameBox}>
-                                            <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {item.song.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                : null }
+                                                <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
+                                            </View>
                                             <Text style={styles.artistText} numberOfLines={1}>{item.song.attributes.artistName}</Text>
                                         </View>
                                     </View>    
@@ -139,7 +148,6 @@ const MusicArchivePage = ({navigation}) => {
                                     setOption('chart');
                                     storyClick({item, index})
                                     likeCheck({item})
-                                    addtracksong({data: item.song})
                                 }}>
                                     <Text style={styles.chartNum}>{index + 1}</Text>
                                     <View style={styles.eachSongBox}>
@@ -148,7 +156,12 @@ const MusicArchivePage = ({navigation}) => {
                                                 <SongImage play={false} url={item.song.attributes.artwork.url} />
                                             </View>
                                             <View style={styles.popularNameBox}>
-                                                <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    {item.song.attributes.contentRating == "explicit" ? 
+                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                    : null }
+                                                    <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
+                                                </View>
                                                 <Text style={styles.popularArtistText} numberOfLines={1}>{item.song.attributes.artistName}</Text>
                                             </View>
                                         </View>
@@ -167,6 +180,8 @@ const MusicArchivePage = ({navigation}) => {
             </View> }
             { selectedStory != undefined ? 
             <Modal
+                animationIn='fadeInLeft'
+                animationOut='fadeOutRight'
                 isVisible={clickModal}
                 onBackdropPress={onClose}
                 backdropOpacity={0.5}
@@ -174,16 +189,15 @@ const MusicArchivePage = ({navigation}) => {
             >  
                 <View style={styles.modalBox}>
                     <View style={{flex: 1, margin: 16 * tmpWidth}}>
-                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => {
+                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
                             setClickModal(false)
+                            stoptracksong()
                             if(selectedStory.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
-                                getUserPlaylists({id: selectedStory.postUserId._id});
-                                getOtheruser({id: selectedStory.postUserId._id});
-                                getSongs({id:selectedStory.postUserId._id});
-                                getuserCurationposts({id:selectedStory.postUserId._id});
-                                navigate('OtherAccount')
+                                await Promise.all([getOtheruser({id: selectedStory.postUserId._id}),
+                                getSongs({id:selectedStory.postUserId._id})]);
+                                navigation.push('OtherAccount',{checkid:selectedStory.postUserId._id})
                             }
                         }}>
                             {selectedStory.postUserId.profileImage == undefined ? 
@@ -218,6 +232,7 @@ const MusicArchivePage = ({navigation}) => {
                                 </View>
                                 <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalPlay.svg')} style={styles.playIcon}/>
                             </TouchableOpacity> }
+                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal} /> : null }
                             {(option == 'archive' && selectedIdx != state.musicArchive.length-1) ||
                                  (option == 'chart' && selectedIdx != state.musicChart.length-1) ? 
                                 <TouchableOpacity style={styles.nextIcon}
@@ -232,7 +247,12 @@ const MusicArchivePage = ({navigation}) => {
                                 </TouchableOpacity>: <View style={styles.nextIcon}/>}
                             </View>
                             <View style={styles.textContainer}>
-                                <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song.attributes.name}</Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    {selectedStory.song.attributes.contentRating == "explicit" ? 
+                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                    : null }
+                                    <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song.attributes.name}</Text>
+                                </View>
                                 <Text numberOfLines={1} style={styles.modalArtistText}>{selectedStory.song.attributes.artistName}</Text>
                             </View>
                             {like ? 
@@ -328,7 +348,7 @@ const styles=StyleSheet.create({
     nameBox: {
         alignItems: 'center', 
         marginTop: 12 * tmpWidth, 
-        width: 100 * tmpWidth,
+        width: 80 * tmpWidth,
     },
     titleText: {
         fontSize: 14 * tmpWidth
@@ -374,11 +394,12 @@ const styles=StyleSheet.create({
     },
     popularNameBox: {
         marginLeft: 20 * tmpWidth, 
-        width: 130 * tmpWidth, 
+        width: 110 * tmpWidth, 
     },
     popularArtistText: {
         fontSize: 11 * tmpWidth, 
-        color: 'rgb(133,133,133)'
+        color: 'rgb(133,133,133)',
+        marginTop: 6 * tmpWidth
     },
     likeContainer: {
         flexDirection: 'row', 
@@ -440,7 +461,7 @@ const styles=StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,  
         alignItems: 'center', 
-        width: 250 * tmpWidth,
+        width: 230 * tmpWidth,
     },
     modalArtistText: {
         fontSize: 14 * tmpWidth, 

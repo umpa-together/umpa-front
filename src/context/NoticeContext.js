@@ -1,6 +1,5 @@
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
-import { navigate } from '../navigationRef';
 import AsyncStorage from '@react-native-community/async-storage';
 
 

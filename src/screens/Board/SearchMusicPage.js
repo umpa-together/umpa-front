@@ -78,7 +78,6 @@ const SearchMusicPage = () => {
                                 onSubmitEditing= {()=> {
                                     searchsong({ songname: text})
                                     setTok(true)}}
-                                keyboardType = "email-address"
                                 placeholderTextColor= 'rgb(196,196,196)'
                                 style={{fontSize: 16 * tmpWidth}}
                             />
@@ -114,7 +113,12 @@ const SearchMusicPage = () => {
                                     </View>
                                     <View style={{flex: 1, flexDirection: 'row', marginRight: 26 * tmpWidth}}>
                                         <View style={styles.infoBox}>
-                                            <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {item.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                : null }
+                                                <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
+                                            </View>
                                             <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                         </View>
                                         <View style={{justifyContent: 'center'}}>
@@ -134,7 +138,12 @@ const SearchMusicPage = () => {
                                         <SongImage url={item.attributes.artwork.url}/>
                                     </View>
                                     <View style={styles.infoBox}>
-                                        <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
                                         <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
@@ -264,9 +273,9 @@ const styles=StyleSheet.create({
     infoBox: {
         marginTop: 10 * tmpWidth, 
         marginLeft: 24 * tmpWidth,  
-        flex: 1, 
         marginRight: 25 * tmpWidth, 
         width: 100 * tmpWidth,
+        flex: 1
     },
     titleText: {
         fontSize: 16 * tmpWidth

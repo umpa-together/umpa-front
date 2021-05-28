@@ -1,27 +1,27 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
+import ReportModal from '../ReportModal';
+import DeleteModal from '../DeleteModal';
 
-const RecommentDetail = ({ currentComment }) => {
-    const { state, deleteRecomment, likeRecomment, unlikeRecomment } = useContext(BoardContext);
+const RecommentDetail = ({ navigation, currentComment }) => {
+    const { state, likeRecomment, unlikeRecomment } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
     const { getSongs } = useContext(DJContext);
-    const { getuserCurationposts } = useContext(CurationContext);
 
     const [deleteModal, setDeleteModal] = useState(false);
     
     const [commentId, setCommentId] = useState('');
-    
+    const [reportModal, setReportModal] = useState(false);
+    const [reportId, setReportId] = useState('');
+
     return (
+        <View>
         <FlatList
             data={currentComment}
             keyExtractor={(comment)=>comment.comment}
@@ -30,15 +30,13 @@ const RecommentDetail = ({ currentComment }) => {
                     return (
                         <View style={styles.commentBox}>
                             <View style={{flexDirection: 'row'}}>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity onPress={async () => {
                                     if(item.postUserId._id == userState.myInfo._id){
                                         navigate('Account');
                                     }else{
-                                        getUserPlaylists({id:item.postUserId._id})
-                                        getOtheruser({id:item.postUserId._id})
-                                        getSongs({id:item.postUserId._id})
-                                        getuserCurationposts({id:item.postUserId._id})
-                                        navigate('OtherAccount')
+                                        await Promise.all([getOtheruser({id:item.postUserId._id}),
+                                        getSongs({id:item.postUserId._id})]);
+                                        navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
                                     }
                                 }}>
                                 { item.postUserId.profileImage == undefined ?
@@ -48,46 +46,34 @@ const RecommentDetail = ({ currentComment }) => {
                                 <Image style={styles.profile} source={{uri: item.postUserId.profileImage}}/> }
                                 </TouchableOpacity>
                                 <View style={{marginLeft: 20 * tmpWidth}}>
-                                    <Text style={styles.nameText}>{item.postUserId.name}</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Text style={styles.nameText}>{item.postUserId.name}</Text>
+                                        <TouchableOpacity onPress={() => {
+                                            setReportId(item._id)
+                                            setReportModal(true)}}>
+                                            <Text style={{ fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)', marginLeft: 5 * tmpWidth}}>신고</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                     <View style={{width: 200 * tmpWidth}}>
                                         <Text style={styles.commentText}>{item.comment}</Text>
                                     </View>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <Text style={styles.timeText}>{item.time}</Text>
-                                        {item.likes.includes(userState.myInfo._id) ? 
+                                        { item.likes.includes(userState.myInfo._id) ? 
                                             <TouchableOpacity onPress={async () => await unlikeRecomment({ contentId: state.currentContent._id, commentId: item._id })}>
                                                 <Text style={styles.likeText}>좋아요 {item.likes.length != 0 ? item.likes.length : null}</Text>
                                             </TouchableOpacity> :
                                             <TouchableOpacity onPress={async () => await likeRecomment({ contentId: state.currentContent._id, commentId: item._id })}>
                                                 <Text style={styles.unlikeText}>좋아요 {item.likes.length != 0 ? item.likes.length : null}</Text>
                                             </TouchableOpacity> } 
-                                        {item.postUserId._id != userState.myInfo._id ? null : 
+                                        { item.postUserId._id != userState.myInfo._id ? null : 
                                         <TouchableOpacity onPress={() => {
                                             setDeleteModal(true)
                                             setCommentId(item._id)
                                         }}>
                                             <Text style={styles.deleteText}>삭제</Text>
-                                        </TouchableOpacity>
-                                        }
-                                        <Modal
-                                            isVisible={deleteModal}
-                                            backdropOpacity={0.4}
-                                            style={{margin: 0, alignItems: 'center'}}
-                                        >
-                                            <View style={styles.deleteContainer}>
-                                                <Text style={{fontSize: 14 * tmpWidth, marginTop: 32 * tmpWidth}}>댓글을 삭제하시겠습니까?</Text>
-                                                <View style={{flexDirection: 'row', marginTop: 26 * tmpWidth}}>
-                                                    <TouchableOpacity style={styles.cancelBox} onPress={() => setDeleteModal(false)}>
-                                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(133,133,133)'}}>취소하기</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity style={styles.deleteBox} onPress={async () => {
-                                                        setDeleteModal(false)
-                                                        await deleteRecomment({ contentId: state.currentContent._id, commentId: commentId })}}>
-                                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)'}}>삭제하기</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                        </Modal>
+                                        </TouchableOpacity> }
+                                        {deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'boardReComment'} subjectId={commentId}/> : null }
                                     </View>
                                 </View>
                             </View>
@@ -97,6 +83,8 @@ const RecommentDetail = ({ currentComment }) => {
                 }
             }}
         />
+        {reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'boardComment'} subjectId={reportId} /> : null }
+        </View>
     );
 };
 

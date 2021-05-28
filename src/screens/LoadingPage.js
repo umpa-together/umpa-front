@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Animated, View, Text, Image } from 'react-native';
-
+import { Animated, Image } from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import {Context as PlaylistContext} from '../context/PlaylistContext';
 import {Context as UserContext} from '../context/UserContext';
 import {Context as BoardContext} from '../context/BoardContext';
@@ -15,7 +15,7 @@ import { tmpWidth } from '../components/FontNormalize';
 
 const LoadingPage = () => {
     const { getPlaylists } = useContext(PlaylistContext);
-    const { initUser, getMyInfo, getMyPlaylist, getMyCurating, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
+    const { initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { currentHashtag } = useContext(SearchContext);
@@ -39,8 +39,6 @@ const LoadingPage = () => {
 
         initUser(),
         getMyInfo(),
-        getMyPlaylist(),
-        getMyCurating(),
         getMyScrab(),
         getMyStory(),
         getOtherStory(),
@@ -54,7 +52,10 @@ const LoadingPage = () => {
         getWeeklyDJ()]);
 
     };
-    useEffect( ()=>{
+    useEffect(()=>{
+        TrackPlayer.setupPlayer().then(async() => {
+            console.log('reday');
+        });        
         mainLoading();
         fadeIn();
         const nav = setTimeout(() => navigate('Main'), 3500);

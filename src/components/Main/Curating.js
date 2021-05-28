@@ -28,7 +28,7 @@ const Curating = ({ curationPosts }) => {
     }
     return (
         <View style={{ height:625 * tmpHeight ,backgroundColor:"rgb(254,254,254)"}}>
-            { curationPosts.length !=0 ?
+            { curationPosts != undefined && curationPosts.length !=0 ?
             <FlatList
                 data={curationPosts}
                 keyExtractor={(curation)=>curation._id}

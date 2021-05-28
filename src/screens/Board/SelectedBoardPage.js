@@ -9,6 +9,8 @@ import { tmpWidth } from '../../components/FontNormalize';
 
 const SelectedBoard = ({ navigation }) => {
     const { state, initCurrentContent } = useContext(BoardContext);
+    const title = navigation.getParam('boardName');
+    const introduction = navigation.getParam('introduction');
 
     useEffect(() => {
         const listener =navigation.addListener('didFocus', ()=>{
@@ -21,6 +23,15 @@ const SelectedBoard = ({ navigation }) => {
 
     return (
         <View style={styles.container}> 
+        <View style={styles.headerContainer}>
+            <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
+            </TouchableOpacity>
+            <View style={{flexDirection: 'row', flex: 1, paddingTop: 10 * tmpWidth}}>
+                <Text style={{fontSize: 16 * tmpWidth, fontWeight: '400'}} numberOfLines={1}>{title}</Text>
+            </View>
+            <BoardHeader name={title} introduction={introduction}/>
+        </View>
         {state.currentBoard == null ? <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}><ActivityIndicator /></View> :
             <View style={{height: '100%'}}>
                 <View style={{alignItems: 'center'}}>
@@ -36,9 +47,10 @@ const SelectedBoard = ({ navigation }) => {
 };
 
 SelectedBoard.navigationOptions = ({ navigation }) => {
-    const title = navigation.getParam('boardName');
-    const introduction = navigation.getParam('introduction');
-    const id = navigation.getParam('boardId');
+    return {
+        headerShown: false
+    }
+    /*
     return ({
         title: title,
         headerTitleStyle: {
@@ -69,11 +81,26 @@ SelectedBoard.navigationOptions = ({ navigation }) => {
             )
         }
     });
+    */
 };
 
 const styles=StyleSheet.create({
     container: {
         backgroundColor: 'rgb(255,255,255)', 
+    },
+    headerContainer: {
+        backgroundColor: 'rgb(255,255,255)',
+        height: 92 * tmpWidth,
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOffset: {
+            height: 3 * tmpWidth,
+            width: 0,
+        },
+        shadowRadius: 8 * tmpWidth,
+        shadowOpacity: 0.07,
+        flexDirection: 'row',
+        paddingTop: 44 * tmpWidth,
+        justifyContent: 'space-between'
     },
     searchBox: {
         width: 327 * tmpWidth,

@@ -38,9 +38,10 @@ const SelectedHashtagScreen = ({navigation}) => {
                         renderItem = {({item}) => {
                             return (
                                 <View style={{width:161 * tmpWidth, marginRight:14 * tmpWidth, marginBottom:10 * tmpWidth}}>
-                                    <TouchableOpacity onPress={() => {
-                                        navigate('SelectedPlaylist', {id: item._id , object:item})
-                                        getPlaylist({id:item._id, postUserId:item.postUserId})}}>
+                                    <TouchableOpacity onPress={async () => {
+                                        await getPlaylist({id:item._id, postUserId:item.postUserId})
+                                        navigate('SelectedPlaylist', {id: item._id , object:item, navigation: navigation})
+                                        }}>
                                         <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                             <Image style={ {width:'100%', height:'100%', borderRadius:4 * tmpWidth}} source={{url :item.image}}/>
                                         </View>

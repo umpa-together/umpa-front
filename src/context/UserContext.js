@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
 
@@ -10,10 +9,6 @@ const userReducer = (state, action) => {
             return { ...state, otherUser: null };
         case 'getMyInfo':
             return { ...state, myInfo: action.payload };
-        case 'getMyPlaylist':
-            return { ...state, myPlayList: action.payload };
-        case 'getMyCurating':
-            return { ...state, myCurating: action.payload };
         case 'get_otheruser':
             return { ...state, otherUser:action.payload};
         case 'getMyBookmark':
@@ -62,24 +57,6 @@ const getMyInfo = (dispatch) => async () => {
         dispatch({ type: 'getMyInfo', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getMyInfo' });
-    }
-};
-
-const getMyPlaylist = (dispatch) => async () => {
-    try{
-        const response = await serverApi.get('/getMyPlaylist');
-        dispatch({ type: 'getMyPlaylist', payload: response.data });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getMyPlaylist' });
-    }
-};
-
-const getMyCurating = (dispatch) => async () => {
-    try{
-        const response = await serverApi.get('/getMyCurating');
-        dispatch({ type: 'getMyCurating', payload: response.data });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getMyCurating' });
     }
 };
 
@@ -245,7 +222,7 @@ const storyView = (dispatch) => async ({id}) => {
 
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { initUser, initOtherUser, getMyInfo, getMyPlaylist, getMyCurating, getOtheruser, editProfile, editProfileImage, addView,
+    { initUser, initOtherUser, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
         postStory, getMyStory, getOtherStory, storyView },

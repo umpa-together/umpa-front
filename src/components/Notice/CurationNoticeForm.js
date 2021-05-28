@@ -4,8 +4,8 @@ import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../FontNormalize';
 
 const Imagetake = ({url}) => {
-    url = url.replace('{w}', '500');
-    url = url.replace('{h}', '500');
+    url = url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return (
         <Image style ={{borderRadius: 10 * tmpWidth, height: 48 * tmpWidth, width: 48 * tmpWidth}} source ={{url:url}}/>
     );

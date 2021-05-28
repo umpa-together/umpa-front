@@ -23,7 +23,7 @@ const SearchPage = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState('');
 
     const getData = async () => {
-        if(state.songData >= 20){
+        if(state.songData.length >= 20){
             setLoading(true);
             await songNext({ next: state.songNext.substr(22) });
             setLoading(false);
@@ -109,7 +109,6 @@ const SearchPage = ({ navigation }) => {
                                 onSubmitEditing= {()=> {
                                     searchsong({ songname: text})
                                     setTok(true)}}
-                                keyboardType = "email-address"
                                 placeholderTextColor= 'rgb(196,196,196)'
                                 style={{fontSize: 16     * tmpWidth}}
                             />
@@ -147,7 +146,12 @@ const SearchPage = ({ navigation }) => {
                                                 <SongImage url={item.attributes.artwork.url}/>
                                             </View>
                                             <View style={styles.songContainer}>
-                                                <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    {item.attributes.contentRating == "explicit" ? 
+                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                    : null }
+                                                    <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                </View>
                                                 <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                             </View>
                                         </View>
@@ -161,7 +165,12 @@ const SearchPage = ({ navigation }) => {
                                                 <SongImage url={item.attributes.artwork.url}/>
                                             </View>
                                             <View style={styles.songContainer}>
-                                                <Text style={{fontSize: 16 * tmpWidth}}  numberOfLines={1}>{item.attributes.name}</Text>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    {item.attributes.contentRating == "explicit" ? 
+                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                    : null }
+                                                    <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                </View>
                                                 <Text style={styles.artistText}  numberOfLines={1}>{item.attributes.artistName}</Text>
                                             </View>
                                         </View>
@@ -211,8 +220,13 @@ const SearchPage = ({ navigation }) => {
                                     <View style={styles.selectedSongCover}>
                                         <SongImage url={item.attributes.artwork.url} />
                                     </View>
-                                    <View style={{marginLeft: 22.4 * tmpWidth, width: 200 * tmpWidth}}>
-                                        <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                    <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
                                         <Text style={{fontSize: 12 * tmpWidth, color:'rgb(148,153,163)', marginTop: 6 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
@@ -298,7 +312,7 @@ const styles = StyleSheet.create({
     songContainer: {
         marginTop: 10 * tmpWidth, 
         marginLeft: 24 * tmpWidth, 
-        width: 250 * tmpWidth
+        width: 230 * tmpWidth
     },
     artistText: {
         fontSize: 14 * tmpWidth, 

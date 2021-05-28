@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet,ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet,ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
+import TrackPlayer from 'react-native-track-player';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigate } from '../navigationRef';
 import { GoogleSignin } from '@react-native-community/google-signin';
@@ -25,6 +26,9 @@ const SigninScreen = () => {
             hostedDomain: '', 
             forceConsentPrompt: true, 
         });
+        TrackPlayer.setupPlayer().then(async() => {
+            console.log('reday');
+        });
     }, []);
     const naverLogin = (iosKeys) => {
         NaverLogin.login(iosKeys, async (err, token) => {
@@ -47,17 +51,19 @@ const SigninScreen = () => {
         <SafeAreaView style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
             <NavigationEvents onWillBlur={clearErrorMessage} />
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15 * tmpWidth}}>
+                <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
                         <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/loadingLogo.png')} />
                     </View>
                 </View>
+                </TouchableWithoutFeedback>
                 <View style={{alignItems: 'center'}}>
                     <View style={styles.email}>
                         <TextInput 
                             value={email}
                             placeholder="이메일을 입력해주세요"
-                            placeholderColor='rgb(196,196,196)'
+                            placeholderTextColor='rgb(196,196,196)'
                             onChangeText={setEmail}
                             autoCapitalize='none'
                             autoCorrect={false}
@@ -68,6 +74,7 @@ const SigninScreen = () => {
                         <TextInput 
                             value={password}
                             placeholder="비밀번호를 입력해주세요"
+                            placeholderTextColor='rgb(196,196,196)'
                             onChangeText={setPassword}
                             autoCapitalize='none'
                             autoCorrect={false}
@@ -79,7 +86,7 @@ const SigninScreen = () => {
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(255,255,255)'}}>로그인</Text>
                     </TouchableOpacity>
                     <View style={{height:22 * tmpWidth, justifyContent:'center'}}>
-                    {state.errorMessage ? <Text style={{marginLeft:26 * tmpWidth, color:'red',fontSize:12 * tmpWidth }}>{state.errorMessage}</Text> : null}
+                    {state.errorMessage ? <Text style={{color:'red',fontSize:12 * tmpWidth }}>{state.errorMessage}</Text> : null}
                     </View>
                     <View style={{width:375 * tmpWidth, height:14 * tmpWidth, justifyContent:'center', alignItems:'center'}}>
                         <Text style={{fontSize:12 * tmpWidth, color:'rgb(169,193,255)'}}>아이디 / 비밀번호 찾기</Text>

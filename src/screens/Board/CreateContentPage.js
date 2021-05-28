@@ -62,6 +62,7 @@ const CreateContent = () => {
                                     <TextInput
                                         ref={titleRef}
                                         placeholder="글의 제목을 적어주세요."
+                                        placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text=>titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
@@ -83,6 +84,7 @@ const CreateContent = () => {
                                 ref={contentRef}
                                 onChangeText={text => contentRef.current.value = text}
                                 placeholder="내용을 적어주세요"
+                                placeholderTextColor='rgb(196,196,196)'
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 multiline={true}

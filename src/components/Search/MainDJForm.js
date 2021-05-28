@@ -2,18 +2,14 @@ import React,{useContext} from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 
-const MainDJForm = () => {
+const MainDJForm = ({navigation}) => {
     const { state} = useContext(WeeklyContext);
     const {state: userState,getOtheruser} = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
-    const { getCurationposts } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
 
     return (
@@ -27,21 +23,18 @@ const MainDJForm = () => {
                     renderItem={({item, index})=> {
                         return (
                             <View style={{width: 344 * tmpWidth, height:75 * tmpWidth, }}>
-                                <TouchableOpacity style={{flexDirection: 'row', }} onPress={() => {
+                                <TouchableOpacity style={{flexDirection: 'row', }} onPress={async () => {
                                     if(item._id == userState.myInfo._id){
                                         navigate('Account');
                                     }else{
-                                        getUserPlaylists({id:item._id});
-                                        getOtheruser({id:item._id});
-                                        getSongs({id:item._id});
-                                        getCurationposts({id:item._id});
-                                        navigate('OtherAccount');
+                                        await Promise.all([getOtheruser({id:item._id}),
+                                        getSongs({id:item._id})]);
+                                        navigation.push('OtherAccount', {otherUserId:item._id});
                                     }
                                 }}>
                                 {item.profileImage == undefined ?
                                 <View style={styles.noprofile}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-
+                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                 </View>
                                 :
                                 <Image source={{uri: item.profileImage}} style={styles.profile}/> }
@@ -51,16 +44,12 @@ const MainDJForm = () => {
                                             <View style={styles.box}>
                                                 <Text style={{fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}}>대표곡</Text>
                                             </View>
-                                            <View style={{width:120 * tmpWidth}}>
+                                            <View style={{width:225 * tmpWidth}}>
                                                 <Text style={{marginLeft:6 * tmpWidth,fontSize:14 * tmpWidth, color:'rgba(148,153,163,1)', fontWeight:'bold'}} numberOfLines={1}>
-                                                    {item.songs[0].name}
+                                                    {item.songs[0].attributes.name}
                                                 </Text>
                                             </View>
-                                            <View style={{width:40 * tmpWidth}}>
-                                                <Text style={{marginLeft:4 * tmpWidth,fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}} numberOfLines={1} ellipsizeMode="tail">
-                                                    {item.songs[0].attributes.artistName}
-                                                </Text>
-                                            </View>
+
                                         </View>
                                     </View>
                                 </TouchableOpacity>

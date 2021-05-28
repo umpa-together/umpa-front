@@ -35,7 +35,10 @@ const MySharedSongsPage = () => {
                             </View>
                             <View style={styles.textBox}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <View style={{width: 150 * tmpWidth}}>
+                                    <View style={{width: 130 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
+                                        {item.song.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        : null }
                                         <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
                                     </View>
                                     <View style={{width: 100 * tmpWidth, alignItems: 'flex-end'}}>

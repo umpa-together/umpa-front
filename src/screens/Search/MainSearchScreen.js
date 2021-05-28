@@ -8,7 +8,7 @@ import MainSongForm from '../../components/Search/MainSongForm';
 import MainDJForm from '../../components/Search/MainDJForm';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 
-const MainSearchScreen = () => {
+const MainSearchScreen = ({navigation}) => {
     const [category, setCategory] = useState('Song');
 
     return (
@@ -36,7 +36,7 @@ const MainSearchScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={{height:590 * tmpHeight}}>
-            {category == 'Song' ? <MainSongForm /> : <MainDJForm /> }
+            {category == 'Song' ? <MainSongForm /> : <MainDJForm navigation={navigation}/> }
             </View>
         </View>
     </SafeAreaView>

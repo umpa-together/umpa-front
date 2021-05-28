@@ -8,8 +8,8 @@ import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
 
 const SongImage = ({url}) => {
-    url =url.replace('{w}', '1000');
-    url = url.replace('{h}', '1000');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
 };
 
@@ -25,9 +25,11 @@ const SongEditPage = ({navigation}) => {
     const [isEdit, setIsEdit] = useState(true);
     const currentplayList = navigation.getParam('data');
     const getData = async () => {
-        setLoading(true);
-        await songNext({ next: state.songNext.substr(22) });
-        setLoading(false);
+        if(state.songData.length >= 20){
+            setLoading(true);
+            await songNext({ next: state.songNext.substr(22) });
+            setLoading(false);
+        }
     };
     const onEndReached = () => {
         if (loading) {
@@ -53,7 +55,7 @@ const SongEditPage = ({navigation}) => {
     };
     const renderLeftActions = () => {
         return (
-            <View style={{width: '100%', height: '90%', backgroundColor:'#fff'}}/>
+            <View style={{width: '60%', height: '90%', backgroundColor:'#fff', borderWidth: 1}}/>
         )
     }
     const okPress = async () => {
@@ -88,14 +90,12 @@ const SongEditPage = ({navigation}) => {
         }
     }, [text]);
     
-
     return (
         <View style={styles.container}>
             <View style={styles.searchBox}>
                 <View style ={{flexDirection:'row'}}>
                     <View style={styles.searchIcon}>
-                            <SvgUri width={18 * tmpWidth} height={19 * tmpWidth} source={require('../../assets/icons/songeditsearch.svg')}/>
-
+                        <SvgUri width={18 * tmpWidth} height={19 * tmpWidth} source={require('../../assets/icons/songeditsearch.svg')}/>
                     </View>
                     <View style={{marginLeft: 14 * tmpWidth  , marginTop: 20 * tmpWidth  }}>
                         <TextInput style={{backgroundColor: "rgb(255,255,255)", width:272 * tmpWidth, height:60 * tmpWidth}}
@@ -111,7 +111,6 @@ const SongEditPage = ({navigation}) => {
                             onSubmitEditing= {()=> {
                                 searchsong({songname: text})
                                 setTok(true)}}
-                            keyboardType = "email-address"
                             placeholderTextColor= 'rgb(196,196,196)'
                             style={{fontSize: 16 * tmpWidth}}
                         />
@@ -172,9 +171,14 @@ const SongEditPage = ({navigation}) => {
                                     <View style={styles.songCover}>
                                         <SongImage url={item.attributes.artwork.url}/>
                                     </View>
-                                    <View style={{marginTop: 10  * tmpWidth , marginLeft: 24  * tmpWidth }}>
-                                        <Text style={{fontSize: 16 * tmpWidth}}>{item.attributes.name}</Text>
-                                        <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth  }}>{item.attributes.artistName}</Text>
+                                    <View style={{marginTop: 10  * tmpWidth , marginLeft: 24  * tmpWidth}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
+                                        <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity> :
@@ -186,9 +190,14 @@ const SongEditPage = ({navigation}) => {
                                     <View style={styles.songCover}>
                                         <SongImage url={item.attributes.artwork.url}/>
                                     </View>
-                                    <View style={{marginTop: 10 * tmpWidth, marginLeft: 24 * tmpWidth  }}>
-                                        <Text style={{fontSize: 16 * tmpWidth}}>{item.attributes.name}</Text>
-                                        <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth  }}>{item.attributes.artistName}</Text>
+                                    <View style={{marginTop: 10 * tmpWidth, marginLeft: 24 * tmpWidth}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
+                                        <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity> }
@@ -199,7 +208,13 @@ const SongEditPage = ({navigation}) => {
             </View>}
             <View style={styles.selectedBox}>
                 <View style={styles.mysong}>
-                    <Text style={{fontSize: 14 * tmpWidth}}>내 대표곡</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 14 * tmpWidth, marginRight: 5 * tmpWidth}}>내 대표곡</Text>
+                        { !isEdit && state.songData.length != 0 ? 
+                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(238,98,92)'}}>
+                            (최소 5곡, 최대 7곡)
+                        </Text> : null }
+                    </View>
                     <TouchableOpacity onPress={() => okPress()}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>
@@ -222,8 +237,13 @@ const SongEditPage = ({navigation}) => {
                                     <View style={styles.selectedSongCover}>
                                         <SongImage url={item.attributes.artwork.url} />
                                     </View>
-                                    <View style={{marginLeft: 22.4 * tmpWidth  , flex: 1}}>
-                                        <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                    <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
                                         <Text style={{fontSize: 12 * tmpWidth, color:'rgb(148,153,163)', marginTop: 6 * tmpWidth  }} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
@@ -337,10 +357,10 @@ const styles=StyleSheet.create({
     },
     mysong:{
         flexDirection: 'row',
-         marginTop: 19   * tmpWidth,
-         justifyContent: 'space-between',
-         marginLeft: 37   * tmpWidth,
-         marginRight: 24 * tmpWidth
+        marginTop: 19   * tmpWidth,
+        justifyContent: 'space-between',
+        marginLeft: 37   * tmpWidth,
+        marginRight: 24 * tmpWidth
     },
 });
 

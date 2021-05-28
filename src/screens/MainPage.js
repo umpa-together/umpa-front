@@ -4,11 +4,11 @@ import {Context as UserContext} from '../context/UserContext';
 import Recommend from '../components/Main/Recommend';
 import Feed from '../components/Main/Feed';
 
-const MainPage = () => {
+const MainPage = ({navigation}) => {
     const { state: userState } = useContext(UserContext);
     return (
         <View style={styles.safeArea}>
-            {userState.myInfo != null && userState.myInfo.following.length == 0 ? <Recommend /> : <Feed />}
+            {userState.myInfo != null && userState.myInfo.following.length == 0 ? <Recommend navigation={navigation}/> : <Feed navigation={navigation} />}
         </View>
     );
 };

@@ -1,6 +1,5 @@
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
-import { navigate } from '../navigationRef';
 
 const BoardReducer = (state, action) => {
     switch(action.type) {
@@ -188,7 +187,7 @@ const createContent = (dispatch) => async ({ title, content, boardId, fd }) => {
 const deleteContent = (dispatch) => async ({ contentId, boardId }) => {
     try {
         const response = await serverApi.delete('/deleteContent/'+contentId+'/'+boardId);
-        //dispatch({ type: 'editCurrentBoard', payload: response.data});
+        dispatch({ type: 'getCurrentBoard', payload: response.data});
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with deleteContent' });
     }

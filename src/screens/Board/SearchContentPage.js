@@ -26,6 +26,7 @@ const SearchContentPage = ({ navigation }) => {
                     <SvgUri width='40' height='40' source={require('../../assets/icons/boardSearch.svg')} style={{marginLeft: 8 * tmpWidth}}/>    
                     <TextInput
                         placeholder="게시글을 검색해주세요."
+                        placeholderTextColor='rgb(196,196,196)'
                         value={text}
                         onChangeText={setText}
                         autoCapitalize='none'

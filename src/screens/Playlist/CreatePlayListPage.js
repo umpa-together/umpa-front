@@ -22,7 +22,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
     const [type, setType] = useState('');
     const playList = navigation.getParam('data');
     const { addPlaylist } = useContext(PlaylistContext);
-    const { getMyPlaylist } = useContext(UserContext);
+    const { getMyInfo } = useContext(UserContext);
     const [titleValidity, setTitleValidity] = useState(true);
     const [contentValidity, setContentValidity] = useState(true);
     const [thumbnailValidity, setThumbnailValidity] = useState(true);
@@ -69,7 +69,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
             uri: 'file://' + image
         })
         await addPlaylist({ title: titleRef.current.value, textcontent: commentRef.current.value, songs:playList, hashtag, fd });
-        await getMyPlaylist();
+        getMyInfo();
     }
     const handleUpload = () => {
         launchImageLibrary({maxWidth: 500, maxHeight: 500}, (response) => {
@@ -102,6 +102,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                                     <TextInput
                                         ref={titleRef}
                                         placeholder="플레이리스트 제목을 적어주세요."
+                                        placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text => titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
@@ -127,6 +128,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                                 autoCorrect={false}
                                 multiline={true}
                                 style={styles.commentBoxText}
+                                placeholderTextColor='rgb(196,196,196)'
                             />
                         </View>
                         {contentValidity ? null :
@@ -145,6 +147,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                                 onChangeText={(text)=>{
                                     if(text.length <= 9 && hashtag.length < 3) setTemphash(text)}}
                                 placeholder="해시태그를 적어주세요."
+                                placeholderTextColor='rgb(196,196,196)'
                                 autoCapitalize='none'
                                 onSubmitEditing={() => {
                                     addhashtag({data:temphash})

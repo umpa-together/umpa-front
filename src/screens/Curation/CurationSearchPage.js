@@ -8,8 +8,8 @@ import { navigate } from '../../navigationRef';
 import SvgUri from 'react-native-svg-uri';
 
 const Imagetake = ({url, border}) => {
-    url =url.replace('{w}', '200');
-    url = url.replace('{h}', '200');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return <Image style ={{height:'100%', width:'100%', borderRadius: border}} source ={{url:url}}/>
 };
 
@@ -22,9 +22,11 @@ const CurationSearchPage = ({navigation}) => {
     const { getCuration } = useContext(CurationContext);
     const [loading, setLoading] = useState(false);
     const getData = async () => {
-        setLoading(true);
-        await songNext({ next: state.songNext.substr(22) });
-        setLoading(false);
+        if((isSong && state.songData.length >= 20) || (!isSong && state.albumData.length >= 20)){
+            setLoading(true);
+            await songNext({ next: state.songNext.substr(22) });
+            setLoading(false);
+        }
     };
     const onEndReached = () => {
         if (loading) {
@@ -53,28 +55,25 @@ const CurationSearchPage = ({navigation}) => {
                 <Text style={styles.headertext}>큐레이션 검색</Text>
             </View>
             <View style={styles.input}>
-                      <View style ={{ flexDirection:'row'}}>
-                            <View style={styles.inputicon}>
-                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/curationsearch.svg')}/>
-                            </View>
-                            <View style={{}}>
-                                <TextInput style={styles.inputtext}
-                                    value = {text}
-                                    onChangeText={text=>setState(text)}
-                                    placeholder="노래, 아티스트 검색"
-
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                    autoFocus ={true}
-                                    onFocus = {()=>setKey(true)}
-                                    onChange = {()=>setKey(true)}
-                                    onSubmitEditing= {()=>{setKey(false); searchsong({ songname: text}); searchalbum({albumname:text}); }}
-
-                                    placeholderTextColor ="rgb(196,196,196)"
-                                    keyboardType = "email-address"
-                                />
-                            </View>
-                        </View>
+                <View style ={{ flexDirection:'row'}}>
+                    <View style={styles.inputicon}>
+                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/curationsearch.svg')}/>
+                    </View>
+                    <View>
+                        <TextInput style={styles.inputtext}
+                            value = {text}
+                            onChangeText={text=>setState(text)}
+                            placeholder="노래, 아티스트 검색"
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            autoFocus ={true}
+                            onFocus = {()=>setKey(true)}
+                            onChange = {()=>setKey(true)}
+                            onSubmitEditing= {()=>{setKey(false); searchsong({ songname: text}); searchalbum({albumname:text}); }}
+                            placeholderTextColor ="rgb(196,196,196)"
+                        />
+                    </View>
+                </View>
             </View>
             <View style={styles.output}>
                {key ?
@@ -101,7 +100,6 @@ const CurationSearchPage = ({navigation}) => {
                         />
                     </View>
                 </View>
-
                 :
                 <View>
                     <View style={styles.resultopt}>
@@ -129,15 +127,18 @@ const CurationSearchPage = ({navigation}) => {
                                                   <Imagetake url={item.attributes.artwork.url} border={100 * tmpWidth}></Imagetake>
                                               </View>
                                               <View>
-                                                 <View style={{marginLeft: 24 * tmpWidth}}>
-                                                      <View style={{marginTop:10 * tmpWidth}}>
-                                                      <Text style={{fontSize:16 * tmpWidth}}>{item.attributes.name.split("(feat.")[0]}</Text>
+                                                 <View style={{marginLeft: 24 * tmpWidth, width: 220 * tmpWidth,}}>
+                                                      <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
+                                                        {item.attributes.contentRating == "explicit" ? 
+                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                        : null }
+                                                        <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name.split("(feat.")[0]}</Text>
                                                       </View>
-                                                      <View style={{flexDirection:'row'}}>
-                                                      <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}}>{item.attributes.artistName}</Text>
-                                                      { item.attributes.name.split("(feat.")[1] ?
-                                                      <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}}>  feat. {item.attributes.name.split("(feat.")[1].slice(0,-1)}</Text> :
-                                                      null}
+                                                      <View style={{flexDirection:'row', marginTop: 8 * tmpWidth, width: 150 * tmpWidth}}>
+                                                        <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                        { item.attributes.name.split("(feat.")[1] ?
+                                                        <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>  feat. {item.attributes.name.split("(feat.")[1].slice(0,-1)}</Text> :
+                                                        null}
                                                       </View>
                                                  </View>
                                               </View>
@@ -156,20 +157,21 @@ const CurationSearchPage = ({navigation}) => {
                                ListFooterComponent={loading && <ActivityIndicator />}
                                renderItem={({item}) =>{
                                return (
-
-                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{getCuration({isSong:false ,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork },id:item.id}); navigate('SelectedCuration', {id: item.id});}}>
+                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{getCuration({isSong:false ,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating },id:item.id}); navigate('SelectedCuration', {id: item.id});}}>
                                        <View style={{flexDirection:'row'}}>
                                            <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
                                               <Imagetake url={item.attributes.artwork.url} border={4 * tmpWidth}></Imagetake>
-
                                            </View>
                                            <View>
                                              <View style={{marginLeft: 24 * tmpWidth}}>
-                                                <View style={{marginTop:10 * tmpWidth}}>
-                                                   <Text style={{fontSize:16 * tmpWidth}}>{item.attributes.name}</Text>
+                                                <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
+                                                    {item.attributes.contentRating == "explicit" ? 
+                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                    : null }
+                                                   <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                                 </View>
                                                 <View>
-                                                   <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}}>{item.attributes.artistName}</Text>
+                                                   <Text style={{fontSize:14 * tmpWidth, color:"#9499A3", marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                 </View>
                                               </View>
                                            </View>

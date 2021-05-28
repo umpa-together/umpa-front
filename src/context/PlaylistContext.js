@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
 import { navigate } from '../navigationRef';
@@ -6,15 +5,15 @@ import { navigate } from '../navigationRef';
 const playlistReducer = (state, action) => {
     switch(action.type) {
         case 'init_playlist':
-            return { ...state, current_playlist: [], current_comments:null, current_songs:[] };
+            return { ...state, current_playlist: null, current_comments:null, current_songs:[] };
         case 'init_recomment':
             return { ...state, current_recomments: null }
         case 'get_playlists':
             return { ...state,  playlists: action.payload };
-        case 'get_userplaylists':
-            return { ...state,  userplaylists: action.payload };
         case 'get_playlist':
             return { ...state, current_playlist:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
+        case 'deleted_playlist':
+            return { ...state, current_playlist: [] };
         case 'get_comment':
             return { ...state, current_comments:action.payload}
         case 'add_comment':
@@ -106,20 +105,13 @@ const getPlaylist = dispatch =>{
     return async ({id,postUserId})=>{
         try {
             const response = await serverApi.get('/playlist/'+id+'/'+postUserId);
-            dispatch({type: 'get_playlist', payload: response.data});
+            if(response.data[0] == null ){
+                dispatch({type: 'deleted_playlist'})
+            }else{
+                dispatch({type: 'get_playlist', payload: response.data});
+            }
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with getPlaylist' });
-        }
-    };
-};
-
-const getUserPlaylists = dispatch =>{
-    return async ({ id })=>{
-        try {
-            const response = await serverApi.get('/userPlaylists/'+id);
-            dispatch({type: 'get_userplaylists', payload: response.data})
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getUserPlaylists' });
         }
     };
 };
@@ -227,7 +219,7 @@ const unlikesrecomment = dispatch => {
 
 export const { Provider, Context } = createDataContext(
     playlistReducer,
-    { initPlaylist, addPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist, getUserPlaylists,
+    { initPlaylist, addPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist,
         addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
     { playlists: null, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
 )

@@ -1,6 +1,5 @@
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
-import { navigate } from '../navigationRef';
 
 const SearchPlaylistReducer = (state, action) => {
     switch(action.type){

@@ -2,12 +2,15 @@ import React, { useContext,useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView,Keyboard,KeyboardEvent ,ImageBackground,StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../../components/FontNormalize';
+import ReportModal from '../../components/ReportModal';
+import DeleteModal from '../../components/DeleteModal';
+import HarmfulModal from '../../components/HarmfulModal';
 
 const Imagetake = ({url , border, opac}) => {
     url =url.replace('{w}', '700');
@@ -22,16 +25,13 @@ const Imagebacktake = ({url , border, opac}) => {
 };
 
 const SelectedCuration = ({navigation}) => {
-    const {state, postCuration, getmyCuration, deleteCuration, getCurationposts, likecurationpost,unlikecurationpost, getuserCurationposts} = useContext(CurationContext);
-    const { state: userState, getOtheruser } = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
+    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost} = useContext(CurationContext);
+    const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-
     const [hidden, setHidden] = useState(false);
     const [text, setText] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [postModal, setPostModal] = useState(false);
-    const [number, setNumber] = useState(0);
     const [cidx, setCidx] = useState(0);
     const [ref, setRef] = useState(null);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -39,10 +39,33 @@ const SelectedCuration = ({navigation}) => {
     const [selectedCuration, setSelectedCuration] = useState('');
     const curationid= navigation.getParam('id');
     const postid= navigation.getParam('postid');
-
+    const [reportModal, setReportModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [isPlayingid, setIsPlayingid] = useState('0');
+    const [harmfulModal, setHarmfulModal] = useState(false);
     const onClose =() => {
         setShowModal(false);
     }
+
+    const addtracksong= async ({data}) => {
+        const track = new Object();
+        track.id = data.id;
+        track.url = data.attributes.previews[0].url;
+        track.title = data.attributes.name;
+        track.artist = data.attributes.artistName;
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true)
+        }
+    };
+    const stoptracksong= async () => {    
+        setIsPlayingid('0');
+        await TrackPlayer.reset()
+    };
 
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
@@ -54,18 +77,12 @@ const SelectedCuration = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            
-
-
         });
- 
-
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
             listener.remove();
         };
-        
     }, []);
 
     useEffect(()=>{
@@ -73,17 +90,7 @@ const SelectedCuration = ({navigation}) => {
             const idx = state.currentCurationpost.findIndex(el => el._id ==postid);
             setCidx(idx);
         }
-
     },[ref, state.currentCurationpost]);
-
-    useEffect(()=>{
-        state.currentCurationpost.sort(function(a, b) {
-            if(a.likes.length > b.likes.length) return -1;
-            if(a.likes.length < b.likes.length) return 1;
-            return 0;
-        }); 
-
-    },[state.currentCurationpost]);    
 
     return (
         <View style={{backgroundColor:'rgba(252,252,253,1)'}}>
@@ -99,17 +106,42 @@ const SelectedCuration = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{width:204 * tmpWidth, height:204 * tmpWidth, marginTop:27 * tmpWidth, marginLeft:86 * tmpWidth}}>
-                        {state.currentCuration.isSong ? <Imagetake  border ={200 * tmpWidth} opac={1} url={state.currentCuration.object.attributes.artwork.url}></Imagetake> : <Imagetake opac={1} border={200 * tmpWidth} url={state.currentCuration.object.artwork.url}></Imagetake>}
+                        {state.currentCuration.isSong ? 
+                        isPlayingid != state.currentCuration.object.id ? 
+                        <TouchableOpacity onPress={() => addtracksong({data: state.currentCuration.object})}>
+                            <Imagetake border ={200 * tmpWidth} opac={1} url={state.currentCuration.object.attributes.artwork.url} /> 
+                            <SvgUri width='54' height='54' source={require('../../assets/icons/play.svg')} style={{position: 'absolute', left: 85, top: 75}} />
+                        </TouchableOpacity> : 
+                        <TouchableOpacity onPress={() => stoptracksong()}>
+                            <Imagetake border ={200 * tmpWidth} opac={0.8} url={state.currentCuration.object.attributes.artwork.url} /> 
+                            <SvgUri width='54' height='54' source={require('../../assets/icons/play.svg')} style={{position: 'absolute', left: 85, top: 75}} />
+                        </TouchableOpacity> :
+                        <Imagetake opac={1} border={200 * tmpWidth} url={state.currentCuration.object.artwork.url} /> }
+                        { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                     </View>
                     <View style={styles.curationinfo}>
                         {state.currentCuration.isSong ?
                         <View style={{alignItems:'center'}}>
-                            <Text style={{color : 'black' , fontSize : 18 * tmpWidth, marginTop:16 * tmpWidth }}>{state.currentCuration.object.attributes.name}</Text>
-                            <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}}>{state.currentCuration.object.attributes.artistName}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
+                                {state.currentCuration.object.attributes.contentRating == "explicit" ? 
+                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
+                                : null }
+                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth, marginTop:16 * tmpWidth }} numberOfLines={1}>{state.currentCuration.object.attributes.name}</Text>
+                            </View>
+                            <View style={{width: 280 * tmpWidth, alignItems: 'center'}}>
+                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{state.currentCuration.object.attributes.artistName}</Text>
+                            </View>
                         </View> :
                         <View style={{alignItems:'center'}}>
-                            <Text style={{color : 'black' , fontSize : 18 * tmpWidth ,marginTop:16 * tmpWidth}}>{state.currentCuration.object.albumName}</Text>
-                            <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}}>{state.currentCuration.object.artistName}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
+                                {state.currentCuration.object.contentRating == "explicit" ? 
+                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
+                                : null }
+                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth ,marginTop:16 * tmpWidth}} numberOfLines={1}>{state.currentCuration.object.albumName}</Text>
+                            </View>
+                            <View style={{width: 280 * tmpWidth, alignItems: 'center'}}>
+                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{state.currentCuration.object.artistName}</Text>
+                            </View>
                         </View> }
                         <Text style={{marginTop:10 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}}>{'큐레이션에 참여한 사람 '+state.currentCuration.participate.length+'명'}</Text>
                     </View>
@@ -158,15 +190,13 @@ const SelectedCuration = ({navigation}) => {
                                         setShowpost(true);
                                     }}>
                                         <View style={styles.curationpostitem}>
-                                            <TouchableOpacity onPress={() => {
+                                            <TouchableOpacity onPress={async () => {
                                                 if(item.postUserId._id == userState.myInfo._id){
                                                     navigate('Account');
                                                 }else{
-                                                    getUserPlaylists({id:item.postUserId._id});
-                                                    getOtheruser({id:item.postUserId._id});
-                                                    getSongs({id:item.postUserId._id});
-                                                    getuserCurationposts({id: item.postUserId._id});
-                                                    navigate('OtherAccount');
+                                                    await Promise.all([getOtheruser({id:item.postUserId._id}),
+                                                    getSongs({id:item.postUserId._id})])
+                                                    navigation.push('OtherAccount', {otherUserId: item.postUserId._id});
                                                 }}}
                                                 style={{width:32 * tmpWidth, height:32 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:16 * tmpWidth}}>
                                                 {item.postUserId.profileImage == null || item.postUserId.profileImage == undefined ?
@@ -177,7 +207,7 @@ const SelectedCuration = ({navigation}) => {
                                             <View>
                                                 <View style={{flexDirection:'row',  height:32 * tmpWidth, width:200 * tmpWidth,marginTop:10 * tmpWidth, }}>
                                                     <View style={{width:200 * tmpWidth,height:32 * tmpWidth, flexDirection:'row',alignItems:'center'}}>
-                                                        <Text numberOfLines={1} style={{fontSize:12 * tmpWidth,marginLeft:11 * tmpWidth,}}>{item.postUser}</Text>
+                                                        <Text numberOfLines={1} style={{fontSize:12 * tmpWidth,marginLeft:11 * tmpWidth,}}>{item.postUserId.name}</Text>
                                                         {item.hidden ?
                                                         <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/>
                                                         : null }
@@ -213,24 +243,25 @@ const SelectedCuration = ({navigation}) => {
                         /> }
                         { showpost ?
                         <Modal
-                          isVisible={true}
-                          onBackdropPress={()=>{setShowpost(false);}}
-                          backdropOpacity={0.4}
-                          style={{justifyContent:'center', marginBottom:keyboardHeight }}
+                            animationIn='zoomIn'
+                            animationOut='zoomOut'
+                            isVisible={true}
+                            onBackdropPress={()=>{setShowpost(false);}}
+                            backdropOpacity={0.4}
+                            style={{justifyContent:'center', marginBottom:keyboardHeight }}
                         >
-                            <View style={{width:335 * tmpWidth, height:374 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff' }}>
+                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff' }}>
                                 <View>
                                     <View style={styles.curationpostuser}>
                                         <TouchableOpacity
-                                            onPress={() => {
+                                            onPress={async () => {
+                                                setShowpost(false)
                                             if(selectedCuration.postUserId._id == userState.myInfo._id){
                                                 navigate('Account');
                                             }else{
-                                                getUserPlaylists({id: selectedCuration.postUserId._id});
-                                                getOtheruser({id:selectedCuration.postUserId._id});
-                                                getSongs({id: selectedCuration.postUserId._id});
-                                                getCurationposts({id: selectedCuration.postUserId._id});
-                                                navigate('OtherAccount');
+                                                await Promise.all([getOtheruser({id:selectedCuration.postUserId._id}),
+                                                getSongs({id: selectedCuration.postUserId._id})]);
+                                                navigation.push('OtherAccount', {otherUserId:selectedCuration.postUserId._id});
                                             }}}
                                             style={{width:32 * tmpWidth, height:32 * tmpWidth}}
                                         >
@@ -240,38 +271,34 @@ const SelectedCuration = ({navigation}) => {
                                                 </View> :
                                                 <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: selectedCuration.postUserId.profileImage}} ></Image> }
                                         </TouchableOpacity>
-                                        <View style={{width:210 * tmpWidth, height:32 * tmpWidth, justifyContent:'center'}}>
+                                        <View style={{width:210 * tmpWidth, height:32 * tmpWidth, alignItems: 'center', flexDirection: 'row'}}>
                                             <Text style={{marginLeft:12 * tmpWidth}}>{selectedCuration.postUser}</Text>
+                                            <TouchableOpacity onPress={() => {
+                                                setShowpost(false)
+                                                setReportModal(true)}}>
+                                                <Text style={{marginLeft: 5 * tmpWidth, color: 'rgb(93,93,93)'}}>신고</Text>
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
-                                    <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:56 * tmpWidth, height:277 * tmpWidth}}>
+                                    <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:56 * tmpWidth, marginBottom: 24 * tmpWidth}}>
                                     {selectedCuration.hidden ? 
-                                        <ScrollView
-                                            persistentScrollbar={true}
-                                            showsVerticalScrollIndicator={true}
-                                            style={{width:240 * tmpWidth, height:277 * tmpWidth}}
-                                        >
-                                            <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text>
-                                        </ScrollView> :
-                                        <ScrollView
-                                            persistentScrollbar={true}
-                                            showsVerticalScrollIndicator={true}
-                                            style={{width:240 * tmpWidth, height:277 * tmpWidth}}
-                                        >
-                                            <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>
-                                        </ScrollView> }
+                                    <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text> :
+                                    <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
                                     </View>
                                 </View>
                             </View>
                         </Modal> : null }
+                        { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'curation'} subjectId={selectedCuration._id} /> : null }
                         { showModal ?
                         <Modal
+                            animationIn='zoomIn'
+                            animationOut='zoomOut'
                             isVisible={true}
                             onBackdropPress={onClose}
                             backdropOpacity={0.4}
                             style={{justifyContent:'center', marginBottom:keyboardHeight}}
                         >
-                            <View style={{width:335 * tmpWidth, height:374 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', }}>
+                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', }}>
                                 { state.mycurationpost.likes == undefined ? <ActivityIndicator/> :
                                 <View>
                                     <View style={{width:319 * tmpWidth, alignItems:'center', flexDirection:'row', marginTop:24 * tmpWidth, marginLeft:16 * tmpWidth, height:32 * tmpWidth}}>
@@ -288,23 +315,20 @@ const SelectedCuration = ({navigation}) => {
                                             : null }
                                         </View>
                                         <View style={{width:50 * tmpWidth,height:20 * tmpWidth}}>
-                                            <TouchableOpacity onPress={()=>{ deleteCuration({id:state.mycurationpost._id.toString()  }); onClose(); }}>
+                                            <TouchableOpacity onPress={()=> {
+                                                setShowModal(false)
+                                                setDeleteModal(true)}}>
                                                 <Text>삭제하기</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                    <View style={{width:238 * tmpWidth, marginTop:24 * tmpWidth, marginLeft:60 * tmpWidth, height:277 * tmpWidth}}>
-                                        <ScrollView
-                                            persistentScrollbar={true}
-                                            showsVerticalScrollIndicator={true}
-                                            style={{width:240 * tmpWidth, height:318 * tmpWidth}}
-                                         >
-                                            <Text>{state.mycurationpost.textcontent}</Text>
-                                        </ScrollView>
+                                    <View style={{width:238 * tmpWidth, marginTop:24 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
+                                        <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
                                     </View>
                                 </View> }
                             </View>
-                        </Modal> :null }
+                        </Modal> : null }
+                        { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'curation'} /> : null}
                         { postModal ?
                         <Modal
                             isVisible={true}
@@ -332,7 +356,6 @@ const SelectedCuration = ({navigation}) => {
                                             autoCapitalize='none'
                                             autoCorrect={false}
                                             placeholderTextColor ="rgb(196,196,196)"
-                                            keyboardType = "email-address"
                                         />
                                     </View>
                                     <View style ={styles.postopt}>
@@ -354,9 +377,10 @@ const SelectedCuration = ({navigation}) => {
                                     { text.length >= 50  ?
                                     <TouchableOpacity
                                         style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
-                                        onPress ={() => {
+                                        onPress ={async () => {
                                             if(text.length>=50){
-                                            postCuration({isSong:state.currentCuration.isSong , hidden : hidden,  object:state.currentCuration.object, textcontent:text, id:state.currentCuration.songoralbumid})
+                                            await postCuration({isSong:state.currentCuration.isSong , hidden : hidden,  object:state.currentCuration.object, textcontent:text, id:state.currentCuration.songoralbumid})
+                                            getMyInfo();
                                             setPostModal(false);
                                             setText('');
                                             }
@@ -447,7 +471,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         marginTop:24 * tmpWidth,
         marginLeft:16 * tmpWidth,
-        height:32 * tmpWidth
+        height:32 * tmpWidth,
     },
     modalexit2:{
         marginLeft:90 * tmpWidth,

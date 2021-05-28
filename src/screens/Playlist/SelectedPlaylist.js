@@ -6,16 +6,19 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import ReportModal from '../../components/ReportModal';
+import DeleteModal from '../../components/DeleteModal';
+import HarmfulModal from '../../components/HarmfulModal';
+import DeletedModal from '../../components/DeletedModal';
 
 const SelectedPlaylist = ({navigation}) => {
-    const {state, getUserPlaylists, deletePlaylist,addComment,deleteComment, getreComment , addreComment,deletereComment,likesPlaylist, unlikesPlaylist, likescomment,unlikescomment,likesrecomment,unlikesrecomment, initRecomment} = useContext(PlaylistContext);
-    const {state: userState, getOtheruser, getMyPlaylist} = useContext(UserContext);
+    const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
+        unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
+    const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    const { getuserCurationposts } = useContext(CurationContext);
     const { state: searchState, hashtagHint } = useContext(SearchContext);
     const playlistid= navigation.getParam('id');
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -25,9 +28,17 @@ const SelectedPlaylist = ({navigation}) => {
     const [tok, setTok] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [commentDeleteModal, setCommentDeleteModal] = useState(false);
+    const [reCommentDeleteModal, setReCommentDeleteModal] = useState(false);
+    const [reportModal, setReportModal] = useState(false);
+    const [commentReportModal, setCommentReportModal] = useState(false);
+    const [reportId, setReportId] = useState('');
+    const [deleteId, setDeleteId] = useState('');
+    const [hashtag, setHashtag] = useState('');
+    const [harmfulModal, setHarmfulModal] = useState(false);
+    const [deletedModal, setDeletedModal] = useState(false);
     const commentRef = useRef();
     const recommentRef = useRef();
-    console.log(searchState.hashtagHint[0])
     const onClose =() => {
         setShowModal('0');
         initRecomment();
@@ -51,22 +62,21 @@ const SelectedPlaylist = ({navigation}) => {
         setTok(!tok);
     }
     const addtracksong= async ({data}) => {
-          const track = new Object();
-          track.id = data.id;
-          track.url = data.attributes.previews[0].url;
-          track.title = data.attributes.name;
-          track.artist = data.attributes.artistName;
-          setIsPlayingid(data.id);
-          //track.album = data.attributes.albumName;
-          //track.genre = data.attributes.genreNames;
-          //track.date = data.attributes.releaseDate;
-          //track.artwork = data.attributes.artwork.url;
-          await TrackPlayer.reset()
-          await TrackPlayer.add(track);
-          TrackPlayer.play();
-
+        const track = new Object();
+        track.id = data.id;
+        track.url = data.attributes.previews[0].url;
+        track.title = data.attributes.name;
+        track.artist = data.attributes.artistName;
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true)
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
@@ -87,15 +97,13 @@ const SelectedPlaylist = ({navigation}) => {
 
     useEffect(()=>{
         const listener =navigation.addListener('didFocus', ()=>{
-            TrackPlayer.setupPlayer().then(async() => {
-                console.log('ready');
-            });
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
         });
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+            stoptracksong();
             listener.remove();
         };
     }, []);
@@ -105,9 +113,15 @@ const SelectedPlaylist = ({navigation}) => {
             setComments(state.current_comments);
         }
     }, [state.current_comments]);
+    useEffect(() => {
+        if(searchState.hashtagHint != undefined && searchState.hashtagHint.length != 0 && hashtag != '') navigate('SelectedHashtag', {data: searchState.hashtagHint[0], text: hashtag, searchOption : 'Hashtag' });
+    }, [searchState.hashtagHint])
+    useEffect(() => {
+        if(state.current_playlist != null && state.current_playlist.length == 0)    setDeletedModal(true);
+    },[state.current_playlist])
     return (
         <View style={styles.container}>
-            {state.current_playlist == undefined || playlistid != state.current_playlist._id ?
+            {state.current_playlist == null || playlistid != state.current_playlist._id ?
             <View style={styles.activityIndicatorContainer}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
                 <Image style={styles.thumbnail} source={{uri: state.current_playlist.image}}/>
@@ -115,44 +129,31 @@ const SelectedPlaylist = ({navigation}) => {
                     <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong();}}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
-                    {userState.myInfo._id == state.current_playlist.postUserId._id ? 
-                    <TouchableOpacity onPress={() => setDeleteModal(true)}>
-                        <Text style={{color: 'white'}}>삭제</Text>
-                    </TouchableOpacity> : null }
-                    <Modal
-                        isVisible={deleteModal}
-                        backdropOpacity={0.4}
-                        style={{margin: 0, alignItems: 'center'}}
-                    >
-                        <View style={styles.deleteContainer}>
-                            <Text style={{fontSize: 14 * tmpWidth, marginTop: 32 * tmpWidth}}>플레이리스트를 삭제하시겠습니까?</Text>
-                            <View style={{flexDirection: 'row', marginTop: 26 * tmpWidth}}>
-                                <TouchableOpacity style={styles.cancelBox} onPress={() => setDeleteModal(false)}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(133,133,133)'}}>취소하기</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.deleteBox} onPress={async () => {
-                                    setDeleteModal(false)
-                                    await deletePlaylist({id:state.current_playlist._id});
-                                    getMyPlaylist()
-                                    navigation.goBack()
-                                }}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)'}}>삭제하기</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        {userState.myInfo._id == state.current_playlist.postUserId._id ? 
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <TouchableOpacity onPress={() => setDeleteModal(true)}>
+                                <Text style={{color: 'white'}}>삭제</Text>
+                            </TouchableOpacity>
+                            <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
+                        </View> : null }
+                        <TouchableOpacity onPress={() => {
+                            setReportModal(true)}}>
+                            <Text style={{color: 'white'}}>신고</Text>
+                        </TouchableOpacity>
+                    </View>
+                    { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'playlist'} /> : null }
+                    { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'playlist'} subjectId={state.current_playlist._id} /> : null }
                 </View>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                     <View style={styles.profileBox}>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity onPress={async () => {
                             if(state.current_playlist.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
-                                getUserPlaylists({id:state.current_playlist.postUserId._id});
-                                getOtheruser({id:state.current_playlist.postUserId._id});
-                                getSongs({id:state.current_playlist.postUserId._id});
-                                getuserCurationposts({id:state.current_playlist.postUserId._id});
-                                navigate('OtherAccount'); }}}>
+                                await Promise.all([getOtheruser({id:state.current_playlist.postUserId._id}),
+                                getSongs({id:state.current_playlist.postUserId._id})])
+                                navigation.push('OtherAccount', {otherUserId:state.current_playlist.postUserId._id}); }}}>
                             {state.current_playlist.postUserId.profileImage == undefined ? 
                             <View style={styles.profile}>
                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
@@ -187,8 +188,8 @@ const SelectedPlaylist = ({navigation}) => {
                                 {state.current_playlist.hashtag.map(item => {
                                     return (
                                         <TouchableOpacity style={styles.hashtagView} key={item._id} onPress={async() => {
+                                            setHashtag(item)
                                             await hashtagHint({term: item})
-                                            await navigate('SelectedHashtag', {data: searchState.hashtagHint[0], text: item, searchOption : 'Hashtag' });
                                         }}>
                                             <Text style={styles.hashtagBox}>{'#' + item}</Text>
                                         </TouchableOpacity>
@@ -224,9 +225,14 @@ const SelectedPlaylist = ({navigation}) => {
                                         <TouchableOpacity  onPress={()=>addtracksong({data:item})}>
                                             <SvgUri width='17' height='20' source={require('../../assets/icons/play.svg')} style={{marginTop: 50 * tmpWidth}}/>
                                         </TouchableOpacity> }
-
+                                        { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         <View style={styles.songWidthBox}>
-                                            <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {item.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="12" height="12" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginBottom: 8 * tmpWidth}}/> 
+                                                : null }
+                                                <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
+                                            </View>
                                             <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                         </View>
                                     </View>
@@ -250,7 +256,15 @@ const SelectedPlaylist = ({navigation}) => {
                         {comments == [] ? null : comments.map(item => {
                             return (
                                 <View style={styles.commentBox} key={item._id}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={async () => {
+                                        if(item.postUserId._id == userState.myInfo._id) {
+                                            navigate('Account')
+                                        }else{
+                                            await Promise.all([getOtheruser({id:item.postUserId._id}),
+                                            getSongs({id:item.postUserId._id})]);
+                                            navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                        }
+                                    }}>
                                         {item.postUserId.profileImage == undefined ? 
                                         <View style={styles.commentProfile}>
                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
@@ -280,10 +294,21 @@ const SelectedPlaylist = ({navigation}) => {
                                             >
                                                 <Text style={styles.deleteText}>답글</Text>
                                             </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                                setReportId(item._id)
+                                                setCommentReportModal(true)}}>
+                                                <Text style={styles.deleteText}>신고</Text>
+                                            </TouchableOpacity>
+                                            { commentReportModal ? <ReportModal reportModal={commentReportModal} setReportModal={setCommentReportModal} type={'playlistComment'} subjectId={reportId} /> : null }
+                    
                                             {userState.myInfo._id == item.postUserId._id ?
-                                            <TouchableOpacity onPress={() => deleteComment({id:playlistid, commentid : item._id}) }>
+                                            <TouchableOpacity onPress={() => {
+                                                setCommentDeleteModal(true)
+                                                setDeleteId(item._id)
+                                            }}>
                                                 <Text style={styles.deleteText}>지우기</Text>
                                             </TouchableOpacity> : null }
+                                            { commentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={commentDeleteModal} setDeleteModal={setCommentDeleteModal} type={'playlistComment'} subjectId={deleteId}/> : null }
                                         </View>
                                     </View>
                                     {showModal == item._id ?
@@ -295,9 +320,18 @@ const SelectedPlaylist = ({navigation}) => {
                                     >
                                         <View style={styles.recommentBox}>
                                             <View style={styles.recommentText}>
-                                                <TouchableOpacity>
+                                                <TouchableOpacity onPress={async () => {
+                                                    if(item.postUserId._id == userState.myInfo._id) {
+                                                        navigate('Account')
+                                                    }else{
+                                                        await Promise.all([getOtheruser({id:item.postUserId._id}),
+                                                        getSongs({id:item.postUserId._id})]);
+                                                        navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                                    }
+                                                    setShowModal(false)
+                                                }}>
                                                     {item.postUserId.profileImage == undefined ? 
-                                                    <View style={styles.profileImage}>
+                                                    <View style={styles.commentProfile}>
                                                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                                     </View> : <Image style={styles.commentProfile} source={{uri: item.postUserId.profileImage}}/> }
                                                 </TouchableOpacity>
@@ -319,6 +353,12 @@ const SelectedPlaylist = ({navigation}) => {
                                                         </TouchableOpacity> }
                                                         {item.likes.length != 0 ? <Text style={styles.likeLengthText}>{item.likes.length}</Text> : null}
                                                         <Text style={styles.deleteText}>답글</Text>
+                                                        <TouchableOpacity onPress={() => {
+                                                            setReportId(item._id)
+                                                            setCommentReportModal(true)}}>
+                                                            <Text style={styles.deleteText}>신고</Text>
+                                                        </TouchableOpacity>
+                                                        { commentReportModal ? <ReportModal reportModal={commentReportModal} setReportModal={setCommentReportModal} type={'playlistComment'} subjectId={reportId} /> : null }
                                                     </View>
                                                 </View>
                                             </View>
@@ -331,12 +371,13 @@ const SelectedPlaylist = ({navigation}) => {
                                                     style={styles.textInput}
                                                     onChangeText={text=> recommentRef.current.value = text}
                                                     placeholder="추가할 답글을 적어주세요."
+                                                    placeholderTextColor="rgb(164,164,164)"
                                                     autoCapitalize='none'
                                                     autoCorrect={false}
-                                                    keyboardType = "email-address"
                                                     ref={recommentRef}
                                                     onSubmitEditing={() => {
                                                         addreComment({id:playlistid, commentid:item._id, text:recommentRef.current.value});
+                                                        setKeyboardHeight(0);
                                                         recommentRef.current.clear();
                                                         recommentRef.current.value ='';
                                                     }}
@@ -349,7 +390,16 @@ const SelectedPlaylist = ({navigation}) => {
                                                 renderItem={({item}) => {
                                                     return (
                                                         <View style={styles.commentBox}>
-                                                            <TouchableOpacity>
+                                                            <TouchableOpacity onPress={async () => {
+                                                                if(item.postUserId._id == userState.myInfo._id) {
+                                                                    navigate('Account')
+                                                                }else{
+                                                                    await Promise.all([getOtheruser({id:item.postUserId._id}),
+                                                                    getSongs({id:item.postUserId._id})]);
+                                                                    navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                                                }
+                                                                setShowModal(false)
+                                                            }}>
                                                                 {item.postUserId.profileImage == undefined ?
                                                                 <View style={styles.commentProfile}>
                                                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
@@ -372,10 +422,20 @@ const SelectedPlaylist = ({navigation}) => {
                                                                         <Text style={styles.notLikeText}>좋아요</Text>
                                                                     </TouchableOpacity> }
                                                                     {item.likes.length != 0 ? <Text style={styles.likeLengthText}>{item.likes.length}</Text> : null}
+                                                                    <TouchableOpacity onPress={() => {
+                                                                        setReportId(item._id)
+                                                                        setCommentReportModal(true)}}>
+                                                                        <Text style={styles.deleteText}>신고</Text>
+                                                                    </TouchableOpacity>
+                                                                    { commentReportModal ? <ReportModal reportModal={commentReportModal} setReportModal={setCommentReportModal} type={'playlistReComment'} subjectId={reportId} /> : null }
                                                                     {userState.myInfo._id == item.postUserId._id ?
-                                                                    <TouchableOpacity onPress={() => deletereComment({commentid:item._id}) }>
+                                                                    <TouchableOpacity onPress={() => {
+                                                                        setReCommentDeleteModal(true);
+                                                                        setDeleteId(item._id)
+                                                                    }}>
                                                                         <Text style={styles.deleteText}>지우기</Text>
                                                                     </TouchableOpacity> : null }
+                                                                    { reCommentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={reCommentDeleteModal} setDeleteModal={setReCommentDeleteModal} type={'playlistReComment'} subjectId={deleteId}/> : null }
                                                                 </View>
                                                             </View>
                                                         </View>
@@ -400,9 +460,9 @@ const SelectedPlaylist = ({navigation}) => {
                                     style={styles.textInput}
                                     onChangeText={text=> commentRef.current.value = text}
                                     placeholder="댓글을 입력해주세요"
+                                    placeholderTextColor="rgb(164,164,164)"
                                     autoCapitalize='none'
                                     autoCorrect={false}
-                                    keyboardType = "email-address"
                                     ref={commentRef}
                                     onSubmitEditing={() => {
                                         addComment({id:playlistid, text:commentRef.current.value,noticieduser:state.current_playlist.postuser, noticieduseremail:state.current_playlist.email, noticetype:'pcom',thirdid:'0'});
@@ -416,7 +476,7 @@ const SelectedPlaylist = ({navigation}) => {
                                 addComment({id:playlistid, text:commentRef.current.value,noticieduser:state.current_playlist.postuser, noticieduseremail:state.current_playlist.email, noticetype:'pcom',thirdid:'0'});
                                 commentRef.current.value = '';
                                 commentRef.current.clear();
-                                //setKeyboardHeight(0)
+                                setKeyboardHeight(0)
                             }}>
                                 <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(69,67,80)'}}>등록</Text>
                             </TouchableOpacity>
@@ -424,6 +484,7 @@ const SelectedPlaylist = ({navigation}) => {
                     </View>
                 </View>
             </View>}
+            { deletedModal ? <DeletedModal navigation={navigation} deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"playlist"}/> : null}
         </View>
     );
 };
@@ -531,9 +592,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     songWidthBox: {
-        width: 90 * tmpWidth,
+        width: 80 * tmpWidth,
         alignItems: 'center',
-        marginTop: 46 * tmpWidth
+        marginTop: 46 * tmpWidth,
     },
     songText: {
         fontSize: 12 * tmpWidth, 
@@ -636,7 +697,6 @@ const styles = StyleSheet.create({
         marginLeft: 8 * tmpWidth
     },
     textInput: {
-        color:"rgb(164,164,164)",
         width: '80%',
     },
     commentBox: {

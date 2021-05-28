@@ -79,8 +79,10 @@ const ProfileEditPage = ({navigation}) => {
                         <View style={nameValidity ? styles.input : styles.validityInput}>
                             <TextInput
                                 value={username}
-                                onChangeText={setUsername}
-                                placeholder="사용자 이름을 적어주세요."
+                                onChangeText={(text) => {
+                                    if(text.length <=15)   setUsername(text)}}
+                                placeholder="사용자 이름을 적어주세요. (15자 이내)"
+                                placeholderTextColor='rgb(196,196,196)'
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 style={{fontSize: 14 * tmpWidth, paddingBottom: 9 * tmpWidth }}
@@ -105,6 +107,7 @@ const ProfileEditPage = ({navigation}) => {
                             value={introduction}
                             onChangeText={(text) =>  setIntroduction(text)}
                             placeholder="소개글을 적어주세요."
+                            placeholderTextColor='rgb(196,196,196)'
                             autoCapitalize='none'
                             autoCorrect={false}
                             multiline={true}

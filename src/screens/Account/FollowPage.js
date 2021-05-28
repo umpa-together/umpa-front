@@ -1,9 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { Text, TextInput,View, Image, FlatList,StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext'
-import { Context as PlaylistContext } from '../../context/PlaylistContext'
 import { Context as DJContext } from '../../context/DJContext'
-import { Context as CurationContext } from '../../context/CurationContext'
 import { navigate } from '../../navigationRef';
 import { ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
@@ -11,28 +9,27 @@ import { tmpWidth } from '../../components/FontNormalize';
 
 const FollowPage = ({navigation}) => {
     const { state, getOtheruser, follow, unfollow, getMyInfo } = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
     const { getSongs } = useContext(DJContext);
-    const { getuserCurationposts } = useContext(CurationContext);
     const [text, setText] = useState('');
 
     const option = navigation.getParam('option');
     const typefix = navigation.getParam('type');
-
+    const name = navigation.getParam('name');
     const [type, setType] = useState();
     const [result, setResult] = useState();
+    const [user, setUser] = useState(null);
     const filterItem = ({data}) => {
         if(type == 'following'){
             if(option == 'MyAccount'){
                 setResult(state.myInfo.following.filter(item=> item.name.includes(data)));
             }else{
-                setResult(state.otherUser.following.filter(item=> item.name.includes(data)));
+                if(user != null)    setResult(user.following.filter(item=> item.name.includes(data)));
             }
         }else{
             if(option == 'MyAccount'){
                 setResult(state.myInfo.follower.filter(item=> item.name.includes(data)));
             }else{
-                setResult(state.otherUser.follower.filter(item=> item.name.includes(data)));
+                if(user != null)    setResult(user.follower.filter(item=> item.name.includes(data)));
             }
         }
     };
@@ -50,19 +47,22 @@ const FollowPage = ({navigation}) => {
             if(option == 'MyAccount'){
                 setResult(state.myInfo.following)
             }else{
-                setResult(state.otherUser.following)
+                if(user != null)    setResult(user.following)
             }
         }else{
             if(option == 'MyAccount'){
                 setResult(state.myInfo.follower)
             }else{
-                setResult(state.otherUser.follower)
+                if(user != null)    setResult(user.follower)
             }
         }
-    },[type]);
+    },[type, option, user, state.myInfo]);
+    useEffect(() => {
+        setUser(state.otherUser);
+    },[name]);
     return (
         <View style={{backgroundColor: 'rgb(254,254,254)', flex: 1}}>
-            {state.myInfo == null && state.otherUser == null ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
+            {user == null && state.myInfo == null ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
             <View style={{flex: 1}}>
                 <View style={{alignItems: 'center'}}>
                     <View style={styles.searchBox}>
@@ -78,11 +78,10 @@ const FollowPage = ({navigation}) => {
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 placeholderTextColor ="rgba(153,153,153,0.5)"
-                                keyboardType = "email-address"
                             />
                         </View>
                         <TouchableOpacity style={styles.Icon}>
-                                  <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
+                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -90,10 +89,10 @@ const FollowPage = ({navigation}) => {
                     <View style={styles.opt}>
                         <View style={{marginLeft: 12 * tmpWidth , flexDirection: 'row'}}>
                             <TouchableOpacity onPress={() => setType('following')} style={type == 'following' ? styles.selectedFollowContainer : styles.followContainer}>
-                                <Text style={type == 'following' ? styles.selectedType : styles.notSelectedType}>팔로잉 {option == 'MyAccount' ? state.myInfo.following.length : state.otherUser.following.length}</Text>
+                                <Text style={type == 'following' ? styles.selectedType : styles.notSelectedType}>팔로잉 {option == 'MyAccount' ? state.myInfo.following.length : user != null ? user.following.length : null}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => setType('follower')} style={type == 'follower' ? styles.selectedFollowContainer : styles.followContainer}>
-                                <Text style={type == 'follower' ? styles.selectedType : styles.notSelectedType}>팔로워 {option == 'MyAccount' ? state.myInfo.follower.length : state.otherUser.follower.length}</Text>
+                                <Text style={type == 'follower' ? styles.selectedType : styles.notSelectedType}>팔로워 {option == 'MyAccount' ? state.myInfo.follower.length : user != null ? user.follower.length : null}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -105,12 +104,14 @@ const FollowPage = ({navigation}) => {
                         keyExtractor={dj=>dj._id}
                         renderItem={({item, index})=> {
                             return (
-                                <TouchableOpacity style={styles.userBox} onPress={() => {
-                                    getUserPlaylists({id:item._id});
-                                    getOtheruser({id:item._id});
-                                    getSongs({id:item._id});
-                                    getuserCurationposts({id:item._id});
-                                    navigate('OtherAccount');
+                                <TouchableOpacity style={styles.userBox} onPress={async () => {
+                                    if(item._id == state.myInfo._id) {
+                                        navigate('Account')
+                                    }else{
+                                        await Promise.all([getOtheruser({id:item._id}),
+                                        getSongs({id:item._id})]);
+                                        navigation.push('OtherAccount', {otherUserId:item._id})
+                                    }
                                 }}>
                                     { item.profileImage == undefined ?
                                     <View style={styles.profile}>
@@ -123,7 +124,7 @@ const FollowPage = ({navigation}) => {
                                                 <Text style={{fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}}>대표곡</Text>
                                             </View>
                                             <View style={{width:90 * tmpWidth }}>
-                                                <Text style={styles.representtitle} numberOfLines={1}>{item.songs[0].name}</Text>
+                                                <Text style={styles.representtitle} numberOfLines={1}>{item.songs[0].attributes.name}</Text>
                                             </View>
                                             <View style={{width:50 * tmpWidth }}>
                                                 <Text style={{marginLeft:4 * tmpWidth ,fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}} numberOfLines={1} ellipsizeMode="tail">{item.songs[0].attributes.artistName}</Text>
@@ -132,12 +133,14 @@ const FollowPage = ({navigation}) => {
                                     </View>
                                     {type == 'following' ?
                                     followCheck({id: item._id}) ?
+                                    item._id == state.myInfo._id ? <View style={{width:64*tmpWidth}} /> :
                                     <TouchableOpacity style={styles.followingBox} onPress={async () => {
                                         await unfollow({id:item._id});
                                         getMyInfo();
                                     }}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(169,193,255)'}}>팔로잉</Text>
                                     </TouchableOpacity> :
+                                    item._id == state.myInfo._id ? <View style={{width:64*tmpWidth}}></View>:
                                     <TouchableOpacity style={styles.followBox} onPress={async () => {
                                         await follow({id:item._id})
                                         getMyInfo();
@@ -145,12 +148,14 @@ const FollowPage = ({navigation}) => {
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>팔로우 +</Text>
                                     </TouchableOpacity> :
                                     followCheck({id: item._id}) ?
+                                    item._id == state.myInfo._id ? <View style={{width:64*tmpWidth}} /> :
                                     <TouchableOpacity style={styles.followingBox} onPress={async () => {
                                         await unfollow({id:item._id});
                                         getMyInfo();
                                     }}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(169,193,255)'}}>팔로잉</Text>
                                     </TouchableOpacity> :
+                                    item._id == state.myInfo._id ? <View style={{width:64*tmpWidth}} /> :
                                     <TouchableOpacity style={styles.followBox} onPress={async () => {
                                         await follow({id:item._id})
                                         getMyInfo();

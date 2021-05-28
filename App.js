@@ -22,6 +22,7 @@ import FollowPage from './src/screens/Account/FollowPage';
 import ProfileEditPage from './src/screens/Account/ProfileEditPage';
 import SettingPage from './src/screens/Account/SettingPage';
 import SongEditPage from './src/screens/Account/SongEditPage';
+import FeedBackPage from './src/screens/Account/FeedbackPage';
 
 import HelloScreen from './src/screens/HelloScreen';
 import LoadingPage from './src/screens/LoadingPage';
@@ -60,6 +61,8 @@ import { Provider as DJProvider } from './src/context/DJContext';
 import { Provider as CurationProvider } from './src/context/CurationContext';
 import { Provider as NoticeProvider } from './src/context/NoticeContext';
 import { Provider as WeeklyProvider } from './src/context/WeeklyContext';
+import { Provider as ReportProvider } from './src/context/ReportContext';
+
 
 import { setNavigator } from './src/navigationRef';
 
@@ -67,13 +70,13 @@ const main = createStackNavigator({
     Main: MainPage,
     Create : CreatePlayListPage,
     SearchSong : SearchSongPage,
-    SelectedPlaylist :SelectedPlaylist,
-    FollowPage : FollowPage,
-    SelectedCuration:SelectedCuration,
     CurationSearch :CurationSearchPage,
-    SelectedHashtag: SelectedHashtagScreen,
-    Account : AccountScreen,
+    
     OtherAccount : OtherAccount,
+    Follow : FollowPage,
+    SelectedPlaylist :SelectedPlaylist,
+    SelectedCuration:SelectedCuration,
+    SelectedHashtag: SelectedHashtagScreen,
 });
 
 const Search = createStackNavigator({
@@ -81,13 +84,14 @@ const Search = createStackNavigator({
     Search: SearchScreen,
     SearchResult: SearchResultScreen,
     SelectedSong: SelectedSongScreen,
-    SelectedHashtag: SelectedHashtagScreen,
-    SelectedCuration:SelectedCuration,
-    SelectedPlaylist :SelectedPlaylist,
-    Account : AccountScreen,
-    OtherAccount : OtherAccount,
     Create : CreatePlayListPage,
     SearchSong : SearchSongPage,
+
+    OtherAccount : OtherAccount,
+    Follow : FollowPage,
+    SelectedPlaylist :SelectedPlaylist,
+    SelectedCuration:SelectedCuration,
+    SelectedHashtag: SelectedHashtagScreen,
 });
 
 const Board = createStackNavigator({
@@ -102,18 +106,24 @@ const Board = createStackNavigator({
     MusicArchive: MusicArchivePage,
     SearchMusic: SearchMusicPage,
     MySharedSongs: MySharedSongsPage,
-    Account : AccountScreen,
+    
     OtherAccount : OtherAccount,
+    Follow : FollowPage,
+    SelectedPlaylist :SelectedPlaylist,
+    SelectedCuration:SelectedCuration,
+    SelectedHashtag: SelectedHashtagScreen,
 });
 
 const Notice = createStackNavigator({
     Notice: NoticeScreen,
-    Account : AccountScreen,
-    OtherAccount : OtherAccount,
-    SelectedCuration:SelectedCuration,
-    SelectedPlaylist :SelectedPlaylist,
     SelectedContent: SelectedContentPage,
     MusicArchive: MusicArchivePage,
+
+    OtherAccount : OtherAccount,
+    Follow : FollowPage,
+    SelectedPlaylist :SelectedPlaylist,
+    SelectedCuration:SelectedCuration,
+    SelectedHashtag: SelectedHashtagScreen,
 });
 
 const Account = createStackNavigator({
@@ -126,13 +136,13 @@ const Account = createStackNavigator({
     SelectedPlaylist :SelectedPlaylist,
     SelectedCuration:SelectedCuration,
     SelectedHashtag: SelectedHashtagScreen,
+    FeedBack: FeedBackPage,
 });
 
 main.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if(navigation.state.routes[navigation.state.index].routeName != 'Main' 
-    && navigation.state.routes[navigation.state.index].routeName != 'Account' 
-    && navigation.state.routes[navigation.state.index].routeName != 'OtherAccount'){
+    && navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
     return {
@@ -142,8 +152,7 @@ main.navigationOptions = ({ navigation }) => {
 Search.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if(navigation.state.routes[navigation.state.index].routeName != 'MainSearch' 
-    && navigation.state.routes[navigation.state.index].routeName != 'Account' 
-    && navigation.state.routes[navigation.state.index].routeName != 'OtherAccount'){
+    && navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
     return {
@@ -153,8 +162,7 @@ Search.navigationOptions = ({ navigation }) => {
 Board.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if(navigation.state.routes[navigation.state.index].routeName != 'FreeBoard' 
-    && navigation.state.routes[navigation.state.index].routeName != 'Account' 
-    && navigation.state.routes[navigation.state.index].routeName != 'OtherAccount'){
+    && navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
     return {
@@ -164,8 +172,7 @@ Board.navigationOptions = ({ navigation }) => {
 Notice.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if(navigation.state.routes[navigation.state.index].routeName != 'Notice' 
-    && navigation.state.routes[navigation.state.index].routeName != 'Account' 
-    && navigation.state.routes[navigation.state.index].routeName != 'OtherAccount'){
+    && navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
     return {
@@ -174,8 +181,7 @@ Notice.navigationOptions = ({ navigation }) => {
 }
 Account.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
-    if(navigation.state.routes[navigation.state.index].routeName != 'Account' 
-    && navigation.state.routes[navigation.state.index].routeName != 'OtherAccount'){
+    if(navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
     return {
@@ -288,26 +294,28 @@ export default () => {
 
 
     return (
-        <WeeklyProvider>
-            <NoticeProvider>
-                <CurationProvider>
-                    <DJProvider>
-                        <UserProvider>
-                            <SearchPlaylistProvider>
-                                <PlaylistProvider>
-                                    <BoardProvider>
-                                        <SearchProvider>
-                                            <AuthProvider>
-                                                <App ref={(navigator) => setNavigator(navigator) }/>
-                                            </AuthProvider>
-                                        </SearchProvider>
-                                    </BoardProvider>
-                                </PlaylistProvider>
-                            </SearchPlaylistProvider>
-                        </UserProvider>
-                    </DJProvider>
-                </CurationProvider>
-            </NoticeProvider>
-        </WeeklyProvider>
+        <ReportProvider>
+            <WeeklyProvider>
+                <NoticeProvider>
+                    <CurationProvider>
+                        <DJProvider>
+                            <UserProvider>
+                                <SearchPlaylistProvider>
+                                    <PlaylistProvider>
+                                        <BoardProvider>
+                                            <SearchProvider>
+                                                <AuthProvider>
+                                                    <App ref={(navigator) => setNavigator(navigator) }/>
+                                                </AuthProvider>
+                                            </SearchProvider>
+                                        </BoardProvider>
+                                    </PlaylistProvider>
+                                </SearchPlaylistProvider>
+                            </UserProvider>
+                        </DJProvider>
+                    </CurationProvider>
+                </NoticeProvider>
+            </WeeklyProvider>
+        </ReportProvider>
     )
 }

@@ -1,14 +1,10 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
-import { navigate } from '../navigationRef';
 
 const curationReducer = (state, action) => {
     switch(action.type) {
         case 'get_curation':
             return { ...state,  currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
-        case 'get_usercurationposts':
-            return { ...state, curationposts:action.payload };
         case 'get_curationposts':
             return { ...state, maincurationposts:action.payload };
         case 'init_curationposts':
@@ -96,18 +92,6 @@ const getCuration = dispatch => {
     }
 };
 
-const getuserCurationposts = dispatch => {
-    return async ({ id }) => {
-        try {
-            const response = await serverApi.get('/usercurationposts/'+id);
-            dispatch({ type: 'get_usercurationposts', payload: response.data });
-        }
-        catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getCurationposts' });
-        }
-    }
-};
-
 const getCurationposts = dispatch => {
     return async () => {
         try {
@@ -135,6 +119,6 @@ const getmyCuration = dispatch => {
 export const { Provider, Context } = createDataContext(
     curationReducer,
     { postCuration, deleteCuration, likecurationpost,unlikecurationpost, 
-        initcurationposts, getCuration, getCurationposts,getuserCurationposts, getmyCuration },
+        initcurationposts, getCuration, getCurationposts, getmyCuration },
     { currentCuration:{}, currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
 )

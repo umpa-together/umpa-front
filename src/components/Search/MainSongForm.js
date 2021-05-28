@@ -7,11 +7,11 @@ import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { tmpWidth } from '../FontNormalize';
 
 const Imagetake = ({url ,borderRadius}) => {
-    url =url.replace('{w}', '100');
-    url = url.replace('{h}', '100');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return <Image style ={{height:'100%', width:'100%',borderRadius:borderRadius}} source ={{url:url}}/>
 };
 
@@ -76,18 +76,14 @@ const MainSongForm = () => {
                                         <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid, postid:item._id}); }}>
                                             <Imagetake borderRadius={8} url={item.object.attributes.artwork.url} />
                                         </TouchableOpacity>
-                                        { item.object.attributes.name.length >14 ?
-                                        <Text style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name.substring(0,15)}..</Text> :
-                                        <Text style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name}</Text> }
+                                        <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name}</Text> 
                                         <Text style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
                                         <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
                                         </TouchableOpacity>
-                                        { item.object.albumName >14 ?
-                                        <Text style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName(0,15)}..</Text> :
-                                        <Text style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> }
+                                        <Text snumberOfLines ={1} tyle={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> 
                                         <Text style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
                                     </View> }
                                 </View>

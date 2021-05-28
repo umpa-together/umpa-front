@@ -51,6 +51,7 @@ const ContentsForm = ({ Contents }) => {
                 onRefresh={onRefresh}
                 refreshing={refreshing}
                 ListFooterComponent={loading && <ActivityIndicator />}
+                showsVerticalScrollIndicator={false}
                 renderItem={({item}) => {
                     if(!item.isDeleted) {
                         return (

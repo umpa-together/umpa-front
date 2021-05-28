@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as NoticeContext } from '../../context/NoticeContext';
 
 import { NaverLogin } from "@react-native-seoul/naver-login";
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
+import { navigate } from '../../navigationRef';
 
 const SettingPage = () => {
     const { signout } = useContext(AuthContext);
     const {deletenoticetoken} = useContext(NoticeContext);
     return (
-        <View style={{flex: 1, backgroundColor: 'rgb(254,254,254)', paddingTop: 27 * tmpWidth  }}>
+        <ScrollView style={{flex: 1, backgroundColor: 'rgb(254,254,254)', paddingTop: 27 * tmpWidth  }}>
             <View style={styles.section}>
                 <Text style={{fontSize: 18 * tmpWidth , marginBottom: 14 * tmpWidth   }}>계정</Text>
                 <TouchableOpacity>
@@ -36,7 +37,10 @@ const SettingPage = () => {
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 12 * tmpWidth }}>개인정보 처리방침</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)' }}>오픈소스 라이선스</Text>
+                    <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 12 * tmpWidth }}>오픈소스 라이선스</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigate('FeedBack')}>
+                    <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)' }}>피드백 및 건의사항</Text>
                 </TouchableOpacity>
             </View>
             <View style={{marginLeft: 25 * tmpWidth   , paddingTop: 22 * tmpWidth   }}>
@@ -50,8 +54,7 @@ const SettingPage = () => {
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(169,193,255)'}}>로그아웃</Text>
                 </TouchableOpacity>
             </View>
-
-        </View>
+        </ScrollView>
     )
 }
 

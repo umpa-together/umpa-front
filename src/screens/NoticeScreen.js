@@ -15,10 +15,10 @@ import { tmpWidth } from '../components/FontNormalize';
 
 const NoticeScreen = ({navigation}) => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);
-    const { getPlaylist, getUserPlaylists, initPlaylist } = useContext(PlaylistContext);
+    const { getPlaylist, initPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, initOtherUser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    const { getCurationposts, getCuration } = useContext(CurationContext);
+    const { getCuration } = useContext(CurationContext);
     const { getCurrentContent, initMusic, initCurrentContent, getSelectedBoard } = useContext(BoardContext);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -123,12 +123,10 @@ const NoticeScreen = ({navigation}) => {
                                 <BoardNoticeForm notice={item} />
                             </TouchableOpacity> :
                             (item.noticetype == 'follow' ?
-                            <TouchableOpacity onPress = {() => {
-                                getUserPlaylists({id:item.noticinguser._id})
-                                getOtheruser({id:item.noticinguser._id}) 
-                                getSongs({id:item.noticinguser._id})
-                                getCurationposts({id:item.noticinguser._id})
-                                navigate('OtherAccount')
+                            <TouchableOpacity onPress = {async () => {
+                                await Promise.all([getOtheruser({id:item.noticinguser._id}),
+                                getSongs({id:item.noticinguser._id})]);
+                                navigation.push('OtherAccount', {otherUserId: item.noticinguser._id})
                             }}>
                                 <UserNoticeForm notice={item} />
                             </TouchableOpacity> : null )))))}

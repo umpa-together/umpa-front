@@ -3,8 +3,6 @@ import {Text, View, StyleSheet,TextInput, Keyboard, SafeAreaView, FlatList, Imag
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Context as SearchContext } from '../../context/SearchContext';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import SvgUri from 'react-native-svg-uri';
@@ -20,9 +18,7 @@ const SearchScreen = ({navigation}) => {
     const [key, setKey]= useState(true);
 
     const { state: searchState, searchsong, searchHint, initHint, hashtagHint, djHint } = useContext(SearchContext);
-    const { getuserCurationposts } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
-    const {getUserPlaylists} = useContext(PlaylistContext);
     const {state: userState, getOtheruser} = useContext(UserContext);
 
     useEffect(() => {
@@ -77,7 +73,6 @@ const SearchScreen = ({navigation}) => {
                            }
                         }}
                         placeholderTextColor ="#999"
-                        keyboardType = "email-address"
                     />
                     <TouchableOpacity onPress={() => {setKey(false); setText(''); Keyboard.dismiss();}} style={styles.inputboxcancel}>
                        <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/cancel.svg')} />
@@ -279,15 +274,13 @@ const SearchScreen = ({navigation}) => {
                 renderItem={({item})=> {
                     return (
                         <View style={{marginLeft: 30 * tmpWidth, marginTop: 20 * tmpWidth, height:tmpWidth*70, width:tmpWidth*375}}>
-                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => {
+                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
                                 if(item._id == userState.myInfo._id){
                                     navigate('Account');
                                 }else{
-                                    getUserPlaylists({id:item._id});
-                                    getOtheruser({id:item._id});
-                                    getSongs({id:item._id});
-                                    getuserCurationposts({id:item._id});
-                                    navigate('OtherAccount');
+                                    await Promise.all([getOtheruser({id:item._id}),
+                                    getSongs({id:item._id})]);
+                                    navigation.push('OtherAccount', {otherUserId:item._id});
                                 }
                             }}>
                                 {item.profileImage == undefined ?
@@ -301,11 +294,15 @@ const SearchScreen = ({navigation}) => {
                                     <Text style={{fontSize:16,marginTop:10*tmpWidth}}>{item.name}</Text>
                                    </View>
                                    <View style={{height:tmpWidth*35, alignItems:'center', flexDirection:'row'}}>
-                                   <View style={styles.representbox}>
-                                        <Text style={{color:'rgb(148,153,163)',fontSize:11*tmpWidth}}>대표곡</Text>
-                                   </View>
-                                    <Text numberOfLines ={1} style={{marginLeft:6*tmpWidth, fontSize:tmpWidth*14,color:'rgb(148,153,163)'}}>{item.songs[0].attributes.artistName}  </Text>
-                                    <Text numberOfLines ={1} style={{fontSize:tmpWidth*11, color:'rgb(148,153,163)'}}>{item.songs[0].attributes.name}</Text>
+                                        <View style={styles.representbox}>
+                                             <Text style={{color:'rgb(148,153,163)',fontSize:11*tmpWidth}}>대표곡</Text>
+                                        </View>
+                                        <View style={{width: tmpWidth*140, marginRight:tmpWidth*10,}}>
+                                            <Text numberOfLines ={1} style={{marginLeft:6*tmpWidth, fontSize:tmpWidth*14,color:'rgb(148,153,163)'}}>{item.songs[0].attributes.name}  </Text>
+                                        </View>
+                                        <View style={{width: tmpWidth*60}}>
+                                            <Text numberOfLines ={1} style={{fontSize:tmpWidth*11, color:'rgb(148,153,163)'}}>{item.songs[0].attributes.artistName}</Text>
+                                        </View>
                                    </View>
                                 </View>
                             </TouchableOpacity>

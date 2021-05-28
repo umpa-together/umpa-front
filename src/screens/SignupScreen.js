@@ -6,10 +6,11 @@ import { Context as DJContext } from '../context/DJContext';
 import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
+import HarmfulModal from '../components/HarmfulModal';
 
 const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '100');
-    url = url.replace('{h}', '100');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return (
         <Image style ={{borderRadius :100 ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
     );
@@ -45,6 +46,7 @@ const SignupPage = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [tok, setTok] = useState(false);
     const [double, setDouble] = useState(false);
+    const [harmfulModal, setHarmfulModal] = useState(false);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const nextCheck = () => {
         if(email != '' && password != '' && name != '') setModalVisible(true);
@@ -67,12 +69,16 @@ const SignupPage = ({ navigation }) => {
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track)
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
@@ -105,7 +111,7 @@ const SignupPage = ({ navigation }) => {
         }else{
             setEmailerr(false);
         }
-        if(password == undefined || password.length == 0 || password.length < 6 || password.length > 14){
+        if(password == undefined || password.length == 0){
             setPassworderr(true);
             return;
         }else{
@@ -324,10 +330,10 @@ const SignupPage = ({ navigation }) => {
                         {songs.length >=1 ?
                             <TouchableOpacity style={{width:30 * tmpWidth, height:19 * tmpWidth,marginLeft:80 * tmpWidth, marginTop:24 * tmpWidth}} onPress={async () => {
                                 await signup({ email, password, name });
+                                await setSongs({ songs: songs })
                                 await signin({ email, password });
                                 setModalVisible(false)
-                                stoptracksong()
-                                await setSongs({ songs: songs })}}
+                                stoptracksong()}}
                             >
                                     <Text style={{fontSize:16 * tmpWidth, color:'rgba(169,193,255,0.5)'}}>완료</Text>
                             </TouchableOpacity> : null }
@@ -354,7 +360,6 @@ const SignupPage = ({ navigation }) => {
                             setTok(true)
                             }}
                             placeholderTextColor ="#999"
-                            keyboardType = "email-address"
                             onCancel={()=>searchinit()}
                         />
                     </View>
@@ -388,12 +393,15 @@ const SignupPage = ({ navigation }) => {
                                                 </View>
                                             </TouchableOpacity> }
                                             <View style={{marginLeft:20 * tmpWidth, flexDirection:'row',width:243.9 * tmpWidth, alignItems: 'center'}}>
-                                                <View style={{width:161.9 * tmpWidth, height:34.1 * tmpWidth,}}>
-                                                    <View style={{height:17 * tmpWidth,width:161.9 * tmpWidth, }}>
-                                                        <Text numOfLines={1} ellipsizeMode="tail" style={{fontSize:14 * tmpWidth,fontWeight:'bold'}}>{item.attributes.name}</Text>
+                                                <View style={{width:161.9 * tmpWidth, height:34.1 * tmpWidth }}>
+                                                    <View style={{height:17 * tmpWidth,width:140 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
+                                                        {item.attributes.contentRating == "explicit" ? 
+                                                        <SvgUri width={17 * tmpWidth} height={17 * tmpWidth} source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/>
+                                                        : null}
+                                                        <Text numberOfLines={1} style={{fontSize:14 * tmpWidth,fontWeight:'bold'}}>{item.attributes.name}</Text>
                                                     </View>
                                                     <View style={{height:17 * tmpWidth,width:161.9 * tmpWidth}}>
-                                                        <Text numOfLines={1} ellipsizeMode="tail" style={{marginTop:4 * tmpWidth,fontSize:12 * tmpWidth, color:'rgb(148,153,163)'}}>{item.attributes.artistName}</Text>
+                                                        <Text numberOfLines={1}  style={{marginTop:4 * tmpWidth,fontSize:12 * tmpWidth, color:'rgb(148,153,163)'}}>{item.attributes.artistName}</Text>
                                                     </View>
                                                 </View>
                                                 <TouchableOpacity onPress={() => { setIdc(item.id); addItem({data: item}); }}>
@@ -402,6 +410,7 @@ const SignupPage = ({ navigation }) => {
                                                     </View>
                                                 </TouchableOpacity>
                                             </View>
+                                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         </View>
                                     )
                                 }}

@@ -41,7 +41,7 @@ const Signupopt = () => {
     const googleLogin = async () => {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
-        await getGoogleInfo({email: userInfo.user.email, id: userInfo.idToken});
+        await getGoogleInfo({email: userInfo.user.email, id: userInfo.user.id});
     };
     return (
         <View style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>

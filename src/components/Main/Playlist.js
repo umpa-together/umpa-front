@@ -8,7 +8,7 @@ import { tmpWidth, tmpHeight } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-const Playlist = ({ playList }) => {
+const Playlist = ({ playList, navigation }) => {
     const { getPlaylist,likesPlaylist, unlikesPlaylist, getPlaylists } = useContext(PlaylistContext);
     const { state } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
@@ -25,7 +25,6 @@ const Playlist = ({ playList }) => {
             fetchData();
         }
     }
-
     return (
         <View>
             {state.otherStory != null ? 
@@ -40,7 +39,9 @@ const Playlist = ({ playList }) => {
                         return (
                             <View style={styles.playlist}>
                                 <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth, }}>
-                                <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth, }} onPress={() => {navigate('SelectedPlaylist', {id: item._id}); getPlaylist({id:item._id, postUserId:item.postUserId._id}) ; }}>
+                                <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth, }} onPress={async () => {
+                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
+                                    navigate('SelectedPlaylist', {id: item._id, navigation: navigation}); }}>
                                         <View style={styles.backpic}>
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />
                                         </View>
@@ -64,7 +65,6 @@ const Playlist = ({ playList }) => {
                                                     <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.likes.length}</Text>
                                                     <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
                                                     <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.views}</Text>
-
                                                 </View>
                                             </View>
                                             </View>

@@ -4,10 +4,16 @@ import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 
-const AccountPlaylist = ({ playList }) => {
+const AccountPlaylist = ({ playList, myAccount }) => {
+    playList.sort(function(a,b){
+        if(a.time > b.time)  return -1;
+        if(a.time  < b.time) return 1;
+        return 0;           
+
+    });
     const { getPlaylist } = useContext(PlaylistContext);
     return (
-        <View style={{height:600 * tmpHeight, paddingLeft:20*tmpWidth}}>
+        <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
                 numColumns={2}
                 data ={playList}
@@ -27,9 +33,10 @@ const AccountPlaylist = ({ playList }) => {
                                         <Text numberOfLines={2} style={{fontSize: 14 * tmpWidth, color: 'rgb(79,79,79)'}}>{item.title}</Text>
                                     </View>
                                     <View style={styles.hashtagBox}>
+                                        { item.hashtag != undefined ? 
                                         <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth, color:'rgb(153,153,153)', paddingRight: 6 * tmpWidth}}>{item.hashtag.map(item => {
                                             return '#'+item+'   '
-                                        })}</Text>
+                                        })}</Text> : null }
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -42,6 +49,14 @@ const AccountPlaylist = ({ playList }) => {
 };
 
 const styles=StyleSheet.create({
+    myAccount: {
+        height:600 * tmpHeight, 
+        paddingLeft:20*tmpWidth, 
+    },
+    otherAccount: {
+        height:660 * tmpHeight, 
+        paddingLeft:20*tmpWidth, 
+    },
     thumbnail: {
         width: 161 * tmpWidth ,
         height: 157 * tmpWidth,

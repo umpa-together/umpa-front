@@ -9,18 +9,19 @@ import Modal from 'react-native-modal';
 import TrackPlayer from 'react-native-track-player';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
+import HarmfulModal from '../../components/HarmfulModal';
 
 require('date-utils');
 const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '200');
-    url = url.replace('{h}', '200');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return (
         <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
     );
 };
 
-const MyAccountScreen = () => {
-    const { state: userState, postStory, storyView, getMyInfo, getMyPlaylist, getMyCurating } = useContext(UserContext);
+const MyAccountScreen = ({navigation}) => {
+    const { state: userState, postStory, storyView, getMyInfo } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const [result, setResult] = useState('playlist');
     const [representModal, setRepresentModal] = useState(false);
@@ -28,7 +29,6 @@ const MyAccountScreen = () => {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const [isPlayingid, setIsPlayingid] = useState('0');
-    const [storyTok, setStoryTok] = useState(true);
     const [url, setUrl] = useState('');
     const [isStoryRead, setIsStoryRead] = useState(false);
     const [newStory, setNewStory] = useState(false);
@@ -39,11 +39,13 @@ const MyAccountScreen = () => {
     const [tok, setTok] = useState(false);
     const [selectedId, setSelectedId] = useState('');
     const [refreshing, setRefreshing] = useState(false);
-
+    const [harmfulModal, setHarmfulModal] = useState(false);
     const getData = async () => {
-        setLoading(true);
-        await songNext({ next: searchState.songNext.substr(22) });
-        setLoading(false);
+        if(searchState.songData.length >= 20){
+            setLoading(true);
+            await songNext({ next: searchState.songNext.substr(22) });
+            setLoading(false);
+        }
     };
     const onEndReached = () => {
         if (loading) {
@@ -60,6 +62,7 @@ const MyAccountScreen = () => {
         setIsPlayingid('0');
         setIdx(0);
         setType('Each');
+        setRepresentSong(null);
         if(newStory){
             setNewStory(false);
             initHint();
@@ -79,24 +82,24 @@ const MyAccountScreen = () => {
     const fetchData = async () => {
         setRefreshing(true);
         await getMyInfo();
-        await getMyPlaylist();
-        await getMyCurating(); 
         setRefreshing(false);
     };
-
     const addtracksong= async ({data}) => {
         const track = new Object();
         track.id = data.id;
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            await TrackPlayer.reset()
+            setIsPlayingid(data.id);
+            await TrackPlayer.add(track)
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
@@ -111,8 +114,9 @@ const MyAccountScreen = () => {
             storyView({id: userState.myInfo._id});
         }
         setStoryModal(true);
-        setStoryTok(true);
-        addtracksong({data: userState.myStory.song});
+        if(userState.myStory.song.attributes.contentRating != "explicit"){
+            addtracksong({data: userState.myStory.song});
+        }
     }
 
     useEffect(() => {
@@ -137,7 +141,7 @@ const MyAccountScreen = () => {
 
     return (
         <View style={{backgroundColor: 'rgb(255,255,255)', flex: 1}}>
-            {userState.myInfo == null || userState.myPlayList == null || userState.myCurating == null? <View style={{ justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
+            {userState.myInfo == null ? <View style={{ justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
             <View style={{flex: 1}}>
                 <View style={styles.header}>
                     <Text style={{fontSize: 16 * tmpWidth, fontWeight: 'bold'}}>{userState.myInfo.name}</Text>
@@ -150,15 +154,16 @@ const MyAccountScreen = () => {
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />}       
-                showsVerticalScrollIndicator={false}>
+                    showsVerticalScrollIndicator={false}>
                     <View style={{height: '100%'}}>
                         <View>
                             <View style={{flexDirection: 'row', width:375 * tmpWidth, height:128 * tmpWidth, justifyContent: 'center', marginTop:10 * tmpWidth }}>
                                 <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                                     <TouchableOpacity style={styles.songImage} onPress={() => {
                                         setRepresentModal(true)
-                                        setRepresentSong(userState.myInfo.songs[0])}}>
-                                            <ImageSelect  url={userState.myInfo.songs[0].attributes.artwork.url}/>
+                                        setRepresentSong(userState.myInfo.songs[0])
+                                    }}>
+                                            <ImageSelect url={userState.myInfo.songs[0].attributes.artwork.url}/>
                                     </TouchableOpacity>
                                     <Text style={{marginTop: 10 * tmpWidth , fontSize: 11 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
                                 </View>
@@ -182,12 +187,14 @@ const MyAccountScreen = () => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
                                     <View style={{flexDirection: 'row', width:200 * tmpWidth}}>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center', marginRight: 12 * tmpWidth }} onPress={() => {
-                                            navigate('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})}}>
+                                            navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})
+                                        }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로잉 </Text>
                                             <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.myInfo.following.length}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center',marginRight: 12 * tmpWidth }} onPress={() => {
-                                            navigate('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})}}>
+                                            navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})
+                                        }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
                                             <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.myInfo.follower.length}</Text>
                                         </TouchableOpacity>
@@ -208,15 +215,15 @@ const MyAccountScreen = () => {
                         </View>
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text>플레이리스트 {userState.myPlayList.length}</Text>
+                                <Text>플레이리스트 {userState.myInfo.playlists.length}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text>큐레이션 {userState.myCurating.length}</Text>
+                                <Text>큐레이션 {userState.myInfo.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(250,250,250)'}}>
-                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myPlayList}/> :
-                            <AccountCurating curating={userState.myCurating} /> }
+                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true}/> :
+                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true}/> }
                         </View>
                     </View>
                 </ScrollView>
@@ -252,15 +259,18 @@ const MyAccountScreen = () => {
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 * tmpWidth }}>
                                     <View style={styles.leftSideBox}>
                                         {idx != 0 ? <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth,}} onPress={() => {
-                                            representNext({idx: idx-1})
                                             stoptracksong()
+                                            representNext({idx: idx-1})
                                         }}>
                                             <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
                                         </TouchableOpacity> : null}
                                     </View>
                                     <View style={styles.songBox}>
                                         <View style={{alignItems: 'center'}}>
-                                            <View style={{width: 180 * tmpWidth , alignItems: 'center'}}>
+                                            <View style={{width: 150 * tmpWidth , flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                                                {representSong.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
+                                                : null }
                                                 <Text style={styles.representsongname} numberOfLines={1}>{representSong.attributes.name}</Text>
                                             </View>
                                             {isPlayingid == representSong.id ?
@@ -270,14 +280,15 @@ const MyAccountScreen = () => {
                                             <TouchableOpacity style={styles.representSongCover} onPress={() => addtracksong({data:representSong})}>
                                                 <ImageSelect opac={1.0} url={representSong.attributes.artwork.url}/>
                                             </TouchableOpacity> }
+                                            {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                             <Text style={{fontSize: 14 * tmpWidth, marginTop: 29 * tmpWidth}}>{representSong.attributes.artistName}</Text>
                                             <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)', marginTop: 7 * tmpWidth }}>{representSong.attributes.releaseDate}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.rightSideBox}>
                                         {idx != userState.myInfo.songs.length-1 ? <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth,}} onPress={() => {
-                                            representNext({idx: idx+1})
                                             stoptracksong()
+                                            representNext({idx: idx+1})
                                         }}>
                                             <SvgUri width='100%' height='100%' source={require('../../assets/icons/representright.svg')}/>
                                         </TouchableOpacity> : null }
@@ -285,7 +296,8 @@ const MyAccountScreen = () => {
                                 </View>
                                 <View style={{alignItems: 'center', marginTop: 14 * tmpWidth }}>
                                     <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{userState.myInfo.songs.length}</Text>
-                                    <TouchableOpacity style={styles.representlistbutton} onPress={() => setType('List')}>
+                                    <TouchableOpacity style={styles.representlistbutton} onPress={() => {
+                                        setType('List')}}>
                                         <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../../assets/icons/representlist.svg')}/>
                                         <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)',}}>목록보기</Text>
                                     </TouchableOpacity>
@@ -307,16 +319,23 @@ const MyAccountScreen = () => {
                                                         <TouchableOpacity style={styles.listSongCover} onPress={() => addtracksong({data:item})}>
                                                             <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
                                                         </TouchableOpacity> }
-                                                        <View style={{marginLeft: 17 * tmpWidth }}>
-                                                            <Text style={{fontSize: 14 * tmpWidth}}>{item.attributes.name}</Text>
-                                                            <Text style={{fontSize:11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth}}>{item.attributes.artistName}</Text>
+                                                        {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                                        <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth }}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                                {item.attributes.contentRating == "explicit" ? 
+                                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                                : null }
+                                                                <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                            </View>
+                                                            <Text style={{fontSize:11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                         </View>
                                                     </View>
                                                 )
                                             }}
                                         />
                                     </View>
-                                    <TouchableOpacity onPress={() => setType('Each')} style={{alignItems: 'center'}}>
+                                    <TouchableOpacity style={{alignItems: 'center'}} onPress={() => {
+                                        setType('Each')}} >
                                         <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 33 * tmpWidth}}>개별 보기</Text>
                                     </TouchableOpacity>
                                 </View> }
@@ -324,6 +343,8 @@ const MyAccountScreen = () => {
                         </Modal> : null }
                 </View> }
                 <Modal
+                    animationIn="fadeIn"
+                    animationOut="fadeOut"
                     isVisible={newStory}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}
@@ -353,7 +374,6 @@ const MyAccountScreen = () => {
                                         searchsong({ songname: text})
                                         setTok(true)
                                     }}
-                                    keyboardType = "email-address"
                                     placeholderTextColor= 'rgb(211,211,211)'
                                     style={{fontSize: 16 * tmpWidth}}
                                 />
@@ -380,12 +400,16 @@ const MyAccountScreen = () => {
                                                 <TouchableOpacity onPress={() => stoptracksong()} style={styles.searchSongCover}>
                                                     <ImageSelect opac={0.5} url={item.attributes.artwork.url} />
                                                 </TouchableOpacity> }
+                                                {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }    
                                                 <View style={{marginLeft: 19 * tmpWidth }}>
-                                                    <View style={{width: 200 * tmpWidth }}>
+                                                    <View style={{width: 180 * tmpWidth, flexDirection: 'row', alignItems: 'center' }}>
+                                                        {item.attributes.contentRating == "explicit" ? 
+                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                        : null }
                                                         <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                                     </View>
                                                     <View style={{width: 200 * tmpWidth }}>
-                                                        <Text style={{fontSize:12 * tmpWidth, color: 'rgb(148,153,163)'}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                        <Text style={{fontSize:12 * tmpWidth, color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                     </View>
                                                 </View>
                                             </TouchableOpacity> :
@@ -399,11 +423,14 @@ const MyAccountScreen = () => {
                                                 </TouchableOpacity> }
                                                 <View style={styles.searchediteminfo}>
                                                     <View>
-                                                        <View style={{width: 180 * tmpWidth }}>
+                                                        <View style={{width: 180 * tmpWidth, flexDirection: 'row', alignItems: 'center' }}>
+                                                            {item.attributes.contentRating == "explicit" ? 
+                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                            : null }
                                                             <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                                         </View>
                                                         <View style={{width: 180 * tmpWidth }}>
-                                                            <Text style={{fontSize:12 * tmpWidth, color: 'rgb(148,153,163)'}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                            <Text style={{fontSize:12 * tmpWidth, color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                         </View>
                                                     </View>
                                                     <TouchableOpacity style={styles.completeView} onPress={() => {
@@ -436,6 +463,8 @@ const MyAccountScreen = () => {
                         </View>
                     </Modal>
                 <Modal
+                    animationIn='lightSpeedIn'
+                    animationOut='lightSpeedOut'
                     isVisible={storyModal}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}
@@ -450,20 +479,22 @@ const MyAccountScreen = () => {
                                 <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4}}>{today}</Text>
                                 <View style={styles.innerContainer}>
-                                    <View style={{marginTop:20 * tmpWidth , width: 180 * tmpWidth , marginBottom: 25  * tmpWidth, alignItems: 'center'}}>
+                                    <View style={{marginTop:20 * tmpWidth , width: 160 * tmpWidth , marginBottom: 25  * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                                        {userState.myStory.song.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        : null }
                                         <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{userState.myStory.song.attributes.name}</Text>
                                     </View>
-                                    { storyTok ?
+                                    { isPlayingid == userState.myStory.song.id ?
                                     <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                        setStoryTok(false)
                                         stoptracksong()}}>
                                         <ImageSelect opac={0.5} url={userState.myStory.song.attributes.artwork.url}></ImageSelect>
                                     </TouchableOpacity> :
                                     <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                        setStoryTok(true)
                                         addtracksong({data: userState.myStory.song})}}>
                                         <ImageSelect opac={1.0} url={userState.myStory.song.attributes.artwork.url}></ImageSelect>
                                     </TouchableOpacity> }
+                                    { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
                                     <View style={{width: 180 * tmpWidth, alignItems: 'center'}}>
                                         <Text style={{fontSize:14 * tmpWidth, marginTop: 29 * tmpWidth }} numberOfLines={1}>{userState.myStory.song.attributes.artistName}</Text>
                                     </View>
@@ -671,8 +702,8 @@ const styles = StyleSheet.create({
     representsongname:{
         fontSize: 18 * tmpWidth,
         fontWeight: 'bold',
-        marginTop: 20  * tmpWidth,
-        marginBottom: 25 * tmpWidth
+        paddingTop: 20  * tmpWidth,
+        paddingBottom: 25 * tmpWidth,
     },
     representlistbutton:{
         width:50 * tmpWidth,

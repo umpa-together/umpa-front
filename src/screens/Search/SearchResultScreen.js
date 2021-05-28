@@ -7,23 +7,25 @@ import { Context as CurationContext } from '../../context/CurationContext'
 
 import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import SvgUri from 'react-native-svg-uri';
 
 const Imagetake = ({url, borderRadius}) => {
-    url =url.replace('{w}', '100');
-    url = url.replace('{h}', '100');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return <Image style ={{height:'100%', width:'100%', borderRadius: borderRadius}} source ={{url:url}}/>
 };
 
 const SearchResultScreen = ({navigation, searchOption, text}) => {
-
     const { state: searchState, songNext, searchDJ } = useContext(SearchContext);
     const { SearchSongOrArtist, initPlaylist } = useContext(SearchPlaylistContext);
     const { getCuration } = useContext(CurationContext);
     const [loading, setLoading] = useState(false);
     const getData = async () => {
-        setLoading(true);
-        if(searchState.songNext != undefined)   await songNext({ next: searchState.songNext.substr(22) });
-        setLoading(false);
+        if(searchState.songData.length >= 20){
+            setLoading(true);
+            if(searchState.songNext != undefined)   await songNext({ next: searchState.songNext.substr(22) });
+            setLoading(false);
+        }
     };
 
     const onEndReached = () => {
@@ -66,8 +68,13 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
                                 <View style={{width: 56 * tmpWidth, height: 54.4 * tmpWidth}}>
                                     <Imagetake borderRadius={70} url={item.attributes.artwork.url}/>
                                 </View>
-                                <View style={{marginLeft: 24 * tmpWidth, width:tmpWidth*240, }}>
-                                    <Text numberOfLines ={1} style={{fontSize:16 * tmpWidth}}>{item.attributes.name}</Text>
+                                <View style={{marginLeft: 24 * tmpWidth, width:tmpWidth*220, }}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        {item.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        : null }
+                                        <Text numberOfLines ={1} style={{fontSize:16 * tmpWidth}}>{item.attributes.name}</Text>
+                                    </View>
                                     <Text numberOfLines ={1}  style={{color:'#c6c6c6',fontSize:14 * tmpWidth, marginTop:3 * tmpWidth}}>{item.attributes.artistName}</Text>
                                 </View>
                             </TouchableOpacity>

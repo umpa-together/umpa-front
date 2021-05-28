@@ -5,20 +5,19 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import CommentDetail from './CommentDetail';
 import ScrabForm from './ScrabForm';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
+import ReportModal from '../ReportModal';
+import DeleteModal from '../DeleteModal';
+import DeletedModal from '../DeletedModal';
 
 const ContentDetail = ({navigation}) => {
-    const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent, deleteContent } = useContext(BoardContext);
+    const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
-    const { getUserPlaylists } = useContext(PlaylistContext);
     const { getSongs } = useContext(DJContext);
-    const { getuserCurationposts } = useContext(CurationContext);
     
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [commentId, setCommentId] = useState('');
@@ -27,8 +26,9 @@ const ContentDetail = ({navigation}) => {
     const [imageModal, setImageModal] = useState(false);
     const [image, setImage] = useState([]);
     const [imageIdx, setImageIdx] = useState(0);
-    const [isDelete, setIsDelete] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [deletedModal, setDeletedModal] = useState(false);
+    const [reportModal, setReportModal] = useState(false);
     const img = [];
     const inputRef = useRef();
     const getData = async () => {
@@ -97,7 +97,7 @@ const ContentDetail = ({navigation}) => {
     }, [keyboardHeight]);
 
     useEffect(() => {
-        if(state.currentContent != null && state.currentContent.length == 0)    setIsDelete(true);  
+        if(state.currentContent != null && state.currentContent.length == 0)    setDeletedModal(true);  
     }, [state.currentContent]);
 
     return (
@@ -112,15 +112,13 @@ const ContentDetail = ({navigation}) => {
                             <View style={styles.contentContainer}>
                                 <View style={styles.contentBox}>
                                     <View style={styles.headerContainer}>
-                                        <TouchableOpacity onPress={() => {
+                                        <TouchableOpacity onPress={async () => {
                                             if(state.currentContent.postUserId._id == userState.myInfo._id){
                                                 navigate('Account');
                                             }else{
-                                                getUserPlaylists({id:state.currentContent.postUserId._id})
-                                                getOtheruser({id:state.currentContent.postUserId._id})
-                                                getSongs({id:state.currentContent.postUserId._id})
-                                                getuserCurationposts({id:state.currentContent.postUserId._id})
-                                                navigate('OtherAccount')
+                                                await Promise.all([getOtheruser({id:state.currentContent.postUserId._id}),
+                                                getSongs({id:state.currentContent.postUserId._id})]);
+                                                navigation.push('OtherAccount',{otherUserId:state.currentContent.postUserId._id})
                                             }
                                         }}>
                                             { state.currentContent.postUserId.profileImage == undefined ?
@@ -134,34 +132,23 @@ const ContentDetail = ({navigation}) => {
                                                 <Text style={styles.nameText}>{state.currentContent.postUserId.name}</Text>
                                                 <Text style={styles.timeText}>{state.currentContent.time}</Text>
                                             </View>
-                                            {state.currentContent.postUserId._id == userState.myInfo._id ? 
-                                            <View style={styles.editBox}>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {state.currentContent.postUserId._id == userState.myInfo._id ? 
+                                                <View style={styles.editBox}>
+                                                    <TouchableOpacity onPress={() => {
+                                                        setDeleteModal(true);
+                                                    }}>
+                                                        <Text style={{fontSize: 14 * tmpWidth}}>삭제</Text>
+                                                    </TouchableOpacity>
+                                                    <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, fontSize: 14 * tmpWidth}}>|</Text>
+                                                </View> : null }
                                                 <TouchableOpacity onPress={() => {
-                                                    setDeleteModal(true);
-                                                }}>
-                                                    <Text>삭제</Text>
+                                                    setReportModal(true)}}>
+                                                    <Text style={{fontSize: 14 * tmpWidth}}>신고</Text>
                                                 </TouchableOpacity>
-                                            </View> : null }
-                                            <Modal
-                                                isVisible={deleteModal}
-                                                backdropOpacity={0.4}
-                                                style={{margin: 0, alignItems: 'center'}}
-                                            >
-                                                <View style={styles.deleteContainer}>
-                                                    <Text style={{fontSize: 14 * tmpWidth, marginTop: 32 * tmpWidth}}>게시글을 삭제하시겠습니까?</Text>
-                                                    <View style={{flexDirection: 'row', marginTop: 26 * tmpWidth}}>
-                                                        <TouchableOpacity style={styles.cancelBox} onPress={() => setDeleteModal(false)}>
-                                                            <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(133,133,133)'}}>취소하기</Text>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity style={styles.deleteBox} onPress={async () => {
-                                                            setDeleteModal(false)
-                                                            navigation.goBack()
-                                                            await deleteContent({ contentId: state.currentContent._id, boardId: state.currentContent.boardId })}}>
-                                                            <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)'}}>삭제하기</Text>
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                </View>
-                                            </Modal>
+                                            </View>
+                                            { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'boardContent'} /> : null }
+                                            { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'boardContent'} subjectId={state.currentContent._id} /> : null }
                                         </View>
                                     </View>
                                     <View style={{marginTop: 20 * tmpWidth}}>
@@ -204,7 +191,7 @@ const ContentDetail = ({navigation}) => {
                                     </View>
                                 </View>
                             </View>
-                            <CommentDetail inputRef={inputRef} setRecomment={setRecomment} setCommentId={setCommentId}/>
+                            <CommentDetail navigation={navigation} inputRef={inputRef} setRecomment={setRecomment} setCommentId={setCommentId}/>
                         </View>
                     </ScrollView>
                     <View style={{marginBottom: keyboardHeight}}>
@@ -220,6 +207,7 @@ const ContentDetail = ({navigation}) => {
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         placeholder="댓글을 입력해주세요."
+                                        placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text => inputRef.current.value = text}
                                         onSubmitEditing={() => {
                                             create()
@@ -246,21 +234,7 @@ const ContentDetail = ({navigation}) => {
             >
                 <ImageViewer imageUrls={image} index={imageIdx} enableSwipeDown={true} onCancel={() => setImageModal(false)}/>
             </Modal>: null}
-            {isDelete ? 
-            <Modal
-                isVisible={true}
-                backdropOpacity={0.4}
-                style={{margin: 0, alignItems: 'center'}}
-            >
-                <View style={styles.deleteContainer}>
-                    <Text style={styles.deleteText}>존재하지 않는 게시글입니다.</Text>
-                    <TouchableOpacity onPress={() => {
-                        setIsDelete(false);
-                        navigation.goBack()}}>
-                        <Text style={{marginTop: 16 * tmpWidth, fontSize: 16 * tmpWidth}}>확인</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal> : null} 
+            {deletedModal ? <DeletedModal navigation={navigation} deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"board"}/> : null} 
         </View>
     )
 };
@@ -293,7 +267,8 @@ const styles=StyleSheet.create({
     },
     editBox: {
         flexDirection: 'row', 
-        fontSize: 14 * tmpWidth
+        fontSize: 14 * tmpWidth,
+        alignItems: 'center'
     },
     nameText: {
         fontSize: 12 * tmpWidth,
@@ -370,35 +345,6 @@ const styles=StyleSheet.create({
         color: 'rgb(86,86,86)',
         marginTop: 24 * tmpWidth
     },
-    deleteContainer: {
-        width : 285 * tmpWidth,
-        height : 131 * tmpWidth,
-        backgroundColor: 'rgb(254,254,254)',
-        borderRadius: 4 * tmpWidth, 
-        alignItems: 'center'
-    },
-    cancelBox: {
-        width: 105 * tmpWidth,
-        height: 34 * tmpWidth,
-        borderRadius: 8 * tmpWidth,
-        backgroundColor: 'rgb(245,245,245)',
-        borderWidth: 1 * tmpWidth,
-        borderColor: 'rgb(245,245,245)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 5.5 * tmpWidth
-    },
-    deleteBox: {
-        width: 105 * tmpWidth,
-        height: 34 * tmpWidth,
-        borderRadius: 8 * tmpWidth,
-        backgroundColor: 'rgb(245,245,245)',
-        borderWidth: 1 * tmpWidth,
-        borderColor: 'rgb(169,193,255)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 5.5 * tmpWidth
-    }
 });
 
 export default ContentDetail;

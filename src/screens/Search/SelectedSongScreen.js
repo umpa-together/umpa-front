@@ -29,11 +29,11 @@ const SelectedSongScreen = ({navigation}) => {
     const category = navigation.getParam('category');
     const { state } = useContext(SearchPlaylistContext);
 
-    const { getPlaylist, getUserPlaylists } = useContext(PlaylistContext);
+    const { getPlaylist } = useContext(PlaylistContext);
     const { state: searchState } = useContext(SearchContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
 
-    const { getCuration, getuserCurationposts } = useContext(CurationContext);
+    const { getCuration } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
     return (
         <View>
@@ -52,8 +52,11 @@ const SelectedSongScreen = ({navigation}) => {
                         </View>
                     </TouchableOpacity>
                     </View>
-                    <View style={{width: 375/2 * tmpWidth, height:50 * tmpWidth,justifyContent:'center', alignItems:'center'}}>
-                     <Text numberOfLines={1} style={{fontSize:18 * tmpWidth, fontWeight:'bold'}}>{song.attributes.name}</Text>
+                    <View style={{width: 375/2 * tmpWidth, height:50 * tmpWidth,justifyContent:'center', alignItems:'center', flexDirection: 'row'}}>
+                        {song.attributes.contentRating == "explicit" ? 
+                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                        : null }
+                        <Text numberOfLines={1} style={{fontSize:18 * tmpWidth, fontWeight:'500'}}>{song.attributes.name}</Text>
                     </View>
                     <View style={{width: 375/4 * tmpWidth, height:50 * tmpWidth}}>
                     </View>
@@ -76,7 +79,7 @@ const SelectedSongScreen = ({navigation}) => {
                         </View>
                         <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row', justifyContent:'flex-start', marginLeft:2.5 * tmpWidth}}>
                             <TouchableOpacity
-                            onPress={() => {getCuration({isSong:false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork }, id:song.attributes.url.split('?')[0].split('/')[6] }); navigate('SelectedCuration', {id:song.attributes.url.split('?')[0].split('/')[6]});}}
+                            onPress={() => {getCuration({isSong:false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating }, id:song.attributes.url.split('?')[0].split('/')[6] }); navigate('SelectedCuration', {id:song.attributes.url.split('?')[0].split('/')[6]});}}
                             style={styles.curationbox}>
                                 <Text>앨범 큐레이션</Text>
                             </TouchableOpacity>
@@ -102,9 +105,10 @@ const SelectedSongScreen = ({navigation}) => {
                         renderItem = {({item}) => {
                             return (
                                 <View style={{width:161 * tmpWidth,marginRight:14 * tmpWidth, marginBottom:23 * tmpWidth}}>
-                                    <TouchableOpacity onPress={() => {
-                                        navigate('SelectedPlaylist', {id: item._id , object:item})
-                                        getPlaylist({id:item._id, postUserId:item.postUserId})}}>
+                                    <TouchableOpacity onPress={async () => {
+                                        await getPlaylist({id:item._id, postUserId:item.postUserId})
+                                        navigate('SelectedPlaylist', {id: item._id , object:item, navigation: navigation})
+                                        }}>
                                         <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                             <Image style={ {width:'100%', height:'100%', borderRadius:4 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
                                         </View>
@@ -139,7 +143,10 @@ const SelectedSongScreen = ({navigation}) => {
                     </TouchableOpacity>
                     </View>
                     <View style={styles.headersongname}>
-                        <Text style={{fontSize:18 * tmpWidth, fontWeight:'bold'}} numberOfLines={1}>{song.attributes.name}</Text>
+                        {song.attributes.contentRating == "explicit" ? 
+                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                        : null }
+                        <Text style={{fontSize:18 * tmpWidth, fontWeight:'500'}} numberOfLines={1}>{song.attributes.name}</Text>
                     </View>
                     <View style={{width: 375/4 * tmpWidth, height:50 * tmpWidth}}>
                     </View>
@@ -161,15 +168,13 @@ const SelectedSongScreen = ({navigation}) => {
                     renderItem={({item})=> {
                         return (
                           <View style={styles.djitem}>
-                            <TouchableOpacity onPress={()=> {
+                            <TouchableOpacity onPress={async ()=> {
                                 if(item._id == userState.myInfo._id){
                                     navigate('Account');
                                 }else{
-                                    getUserPlaylists({id:item._id});
-                                    getOtheruser({id:item._id});
-                                    getSongs({id:item._id});
-                                    getuserCurationposts({id:item._id});
-                                    navigate('OtherAccount');
+                                    await Promise.all([getOtheruser({id:item._id}),
+                                    getSongs({id:item._id})]);
+                                    navigation.push('OtherAccount',{otherUserId:item._id});
                                 }}}>
                                 <View style={{alignItems:'center'}}>
                                     {item.profileImage == undefined ?
@@ -183,11 +188,11 @@ const SelectedSongScreen = ({navigation}) => {
                                     <View style={{height:37 * tmpWidth ,width:160 * tmpWidth, marginTop:10 * tmpWidth, alignItems:'center'}}>
                                         <Text style={{fontSize:16 * tmpWidth}}>{item.name}</Text>
                                     </View>
-                                    <View style={{height:16 * tmpWidth, width:160 * tmpWidth ,flexDirection:'row', justifyContent: 'center'}}>
+                                    <View style={{width:160 * tmpWidth ,flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <View style={styles.representbox}>
                                             <Text style={{fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}}>대표곡</Text>
                                         </View>
-                                        <View style={{height:17 * tmpWidth, width: 101 * tmpWidth, flexDirection:'row', alignItems:'flex-end'}}>
+                                        <View style={{width: 101 * tmpWidth, flexDirection:'row', alignItems:'flex-end'}}>
                                             <Text style={styles.repsongname} numberOfLines={1}>
                                             {item.songs[0].name}
                                             </Text>
@@ -283,7 +288,8 @@ const styles=StyleSheet.create({
         width: 375/2 * tmpWidth,
         height:50 * tmpWidth,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        flexDirection: 'row'
     },
     middletextdj:{
         width:375 * tmpWidth,

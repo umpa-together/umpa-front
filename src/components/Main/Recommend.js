@@ -7,23 +7,24 @@ import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
-import {Context as CurationContext} from '../../context/CurationContext';
 import {Context as DJContext} from '../../context/DJContext';
+import {Context as CurationContext} from '../../context/CurationContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
+import HarmfulModal from '../HarmfulModal';
 
 const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '100');
-    url = url.replace('{h}', '100');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return (
         <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
     );
 };
-const Recommend = () => {
-    const { getUserPlaylists, getPlaylist } = useContext(PlaylistContext);
-    const { state: userState, getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
-    const { getuserCurationposts } = useContext(CurationContext);
+const Recommend = ({navigation}) => {
+    const { getPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
+    const { getCurationposts } = useContext(CurationContext);
     const [isPlayingid, setIsPlayingid] = useState('0');
 
     const [representSong, setRepresentSong] = useState(null);
@@ -33,7 +34,7 @@ const Recommend = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [isFollow, setIsFollow] = useState([]);
     const [result, setResult] = useState('playlist');
-
+    const [harmfulModal, setHarmfulModal] = useState(false);
     useEffect(()=>{
         recommendDJ();
 
@@ -44,12 +45,16 @@ const Recommend = () => {
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
@@ -65,7 +70,11 @@ const Recommend = () => {
     }
     const fetchData = async () => {
         setRefreshing(true);
-        getMyInfo();
+        await Promise.all([
+            getPlaylists(),
+            getCurationposts(),
+            getMyInfo()
+        ])
         setRefreshing(false);
     };
     const onRefresh = () => {
@@ -115,12 +124,10 @@ const Recommend = () => {
                     return (
                         <View style={{width:266*tmpWidth, height:tmpWidth*340, backgroundColor:'rgba(255,255,255,0)', marginBottom: 60 * tmpWidth}}>
                         <View style={styles.recommendBox}>
-                            <TouchableOpacity onPress={() => {
-                                getUserPlaylists({id:item._id})
-                                getOtheruser({id:item._id})
-                                getSongs({id:item._id})
-                                getuserCurationposts({id:item._id})
-                                navigate('OtherAccount')
+                            <TouchableOpacity onPress={async () => {
+                                await Promise.all([getOtheruser({id:item._id}),
+                                getSongs({id:item._id})]);
+                                navigation.push('OtherAccount', {otherUserId:item._id})
                             }}>
                                 { item.profileImage == undefined ?
                                 <View style={styles.djProfile}>
@@ -139,9 +146,9 @@ const Recommend = () => {
                                 {item.playlist.length != 0 ? 
                                 item.playlist.slice(0,3).map(playlist => {
                                     return (
-                                        <TouchableOpacity key={playlist['image']} onPress={() => {
-                                            navigate('SelectedPlaylist', {id: playlist['_id']})
-                                            getPlaylist({id:playlist['_id'], postUserId:item._id})
+                                        <TouchableOpacity key={playlist['image']} onPress={async () => {
+                                            await getPlaylist({id:playlist['_id'], postUserId:item._id})
+                                            navigate('SelectedPlaylist', {id: playlist['_id'], navigation: navigation})
                                         }}>
                                             <Image style={styles.playlistBox} source={{uri: playlist['image']}}/>
                                         </TouchableOpacity>
@@ -195,7 +202,10 @@ const Recommend = () => {
                                     </View>
                                     <View style={styles.songBox}>
                                         <View style={{alignItems: 'center'}}>
-                                            <View style={{width: 200 * tmpWidth, alignItems: 'center'}}>
+                                            <View style={{width: 150 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                                                {representSong[idx].attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
+                                                : null }
                                                 <Text style={styles.titleText} numberOfLines={1}>{representSong[idx].attributes.name}</Text>
                                             </View>
                                             {isPlayingid == representSong[idx].id ? 
@@ -205,6 +215,7 @@ const Recommend = () => {
                                             <TouchableOpacity style={styles.representSongCover} onPress={() => addtracksong({data:representSong[idx]})}>
                                                 <ImageSelect opac={1.0} url={representSong[idx].attributes.artwork.url}/>
                                             </TouchableOpacity> }
+                                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                             <View style={{width: 150 * tmpWidth, alignItems: 'center'}}>
                                                 <Text style={styles.artistText} numberOfLines={1}>{representSong[idx].attributes.artistName}</Text>
                                             </View>
@@ -222,7 +233,7 @@ const Recommend = () => {
                                     </View>
                                 </View>
                                 <View style={{alignItems: 'center', marginTop: 14 * tmpWidth}}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{userState.myInfo.songs.length}</Text>
+                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{representSong.length}</Text>
                                     <TouchableOpacity onPress={() => setType('List')}>
                                         <Text style={styles.typeText}>목록보기</Text>
                                     </TouchableOpacity>
@@ -244,8 +255,14 @@ const Recommend = () => {
                                                     <TouchableOpacity style={styles.listSongCover} onPress={() => addtracksong({data:item})}>
                                                         <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
                                                     </TouchableOpacity> }
+                                                    { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                                     <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth}}>
-                                                        <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                            {item.attributes.contentRating == "explicit" ? 
+                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                            : null }
+                                                            <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                        </View>
                                                         <Text style={{fontSize: 11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                     </View>
                                                 </View>    
@@ -454,7 +471,7 @@ const styles = StyleSheet.create({
     },
     eachHeader: {
         borderBottomWidth: 0.7 * tmpWidth, 
-        color: 'rgb(229,231,239)', 
+        borderColor: 'rgb(229,231,239)', 
         marginTop: 5.3 * tmpWidth, 
         marginLeft: 37 * tmpWidth, 
         marginRight: 37 * tmpWidth

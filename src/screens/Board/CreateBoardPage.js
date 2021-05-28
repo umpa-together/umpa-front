@@ -50,6 +50,7 @@ const CreateBoardPage = () => {
                                     <TextInput
                                         ref={titleRef}
                                         placeholder="게시판 제목을 적어주세요."
+                                        placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text => titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
@@ -71,6 +72,7 @@ const CreateBoardPage = () => {
                                 ref={introductionRef}
                                 onChangeText={(text) => introductionRef.current.value = text}
                                 placeholder="게시판 소개글을 적어주세요."
+                                placeholderTextColor='rgb(196,196,196)'
                                 autoCapitalize='none'
                                 autoCorrect={false}
                                 multiline={true}

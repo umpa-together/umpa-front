@@ -12,6 +12,7 @@ import SvgUri from 'react-native-svg-uri';
 import Curating from  './Curating';
 import Playlist from  './Playlist';
 import { tmpWidth } from '../FontNormalize';
+import HarmfulModal from '../HarmfulModal';
 
 const ImageSelect = ({url, opac}) => {
     url =url.replace('{w}', '300');
@@ -21,40 +22,46 @@ const ImageSelect = ({url, opac}) => {
     );
 };
 
-const Feed = () => {
-    const { state, getUserPlaylists } = useContext(PlaylistContext);
+const Feed = ({navigation}) => {
+    const { state } = useContext(PlaylistContext);
     const { state: userState, getOtherStory, storyView, getOtheruser,  } = useContext(UserContext);
-    const { state:curation ,getCurationposts } = useContext(CurationContext);
+    const { state:curation } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
-
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [storyModal, setStoryModal] = useState(false);
-    const [ result, setResult] = useState('playlist');
+    const [result, setResult] = useState('playlist');
     const [selectedStory, setSelectedStory] = useState(undefined);
     const [selectedIdx, setSelectedIdx] =  useState(0);
-    
+    const [harmfulModal, setHarmfulModal] = useState(false);
     const addtracksong= async ({data}) => {
         const track = new Object();
         track.id = data.id;
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
     const onClose = async () => {
-        setStoryModal(false);
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
+        if(storyModal)  {
+            setStoryModal(false);
+            setIsPlayingid('0');
+            await TrackPlayer.reset()
+        }
     }
 
     const storyClick = ({item, index}) => {
+        stoptracksong();
         setSelectedStory(item);
         setSelectedIdx(index);
         setStoryModal(true);
@@ -62,7 +69,7 @@ const Feed = () => {
             storyView({id: item.id});
             getOtherStory();
         }
-        addtracksong({data: item.song["song"]});
+        if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"]});
     }
     return (
         <View style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
@@ -125,10 +132,12 @@ const Feed = () => {
                         }}
                     />
                 </View> : null }
-                <Playlist playList={state.playlists}/>
+                <Playlist playList={state.playlists} navigation={navigation}/>
             </View> : <View style={{flex:1}}><Curating curationPosts={curation.maincurationposts}/></View> }
             {selectedStory != undefined ?
             <Modal
+                animationIn='fadeInLeft'
+                animationOut='fadeOutRight'
                 isVisible={storyModal}
                 onBackdropPress={onClose}
                 backdropOpacity={0.5}
@@ -138,14 +147,10 @@ const Feed = () => {
                     <View style={{flex: 1, margin: 16 * tmpWidth}}>
                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async() => {
                             setStoryModal(false);
-                            getUserPlaylists({id: selectedStory.id});
-                            getOtheruser({id: selectedStory.id});
-                            getSongs({id:selectedStory.id});
-                            getCurationposts({id:selectedStory.id});
-                            await TrackPlayer.reset()
-
-                            navigate('OtherAccount')
-
+                            await Promise.all([getOtheruser({id: selectedStory.id}),
+                            getSongs({id:selectedStory.id}), 
+                            TrackPlayer.reset()])
+                            navigation.push('OtherAccount',{otherUserId:selectedStory.id})
                         }}>
                             { selectedStory.profileImage == undefined ?
                             <View style={styles.profile}>
@@ -160,14 +165,14 @@ const Feed = () => {
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx-1], index: selectedIdx-1})}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                                {isPlayingid == selectedStory.song["song"].id ?
-                                    <TouchableOpacity style={styles.songscover} onPress={() => stoptracksong()}>
-                                        <ImageSelect opac={1.0} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                    </TouchableOpacity> :
-                                    <TouchableOpacity style={styles.songscover} onPress={() => addtracksong({data: selectedStory.song["song"]})}>
-                                        <ImageSelect opac={0.5} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                    </TouchableOpacity>
-                                }
+                                { isPlayingid == selectedStory.song["song"].id ?
+                                <TouchableOpacity style={styles.songscover} onPress={() => stoptracksong()}>
+                                    <ImageSelect opac={1.0} url={selectedStory.song["song"].attributes.artwork.url}/>
+                                </TouchableOpacity> :
+                                <TouchableOpacity style={styles.songscover} onPress={() => addtracksong({data: selectedStory.song["song"]})}>
+                                    <ImageSelect opac={0.5} url={selectedStory.song["song"].attributes.artwork.url}/>
+                                </TouchableOpacity> }
+                                { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                 {selectedIdx != userState.otherStory.length-1 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx+1], index: selectedIdx+1})}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/representright.svg')}/>
@@ -175,7 +180,12 @@ const Feed = () => {
                             </View>
                         </View>
                         <View style={styles.textContainer}>
-                            <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song["song"].attributes.name}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                {selectedStory.song["song"].attributes.contentRating == "explicit" ? 
+                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                : null }
+                                <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song["song"].attributes.name}</Text>
+                            </View>
                             <Text numberOfLines={1} style={styles.modalArtistText}>{selectedStory.song["song"].attributes.artistName}</Text>
                         </View>
                     </View>
@@ -314,7 +324,7 @@ const styles = StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,
         alignItems: 'center',
-        width: 272 * tmpWidth,
+        width: 252 * tmpWidth,
 
     },
     modalArtistText: {

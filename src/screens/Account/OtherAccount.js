@@ -1,31 +1,28 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native';
-import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { navigate } from '../../navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import AccountPlaylist from  '../../components/Account/AccountPlaylist';
 import AccountCurating from  '../../components/Account/AccountCurating';
 import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../../components/FontNormalize';
+import ReportModal from '../../components/ReportModal';
+import HarmfulModal from '../../components/HarmfulModal';
 
 require('date-utils');
 const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '200');
-    url = url.replace('{h}', '200');
+    url =url.replace('{w}', '300');
+    url = url.replace('{h}', '300');
     return (
         <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
     );
 };
 
 const OtherAccountScreen = ({navigation}) => {
-    const { state } = useContext(PlaylistContext);
     const {state: userState, follow, unfollow, getMyInfo, storyView } = useContext(UserContext);
     const {state: djState } = useContext(DJContext);
-    const {state: curationState } = useContext(CurationContext);
     const [result, setResult] = useState('playlist');
     const [isFollow, setIsFollow] = useState(false);
     const [representModal, setRepresentModal] = useState(false);
@@ -37,9 +34,13 @@ const OtherAccountScreen = ({navigation}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [today, setToday] = useState('');
-    const [storyTok, setStoryTok] = useState(true);
     const [isStoryRead, setIsStoryRead] = useState(false);
-    
+    const [reportModal, setReportModal] = useState(false);
+    const [user, setUser] = useState(null);   
+    const [harmfulModal, setHarmfulModal] = useState(false);
+    const [followerNum , setFollowerNum] = useState(0);
+    const id = navigation.getParam('otherUserId');
+
     const onClose = async () => {
         setRepresentModal(false);
         setStoryModal(false);
@@ -54,49 +55,62 @@ const OtherAccountScreen = ({navigation}) => {
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
-        setIsPlayingid(data.id);
-        await TrackPlayer.reset()
-        await TrackPlayer.add(track);
-        TrackPlayer.play();
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
     };
-    const stoptracksong= async () => {
+    const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
     const representNext = ({idx}) => {
+        stoptracksong()
         setIdx(idx);
-        setRepresentSong(userState.otherUser.songs[idx]);
+        setRepresentSong(user.songs[idx]);
     }
     const storyClick = () => {
         if(!isStoryRead){
             storyView({id: story.id});
         }
         setStoryModal(true);
-        setStoryTok(true);
-        addtracksong({data: story['song'].song});
+        if(story['song'].song.attributes.contentRating != 'explicit'){
+            addtracksong({data: story['song'].song});
+        }
     }
 
     const followCheck = ({id}) => {
-        if(userState.myInfo != null) {
-            for(let key in userState.myInfo.following){
-                if(userState.myInfo.following[key]._id == id)   return true;
+        if(user != null) {
+            for(let key in user.follower){
+                if(user.follower[key]._id== id)   return true;
             }
         }
         return false;
     }
     
     useEffect(() => {
-        if(userState.otherUser != null){
-            setStory(userState.otherStory.filter(item => item.id == userState.otherUser._id)[0]);
-            setIsFollow(followCheck({id: userState.otherUser._id}))
+        if(user != null){
+            setStory(userState.otherStory.filter(item => item.id == user._id)[0]);
+            setIsFollow(followCheck({id: userState.myInfo._id}))
         }
-    }, [userState.otherUser]);
+    }, [user]);
     useEffect(() => {
         if(story != null){
             setIsStoryRead(story.song.view.includes(userState.myInfo._id));
             setUrl(story['song'].song.attributes.artwork.url);
         }
     }, [story]);
+
+    useEffect(() => {
+        if(userState.otherUser != null){
+            setUser(userState.otherUser);
+            setFollowerNum(userState.otherUser.follower.length);
+        }
+    }, [id]);
     useEffect(() => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
@@ -104,13 +118,17 @@ const OtherAccountScreen = ({navigation}) => {
 
     return (
         <View style={{flex:1,backgroundColor: 'rgb(255,255,255)'}}>
-            {(userState.otherUser == null) || (state.userplaylists == null) || (djState.songs == null) || (curationState.curationposts == null) ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator/></View> :
+            {user == null || (djState.songs == null) ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
             <View style={styles.header}>
-                <TouchableOpacity  style={{position :"absolute", left:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => navigation.pop()}>
+                <TouchableOpacity  style={{position :"absolute", left:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
-                <Text style={{fontSize: 16 * tmpWidth, fontWeight: 'bold'}}>{userState.otherUser.name}</Text>
+                <Text style={{fontSize: 16 * tmpWidth, fontWeight: 'bold'}}>{user.name}</Text>
+                <TouchableOpacity style={{position :"absolute",right:20 * tmpWidth}} onPress={() => setReportModal(true)}>
+                    <Text style={{color: 'rgb(80,80,80)'}}>신고</Text>
+                </TouchableOpacity>
+                {reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'account'} subjectId={user._id}/> : null }
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{height: '100%'}}>
@@ -118,16 +136,17 @@ const OtherAccountScreen = ({navigation}) => {
                         <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                             <TouchableOpacity style={styles.songImage} onPress={() => {
                                 setRepresentModal(true)
-                                setRepresentSong(userState.otherUser.songs[0])}}>
-                                <ImageSelect  url={userState.otherUser.songs[0].attributes.artwork.url}/> 
+                                setRepresentSong(user.songs[0])
+                            }}>
+                                <ImageSelect  url={user.songs[0].attributes.artwork.url}/> 
                             </TouchableOpacity>
                             <Text style={{marginTop: 10 * tmpWidth , fontSize: 11 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
                         </View>
-                        { userState.otherUser.profileImage == undefined ?
+                        { user.profileImage == undefined ?
                         <View style={styles.profileImage}>
                             <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                         </View> :
-                        <Image style={styles.profileImage} source={{uri: userState.otherUser.profileImage}}/> }
+                        <Image style={styles.profileImage} source={{uri: user.profileImage}}/> }
                         <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                             {url == '' ? 
                             <TouchableOpacity style={styles.songImage2}>
@@ -143,50 +162,55 @@ const OtherAccountScreen = ({navigation}) => {
                         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
                             <View style={{width:200 * tmpWidth,  flexDirection:'row'}}>
                                 <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth, alignItems:'center', }} onPress={() => {
-                                    navigate('Follow', {option: 'OtherAccount', name:userState.otherUser.name, type:'following'})}}>
+                                    navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'following'})
+                                }}>
                                     <Text style={{fontSize: 12 * tmpWidth, }}>팔로잉 </Text>
-                                    <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.otherUser.following.length}</Text>
+                                    <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{user.following.length}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth,alignItems:'center', }} onPress={() => {
-                                    navigate('Follow', {option: 'OtherAccount',name:userState.otherUser.name, type:'follower'})}}>
+                                    navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'follower'})
+                                }}>
                                     <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
-                                    <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.otherUser.follower.length}</Text>
+                                    <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{followerNum}</Text>
                                 </TouchableOpacity>
                             </View>
                             {isFollow ?
                             <TouchableOpacity style={styles.followingBox} onPress={async () => {
                                 setIsFollow(false);
-                                await unfollow({id:userState.otherUser._id})
-                                await getMyInfo();
+                                await unfollow({id:user._id})
+                                getMyInfo();
+                                setFollowerNum(prev => prev-1)
+
                             }}>
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(154,188,255)'}}>팔로잉</Text>
                             </TouchableOpacity> :
                             <TouchableOpacity style={styles.followBox} onPress={async () => {
                                 setIsFollow(true);
-                                await follow({id:userState.otherUser._id})
-                                await getMyInfo();
+                                await follow({id:user._id})
+                                getMyInfo();
+                                setFollowerNum(prev=>prev+1)
                             }}>
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>팔로우 +</Text>
                             </TouchableOpacity> }
                         </View>
                     </View>
-                    {userState.otherUser.introduction != '' ? 
+                    {user.introduction != '' ? 
                     <View style={{alignItems: 'center'}}>
                         <View style={styles.infoBox}>
-                            <Text>{userState.otherUser.introduction}</Text>
+                            <Text>{user.introduction}</Text>
                         </View>
                     </View> : null }
                     <View style={styles.opt}>
                         <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                            <Text>플레이리스트 {state.userplaylists.length}</Text>
+                            <Text>플레이리스트 {user.playlists.length}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                            <Text>큐레이션 {curationState.curationposts.length}</Text>
+                            <Text>큐레이션 {user.curationposts.length}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{backgroundColor: 'rgb(250,250,250)'}}>
-                        {result == 'playlist' ?  <AccountPlaylist playList={state.userplaylists}/> :
-                        <AccountCurating curating={curationState.curationposts} />}
+                        {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false}/> :
+                        <AccountCurating curating={user.curationposts} myAccount={false}/>}
                     </View>
                 </View>
             </ScrollView>
@@ -201,7 +225,7 @@ const OtherAccountScreen = ({navigation}) => {
                         <View style={{flexDirection: 'row', marginTop: 20 * tmpWidth ,justifyContent: 'center'}}>
                             <View style={{alignItems: 'center'}}>
                                 <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
-                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4  * tmpWidth}}>{userState.otherUser.songs.length}곡</Text>
+                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4  * tmpWidth}}>{user.songs.length}곡</Text>
                             </View>
                             <TouchableOpacity style={{position:'absolute',right:13 * tmpWidth,width:30 * tmpWidth,height:30 * tmpWidth, }} onPress={()=>{onClose();}}>
                                 <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalexit.svg')}/>
@@ -213,14 +237,16 @@ const OtherAccountScreen = ({navigation}) => {
                             <View style={styles.leftSideBox}>
                                 {idx != 0 ? <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth,}} onPress={() => {
                                     representNext({idx: idx-1})
-                                    stoptracksong()
                                 }}>
                                  <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
                                 </TouchableOpacity> : null}
                             </View>
                             <View style={styles.songBox}>
                                 <View style={{alignItems: 'center'}}>
-                                    <View style={{width: 180 * tmpWidth , alignItems: 'center'}}>
+                                    <View style={{width: 150 * tmpWidth , alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                                        {representSong.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
+                                        : null }
                                         <Text numberOfLines={1} style={{fontSize: 18 * tmpWidth, fontWeight: 'bold', marginTop: 20 * tmpWidth , marginBottom: 25 * tmpWidth}}>{representSong.attributes.name}</Text>
                                     </View>
                                     {isPlayingid == representSong.id ? 
@@ -230,32 +256,33 @@ const OtherAccountScreen = ({navigation}) => {
                                     <TouchableOpacity style={styles.representSongCover} onPress={() => addtracksong({data:representSong})}>
                                         <ImageSelect opac={1.0} url={representSong.attributes.artwork.url}/>
                                     </TouchableOpacity> }
+                                    {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                     <Text style={{fontSize: 14 * tmpWidth, marginTop: 29  * tmpWidth}}>{representSong.attributes.artistName}</Text>
                                     <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)', marginTop: 7 * tmpWidth }}>{representSong.attributes.releaseDate}</Text>
                                 </View>
                             </View>
                             <View style={styles.rightSideBox}>
-                                {idx != userState.otherUser.songs.length-1 ? <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth,}} onPress={() => {
+                                {idx != user.songs.length-1 ? <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth,}} onPress={() => {
                                     representNext({idx: idx+1})
-                                    stoptracksong()
                                 }}>
                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/representright.svg')}/>
                                 </TouchableOpacity> : null }
                             </View>
                         </View>
                         <View style={{alignItems: 'center', marginTop: 14 * tmpWidth }}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{userState.otherUser.songs.length}</Text>
-                                    <TouchableOpacity style={styles.representlistbutton} onPress={() => setType('List')}>
-                                        <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../../assets/icons/representlist.svg')}/>
-                                        <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)',}}>목록보기</Text>
-                                    </TouchableOpacity>
+                            <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{user.songs.length}</Text>
+                            <TouchableOpacity style={styles.representlistbutton} onPress={() => {
+                                setType('List')}}>
+                                <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../../assets/icons/representlist.svg')}/>
+                                <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)',}}>목록보기</Text>
+                            </TouchableOpacity>
                         </View>
                     </View> : 
                     <View>
                         <View style={styles.line}/>
                             <View style={{height: 335 * tmpWidth}}>
                                 <FlatList 
-                                    data={userState.otherUser.songs}
+                                    data={user.songs}
                                     keyExtractor={song=>song.attributes.name}
                                     renderItem={({item}) => {
                                         return (
@@ -267,9 +294,15 @@ const OtherAccountScreen = ({navigation}) => {
                                                 <TouchableOpacity style={styles.listSongCover} onPress={() => addtracksong({data:item})}>
                                                     <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
                                                 </TouchableOpacity> }
-                                                <View style={{marginLeft: 17 * tmpWidth }}>
-                                                    <Text style={{fontSize: 14 * tmpWidth}}>{item.attributes.name}</Text>
-                                                    <Text style={{fontSize:11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth }}>{item.attributes.artistName}</Text>
+                                                {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                                <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth }}>
+                                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                        {item.attributes.contentRating == "explicit" ? 
+                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                        : null }
+                                                        <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                    </View>
+                                                    <Text style={{fontSize:11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth }} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                 </View>
                                             </View>    
                                         )
@@ -283,6 +316,8 @@ const OtherAccountScreen = ({navigation}) => {
                     </View>
                 </Modal> : null }
                 <Modal 
+                    animationIn='lightSpeedIn'
+                    animationOut='lightSpeedOut'
                     isVisible={storyModal}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}
@@ -297,20 +332,22 @@ const OtherAccountScreen = ({navigation}) => {
                                     <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
                                     <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4  * tmpWidth}}>{today}</Text>
                                     <View style={styles.innerContainer}>
-                                        <View style={{marginTop:20 * tmpWidth , width: 180  * tmpWidth, marginBottom: 25  * tmpWidth, alignItems: 'center'}}>
+                                        <View style={{marginTop:20 * tmpWidth , width: 160  * tmpWidth, marginBottom: 25  * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                                            {story['song'].song.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
                                             <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{story['song'].song.attributes.name}</Text>
                                         </View>
-                                        { storyTok ?
+                                        { isPlayingid == story['song'].song.id ?
                                         <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                            setStoryTok(false)
                                             stoptracksong()}}>
                                             <ImageSelect opac={0.5} url={url}></ImageSelect>
                                         </TouchableOpacity> :
                                         <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                            setStoryTok(true)
-                                            addtracksong({data: story['song']})}}>
+                                            addtracksong({data: story['song'].song})}}>
                                             <ImageSelect opac={1.0} url={url}></ImageSelect>
                                         </TouchableOpacity> }
+                                        { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
                                         <View style={{width: 180 * tmpWidth, alignItems: 'center'}}>
                                             <Text style={{fontSize:14 * tmpWidth, marginTop: 29 * tmpWidth }} numberOfLines={1}>{story['song'].song.attributes.artistName}</Text>
                                         </View>
@@ -489,8 +526,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         paddingLeft: 60 * tmpWidth,
         paddingRight: 60  * tmpWidth,
-        height:49 * tmpWidth,
-        backgroundColor:'rgb(255,255,255)'
+        height:52 * tmpWidth,
+        backgroundColor:'rgb(255,255,255)',
    },
    line:{
     borderBottomWidth: 0.7 * tmpWidth,
