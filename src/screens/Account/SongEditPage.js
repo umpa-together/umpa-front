@@ -8,6 +8,7 @@ import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import { tmpWidth } from '../../components/FontNormalize';
+import HarmfulModal from '../../components/HarmfulModal';
 
 const SongImage = ({url, opacity}) => {
     url =url.replace('{w}', '300');
@@ -28,6 +29,7 @@ const SongEditPage = ({navigation}) => {
     const [orderModal, setOrderModal] = useState(false);
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [orderLists, setOrderLists] = useState([]);
+    const [harmfulModal, setHarmfulModal] = useState(false);
     let uploadSongs = [];
     const currentplayList = navigation.getParam('data');
     const getData = async () => {
@@ -218,6 +220,7 @@ const SongEditPage = ({navigation}) => {
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                        {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                     </TouchableOpacity>
                                     <View style={{marginTop: 10  * tmpWidth , marginLeft: 24  * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>
@@ -244,6 +247,7 @@ const SongEditPage = ({navigation}) => {
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                        {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                     </TouchableOpacity>
                                     <View style={{marginTop: 10 * tmpWidth, marginLeft: 24 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>

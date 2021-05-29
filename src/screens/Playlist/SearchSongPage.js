@@ -7,6 +7,7 @@ import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import HarmfulModal from '../../components/HarmfulModal';
 
 const SongImage = ({url}) => {
     url =url.replace('{w}', '300');
@@ -23,6 +24,7 @@ const SearchPage = ({ navigation }) => {
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
+    const [harmfulModal, setHarmfulModal] = useState(false);
 
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -175,6 +177,7 @@ const SearchPage = ({ navigation }) => {
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -200,6 +203,7 @@ const SearchPage = ({ navigation }) => {
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
