@@ -213,8 +213,7 @@ const getOtherStory = (dispatch) => async () => {
 
 const storyView = (dispatch) => async ({id}) => {
     try {
-        const response = await serverApi.get('/StoryView/'+id);
-        dispatch({ type: 'myStory', payload: response.data });
+        await serverApi.get('/StoryView/'+id);
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with storyView' });
     }
