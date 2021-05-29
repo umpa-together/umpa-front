@@ -26,7 +26,6 @@ const MusicArchivePage = ({navigation}) => {
     
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [clickModal, setClickModal] = useState(false);
-    const [storyTok , setStoryTok] = useState(false);
     const [like, setLike] = useState(false);
 
     const [selectedStory, setSelectedStory] = useState(undefined);
@@ -85,9 +84,6 @@ const MusicArchivePage = ({navigation}) => {
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
 
-    useEffect(() => {
-        storyClick
-    }, [storyTok]);
     return (
         <View style={styles.container}>
             {state.musicArchive == null || state.musicArchive == null ? <View style={{justifyContent: 'center', alignItems: 'center' ,flex: 1}}><ActivityIndicator /></View> :
