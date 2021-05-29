@@ -101,8 +101,8 @@ const SelectedCuration = ({navigation}) => {
                         {state.currentCuration.isSong ? <Imagebacktake opac={0.4} url={state.currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={state.currentCuration.object.artwork.url}></Imagebacktake>}
                     </View>
                     <View style={styles.back}>
-                        <TouchableOpacity style={{ zIndex:2, height:40 * tmpWidth, width:40 * tmpWidth, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
-                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/selectedcurationback.svg')}/>
+                        <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
+                            <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{width:204 * tmpWidth, height:204 * tmpWidth, marginTop:27 * tmpWidth, marginLeft:86 * tmpWidth}}>
