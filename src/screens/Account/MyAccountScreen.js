@@ -488,8 +488,8 @@ const MyAccountScreen = ({navigation}) => {
                         </View>
                     </Modal>
                 <Modal
-                    animationIn='lightSpeedIn'
-                    animationOut='lightSpeedOut'
+                    animationIn='fadeInRight'
+                    animationOut='fadeOutLeft'
                     isVisible={storyModal}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}

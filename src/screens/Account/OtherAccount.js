@@ -325,8 +325,8 @@ const OtherAccountScreen = ({navigation}) => {
                     </View>
                 </Modal> : null }
                 <Modal 
-                    animationIn='lightSpeedIn'
-                    animationOut='lightSpeedOut'
+                    animationIn='fadeInRight'
+                    animationOut='fadeOutLeft'
                     isVisible={storyModal}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}
