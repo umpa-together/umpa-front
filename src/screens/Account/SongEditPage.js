@@ -6,12 +6,13 @@ import { Context as DJContext } from '../../context/DJContext'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
+import Modal from 'react-native-modal';
 import { tmpWidth } from '../../components/FontNormalize';
 
-const SongImage = ({url}) => {
+const SongImage = ({url, opacity}) => {
     url =url.replace('{w}', '300');
     url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
+    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth, opacity}} source ={{url:url}}/>
 };
 
 const SongEditPage = ({navigation}) => {
@@ -24,7 +25,10 @@ const SongEditPage = ({navigation}) => {
     const [selectedId, setSelectedId] = useState('');
     const [songs, setSong] = useState([]);
     const [isEdit, setIsEdit] = useState(true);
+    const [orderModal, setOrderModal] = useState(false);
     const [isPlayingid, setIsPlayingid] = useState('0');
+    const [orderLists, setOrderLists] = useState([]);
+    let uploadSongs = [];
     const currentplayList = navigation.getParam('data');
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -63,13 +67,26 @@ const SongEditPage = ({navigation}) => {
     const okPress = async () => {
         if(songs.length >= 5){
             setIsEdit(true);
-            await editSongs({ songs: songs });
-            getMyInfo();
-            navigation.goBack();
+            setOrderModal(true);
         }else{
             setIsEdit(false);
             return;
         }
+    }
+
+    const upload = async () => {
+        for(let key in orderLists){
+            uploadSongs.push(songs[orderLists[key]]);
+        }
+        setOrderModal(false)
+        await editSongs({ songs: uploadSongs });
+        getMyInfo();
+        navigation.goBack();
+    }
+    
+    const onClose = () => {
+        setOrderModal(false)
+        setOrderLists([])
     }
 
     const addtracksong= async ({data}) => {
@@ -197,7 +214,7 @@ const SongEditPage = ({navigation}) => {
                                             addtracksong({data: item})
                                         }}}
                                         style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url}/>
+                                        <SongImage url={item.attributes.artwork.url} opacity={1}/>
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -223,7 +240,7 @@ const SongEditPage = ({navigation}) => {
                                             addtracksong({data: item})
                                         }}}
                                         style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url}/>
+                                        <SongImage url={item.attributes.artwork.url} opacity={1}/>
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -253,7 +270,7 @@ const SongEditPage = ({navigation}) => {
                         </Text> : null }
                     </View>
                     <TouchableOpacity onPress={() => okPress()}>
-                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
+                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>순서</Text>
                     </TouchableOpacity>
                 </View>
                 <FlatList
@@ -272,7 +289,7 @@ const SongEditPage = ({navigation}) => {
                             >
                                 <View style={styles.selecetedSongBox}>
                                     <View style={styles.selectedSongCover}>
-                                        <SongImage url={item.attributes.artwork.url} />
+                                        <SongImage url={item.attributes.artwork.url} opacity={1} />
                                     </View>
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -289,6 +306,58 @@ const SongEditPage = ({navigation}) => {
                     }}
                 />
             </View>
+            <Modal
+                animationIn="fadeIn"
+                animationOut="fadeOut"
+                isVisible={orderModal}
+                onBackdropPress={onClose}
+                backdropOpacity={0.5}
+            >
+                <View style={{width: '100%', height: '50%', backgroundColor: 'rgb(255,255,255)', borderRadius: 8 * tmpWidth}}>
+                    <View>
+                        <Text style={{textAlign: 'center', marginTop: 15 * tmpWidth}}>대표곡을 첫번째로 선택하시고</Text>
+                        <Text style={{textAlign: 'center', marginTop: 2 * tmpWidth}}>노출 순서를 정해주세요</Text>
+                    </View>
+                    {orderLists.length == songs.length ? 
+                    <TouchableOpacity style={{position: 'absolute', top: 18 * tmpWidth, right: 24 * tmpWidth}} onPress={() => upload()}> 
+                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>확인</Text>
+                    </TouchableOpacity> : null }
+                    <FlatList 
+                        style={{paddingLeft: 36 * tmpWidth, marginTop: 8 * tmpWidth}}
+                        data={songs}
+                        keyExtractor={posts => posts.id}
+                        renderItem={({item, index}) => {
+                            return (
+                                <View style={{flexDirection: 'row', marginTop: 12 * tmpWidth}}>
+                                    <TouchableOpacity style={styles.selectedSongCover} onPress={() => {
+                                        if(orderLists.includes(index)){
+                                            setOrderLists(orderLists.filter(order => order != index))
+                                        }else{
+                                            setOrderLists([...orderLists, index])
+                                        }
+                                    }}>
+                                        {orderLists.includes(index) ? 
+                                        <SongImage url={item.attributes.artwork.url} opacity={1.0}/> : 
+                                        <SongImage url={item.attributes.artwork.url} opacity={0.5}/> }
+                                    </TouchableOpacity>
+                                    <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            {item.attributes.contentRating == "explicit" ? 
+                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            : null }
+                                            <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                        </View>
+                                        <Text style={{fontSize: 12 * tmpWidth, color:'rgb(148,153,163)', marginTop: 6 * tmpWidth  }} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                    </View>
+                                    {orderLists.includes(index) ? 
+                                    <Text style={{fontSize: 16 * tmpWidth, color:'rgb(169,193,255)', position: 'absolute', right: 36 * tmpWidth}}>{orderLists.indexOf(index)+1}</Text> : null }
+                                </View>
+                            )
+                        }}
+                    />
+                    <Text style={{color: 'rgb(153,153,153)', textAlign: 'center', paddingTop: 5 * tmpWidth, paddingBottom: 5 * tmpWidth}}>(커버를 선택하시면 순서를 정할 수 있어요)</Text>
+                </View>
+            </Modal>
         </View>
     )
 };
