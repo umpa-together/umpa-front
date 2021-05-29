@@ -13,6 +13,8 @@ const curationReducer = (state, action) => {
             return { ...state, mycurationpost:action.payload };
         case 'post_curation':
             return { ...state,  currentCuration: action.payload[0], currentCurationpost:  action.payload[1] };
+        case 'edit_curation':
+            return { ...state,  mycurationpost:action.payload[0], currentCurationpost:  action.payload[1] };            
         case 'like_curationpost':
             return { ...state,  currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
 
@@ -33,6 +35,17 @@ const postCuration = dispatch => {
     }
 };
 
+const editCuration = dispatch => {
+    return async ({  hidden, textcontent, id }) => {
+        try {
+            const response = await serverApi.put('/curationpost/'+id, { hidden ,textcontent });
+            dispatch({ type: 'edit_curation', payload: response.data });
+        }
+        catch(err){
+            dispatch({ type: 'error', payload: 'Something went wrong with postCuration' });
+        }
+    }
+};
 const deleteCuration = dispatch => {
     return async ({id}) => {
         try {
@@ -118,7 +131,7 @@ const getmyCuration = dispatch => {
 
 export const { Provider, Context } = createDataContext(
     curationReducer,
-    { postCuration, deleteCuration, likecurationpost,unlikecurationpost, 
+    { postCuration, editCuration ,deleteCuration, likecurationpost,unlikecurationpost, 
         initcurationposts, getCuration, getCurationposts, getmyCuration },
     { currentCuration:{}, currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
 )

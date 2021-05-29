@@ -25,13 +25,16 @@ const Imagebacktake = ({url , border, opac}) => {
 };
 
 const SelectedCuration = ({navigation}) => {
-    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost} = useContext(CurationContext);
+    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration} = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [hidden, setHidden] = useState(false);
     const [text, setText] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [postModal, setPostModal] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [editid, setEditid] = useState();
+
     const [cidx, setCidx] = useState(0);
     const [ref, setRef] = useState(null);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -86,7 +89,7 @@ const SelectedCuration = ({navigation}) => {
     }, []);
 
     useEffect(()=>{
-        if(ref !=null && state.currentCurationpost!=null && postid!=null){
+        if(ref !=null && state.currentCurationpost!=null && state.currentCurationpost!=undefined&&postid!=null){
             const idx = state.currentCurationpost.findIndex(el => el._id ==postid);
             setCidx(idx);
         }
@@ -186,8 +189,15 @@ const SelectedCuration = ({navigation}) => {
                             renderItem={({item}) =>{
                                 return(
                                     <TouchableOpacity onPress={()=>{
+                                        if(item.postUserId._id != userState.myInfo._id){
                                         setSelectedCuration(item);
                                         setShowpost(true);
+                                        } else {
+                                            
+                                            getmyCuration({id:state.currentCuration.songoralbumid})
+                                            setShowModal(true);
+
+                                        }
                                     }}>
                                         <View style={styles.curationpostitem}>
                                             <TouchableOpacity onPress={async () => {
@@ -232,7 +242,7 @@ const SelectedCuration = ({navigation}) => {
                                                 </View>
                                                 <View style={{ width:275 * tmpWidth, height:64 * tmpWidth}}>
                                                 {item.hidden ? <Text style ={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, marginLeft:11 * tmpWidth,color:"rgba(93,93,93,1)"}}>비밀글 입니다.</Text>:
-                                                <Text numberOfLines ={5} style ={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, marginLeft:11 * tmpWidth,color:"rgba(93,93,93,1)"}}>{item.textcontent}</Text>
+                                                <Text numberOfLines ={5} style ={{lineHeight:tmpWidth*18 ,fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, marginLeft:11 * tmpWidth,color:"rgba(93,93,93,1)"}}>{item.textcontent}</Text>
                                                 }                                                
                                                 </View>
                                             </View>
@@ -308,18 +318,30 @@ const SelectedCuration = ({navigation}) => {
                                                 <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                             </View> : <Image style={{width:'100%', height:'100%', borderRadius:32 }}source={{uri: state.mycurationpost.postUserId.profileImage}}/> }
                                         </TouchableOpacity>
-                                        <View style={{width:210 * tmpWidth, alignItems:'center', flexDirection:'row'}}>
-                                            <Text style={{marginLeft:12 * tmpWidth}}>{state.mycurationpost.postUser}</Text>
+                                        <View style={{width:200 * tmpWidth, alignItems:'center', flexDirection:'row'}}>
+                                            <Text numberOfLines ={1} style={{marginLeft:12 * tmpWidth}}>{state.mycurationpost.postUser}</Text>
                                             {state.mycurationpost.hidden ? 
                                                 <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/>
                                             : null }
                                         </View>
-                                        <View style={{width:50 * tmpWidth,height:20 * tmpWidth}}>
+                                        <View style={{marginLeft:10, width:70 * tmpWidth,height:20 * tmpWidth, flexDirection:'row'}}>
                                             <TouchableOpacity onPress={()=> {
-                                                setShowModal(false)
-                                                setDeleteModal(true)}}>
-                                                <Text>삭제하기</Text>
+                                                setShowModal(false);
+                                                setHidden(false);
+                                                setDeleteModal(true);}}>
+                                            
+                                                <Text>삭제</Text>
                                             </TouchableOpacity>
+                                            <TouchableOpacity style ={{marginLeft:10*tmpWidth}}onPress={()=> {
+                                                setEdit(true);
+                                                setShowModal(false)
+                                                setPostModal(true);
+                                                setEditid(state.mycurationpost._id);
+                                                setText(state.mycurationpost.textcontent);
+                                                setHidden(state.mycurationpost.hidden);
+                                                }}>
+                                                <Text>수정</Text>
+                                            </TouchableOpacity>                                           
                                         </View>
                                     </View>
                                     <View style={{width:238 * tmpWidth, marginTop:24 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
@@ -373,8 +395,9 @@ const SelectedCuration = ({navigation}) => {
                                         </View>
                                     </View>
                                 </View>
-                                <View style={styles.postbutton}>
-                                    { text.length >= 50  ?
+                                <View style={text.length >= 50 ? styles.postbutton : styles.postbutton2}>
+                                    { !edit ? 
+                                    text.length >= 50  ?
                                     <TouchableOpacity
                                         style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
                                         onPress ={async () => {
@@ -387,10 +410,30 @@ const SelectedCuration = ({navigation}) => {
                                         }}
                                     >
                                         <Text style={{color:"#fff",fontSize:18 * tmpWidth,}}>업로드하기</Text>
-                                    </TouchableOpacity> :
+                                    </TouchableOpacity>
+                                    :
                                     <View style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}>
                                         <Text style={{color:"#fff",fontSize:18 * tmpWidth,}}>50자 이상 입력해주세요</Text>
-                                    </View> }
+                                    </View> 
+                                    : 
+                                    text.length >= 50 ?
+                                    <TouchableOpacity
+                                        style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
+                                        onPress ={async () => {
+                                            if(text.length>=50){
+                                            await editCuration({ hidden : hidden , textcontent:text, id:editid})
+                                            setEdit(false);
+                                            setPostModal(false);
+                                            setText('');
+                                            }
+                                        }}
+                                    >
+                                        <Text style={{color:"#fff",fontSize:18 * tmpWidth,}}>수정하기</Text>
+                                    </TouchableOpacity>  :
+                                     <View style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}>
+                                        <Text style={{color:"#fff",fontSize:18 * tmpWidth,}}>50자 이상 입력해주세요</Text>
+                                    </View>                                                                    
+                                    }
                                 </View>
                             </View>
                         </Modal> :null }
@@ -507,6 +550,17 @@ const styles = StyleSheet.create({
         backgroundColor:"rgb(169,193,255)",
         borderRadius:100 * tmpWidth
     },
+    postbutton2:{
+        flexDirection:'row',
+        marginLeft:24 * tmpWidth,
+        marginTop:24 * tmpWidth,
+        justifyContent:'center',
+        alignItems:'center',
+        width:327 * tmpWidth,
+        height:52 * tmpWidth,
+        backgroundColor:"#c4c4c4",
+        borderRadius:100 * tmpWidth
+    },   
     postopt:{
         marginLeft: 24 * tmpWidth,
         width:327 * tmpWidth,
