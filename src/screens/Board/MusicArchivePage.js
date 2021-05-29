@@ -33,7 +33,6 @@ const MusicArchivePage = ({navigation}) => {
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
     const [harmfulModal, setHarmfulModal] = useState(false);
-
     useEffect(() => {
         const listener =navigation.addListener('didFocus', async ()=>{
             getMusicArchive({boardId: state.boards._id});
@@ -81,7 +80,6 @@ const MusicArchivePage = ({navigation}) => {
         likeCheck({item})
         setClickModal(true);
         setSelectedStory(item);
-        console.log(selectedStory)
         setSelectedIdx(index);
         if(item.song.attributes.contentRating != 'explicit')    addtracksong({data:item.song});
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
