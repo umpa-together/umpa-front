@@ -10,7 +10,7 @@ import { Context as CurationContext } from '../context/CurationContext';
 const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, } = useContext(PlaylistContext);
-    const { getMyPlaylist, getMyInfo } = useContext(UserContext);
+    const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state: curationState, deleteCuration } = useContext(CurationContext);
     
@@ -39,6 +39,8 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
         } else if (type == 'curation') {
             deleteCuration({id:curationState.mycurationpost._id.toString()})
             getMyInfo()
+        } else if (type == 'todaySong') {
+            deleteStory()
         }
     }
 
@@ -49,8 +51,10 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
             setTitle('댓글을')
         } else if (type == 'playlist'){
             setTitle('플레이리스트를')
-        } else {
+        } else if (type == 'curation'){
             setTitle('큐레이션을')
+        } else {
+            setTitle('오늘의 곡을')
         }
     }, []);
     return (
