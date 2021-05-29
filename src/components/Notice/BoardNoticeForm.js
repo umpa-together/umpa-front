@@ -80,14 +80,17 @@ const styles=StyleSheet.create({
     },
     boardName: {
         fontSize: 12 * tmpWidth,
-        color: 'rgba(0,0,0,0.61)'
+        color: 'rgba(0,0,0,0.61)',
+        lineHeight: 16 * tmpWidth,
     },
     outerText: {
         fontSize: 14 * tmpWidth, 
         fontWeight: '500',
+        lineHeight: 16 * tmpWidth,
     },
     innerText: {
-        fontWeight:'400'
+        fontWeight:'400',
+        lineHeight: 16 * tmpWidth,
     }
 });
 
