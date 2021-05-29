@@ -149,20 +149,23 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.titleSize}>해시태그</Text>
                         <View style={styles.hashtagInput}>
-                            <TextInput
-                                value={temphash}
-                                onChangeText={(text)=>{
-                                    if(text.length <= 9 && hashtag.length < 3) setTemphash(text)}}
-                                placeholder="해시태그를 적어주세요."
-                                placeholderTextColor='rgb(196,196,196)'
-                                autoCapitalize='none'
-                                onSubmitEditing={() => {
-                                    addhashtag({data:temphash})
-                                    setTemphash('')
-                                }}
-                                autoCorrect={false}
-                                style={{fontSize: 14 * tmpWidth}}
-                            />
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text>#</Text>
+                                <TextInput
+                                    value={temphash}
+                                    onChangeText={(text)=>{
+                                        if(text.length <= 9 && hashtag.length < 3) setTemphash(text)}}
+                                    placeholder="해시태그를 적어주세요.(최대 3개, 9글자)"
+                                    placeholderTextColor='rgb(196,196,196)'
+                                    autoCapitalize='none'
+                                    onSubmitEditing={() => {
+                                        addhashtag({data:temphash})
+                                        setTemphash('')
+                                    }}
+                                    autoCorrect={false}
+                                    style={{fontSize: 13 * tmpWidth}}
+                                />
+                                </View>
                             <TouchableOpacity onPress={() => {
                                 addhashtag({data:temphash})
                                 setTemphash('')}}
@@ -332,7 +335,7 @@ const styles=StyleSheet.create({
         marginLeft: 14 * tmpWidth,
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     hashtagplus: {
         width: 20.4 * tmpWidth,
