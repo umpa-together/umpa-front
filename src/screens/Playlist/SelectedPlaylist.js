@@ -257,7 +257,10 @@ const SelectedPlaylist = ({navigation}) => {
                         <View style={{marginTop: 20 * tmpWidth}}>
                         {comments == [] ? null : comments.map(item => {
                             return (
-                                <View style={styles.commentBox} key={item._id}>
+                                <TouchableOpacity style={styles.commentBox} key={item._id} onPress={ async()=> {
+                                    setShowModal(item._id)
+                                    setCurrentcommentid(item._id)
+                                    await getreComment({commentid:item._id})}}>
                                     <TouchableOpacity onPress={async () => {
                                         if(item.postUserId._id == userState.myInfo._id) {
                                             navigate('Account')
@@ -446,7 +449,7 @@ const SelectedPlaylist = ({navigation}) => {
                                             />}
                                         </View>
                                     </Modal> : null}
-                                </View>
+                                </TouchableOpacity>
                             )
                         })}
                         </View>
