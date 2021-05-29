@@ -329,14 +329,12 @@ const styles = StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,
         alignItems: 'center',
-        width: 252 * tmpWidth,
-
     },
     modalArtistText: {
         fontSize: 14 * tmpWidth,
         color: 'rgb(133,133,133)',
         marginTop: 8 * tmpWidth,
-        marginBottom: 10 * tmpWidth
+        marginBottom: 10 * tmpWidth,
     },
     modalTitleText: {
         fontSize: 16 * tmpWidth
