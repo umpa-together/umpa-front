@@ -17,16 +17,16 @@ const MainSearchScreen = ({navigation}) => {
             <View style={styles.searchopt}>
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setCategory('Song')}>
-                        {category == 'Song' ? <Text style={{fontSize: 24 * tmpWidth, marginRight: 18 * tmpWidth,color:'rgb(0,0,0)'}}>SONG</Text>
+                        {category == 'Song' ? <Text style={{fontSize: 22 * tmpWidth, marginRight: 18 * tmpWidth,color:'rgb(0,0,0)'}}>SONG</Text>
                         : <Text style={{fontSize: 24 * tmpWidth, marginRight: 18 * tmpWidth, color: '#C1C3D1'}}>SONG</Text> }
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setCategory('DJSong')}>
-                        {category == 'DJSong' ? <Text style={{fontSize: 24 * tmpWidth, color:'rgb(0,0,0)'}}>DJ</Text>
+                        {category == 'DJSong' ? <Text style={{fontSize: 22 * tmpWidth, color:'rgb(0,0,0)'}}>DJ</Text>
                         : <Text style={{fontSize: 24 * tmpWidth, color: '#c6c6c6'}}>DJ</Text> }
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{alignItems: 'center',width: 375 * tmpWidth, height: 62 * tmpWidth, }}>
+            <View style={{alignItems: 'center',width: 375 * tmpWidth, height: 64 * tmpWidth, }}>
                 <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: category})}>
                     <View style={{flexDirection: 'row', alignItems:'center',}}>
                         <FontAwesome style={{fontSize: 18 * tmpWidth, color:'#c6c6c6',marginTop:14 * tmpWidth,marginLeft:12 * tmpWidth, marginRight:12 * tmpWidth}} name="search"/>
@@ -51,12 +51,11 @@ MainSearchScreen.navigationOptions = () =>{
 
 const styles=StyleSheet.create({
     searchopt:{
-
+        marginTop : tmpWidth*20,
         flexDirection: 'row',
         width:100* tmpWidth,
-        height:40 * tmpWidth,
-        alignItems:'flex-end',
-        marginBottom:10 * tmpWidth,
+        height:22 * tmpWidth,
+        marginBottom:13 * tmpWidth,
         marginLeft:24 * tmpWidth
     },
     inputbox:{

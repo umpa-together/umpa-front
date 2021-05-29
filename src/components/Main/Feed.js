@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         marginTop:14 * tmpWidth
     },
     opt:{
-        marginTop: 60*tmpWidth,
+        marginTop: 35*tmpWidth,
         width:375 * tmpWidth,
         height:48 * tmpWidth,
         flexDirection: 'row',
