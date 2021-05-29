@@ -44,7 +44,7 @@ const MainDJForm = ({navigation}) => {
                                             <View style={styles.box}>
                                                 <Text style={{fontSize:11 * tmpWidth, color:'rgba(148,153,163,1)'}}>대표곡</Text>
                                             </View>
-                                            <View style={{width:225 * tmpWidth}}>
+                                            <View style={{width:200 * tmpWidth}}>
                                                 <Text style={{marginLeft:6 * tmpWidth,fontSize:14 * tmpWidth, color:'rgba(148,153,163,1)', fontWeight:'bold'}} numberOfLines={1}>
                                                     {item.songs[0].attributes.name}
                                                 </Text>
