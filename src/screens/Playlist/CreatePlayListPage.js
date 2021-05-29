@@ -150,7 +150,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                         <Text style={styles.titleSize}>해시태그</Text>
                         <View style={styles.hashtagInput}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text>#</Text>
+                                <Text style={{color: 'rgb(169,193,255)', marginRight: 4 * tmpWidth}}>#</Text>
                                 <TextInput
                                     value={temphash}
                                     onChangeText={(text)=>{
