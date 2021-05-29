@@ -18,11 +18,11 @@ const MainSearchScreen = ({navigation}) => {
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setCategory('Song')}>
                         {category == 'Song' ? <Text style={{fontSize: 22 * tmpWidth, marginRight: 18 * tmpWidth,color:'rgb(0,0,0)'}}>SONG</Text>
-                        : <Text style={{fontSize: 24 * tmpWidth, marginRight: 18 * tmpWidth, color: '#C1C3D1'}}>SONG</Text> }
+                        : <Text style={{fontSize: 22 * tmpWidth, marginRight: 18 * tmpWidth, color: '#C1C3D1'}}>SONG</Text> }
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setCategory('DJSong')}>
                         {category == 'DJSong' ? <Text style={{fontSize: 22 * tmpWidth, color:'rgb(0,0,0)'}}>DJ</Text>
-                        : <Text style={{fontSize: 24 * tmpWidth, color: '#c6c6c6'}}>DJ</Text> }
+                        : <Text style={{fontSize: 22 * tmpWidth, color: '#c6c6c6'}}>DJ</Text> }
                     </TouchableOpacity>
                 </View>
             </View>
