@@ -211,20 +211,18 @@ const SelectedPlaylist = ({navigation}) => {
                             renderItem={({item}) => {
                                 return (
                                     <View style={styles.songBox}>
-                                        {isPlayingid == item.id ?
-                                        <TouchableOpacity style={styles.songCover} onPress={() => stoptracksong()}>
-                                           <SongImage play={true} url={item.attributes.artwork.url}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity style={styles.songCover} onPress={()=>addtracksong({data:item})}>
-                                            <SongImage play={false} url={item.attributes.artwork.url}/>
-                                        </TouchableOpacity> }
-                                        {isPlayingid == item.id ?
-                                        <TouchableOpacity onPress={() => stoptracksong()}>
-                                            <SvgUri width='17' height='20' source={require('../../assets/icons/play.svg')} style={{marginTop: 50 * tmpWidth}}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity  onPress={()=>addtracksong({data:item})}>
-                                            <SvgUri width='17' height='20' source={require('../../assets/icons/play.svg')} style={{marginTop: 50 * tmpWidth}}/>
-                                        </TouchableOpacity> }
+                                        <TouchableOpacity style={styles.songCover} onPress={() => {
+                                            if(isPlayingid == item.id){
+                                                stoptracksong()
+                                            }else{
+                                                addtracksong({data: item})
+                                            }
+                                        }}>
+                                           <SongImage play={false} url={item.attributes.artwork.url}/>
+                                           { isPlayingid != item.id ? 
+                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
+                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
+                                        </TouchableOpacity>
                                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         <View style={styles.songWidthBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -594,7 +592,7 @@ const styles = StyleSheet.create({
     songWidthBox: {
         width: 80 * tmpWidth,
         alignItems: 'center',
-        marginTop: 46 * tmpWidth,
+        marginTop: 12 * tmpWidth,
     },
     songText: {
         fontSize: 12 * tmpWidth, 
@@ -625,7 +623,6 @@ const styles = StyleSheet.create({
         borderRadius: 100 * tmpWidth,
         alignItems: 'center',
         marginTop: 12 * tmpWidth,
-        position: 'absolute'
     },
     inputBox: {
         width: '100%',

@@ -111,16 +111,13 @@ const MusicArchivePage = ({navigation}) => {
                             return (
                                 <View style={styles.musicArchiveContainer}>
                                     <View style={styles.songBox}>
-                                        {isPlayingid == item.song.id ?
-                                        <TouchableOpacity style={styles.songCover} onPress={()=> stoptracksong()}>
-                                            <SongImage play={true} url={item.song.attributes.artwork.url}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity style={styles.songCover} onPress={async ()=>{   {
+                                        <TouchableOpacity style={styles.songCover} onPress={() => {
                                             setOption('archive');
                                             storyClick({item, index})
-                                        }}} >
+                                        }}>
                                             <SongImage play={false} url={item.song.attributes.artwork.url}/>
-                                        </TouchableOpacity> }
+                                        </TouchableOpacity>
+                                        
                                         <View style={styles.nameBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.song.attributes.contentRating == "explicit" ? 
@@ -148,7 +145,6 @@ const MusicArchivePage = ({navigation}) => {
                                 <TouchableOpacity style={styles.popularSongBox} onPress={async () => {
                                     setOption('chart');
                                     storyClick({item, index})
-                                    likeCheck({item})
                                 }}>
                                     <Text style={styles.chartNum}>{index + 1}</Text>
                                     <View style={styles.eachSongBox}>
@@ -220,19 +216,20 @@ const MusicArchivePage = ({navigation}) => {
                                     }}}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                            { isPlayingid == selectedStory.song.id ? 
-                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => stoptracksong()}>
+                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', borderWidth: 1}} onPress={() => {
+                                if(isPlayingid == selectedStory.song.id){
+                                    stoptracksong()
+                                }else{
+                                    addtracksong({data: selectedStory.song})
+                                }
+                            }}>
                                 <View style={styles.songscover}>
                                     <SongImage play={false} url={selectedStory.song.attributes.artwork.url} />
+                                    { isPlayingid != selectedStory.song.id ? 
+                                    <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> :
+                                    <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> }
                                 </View>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalStop.svg')} style={styles.playIcon}/>
-                            </TouchableOpacity> :
-                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => addtracksong({data: selectedStory.song})}>
-                                <View style={styles.songscover}>
-                                    <SongImage play={false} url={selectedStory.song.attributes.artwork.url} />
-                                </View>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalPlay.svg')} style={styles.playIcon}/>
-                            </TouchableOpacity> }
+                            </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal} /> : null }
                             {(option == 'archive' && selectedIdx != state.musicArchive.length-1) ||
                                  (option == 'chart' && selectedIdx != state.musicChart.length-1) ? 

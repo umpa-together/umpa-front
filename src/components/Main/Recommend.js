@@ -208,13 +208,18 @@ const Recommend = ({navigation}) => {
                                                 : null }
                                                 <Text style={styles.titleText} numberOfLines={1}>{representSong[idx].attributes.name}</Text>
                                             </View>
-                                            {isPlayingid == representSong[idx].id ? 
-                                            <TouchableOpacity style={styles.representSongCover} onPress={() => stoptracksong()}>
-                                                <ImageSelect opac={0.5} url={representSong[idx].attributes.artwork.url}/>
-                                            </TouchableOpacity> : 
-                                            <TouchableOpacity style={styles.representSongCover} onPress={() => addtracksong({data:representSong[idx]})}>
+                                            <TouchableOpacity style={styles.representSongCover} onPress={() => {
+                                                if(isPlayingid == representSong[idx].id){
+                                                    stoptracksong()
+                                                }else{
+                                                    addtracksong({data: representSong[idx]})
+                                                }
+                                            }}>
                                                 <ImageSelect opac={1.0} url={representSong[idx].attributes.artwork.url}/>
-                                            </TouchableOpacity> }
+                                                { isPlayingid != representSong[idx].id ? 
+                                                <SvgUri width='50' height='50' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
+                                                <SvgUri width='50' height='50' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
+                                            </TouchableOpacity>
                                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                             <View style={{width: 150 * tmpWidth, alignItems: 'center'}}>
                                                 <Text style={styles.artistText} numberOfLines={1}>{representSong[idx].attributes.artistName}</Text>
@@ -248,13 +253,18 @@ const Recommend = ({navigation}) => {
                                         renderItem={({item}) => {
                                             return (
                                                 <View style={styles.listBox}>
-                                                    {isPlayingid == item.id ? 
-                                                    <TouchableOpacity style={styles.listSongCover} onPress={() => stoptracksong()}>
-                                                        <ImageSelect opac={0.5} url={item.attributes.artwork.url}/>
-                                                    </TouchableOpacity> : 
-                                                    <TouchableOpacity style={styles.listSongCover} onPress={() => addtracksong({data:item})}>
+                                                    <TouchableOpacity style={styles.listSongCover} onPress={() => {
+                                                        if(isPlayingid == item.id){
+                                                            stoptracksong()
+                                                        }else{
+                                                            addtracksong({data: item})
+                                                        }
+                                                    }}>
                                                         <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
-                                                    </TouchableOpacity> }
+                                                        { isPlayingid != item.id ? 
+                                                        <SvgUri width='27' height='27' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                                        <SvgUri width='27' height='27' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                                    </TouchableOpacity>
                                                     { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                                     <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth}}>
                                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>

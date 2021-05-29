@@ -172,6 +172,9 @@ const SearchPage = ({ navigation }) => {
                                             }}}
                                             style={styles.songCover}>
                                             <SongImage url={item.attributes.artwork.url}/>
+                                            { isPlayingid != item.id ? 
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -194,6 +197,9 @@ const SearchPage = ({ navigation }) => {
                                                 addtracksong({data: item})
                                             }}}style={styles.songCover}>
                                             <SongImage url={item.attributes.artwork.url}/>
+                                            { isPlayingid != item.id ? 
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>

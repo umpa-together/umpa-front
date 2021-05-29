@@ -138,6 +138,9 @@ const SearchMusicPage = () => {
                                 }}
                                 style={styles.songCover}>
                                     <SongImage url={item.attributes.artwork.url}/>
+                                    { isPlayingid != item.id ? 
+                                    <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                    <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                 </TouchableOpacity>
                                 <View style={{flex: 1, flexDirection: 'row', marginRight: 26 * tmpWidth}}>
                                     <View style={styles.infoBox}>
@@ -168,6 +171,9 @@ const SearchMusicPage = () => {
                                     }}}
                                     style={styles.songCover}>
                                     <SongImage url={item.attributes.artwork.url}/>
+                                    { isPlayingid != item.id ? 
+                                    <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                    <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                 </TouchableOpacity>
                                 <View style={styles.infoBox}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>

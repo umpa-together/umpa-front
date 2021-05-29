@@ -165,13 +165,18 @@ const Feed = ({navigation}) => {
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx-1], index: selectedIdx-1})}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                                { isPlayingid == selectedStory.song["song"].id ?
-                                <TouchableOpacity style={styles.songscover} onPress={() => stoptracksong()}>
+                                <TouchableOpacity style={styles.songscover} onPress={() => {
+                                    if(isPlayingid == selectedStory.song["song"].id){
+                                        stoptracksong()
+                                    }else{
+                                        addtracksong({data: selectedStory.song["song"]})
+                                    }
+                                }}>
                                     <ImageSelect opac={1.0} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                </TouchableOpacity> :
-                                <TouchableOpacity style={styles.songscover} onPress={() => addtracksong({data: selectedStory.song["song"]})}>
-                                    <ImageSelect opac={0.5} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                </TouchableOpacity> }
+                                    { isPlayingid != selectedStory.song["song"].id ? 
+                                    <SvgUri width='74' height='74' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 63 * tmpWidth, top: 63 * tmpWidth}}/> :
+                                    <SvgUri width='74' height='74' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 63 * tmpWidth, top: 63 * tmpWidth}}/> }
+                                </TouchableOpacity>
                                 { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                 {selectedIdx != userState.otherStory.length-1 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx+1], index: selectedIdx+1})}>

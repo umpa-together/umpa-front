@@ -323,7 +323,9 @@ const SignupPage = ({ navigation }) => {
                 <View style={styles.modalBackground}>
                   <View style={styles.modalbox}>
                     <View style={{width:335 * tmpWidth, height:56 * tmpWidth,flexDirection:'row'}}>
-                        <TouchableOpacity style={styles.modalexiticon} onPress={()=>{setModalVisible(false);}} >
+                        <TouchableOpacity style={styles.modalexiticon} onPress={()=>{
+                            stoptracksong()
+                            setModalVisible(false)}} >
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')} />
                         </TouchableOpacity>
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(80,80,80)', marginLeft:87 * tmpWidth, marginTop:24 * tmpWidth}}>환영합니다!</Text>
@@ -381,17 +383,20 @@ const SignupPage = ({ navigation }) => {
                                 renderItem={({item})=> {
                                     return (
                                         <View style={ item.id == idc ? styles.picked : styles.unpicked}>
-                                            { isPlayingid != item.id ?
-                                            <TouchableOpacity onPress={() => addtracksong({data: item})}>
-                                                <View style={styles.Songs}>
-                                                    <ImageSelect opac={0.5} url={item.attributes.artwork.url}></ImageSelect>
-                                                </View>
-                                            </TouchableOpacity> :
-                                            <TouchableOpacity onPress={() => stoptracksong()}>
-                                                <View style={styles.Songs}>
-                                                    <ImageSelect opac={1.0} url={item.attributes.artwork.url}></ImageSelect>
-                                                </View>
-                                            </TouchableOpacity> }
+                                            <TouchableOpacity style={styles.Songs} onPress={() => {
+                                                setIdc(item.id)
+                                                if(isPlayingid == item.id){
+                                                    stoptracksong()
+                                                }else{
+                                                    addtracksong({data: item})
+                                                }
+                                            }}>
+                                                <ImageSelect opac={1.0} url={item.attributes.artwork.url} />
+                                                { isPlayingid != item.id ? 
+                                                <SvgUri width='20' height='20' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                                <SvgUri width='20' height='20' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            </TouchableOpacity>
+                                            
                                             <View style={{marginLeft:20 * tmpWidth, flexDirection:'row',width:243.9 * tmpWidth, alignItems: 'center'}}>
                                                 <View style={{width:161.9 * tmpWidth, height:34.1 * tmpWidth }}>
                                                     <View style={{height:17 * tmpWidth,width:140 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
@@ -487,10 +492,9 @@ SignupPage.navigationOptions = ({navigation}) =>{
 };
 
 const styles = StyleSheet.create({
-
     Songs: {
-        width: 51.2 * tmpWidth,
-        height: 50.2 * tmpWidth,
+        width: 50 * tmpWidth,
+        height: 50 * tmpWidth,
         marginTop: 6 * tmpWidth,
         marginLeft: 20.5 * tmpWidth,
     },
