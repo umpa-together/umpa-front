@@ -110,6 +110,10 @@ const OtherAccountScreen = ({navigation}) => {
     useEffect(() => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
+        const listener = navigation.addListener('didFocus', async () => {
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove()
     }, []);
 
     return (
