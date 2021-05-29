@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableO
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
+import LinearGradient from 'react-native-linear-gradient';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -124,6 +125,9 @@ const SelectedPlaylist = ({navigation}) => {
             {state.current_playlist == null || playlistid != state.current_playlist._id ?
             <View style={styles.activityIndicatorContainer}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
+                <View style={{height: 228 * tmpWidth, width: '100%', zIndex: 1, position: 'absolute'}}>
+                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/playlistBackgrad.svg')}/>
+                </View>
                 <Image style={styles.thumbnail} source={{uri: state.current_playlist.image}}/>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong();}}>
@@ -507,7 +511,7 @@ const styles = StyleSheet.create({
     thumbnail: {
         height : 228 * tmpWidth,
         width : '100%',
-        position: 'absolute',
+        position: 'absolute'
     },
     header: {
         flexDirection: 'row', 
@@ -515,13 +519,15 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'space-between',
         marginLeft: 18 * tmpWidth, 
-        marginRight: 24 * tmpWidth
+        marginRight: 24 * tmpWidth,
+        zIndex: 2
     },
     profileBox: {
         marginTop: 4 * tmpWidth,
         marginLeft: 28 * tmpWidth,
         marginRight: 20 * tmpWidth,
         flexDirection: 'row',
+        zIndex: 2
     },
     profile: {
         height: 40 * tmpWidth,
@@ -545,6 +551,7 @@ const styles = StyleSheet.create({
     infoContainer: {
         alignItems: 'center', 
         marginBottom: 18 * tmpWidth, 
+        zIndex: 2
     },
     infoBox: {
         width: 319 * tmpWidth,
