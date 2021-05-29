@@ -34,7 +34,6 @@ const OtherAccountScreen = ({navigation}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [today, setToday] = useState('');
-    const [isStoryRead, setIsStoryRead] = useState(false);
     const [reportModal, setReportModal] = useState(false);
     const [user, setUser] = useState(null);   
     const [harmfulModal, setHarmfulModal] = useState(false);
@@ -74,9 +73,7 @@ const OtherAccountScreen = ({navigation}) => {
         setRepresentSong(user.songs[idx]);
     }
     const storyClick = () => {
-        if(!isStoryRead){
-            storyView({id: story.id});
-        }
+        storyView({id: story.id});
         setStoryModal(true);
         if(story['song'].song.attributes.contentRating != 'explicit'){
             addtracksong({data: story['song'].song});
@@ -100,7 +97,6 @@ const OtherAccountScreen = ({navigation}) => {
     }, [user]);
     useEffect(() => {
         if(story != null){
-            setIsStoryRead(story.song.view.includes(userState.myInfo._id));
             setUrl(story['song'].song.attributes.artwork.url);
         }
     }, [story]);
@@ -355,7 +351,7 @@ const OtherAccountScreen = ({navigation}) => {
                                             }
                                         }}>
                                             <ImageSelect opac={1.0} url={url} />
-                                            { isPlayingid != userState.myStory.song.id ? 
+                                            { isPlayingid != story['song'].song.id ? 
                                             <SvgUri width='50' height='50' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
                                             <SvgUri width='50' height='50' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
                                         </TouchableOpacity>
