@@ -457,7 +457,7 @@ const styles=StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,  
         alignItems: 'center', 
-        width: 230 * tmpWidth,
+        width: 190 * tmpWidth,
     },
     modalArtistText: {
         fontSize: 14 * tmpWidth, 
