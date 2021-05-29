@@ -35,9 +35,10 @@ const MusicArchivePage = ({navigation}) => {
     const [harmfulModal, setHarmfulModal] = useState(false);
 
     useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+        const listener =navigation.addListener('didFocus', async ()=>{
             getMusicArchive({boardId: state.boards._id});
             getMusicChart({boardId:  state.boards._id});
+            await TrackPlayer.reset()
         });
         return () => {
             listener.remove();

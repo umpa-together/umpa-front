@@ -5,6 +5,7 @@ import { Context as UserContext } from '../../context/UserContext'
 import { Context as DJContext } from '../../context/DJContext'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../../components/FontNormalize';
 
 const SongImage = ({url}) => {
@@ -23,6 +24,7 @@ const SongEditPage = ({navigation}) => {
     const [selectedId, setSelectedId] = useState('');
     const [songs, setSong] = useState([]);
     const [isEdit, setIsEdit] = useState(true);
+    const [isPlayingid, setIsPlayingid] = useState('0');
     const currentplayList = navigation.getParam('data');
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -55,7 +57,7 @@ const SongEditPage = ({navigation}) => {
     };
     const renderLeftActions = () => {
         return (
-            <View style={{width: '60%', height: '90%', backgroundColor:'#fff', borderWidth: 1}}/>
+            <View style={{width: '30%', height: '90%', backgroundColor:'#fff'}}/>
         )
     }
     const okPress = async () => {
@@ -69,6 +71,27 @@ const SongEditPage = ({navigation}) => {
             return;
         }
     }
+
+    const addtracksong= async ({data}) => {
+        const track = new Object();
+        track.id = data.id;
+        track.url = data.attributes.previews[0].url;
+        track.title = data.attributes.name;
+        track.artist = data.attributes.artistName;
+        if (data.attributes.contentRating != "explicit") {
+            await TrackPlayer.reset()
+            setIsPlayingid(data.id);
+            await TrackPlayer.add(track)
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
+    };
+
+    const stoptracksong= async () => {    
+        setIsPlayingid('0');
+        await TrackPlayer.reset()
+    };
 
     useEffect(()=>{
         searchinit();
@@ -163,14 +186,19 @@ const SongEditPage = ({navigation}) => {
                     return (
                         <View>
                             {selectedId == item.id ? 
-                            <TouchableOpacity onPress={() => {
-                                setSelectedId('')
-                                deleteItem({data: item})}}
-                            >
-                                <View style={styles.selectedSong}>
-                                    <View style={styles.songCover}>
+                                <TouchableOpacity onPress={() => {
+                                    setSelectedId('')
+                                    deleteItem({data: item})}}
+                                    style={styles.selectedSong}>
+                                    <TouchableOpacity onPress={() => {
+                                        if(isPlayingid == item.id){
+                                            stoptracksong()
+                                        }else{
+                                            addtracksong({data: item})
+                                        }}}
+                                    style={styles.songCover}>
                                         <SongImage url={item.attributes.artwork.url}/>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View style={{marginTop: 10  * tmpWidth , marginLeft: 24  * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>
                                             {item.attributes.contentRating == "explicit" ? 
@@ -180,16 +208,20 @@ const SongEditPage = ({navigation}) => {
                                         </View>
                                         <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
-                                </View>
-                            </TouchableOpacity> :
-                            <TouchableOpacity onPress={() => {
-                                setSelectedId(item.id)
-                                addItem({ data: item })}}
-                            >
-                                <View style={styles.eachSong}>
-                                    <View style={styles.songCover}>
+                                </TouchableOpacity> :
+                                <TouchableOpacity onPress={() => {
+                                    setSelectedId(item.id)
+                                    addItem({ data: item })}}
+                                    style={styles.eachSong}>
+                                    <TouchableOpacity onPress={() => {
+                                        if(isPlayingid == item.id){
+                                            stoptracksong()
+                                        }else{
+                                            addtracksong({data: item})
+                                        }}}
+                                        style={styles.songCover}>
                                         <SongImage url={item.attributes.artwork.url}/>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View style={{marginTop: 10 * tmpWidth, marginLeft: 24 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center',  width: 200 * tmpWidth}}>
                                             {item.attributes.contentRating == "explicit" ? 
@@ -199,8 +231,7 @@ const SongEditPage = ({navigation}) => {
                                         </View>
                                         <Text style={{fontSize: 14 * tmpWidth, color:'rgb(148,153,163)', marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
-                                </View>
-                            </TouchableOpacity> }
+                                </TouchableOpacity> }
                         </View>
                     )
                 }}

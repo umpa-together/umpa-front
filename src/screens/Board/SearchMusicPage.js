@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as BoardContext } from '../../context/BoardContext'
 import { navigate } from '../../navigationRef';
@@ -20,6 +21,7 @@ const SearchMusicPage = () => {
     const [loading, setLoading] = useState(false);
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
+    const [isPlayingid, setIsPlayingid] = useState('0');
 
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -45,7 +47,27 @@ const SearchMusicPage = () => {
     const selectSong = ({item}) => {
         setSong(item);
     };
-    
+
+    const addtracksong= async ({data}) => {
+        const track = new Object();
+        track.id = data.id;
+        track.url = data.attributes.previews[0].url;
+        track.title = data.attributes.name;
+        track.artist = data.attributes.artistName;
+        if (data.attributes.contentRating != "explicit") {
+            setIsPlayingid(data.id);
+            await TrackPlayer.reset()
+            await TrackPlayer.add(track);
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
+    };
+    const stoptracksong= async () => {    
+        setIsPlayingid('0');
+        await TrackPlayer.reset()
+    };
+
     useEffect(() => {
         searchinit()
     }, []);
@@ -106,37 +128,18 @@ const SearchMusicPage = () => {
                         return (
                             <View>
                             {selectedId == item.id ? 
-                            <TouchableOpacity onPress={() => setSelectedId('')}>
-                                <View style={styles.selectedSong}>
-                                    <View style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url}/>
-                                    </View>
-                                    <View style={{flex: 1, flexDirection: 'row', marginRight: 26 * tmpWidth}}>
-                                        <View style={styles.infoBox}>
-                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                {item.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                : null }
-                                                <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
-                                            </View>
-                                            <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                        </View>
-                                        <View style={{justifyContent: 'center'}}>
-                                            <TouchableOpacity style={styles.completeView} onPress={() => okPress()}>
-                                                <Text style={styles.completeBox}>공유</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity> :
-                            <TouchableOpacity onPress={() => {
-                                setSelectedId(item.id)
-                                selectSong({item})}}
-                            >
-                                <View style={styles.eachSong}>
-                                    <View style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url}/>
-                                    </View>
+                            <TouchableOpacity onPress={() => setSelectedId('')} style={styles.selectedSong}>
+                                <TouchableOpacity onPress={() => {
+                                    if(isPlayingid == item.id){
+                                        stoptracksong()
+                                    }else{
+                                        addtracksong({data: item})
+                                    }
+                                }}
+                                style={styles.songCover}>
+                                    <SongImage url={item.attributes.artwork.url}/>
+                                </TouchableOpacity>
+                                <View style={{flex: 1, flexDirection: 'row', marginRight: 26 * tmpWidth}}>
                                     <View style={styles.infoBox}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             {item.attributes.contentRating == "explicit" ? 
@@ -146,6 +149,34 @@ const SearchMusicPage = () => {
                                         </View>
                                         <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
+                                    <View style={{justifyContent: 'center'}}>
+                                        <TouchableOpacity style={styles.completeView} onPress={() => okPress()}>
+                                            <Text style={styles.completeBox}>공유</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableOpacity> :
+                            <TouchableOpacity onPress={() => {
+                                setSelectedId(item.id)
+                                selectSong({item})}}
+                                style={styles.eachSong}>
+                                <TouchableOpacity onPress={() => {
+                                    if(isPlayingid == item.id){
+                                        stoptracksong()
+                                    }else{
+                                        addtracksong({data: item})
+                                    }}}
+                                    style={styles.songCover}>
+                                    <SongImage url={item.attributes.artwork.url}/>
+                                </TouchableOpacity>
+                                <View style={styles.infoBox}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        {item.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        : null }
+                                        <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
+                                    </View>
+                                    <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                 </View>
                             </TouchableOpacity> }
                             </View>

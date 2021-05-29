@@ -1,8 +1,9 @@
-import React , { useState, useContext, useRef }from 'react';
+import React , { useState, useContext, useRef, useEffect }from 'react';
 import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { Context as PlaylistContext } from '../../context/PlaylistContext'
 import { Context as UserContext } from '../../context/UserContext'
 import { navigate } from '../../navigationRef';
@@ -82,6 +83,12 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
         });
     };
 
+    useEffect(() => {
+        const listener = navigation.addListener('didFocus', async () => {
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove()
+    }, []);
     return (
         <View style={styles.container}>
             <View style={{width: '100%'}}>
