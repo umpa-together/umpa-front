@@ -216,7 +216,7 @@ const MusicArchivePage = ({navigation}) => {
                                     }}}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', borderWidth: 1}} onPress={() => {
+                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                                 if(isPlayingid == selectedStory.song.id){
                                     stoptracksong()
                                 }else{
@@ -442,10 +442,8 @@ const styles=StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'space-between',
-        paddingLeft: 17 * tmpWidth,
-        paddingRight: 17 * tmpWidth,
         width: '100%',
-        height: 152 * tmpWidth
+        height: 152 * tmpWidth,
     },
     playIcon: {
         width: 40 * tmpWidth,
