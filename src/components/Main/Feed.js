@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList} from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
@@ -69,6 +69,14 @@ const Feed = ({navigation}) => {
         storyView({id: item.id});
         if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"]});
     }
+
+    useEffect(() => {
+        const listener = navigation.addListener('didFocus', async () => {
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove()
+    }, []);
+
     return (
         <View style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
             <View style={styles.opt}>
