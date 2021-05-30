@@ -349,7 +349,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                         <Text style={styles.commentUserText}>{item.postUser}</Text>
                                                         <Text style={styles.commentTimeText}>{item.time}</Text>
                                                     </View>
-                                                    <View style={{width: '90%'}}>
+                                                    <View style={{width: 280 * tmpWidth}}>
                                                         <Text style={styles.commentText}>{item.text}</Text>
                                                     </View>
                                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -390,6 +390,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                         recommentRef.current.clear();
                                                         recommentRef.current.value ='';
                                                     }}
+                                                    multiline={true}
                                                 />
                                             </View>
                                             {state.current_recomments == null ? <ActivityIndicator /> :
@@ -479,6 +480,7 @@ const SelectedPlaylist = ({navigation}) => {
                                         commentRef.current.value = '';
                                         setKeyboardHeight(0)
                                     }}
+                                    multiline={true}
                                 />
                             </View>
                             <TouchableOpacity onPress={() => {
@@ -640,7 +642,9 @@ const styles = StyleSheet.create({
     },
     inputBox: {
         width: '100%',
-        height: 68 * tmpWidth,
+        paddingTop: 18 * tmpWidth,
+        paddingBottom: 18 * tmpWidth,
+        //height: 68 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
@@ -709,6 +713,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: '80%',
+        marginTop: 4 * tmpWidth
     },
     commentBox: {
         marginLeft: 20 * tmpWidth,
@@ -734,7 +739,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(238,244,255)',
         flexDirection: 'row',
         paddingLeft: 20 * tmpWidth,
-        paddingTop: 30 * tmpWidth
+        paddingTop: 30 * tmpWidth,
     },
     inputRecommentBox: {
         marginTop: 20 * tmpWidth,
