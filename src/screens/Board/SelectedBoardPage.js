@@ -62,7 +62,7 @@ const SelectedBoard = ({ navigation }) => {
             >
                 <View style={styles.deleteContainer}>
                     <View style={{width: 240 * tmpWidth}}>
-                        <Text style={{fontWeight: '300'}}>{introduction}</Text>
+                        <Text style={{fontWeight: '300', textAlign: 'center'}}>{introduction}</Text>
                     </View>
                 </View>
             </Modal>
