@@ -45,7 +45,7 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
     }, []);
     return (
         <View style={{height:650 * tmpHeight,marginTop:10 * tmpWidth}}>
-            {searchState.songData.length == 0 ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> : 
+            {searchState.songData.length == 0 && text.length!=0 ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> : 
                 <View>
                 { searchOption == 'Song' || searchOption == 'DJSong'? 
                 <FlatList 

@@ -73,6 +73,12 @@ const CurationSearchPage = ({navigation}) => {
                             placeholderTextColor ="rgb(196,196,196)"
                         />
                     </View>
+                    <TouchableOpacity 
+                    style={{marginLeft:tmpWidth*10, width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
+                    onPress={()=>{Keyboard.dismiss(); setState('');}}
+                    >
+                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.output}>
@@ -226,9 +232,10 @@ const styles=StyleSheet.create({
         marginLeft:14 * tmpWidth,
     },
     inputtext:{
+        marginLeft: tmpWidth*10,
         fontSize:16 * tmpWidth,
-        width:272 * tmpWidth,
-        height:60 * tmpWidth
+        width:252 * tmpWidth,
+        height:60 * tmpWidth,
     },
     output:{
         width:375 * tmpWidth,

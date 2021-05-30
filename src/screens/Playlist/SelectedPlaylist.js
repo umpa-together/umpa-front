@@ -301,7 +301,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                 setCurrentcommentid(item._id)
                                                 await getreComment({commentid:item._id})}}
                                             >
-                                                <Text style={styles.deleteText}>답글</Text>
+                                                <Text style={styles.deleteText}>답글 {item.recomments.length ==0 || item.recomments == undefined ? null : item.recomments.length}</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={() => {
                                                 setReportId(item._id)
@@ -361,7 +361,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                             <Text style={styles.notLikeText}>좋아요</Text>
                                                         </TouchableOpacity> }
                                                         {item.likes.length != 0 ? <Text style={styles.likeLengthText}>{item.likes.length}</Text> : null}
-                                                        <Text style={styles.deleteText}>답글</Text>
+                                                        <Text style={styles.deleteText}>답글 {item.recomments.length ==0 || item.recomments == undefined ? null : item.recomments.length}</Text>
                                                         <TouchableOpacity onPress={() => {
                                                             setReportId(item._id)
                                                             setCommentReportModal(true)}}>

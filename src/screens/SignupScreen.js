@@ -29,6 +29,7 @@ const SignupPage = ({ navigation }) => {
 
     const [passwordcheck,    setPasswordcheck] = useState(navigation.getParam('password'));
     const [passwordcheckerr, setPasswordcheckerr] = useState(false);
+    const [passwordarrmsg, setPasswordarrmsg] = useState('')
 
     const [name, setName] = useState('');
     const [nameerr, setNameerr] = useState(false);
@@ -101,9 +102,40 @@ const SignupPage = ({ navigation }) => {
             if(!tok)    setSong([...songs, data]);
         }
     };
+
+    const passwordval = () => {
+
+        const check = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/.test(password)
+
+        if(!check){
+         setPasswordarrmsg("8~20자 영문, 숫자, 특수문자를 모두포함");
+         return false;
+        }else {
+
+           return true;
+        }
+       
+
+
+    }
+
+    
     const deleteItem = ({data}) => {
         setSong(songs.filter(item=> item != data));
     };
+    useEffect(() => {
+        setPassworderr(false)
+    }, [password]);
+    useEffect(() => {
+        setPasswordcheckerr(false);
+    }, [passwordcheck]);
+    useEffect(() => {
+        setEmailerr(false);
+    }, [email]);
+    useEffect(() => {
+        setNameerr(false);
+    }, [name]);
+
     const singupfun = async () => {
         if(email == undefined || email.length == 0){
             setEmailerr(true);
@@ -112,11 +144,18 @@ const SignupPage = ({ navigation }) => {
             setEmailerr(false);
         }
         if(password == undefined || password.length == 0){
+                setPassworderr(true);
+                return;
+        }else{
+            if(passwordval()){
+                setPassworderr(false);
+            }else{
             setPassworderr(true);
             return;
-        }else{
-            setPassworderr(false);
+            }
+
         }
+
         if(passwordcheck == undefined || passwordcheck.length == 0){
             setPasswordcheckerr(true);
             return;
@@ -141,7 +180,7 @@ const SignupPage = ({ navigation }) => {
         }else{
             setAgree2Err(false);
         }
-        if( !emailerr && !passworderr && !passwordcheckerr && !nameerr && passwordcheck && agree1 && agree2){
+        if( !emailerr && !passworderr && !passwordcheckerr && !nameerr && passwordcheck && agree1 && double){
             nextCheck();
         }
     }
@@ -194,10 +233,10 @@ const SignupPage = ({ navigation }) => {
                         { passworderr?
                         <View style={styles.warningContainer}>
                             <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
-                            <Text style={styles.warningText}>비밀번호를 입력해주세요.</Text>
+                            <Text style={styles.warningText}>{passwordarrmsg}</Text>
                         </View> :
                         <View style={styles.warningContainer}>
-                            <Text style={{marginLeft:15 * tmpWidth,fontSize:11 * tmpWidth, color:'rgb(153,153,153)'}}>6~14자 영문 대소문자,숫자,특수문자 중 2가지 이상 조합</Text>
+                            <Text style={{marginLeft:15 * tmpWidth,fontSize:11 * tmpWidth, color:'rgb(153,153,153)'}}>8~20자 영문, 숫자, 특수문자를 모두포함</Text>
                         </View> }
                         <View style={styles.passwordcheckbox}>
                             <TextInput
@@ -257,36 +296,51 @@ const SignupPage = ({ navigation }) => {
                 </View>
                 <View style={{paddingLeft: 24 * tmpWidth}}>
                     <View style={{flexDirection:'row', marginTop:55 * tmpWidth}}>
+                        {agreeall ? 
+                         <TouchableOpacity style={agreeall ?styles.boxcheck : styles.boxempty} 
+                         onPress={()=>{
+                                setAgreeall(false);
+                                setAgree1(false);
+                                setAgree2(false);
+                        }}                        
+                         >
+                         <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                        
+                         </TouchableOpacity>
+                      
+                        :
                         <TouchableOpacity style={agreeall ?styles.boxcheck : styles.boxempty}
                             onPress={()=>{
-                                if (agreeall) {
-                                    setAgreeall(false);
-                                    setAgree1(false);
-                                    setAgree2(false);
-                                }
-                                else{
                                     setAgreeall(true);
                                     setAgree1(true);
                                     setAgree2(true);
-                                }
                             }}
                         >
                         </TouchableOpacity>
+                        }
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(0,0,0)', marginLeft:8 * tmpWidth}}>전체동의</Text>
                     </View>
                     <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-between',marginTop:23 * tmpWidth, paddingRight: 24 * tmpWidth}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            {agree1 ? 
                             <TouchableOpacity style={agree1 ?styles.boxcheck : styles.boxempty}
                                 onPress={()=>{
-                                    if(agree1){
                                         setAgree1(false);
-                                    }else
-                                    {
+  
+                                }}
+                            >
+                          <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                               
+                            </TouchableOpacity>                            
+                            :
+                            <TouchableOpacity style={agree1 ?styles.boxcheck : styles.boxempty}
+                                onPress={()=>{
                                         setAgree1(true);
-                                    }
+                                    
                                 }}
                             >
                             </TouchableOpacity>
+                            }
                             <Text style={!agree1Err ? styles.agreeText : styles.agreeWarning}>이용약관 동의 (필수)</Text>
                         </View>
                         <TouchableOpacity style={styles.detail}>
@@ -295,18 +349,28 @@ const SignupPage = ({ navigation }) => {
                     </View>
                     <View style={{flexDirection:'row', marginTop:23 * tmpWidth, alignItems: 'center', justifyContent: 'space-between', paddingRight: 24 * tmpWidth}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            { agree2 ? 
                             <TouchableOpacity style={agree2 ?styles.boxcheck : styles.boxempty}
                                 onPress={()=>{
-                                    if(agree2){
+
                                         setAgree2(false);
-                                    }else
-                                    {
+
+                                }}
+                            >  
+                           <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                                     
+                             </TouchableOpacity>                                           
+                            :
+                            <TouchableOpacity style={agree2 ?styles.boxcheck : styles.boxempty}
+                                onPress={()=>{
+
                                         setAgree2(true);
-                                    }
                                 }}
                             >
+                            
                             </TouchableOpacity>
-                            <Text style={!agree2Err ? styles.agreeText : styles.agreeWarning}>개인정보 수집 및 이용 동의 (필수)</Text>
+                            }
+                            <Text style={!agree2Err ? styles.agreeText : styles.agreeWarning}>개인정보 수집 및 이용 동의 (선택)</Text>
                         </View>
                         <TouchableOpacity style={styles.detail}>
                             <Text style={{fontSize:11 * tmpWidth, color:'rgb(80,80,80)', }}>자세히 보기</Text>
@@ -337,14 +401,14 @@ const SignupPage = ({ navigation }) => {
                                 setModalVisible(false)
                                 stoptracksong()}}
                             >
-                                    <Text style={{fontSize:16 * tmpWidth, color:'rgba(169,193,255,0.5)'}}>완료</Text>
+                                    <Text style={{fontSize:16 * tmpWidth, color:'rgba(169,193,255,1)'}}>완료</Text>
                             </TouchableOpacity> : null }
                     </View>
                     <View style={{width:335 * tmpWidth, height:53 * tmpWidth, backgroundColor:'#fff',flexDirection:'row'}}>
                         <View style={{width:39.3 * tmpWidth, height:40 * tmpWidth,marginLeft:13.8 * tmpWidth, marginTop:7 * tmpWidth}}>
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/signupsearch.svg')}  />
                         </View>
-                        <TextInput style={{fontSize:16 * tmpWidth, }}
+                        <TextInput style={{fontSize:16 * tmpWidth,width:tmpWidth*230}}
                             value = {text}
                             placeholder="곡, 아티스트를 검색해주세요"
                             onChangeText={(text)=>{
@@ -364,6 +428,12 @@ const SignupPage = ({ navigation }) => {
                             placeholderTextColor ="#999"
                             onCancel={()=>searchinit()}
                         />
+                         <TouchableOpacity 
+                         style={{width:40 * tmpWidth, height:40 * tmpWidth,marginLeft:4 * tmpWidth, marginTop:7 * tmpWidth}}
+                         onPress={()=>{Keyboard.dismiss(); setText(''); setKey(true); setTok(true)}}
+                         >
+                            <SvgUri width='95%' height='95%' source={require('../assets/icons/cancel.svg')}  />
+                        </TouchableOpacity>                       
                     </View>
                     <View style={{height:359 * tmpWidth,width:335 * tmpWidth,backgroundColor:'rgb(250,250,250)'}}>
                         {key && text.length == 0 ? 

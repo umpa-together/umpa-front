@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList} from 'react-native';
+import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList,  SafeAreaView} from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
 import {Context as CurationContext} from '../../context/CurationContext';
@@ -78,7 +78,7 @@ const Feed = ({navigation}) => {
     }, []);
 
     return (
-        <View style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
+        <SafeAreaView style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
             <View style={styles.opt}>
                 <View style={styles.optleft}>
                     <TouchableOpacity style={styles.opt1} onPress={() => setResult('playlist')}>
@@ -204,7 +204,7 @@ const Feed = ({navigation}) => {
                     </View>
                 </View>
             </Modal> : null }
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -220,12 +220,6 @@ const styles = StyleSheet.create({
         width : 152 * tmpWidth,
         height : 152 * tmpWidth,
     },
-    header:{
-        height:48 * tmpWidth,
-        width:375 * tmpWidth,
-        marginTop:44 * tmpWidth,
-        flexDirection: 'row',
-    },
     headertext:{
         fontSize: 30 * tmpWidth,
         fontWeight: 'bold',
@@ -234,7 +228,7 @@ const styles = StyleSheet.create({
         marginTop:14 * tmpWidth
     },
     opt:{
-        marginTop: 60*tmpWidth,
+        marginTop: 35*tmpWidth,
         width:375 * tmpWidth,
         height:48 * tmpWidth,
         flexDirection: 'row',
