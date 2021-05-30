@@ -114,13 +114,13 @@ const Playlist = ({ playList, navigation }) => {
 const styles=StyleSheet.create({
     hasStoryContainer: {
         backgroundColor:"rgb(254,254,254)",
-        height:545 * tmpHeight,
+        height:550 * tmpHeight,
         width:375 * tmpWidth,
         paddingTop:10*tmpWidth,
     },
     noStoryContainer: {
         backgroundColor:"rgb(254,254,254)",
-        height: 645 * tmpHeight, 
+        height: 650 * tmpHeight, 
         width:375 * tmpWidth,
         paddingTop:10*tmpWidth,
     },
