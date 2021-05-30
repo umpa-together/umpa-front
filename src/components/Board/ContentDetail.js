@@ -288,7 +288,8 @@ const styles=StyleSheet.create({
     contentText: {
         fontSize: 14 * tmpWidth, 
         color: 'rgb(120,120,120)', 
-        marginTop: 12 * tmpWidth
+        marginTop: 12 * tmpWidth,
+        lineHeight: 18 * tmpWidth
     },
     footerText: {
         fontSize: 12 * tmpWidth, 
