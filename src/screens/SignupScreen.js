@@ -144,7 +144,7 @@ const SignupPage = ({ navigation }) => {
             setEmailerr(false);
         }
         if(password == undefined || password.length == 0){
-                setPassworderr(false);
+                setPassworderr(true);
                 return;
         }else{
             if(passwordval()){
@@ -180,7 +180,7 @@ const SignupPage = ({ navigation }) => {
         }else{
             setAgree2Err(false);
         }
-        if( !emailerr && !passworderr && !passwordcheckerr && !nameerr && passwordcheck && agree1){
+        if( !emailerr && !passworderr && !passwordcheckerr && !nameerr && passwordcheck && agree1 && double){
             nextCheck();
         }
     }
