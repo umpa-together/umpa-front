@@ -16,7 +16,6 @@ class LocalNotificationService {
                 if (!notification.data.item) {
                     return
                 }
-                notification.userInteraction = true;
                 onOpenNotification(Platform.OS === 'ios' ? notification.data.item : notification.data);
 
                 if (Platform.OS === 'ios') {
@@ -27,6 +26,7 @@ class LocalNotificationService {
                     console.log(notification.userInteraction);
                     navigate('Notice');
                 }
+
             },
 
             // IOS ONLY (optional): default: all - Permissions to register.

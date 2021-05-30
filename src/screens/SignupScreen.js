@@ -173,13 +173,8 @@ const SignupPage = ({ navigation }) => {
         }else{
             setAgree1Err(false);
         }
-        if(!agree2) {
-            setAgree2Err(true);
-            return;
-        }else{
-            setAgree2Err(false);
-        }
-        if( !emailerr && !passworderr && !passwordcheckerr && !nameerr && passwordcheck && agree1 && double){
+
+        if( !emailerr && !passworderr && password==passwordcheck&&!passwordcheckerr && !nameerr && passwordcheck && agree1 && double){
             nextCheck();
         }
     }
@@ -369,7 +364,7 @@ const SignupPage = ({ navigation }) => {
                             
                             </TouchableOpacity>
                             }
-                            <Text style={!agree2Err ? styles.agreeText : styles.agreeWarning}>개인정보 수집 및 이용 동의 (선택)</Text>
+                            <Text style={styles.agreeText}>개인정보 수집 및 이용 동의 (선택)</Text>
                         </View>
                         <TouchableOpacity style={styles.detail}>
                             <Text style={{fontSize:11 * tmpWidth, color:'rgb(80,80,80)', }}>자세히 보기</Text>
@@ -394,7 +389,7 @@ const SignupPage = ({ navigation }) => {
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(80,80,80)', marginLeft:87 * tmpWidth, marginTop:24 * tmpWidth}}>환영합니다!</Text>
                         {songs.length >=1 ?
                             <TouchableOpacity style={{width:30 * tmpWidth, height:19 * tmpWidth,marginLeft:80 * tmpWidth, marginTop:24 * tmpWidth}} onPress={async () => {
-                                await signup({ email, password, name });
+                                await signup({ email, password, name, informationagree: agree2 });
                                 await setSongs({ songs: songs })
                                 await signin({ email, password });
                                 setModalVisible(false)
@@ -445,7 +440,7 @@ const SignupPage = ({ navigation }) => {
                             <FlatList
                                 style={{marginTop:14 * tmpWidth}}
                                 data={searchState.songData}
-                                keyExtractor={song=>song._id}
+                                keyExtractor={song=>song.id}
                                 onEndReached={onEndReached}
                                 onEndReachedThreshold={0}
                                 ListFooterComponent={loading && <ActivityIndicator />}

@@ -18,6 +18,7 @@ const SettingPage = () => {
                 <TouchableOpacity>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)'}}>비밀번호 변경</Text>
                 </TouchableOpacity>
+                
             </View>
             <View style={styles.section}>
                 <Text style={{fontSize: 18 * tmpWidth , marginBottom: 14  * tmpWidth  }}>앱 설정</Text>
@@ -54,6 +55,8 @@ const SettingPage = () => {
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(169,193,255)'}}>로그아웃</Text>
                 </TouchableOpacity>
             </View>
+            <Text style={{marginLeft: 25 * tmpWidth, marginTop:tmpWidth*15,fontSize: 13 * tmpWidth , color: 'rgb(118,118,118)'}}>비밀번호 변경 및 아이디 삭제는 </Text>
+            <Text style={{marginLeft: 25 * tmpWidth, marginTop:tmpWidth*5,fontSize: 13 * tmpWidth , color: 'rgb(118,118,118)'}}>Umpa.together@gmail.com로 문의 부탁드립니다.</Text>
         </ScrollView>
     )
 }

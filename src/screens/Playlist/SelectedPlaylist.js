@@ -390,7 +390,6 @@ const SelectedPlaylist = ({navigation}) => {
                                                         recommentRef.current.clear();
                                                         recommentRef.current.value ='';
                                                     }}
-                                                    multiline={true}
                                                 />
                                             </View>
                                             {state.current_recomments == null ? <ActivityIndicator /> :

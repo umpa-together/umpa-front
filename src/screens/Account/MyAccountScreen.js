@@ -513,13 +513,7 @@ const MyAccountScreen = ({navigation}) => {
                         <View style={{alignItems: 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
-                                <TouchableOpacity onPress={() => {
-                                    stoptracksong()
-                                    //setStoryModal(false)
-                                    setDeleteModal(true)
-                                }}>
-                                    <Text>삭제</Text>
-                                </TouchableOpacity>
+
                                 { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'todaySong'} /> : null }
                             </View>
                             <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4}}>{today}</Text>
@@ -549,8 +543,23 @@ const MyAccountScreen = ({navigation}) => {
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)', marginTop: 7 * tmpWidth }}>{userState.myStory.song.attributes.releaseDate}</Text>
                             </View>
                         </View>
-                    </View> : null}
+                        <View style={{alignItems:'center', justifyContent:'center'}}>
+                        <TouchableOpacity 
+                            onPress={() => {
+                                stoptracksong()
+                                //setStoryModal(false)
+                                setDeleteModal(true)
+                            }}
+                            style={{marginTop: 10*tmpWidth,width:tmpWidth*40, height:tmpWidth*40}}
+                        >
+                            <Text style={{}}>지우기</Text>
+                        </TouchableOpacity>  
+                        </View>                      
+                    </View> 
+                    
+                    : null}
                 </View>
+
             </Modal>
         </View>
     );
