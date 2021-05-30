@@ -144,7 +144,8 @@ const styles=StyleSheet.create({
     contentText: {
         fontSize: 12 * tmpWidth, 
         color: 'rgb(93,93,93)', 
-        marginTop: 8 * tmpWidth
+        marginTop: 8 * tmpWidth,
+        lineHeight: 18 * tmpWidth
     },
     footer: {
         flexDirection: 'row', 
