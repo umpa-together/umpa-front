@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList} from 'react-native';
+import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
 import {Context as CurationContext} from '../../context/CurationContext';
@@ -72,7 +72,7 @@ const Feed = ({navigation}) => {
         if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"]});
     }
     return (
-        <View style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
+        <SafeAreaView style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
             <View style={styles.opt}>
                 <View style={styles.optleft}>
                     <TouchableOpacity style={styles.opt1} onPress={() => setResult('playlist')}>
@@ -191,7 +191,7 @@ const Feed = ({navigation}) => {
                     </View>
                 </View>
             </Modal> : null }
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -207,12 +207,6 @@ const styles = StyleSheet.create({
     songscover : {
         width : 200 * tmpWidth,
         height : 200 * tmpWidth,
-    },
-    header:{
-        height:48 * tmpWidth,
-        width:375 * tmpWidth,
-        marginTop:44 * tmpWidth,
-        flexDirection: 'row',
     },
     headertext:{
         fontSize: 30 * tmpWidth,
