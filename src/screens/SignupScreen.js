@@ -29,10 +29,10 @@ const SignupPage = ({ navigation }) => {
 
     const [passwordcheck,    setPasswordcheck] = useState(navigation.getParam('password'));
     const [passwordcheckerr, setPasswordcheckerr] = useState(false);
-    const [passwordarrmsg, setPasswordarrmsg] = useState('')
 
     const [name, setName] = useState('');
     const [nameerr, setNameerr] = useState(false);
+    const [nameErrMsg, setNameErrMsg] = useState('아이디를 입력해주세요.')
 
     const [agreeall, setAgreeall] = useState(false);
     const [agree1, setAgree1] = useState(false);
@@ -104,22 +104,10 @@ const SignupPage = ({ navigation }) => {
     };
 
     const passwordval = () => {
-
         const check = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/.test(password)
-
-        if(!check){
-         setPasswordarrmsg("8~20자 영문, 숫자, 특수문자를 모두포함");
-         return false;
-        }else {
-
-           return true;
-        }
-       
-
-
+        return check;
     }
 
-    
     const deleteItem = ({data}) => {
         setSong(songs.filter(item=> item != data));
     };
@@ -144,16 +132,15 @@ const SignupPage = ({ navigation }) => {
             setEmailerr(false);
         }
         if(password == undefined || password.length == 0){
-                setPassworderr(true);
-                return;
+            setPassworderr(true);
+            return;
         }else{
             if(passwordval()){
                 setPassworderr(false);
             }else{
-            setPassworderr(true);
-            return;
+                setPassworderr(true);
+                return;
             }
-
         }
 
         if(passwordcheck == undefined || passwordcheck.length == 0){
@@ -162,11 +149,23 @@ const SignupPage = ({ navigation }) => {
         }else{
             setPasswordcheckerr(false);
         }
-        if(name == undefined || name.length == 0){
+        if(name == undefined || name.length == 0 || !state.doubleCheck){
             setNameerr(true);
+            setNameErrMsg('아이디를 입력해주세요.')
+            if(!state.doubleCheck){
+                setDouble(false)
+                setNameErrMsg('중복 체크를 해주세요.')
+            }
             return;
         }else{
             setNameerr(false);
+        }
+        if(!double){
+            setNameerr(true)
+            setNameErrMsg('중복 체크를 해주세요.')
+            return;
+        }else{
+            setNameerr(false)
         }
         if(!agree1) {
             setAgree1Err(true);
@@ -233,7 +232,7 @@ const SignupPage = ({ navigation }) => {
                         { passworderr?
                         <View style={styles.warningContainer}>
                             <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
-                            <Text style={styles.warningText}>{passwordarrmsg}</Text>
+                            <Text style={styles.warningText}>8~20자 영문, 숫자, 특수문자를 모두포함</Text>
                         </View> :
                         <View style={styles.warningContainer}>
                             <Text style={{marginLeft:15 * tmpWidth,fontSize:11 * tmpWidth, color:'rgb(153,153,153)'}}>8~20자 영문, 숫자, 특수문자를 모두포함</Text>
@@ -291,7 +290,7 @@ const SignupPage = ({ navigation }) => {
                     { nameerr ?
                     <View style={styles.warningContainer}>
                         <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
-                        <Text style={styles.warningText}>아이디를 입력해주세요.</Text>
+                        <Text style={styles.warningText}>{nameErrMsg}</Text>
                     </View> : null }
                 </View>
                 <View style={{paddingLeft: 24 * tmpWidth}}>
