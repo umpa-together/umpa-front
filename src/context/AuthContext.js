@@ -31,9 +31,9 @@ const tryLocalSignin = dispatch => async()=> {
     }
 };
 
-const signup = (dispatch) => async ({ email, password ,name}) => {
+const signup = (dispatch) => async ({ email, password ,name, informationagree}) => {
     try {
-        const response = await serverApi.post('/signup', { email, password,name});
+        const response = await serverApi.post('/signup', { email, password,name,informationagree});
         await AsyncStorage.setItem('token', response.data.token);
         dispatch({ type: 'signup', payload: response.data.token });
     } catch (err){

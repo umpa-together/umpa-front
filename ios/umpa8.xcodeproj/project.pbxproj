@@ -17,9 +17,9 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* umpa8Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* umpa8Tests.m */; };
 		460FC82C93506B9541288DFD /* libPods-umpa8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10DFEC49F1A8BB9A72C2C2A5 /* libPods-umpa8.a */; };
+		7D3912F42663BA0C008868CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D3912F32663BA0C008868CD /* GoogleService-Info.plist */; };
 		7DC5AB3325C924FB0090FFE1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5AB3225C924FB0090FFE1 /* File.swift */; };
 		7DD11ED025DF842C008B15FE /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
-		7DD11FC125DFAE58008B15FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DD11FB725DFAD98008B15FE /* GoogleService-Info.plist */; };
 		F32BA3F10951D8F9ADCF5DDE /* libPods-umpa8-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88309709E8485757A7DAC04D /* libPods-umpa8-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -68,10 +68,10 @@
 		5DC3F76E1C331EBD242D42EC /* Pods-umpa8-umpa8Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-umpa8Tests.release.xcconfig"; path = "Target Support Files/Pods-umpa8-umpa8Tests/Pods-umpa8-umpa8Tests.release.xcconfig"; sourceTree = "<group>"; };
 		697DDDB3B47444689B896919 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F758FC0324A46BDAD5C9F6A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		7D3912F32663BA0C008868CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../중요한거/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DC5AB3125C924FB0090FFE1 /* umpa8-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "umpa8-Bridging-Header.h"; sourceTree = "<group>"; };
 		7DC5AB3225C924FB0090FFE1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		7DD11FAA25DFACAD008B15FE /* umpa8.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpa8.entitlements; path = umpa8/umpa8.entitlements; sourceTree = "<group>"; };
-		7DD11FB725DFAD98008B15FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = umpa8/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88309709E8485757A7DAC04D /* libPods-umpa8-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-umpa8-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C8F49DCBE61DE22305114AC /* Pods-umpa8-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-umpa8-tvOSTests/Pods-umpa8-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 		13B07FAE1A68108700A75B9A /* umpa8 */ = {
 			isa = PBXGroup;
 			children = (
-				7DD11FB725DFAD98008B15FE /* GoogleService-Info.plist */,
+				7D3912F32663BA0C008868CD /* GoogleService-Info.plist */,
 				7DD11FAA25DFACAD008B15FE /* umpa8.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -407,8 +407,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DD11FC125DFAE58008B15FE /* GoogleService-Info.plist in Resources */,
 				7DD11ED025DF842C008B15FE /* main.jsbundle in Resources */,
+				7D3912F42663BA0C008868CD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

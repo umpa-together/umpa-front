@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging'
 import {Platform} from 'react-native';
+import { navigate } from './navigationRef';
 
 class FCMService {
 
@@ -69,6 +70,7 @@ class FCMService {
             if (remoteMessage) {
                 const notification = remoteMessage.notification
                 onOpenNotification(notification)
+                navigate('Notice');
                 // this.removeDeliveredNotification(notification.notificationId)
             }
         });

@@ -64,7 +64,7 @@ import { Provider as WeeklyProvider } from './src/context/WeeklyContext';
 import { Provider as ReportProvider } from './src/context/ReportContext';
 
 
-import { setNavigator } from './src/navigationRef';
+import { navigate, setNavigator } from './src/navigationRef';
 
 const main = createStackNavigator({
     Main: MainPage,
