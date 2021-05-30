@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Image, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as BoardContext } from '../../context/BoardContext'
@@ -79,18 +79,21 @@ const SearchMusicPage = () => {
                                     searchsong({ songname: text})
                                     setTok(true)}}
                                 placeholderTextColor= 'rgb(196,196,196)'
-                                style={{fontSize: 16 * tmpWidth}}
+                                style={{fontSize: 16 *tmpWidth, height:tmpWidth*20, width:tmpWidth*240,}}
                             />
-                        </View>
+                        </View>                 
                     </View>
-                    {tok ?
+
                     <TouchableOpacity style={styles.cancelIcon} onPress={() => {
-                        setTok(false)
+                        if(tok){
+                        setTok(false);
+                        }
+                        Keyboard.dismiss();
                         setText('')
                         searchinit()
                         initHint()}}>
                         <SvgUri width='28' height='28' source={require('../../assets/icons/resultDelete.svg')} />
-                    </TouchableOpacity> : null }
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.searchContainer}>

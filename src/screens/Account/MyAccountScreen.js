@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { navigate } from '../../navigationRef';
@@ -375,8 +375,14 @@ const MyAccountScreen = ({navigation}) => {
                                         setTok(true)
                                     }}
                                     placeholderTextColor= 'rgb(211,211,211)'
-                                    style={{fontSize: 16 * tmpWidth}}
+                                    style={{fontSize: 16 * tmpWidth, width:tmpWidth*200}}
                                 />
+                                <TouchableOpacity 
+                                    style={{width:40 * tmpWidth, height:40 * tmpWidth,marginLeft:10 * tmpWidth, marginTop:7 * tmpWidth}}
+                                    onPress={()=>{Keyboard.dismiss(); setText(''); setTok(false);}}
+                                >
+                                    <SvgUri width='95%' height='95%' source={require('../../assets/icons/cancel.svg')}  />
+                                </TouchableOpacity>                                    
                             </View>
                             <View style={styles.searchresult}>
                                 {tok ?

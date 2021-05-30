@@ -112,9 +112,15 @@ const SongEditPage = ({navigation}) => {
                                 searchsong({songname: text})
                                 setTok(true)}}
                             placeholderTextColor= 'rgb(196,196,196)'
-                            style={{fontSize: 16 * tmpWidth}}
+                            style={{fontSize: 16 * tmpWidth, width:tmpWidth*270, }}
                         />
                     </View>
+                    <TouchableOpacity 
+                    style={{width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
+                    onPress={()=>{Keyboard.dismiss(); setText(''); setTok(false)}}
+                    >
+                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
+                    </TouchableOpacity>                    
                 </View>
             </View>
             {!tok && state.hint.length == 0 ?

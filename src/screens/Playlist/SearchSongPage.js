@@ -114,14 +114,17 @@ const SearchPage = ({ navigation }) => {
                             />
                         </View>
                     </View>
-                    {tok ?
-                    <TouchableOpacity style={{marginRight: 16     * tmpWidth}}onPress={() => {
-                        setTok(false)
+                    
+                    <TouchableOpacity style={{marginRight: 16     * tmpWidth, marginTop:3*tmpWidth}}onPress={() => {
+                        if (tok) {
+                        setTok(false);
+                        }
+                        Keyboard.dismiss();
                         setState('')
                         searchinit()
                         initHint()}}>
                         <SvgUri width='28' height='28' source={require('../../assets/icons/resultDelete.svg')}/>
-                    </TouchableOpacity> : null }
+                    </TouchableOpacity> 
                 </View>
             </View>
             <View style={styles.resultBox}>
