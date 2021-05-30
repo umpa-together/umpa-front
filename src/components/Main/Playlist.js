@@ -58,7 +58,7 @@ const Playlist = ({ playList, navigation }) => {
                                             </View>
                                             <View style={{marginLeft:8*tmpWidth}}>
                                                 <View>
-                                                    <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUser}</Text>
+                                                    <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUserId.name}</Text>
                                                 </View>
                                                 <View style={styles.viewicon}>
                                                     <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/likeslength.svg')} style={{}}/>
