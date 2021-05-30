@@ -79,15 +79,13 @@ const SearchMusicPage = () => {
                                     searchsong({ songname: text})
                                     setTok(true)}}
                                 placeholderTextColor= 'rgb(196,196,196)'
-                                style={{fontSize: 16 *tmpWidth, height:tmpWidth*20, width:tmpWidth*240,}}
+                                style={{fontSize: 16 * tmpWidth, width:tmpWidth*240}}
                             />
                         </View>                 
                     </View>
 
                     <TouchableOpacity style={styles.cancelIcon} onPress={() => {
-                        if(tok){
-                        setTok(false);
-                        }
+                        if(tok) setTok(false)
                         Keyboard.dismiss();
                         setText('')
                         searchinit()
