@@ -136,6 +136,10 @@ const SelectedPlaylist = ({navigation}) => {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         {userState.myInfo._id == state.current_playlist.postUserId._id ? 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <TouchableOpacity onPress={() => navigate('Create', {'data': state.current_songs, 'isEdit': true})}>
+                                <Text style={{color: 'white'}}>수정</Text>
+                            </TouchableOpacity>
+                            <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
                             <TouchableOpacity onPress={() => setDeleteModal(true)}>
                                 <Text style={{color: 'white'}}>삭제</Text>
                             </TouchableOpacity>

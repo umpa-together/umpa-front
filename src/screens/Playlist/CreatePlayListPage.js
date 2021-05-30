@@ -15,21 +15,22 @@ const SongImage = ({url}) => {
     return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
 };
 
-const PlaylistCreatePage = ({ initialValues, navigation }) => {
+const PlaylistCreatePage = ({ navigation }) => {
     const [hashtag, setHashtag] = useState([]);
     const [temphash, setTemphash] = useState('')
     const [image, setImage] = useState('');
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const playList = navigation.getParam('data');
-    const { addPlaylist } = useContext(PlaylistContext);
+    const { state, addPlaylist, editPlaylist } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext);
     const [titleValidity, setTitleValidity] = useState(true);
     const [contentValidity, setContentValidity] = useState(true);
     const [thumbnailValidity, setThumbnailValidity] = useState(true);
     const [songValidity, setSongValidity] = useState(true);
-    const titleRef = useRef();
-    const commentRef = useRef();
+    const [title, setTitle] = useState('');
+    const [comment, setComment] = useState('');
+    const isEdit = navigation.getParam('isEdit');
     const addhashtag = ({data}) => {
         if (hashtag.length < 3 && data != '') {
             setHashtag([...hashtag, data]);
@@ -39,13 +40,13 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
         setHashtag(hashtag.filter(item=> item != data));
     };
     const upload = async () => {
-        if(titleRef.current.value == undefined || titleRef.current.value.length == 0){
+        if(title.length == 0){
             setTitleValidity(false);
             return;
         }else{
             setTitleValidity(true);
         }
-        if(commentRef.current.value == undefined || commentRef.current.value.length == 0){
+        if(comment.length == 0){
             setContentValidity(false);
             return;
         }else{
@@ -63,13 +64,18 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
         }else{
             setSongValidity(true);
         }
-        const fd = new FormData();
-        fd.append('img', {
-            name: name,
-            type: type,
-            uri: 'file://' + image
-        })
-        await addPlaylist({ title: titleRef.current.value, textcontent: commentRef.current.value, songs:playList, hashtag, fd });
+
+        if(isEdit){
+            await editPlaylist({ title, textcontent: comment, songs: playList, hashtag, playlistId: state.current_playlist._id });
+        }else{
+            const fd = new FormData();
+            fd.append('img', {
+                name: name,
+                type: type,
+                uri: 'file://' + image
+            })
+            await addPlaylist({ title, textcontent: comment, songs: playList, hashtag, fd });            
+        }
         getMyInfo();
     }
     const handleUpload = () => {
@@ -84,11 +90,21 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
     };
 
     useEffect(() => {
+        if(isEdit){
+            setTitle(state.current_playlist.title)
+            setComment(state.current_playlist.textcontent)
+            setHashtag(state.current_playlist.hashtag)
+            setImage(state.current_playlist.image)
+        }
+    }, [isEdit]);
+
+    useEffect(() => {
         const listener = navigation.addListener('didFocus', async () => {
             await TrackPlayer.reset()
         });
         return () => listener.remove()
     }, []);
+
     return (
         <View style={styles.container}>
             <View style={{width: '100%'}}>
@@ -96,7 +112,7 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                     <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.goBack()}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}>플레이리스트 만들기</Text>
+                    <Text style={styles.headerTitle}>플레이리스트 {isEdit ? '수정' : '만들기'}</Text>
                 </View>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -107,10 +123,10 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                             <View style={{flex: 1}}>
                                 <View style={titleValidity ? styles.input : styles.validityInput}>
                                     <TextInput
-                                        ref={titleRef}
+                                        value={title}
+                                        onChangeText={text => setTitle(text)}
                                         placeholder="플레이리스트 제목을 적어주세요."
                                         placeholderTextColor='rgb(196,196,196)'
-                                        onChangeText={text => titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
                                         style={{fontSize: 14 * tmpWidth}}
@@ -128,8 +144,8 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                         <Text style={styles.titleSize}>코멘트</Text>
                         <View style={contentValidity ? styles.commentBox : styles.validityComment}>
                             <TextInput
-                                ref={commentRef}
-                                onChangeText={text=> commentRef.current.value = text}
+                                value={comment}
+                                onChangeText={text => setComment(text)}
                                 placeholder="코멘트를 적어주세요."
                                 autoCapitalize='none'
                                 autoCorrect={false}
@@ -204,17 +220,23 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                             <Text style={styles.warningText}>이미지를 선택해주세요.</Text>
                         </View>}
                     </View>
+                    { isEdit ? 
+                    <View style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail}>
+                        {image == '' ?
+                        <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
+                        : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
+                    </View> :
                     <TouchableOpacity style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail} onPress={() => handleUpload()}>
                         {image == '' ?
                         <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
                         : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
-                    </TouchableOpacity>
+                    </TouchableOpacity> }
                 </View>
                 <View style={styles.song}>
                     <View style={{flexDirection: 'row', alignItems:'center'}}>
                         <Text style={styles.titleSize}>곡 담기</Text>
                         <Text style={styles.songText}> (최소 3개, 최대 5개)</Text>
-                        <TouchableOpacity onPress={() => navigate('SearchSong', { data:playList })}>
+                        <TouchableOpacity onPress={() => navigate('SearchSong', { data:playList, isEdit })}>
                             <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>
                         </TouchableOpacity>
                     </View>
@@ -246,18 +268,13 @@ const PlaylistCreatePage = ({ initialValues, navigation }) => {
                     </View>}
                 </View>
                 <TouchableOpacity style={styles.uploadBox} onPress={() => upload()}>
-                    <Text style={styles.uploadText}>업로드하기</Text>
+                    <Text style={styles.uploadText}>{isEdit ? '수정하기' : '업로드하기'}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>
     );
 };
 
-PlaylistCreatePage.defaultProps = {
-    initialValues:{
-        song : [],
-    },
-};
 PlaylistCreatePage.navigationOptions = ()=>{
     return {
         headerShown: false    

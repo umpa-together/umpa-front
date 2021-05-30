@@ -25,6 +25,7 @@ const SearchPage = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
+    const isEdit = navigation.getParam('isEdit');
 
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -240,7 +241,7 @@ const SearchPage = ({ navigation }) => {
                     <Text style={{fontSize: 14 * tmpWidth}}>담은 곡들</Text>
                     <TouchableOpacity onPress={async () => {
                         await TrackPlayer.reset()
-                        navigate('Create', { data:songs })}}>
+                        navigate('Create', { data:songs, isEdit })}}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>
                 </View>
