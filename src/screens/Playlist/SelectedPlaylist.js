@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableO
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
+import LinearGradient from 'react-native-linear-gradient';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -124,6 +125,9 @@ const SelectedPlaylist = ({navigation}) => {
             {state.current_playlist == null || playlistid != state.current_playlist._id ?
             <View style={styles.activityIndicatorContainer}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
+                <View style={{height: 228 * tmpWidth, width: '100%', zIndex: 1, position: 'absolute'}}>
+                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/playlistBackgrad.svg')}/>
+                </View>
                 <Image style={styles.thumbnail} source={{uri: state.current_playlist.image}}/>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong();}}>
@@ -132,6 +136,10 @@ const SelectedPlaylist = ({navigation}) => {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         {userState.myInfo._id == state.current_playlist.postUserId._id ? 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <TouchableOpacity onPress={() => navigate('Create', {'data': state.current_songs, 'isEdit': true})}>
+                                <Text style={{color: 'white'}}>수정</Text>
+                            </TouchableOpacity>
+                            <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
                             <TouchableOpacity onPress={() => setDeleteModal(true)}>
                                 <Text style={{color: 'white'}}>삭제</Text>
                             </TouchableOpacity>
@@ -211,20 +219,18 @@ const SelectedPlaylist = ({navigation}) => {
                             renderItem={({item}) => {
                                 return (
                                     <View style={styles.songBox}>
-                                        {isPlayingid == item.id ?
-                                        <TouchableOpacity style={styles.songCover} onPress={() => stoptracksong()}>
-                                           <SongImage play={true} url={item.attributes.artwork.url}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity style={styles.songCover} onPress={()=>addtracksong({data:item})}>
-                                            <SongImage play={false} url={item.attributes.artwork.url}/>
-                                        </TouchableOpacity> }
-                                        {isPlayingid == item.id ?
-                                        <TouchableOpacity onPress={() => stoptracksong()}>
-                                            <SvgUri width='17' height='20' source={require('../../assets/icons/play.svg')} style={{marginTop: 50 * tmpWidth}}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity  onPress={()=>addtracksong({data:item})}>
-                                            <SvgUri width='17' height='20' source={require('../../assets/icons/play.svg')} style={{marginTop: 50 * tmpWidth}}/>
-                                        </TouchableOpacity> }
+                                        <TouchableOpacity style={styles.songCover} onPress={() => {
+                                            if(isPlayingid == item.id){
+                                                stoptracksong()
+                                            }else{
+                                                addtracksong({data: item})
+                                            }
+                                        }}>
+                                           <SongImage play={false} url={item.attributes.artwork.url}/>
+                                           { isPlayingid != item.id ? 
+                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
+                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
+                                        </TouchableOpacity>
                                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         <View style={styles.songWidthBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -255,7 +261,10 @@ const SelectedPlaylist = ({navigation}) => {
                         <View style={{marginTop: 20 * tmpWidth}}>
                         {comments == [] ? null : comments.map(item => {
                             return (
-                                <View style={styles.commentBox} key={item._id}>
+                                <TouchableOpacity style={styles.commentBox} key={item._id} onPress={ async()=> {
+                                    setShowModal(item._id)
+                                    setCurrentcommentid(item._id)
+                                    await getreComment({commentid:item._id})}}>
                                     <TouchableOpacity onPress={async () => {
                                         if(item.postUserId._id == userState.myInfo._id) {
                                             navigate('Account')
@@ -340,7 +349,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                         <Text style={styles.commentUserText}>{item.postUser}</Text>
                                                         <Text style={styles.commentTimeText}>{item.time}</Text>
                                                     </View>
-                                                    <View style={{width: '90%'}}>
+                                                    <View style={{width: 280 * tmpWidth}}>
                                                         <Text style={styles.commentText}>{item.text}</Text>
                                                     </View>
                                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -381,6 +390,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                         recommentRef.current.clear();
                                                         recommentRef.current.value ='';
                                                     }}
+                                                    multiline={true}
                                                 />
                                             </View>
                                             {state.current_recomments == null ? <ActivityIndicator /> :
@@ -444,7 +454,7 @@ const SelectedPlaylist = ({navigation}) => {
                                             />}
                                         </View>
                                     </Modal> : null}
-                                </View>
+                                </TouchableOpacity>
                             )
                         })}
                         </View>
@@ -470,6 +480,7 @@ const SelectedPlaylist = ({navigation}) => {
                                         commentRef.current.value = '';
                                         setKeyboardHeight(0)
                                     }}
+                                    multiline={true}
                                 />
                             </View>
                             <TouchableOpacity onPress={() => {
@@ -509,7 +520,7 @@ const styles = StyleSheet.create({
     thumbnail: {
         height : 228 * tmpWidth,
         width : '100%',
-        position: 'absolute',
+        position: 'absolute'
     },
     header: {
         flexDirection: 'row', 
@@ -517,13 +528,15 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'space-between',
         marginLeft: 18 * tmpWidth, 
-        marginRight: 24 * tmpWidth
+        marginRight: 24 * tmpWidth,
+        zIndex: 2
     },
     profileBox: {
         marginTop: 4 * tmpWidth,
         marginLeft: 28 * tmpWidth,
         marginRight: 20 * tmpWidth,
         flexDirection: 'row',
+        zIndex: 2
     },
     profile: {
         height: 40 * tmpWidth,
@@ -547,6 +560,7 @@ const styles = StyleSheet.create({
     infoContainer: {
         alignItems: 'center', 
         marginBottom: 18 * tmpWidth, 
+        zIndex: 2
     },
     infoBox: {
         width: 319 * tmpWidth,
@@ -594,7 +608,7 @@ const styles = StyleSheet.create({
     songWidthBox: {
         width: 80 * tmpWidth,
         alignItems: 'center',
-        marginTop: 46 * tmpWidth,
+        marginTop: 12 * tmpWidth,
     },
     songText: {
         fontSize: 12 * tmpWidth, 
@@ -625,11 +639,12 @@ const styles = StyleSheet.create({
         borderRadius: 100 * tmpWidth,
         alignItems: 'center',
         marginTop: 12 * tmpWidth,
-        position: 'absolute'
     },
     inputBox: {
         width: '100%',
-        height: 68 * tmpWidth,
+        paddingTop: 18 * tmpWidth,
+        paddingBottom: 18 * tmpWidth,
+        //height: 68 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
@@ -698,6 +713,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: '80%',
+        marginTop: 4 * tmpWidth
     },
     commentBox: {
         marginLeft: 20 * tmpWidth,
@@ -723,7 +739,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(238,244,255)',
         flexDirection: 'row',
         paddingLeft: 20 * tmpWidth,
-        paddingTop: 30 * tmpWidth
+        paddingTop: 30 * tmpWidth,
     },
     inputRecommentBox: {
         marginTop: 20 * tmpWidth,

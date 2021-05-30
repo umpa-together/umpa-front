@@ -37,8 +37,8 @@ const AccountCurating = ({ curating, myAccount }) => {
                                         <Imagetake url={item.object.attributes.artwork.url}></Imagetake>
                                     </View>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth }}>{item.object.attributes.name}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth  }}>{item.object.attributes.artistName}</Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.attributes.name}</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.attributes.artistName}</Text>
                                     </View>
                                 </View> : 
                                 <View>
@@ -46,8 +46,8 @@ const AccountCurating = ({ curating, myAccount }) => {
                                         <Imagetake url={item.object.artwork.url}/>
                                     </View>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth }}>{item.object.name}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth  }}>{item.object.artistName}</Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.name}</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.artistName}</Text>
                                     </View>
                                 </View> }
                             </TouchableOpacity>

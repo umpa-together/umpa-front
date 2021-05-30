@@ -34,7 +34,6 @@ const OtherAccountScreen = ({navigation}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [today, setToday] = useState('');
-    const [isStoryRead, setIsStoryRead] = useState(false);
     const [reportModal, setReportModal] = useState(false);
     const [user, setUser] = useState(null);   
     const [harmfulModal, setHarmfulModal] = useState(false);
@@ -74,9 +73,7 @@ const OtherAccountScreen = ({navigation}) => {
         setRepresentSong(user.songs[idx]);
     }
     const storyClick = () => {
-        if(!isStoryRead){
-            storyView({id: story.id});
-        }
+        storyView({id: story.id});
         setStoryModal(true);
         if(story['song'].song.attributes.contentRating != 'explicit'){
             addtracksong({data: story['song'].song});
@@ -100,7 +97,6 @@ const OtherAccountScreen = ({navigation}) => {
     }, [user]);
     useEffect(() => {
         if(story != null){
-            setIsStoryRead(story.song.view.includes(userState.myInfo._id));
             setUrl(story['song'].song.attributes.artwork.url);
         }
     }, [story]);
@@ -114,6 +110,10 @@ const OtherAccountScreen = ({navigation}) => {
     useEffect(() => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
+        const listener = navigation.addListener('didFocus', async () => {
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove()
     }, []);
 
     return (
@@ -249,13 +249,18 @@ const OtherAccountScreen = ({navigation}) => {
                                         : null }
                                         <Text numberOfLines={1} style={{fontSize: 18 * tmpWidth, fontWeight: 'bold', marginTop: 20 * tmpWidth , marginBottom: 25 * tmpWidth}}>{representSong.attributes.name}</Text>
                                     </View>
-                                    {isPlayingid == representSong.id ? 
-                                    <TouchableOpacity style={styles.representSongCover} onPress={() => stoptracksong()}>
-                                        <ImageSelect opac={0.5} url={representSong.attributes.artwork.url}/>
-                                    </TouchableOpacity> : 
-                                    <TouchableOpacity style={styles.representSongCover} onPress={() => addtracksong({data:representSong})}>
+                                    <TouchableOpacity style={styles.representSongCover} onPress={() => {
+                                        if(isPlayingid == representSong.id){
+                                            stoptracksong()
+                                        }else{
+                                            addtracksong({data: representSong})
+                                        }
+                                    }}>
                                         <ImageSelect opac={1.0} url={representSong.attributes.artwork.url}/>
-                                    </TouchableOpacity> }
+                                        { isPlayingid != representSong.id ? 
+                                        <SvgUri width='50' height='50' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
+                                        <SvgUri width='50' height='50' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
+                                    </TouchableOpacity>
                                     {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                     <Text style={{fontSize: 14 * tmpWidth, marginTop: 29  * tmpWidth}}>{representSong.attributes.artistName}</Text>
                                     <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)', marginTop: 7 * tmpWidth }}>{representSong.attributes.releaseDate}</Text>
@@ -287,13 +292,17 @@ const OtherAccountScreen = ({navigation}) => {
                                     renderItem={({item}) => {
                                         return (
                                             <View style={styles.listBox}>
-                                                {isPlayingid == item.id ? 
-                                                <TouchableOpacity style={styles.listSongCover} onPress={() => stoptracksong()}>
-                                                    <ImageSelect opac={0.5} url={item.attributes.artwork.url}/>
-                                                </TouchableOpacity> : 
-                                                <TouchableOpacity style={styles.listSongCover} onPress={() => addtracksong({data:item})}>
+                                                <TouchableOpacity style={styles.listSongCover} onPress={() => {
+                                                if(isPlayingid == item.id){
+                                                    stoptracksong()
+                                                }else{
+                                                    addtracksong({data: item})
+                                                }}}>
                                                     <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
-                                                </TouchableOpacity> }
+                                                    { isPlayingid != item.id ? 
+                                                    <SvgUri width='27' height='27' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                                    <SvgUri width='27' height='27' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                                </TouchableOpacity>
                                                 {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                                 <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth }}>
                                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -316,8 +325,8 @@ const OtherAccountScreen = ({navigation}) => {
                     </View>
                 </Modal> : null }
                 <Modal 
-                    animationIn='lightSpeedIn'
-                    animationOut='lightSpeedOut'
+                    animationIn='fadeInRight'
+                    animationOut='fadeOutLeft'
                     isVisible={storyModal}
                     onBackdropPress={onClose}
                     backdropOpacity={0.5}
@@ -338,15 +347,18 @@ const OtherAccountScreen = ({navigation}) => {
                                             : null }
                                             <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{story['song'].song.attributes.name}</Text>
                                         </View>
-                                        { isPlayingid == story['song'].song.id ?
                                         <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                            stoptracksong()}}>
-                                            <ImageSelect opac={0.5} url={url}></ImageSelect>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                            addtracksong({data: story['song'].song})}}>
-                                            <ImageSelect opac={1.0} url={url}></ImageSelect>
-                                        </TouchableOpacity> }
+                                            if(isPlayingid == story['song'].song.id){
+                                                stoptracksong()
+                                            }else{
+                                                addtracksong({data: story['song'].song})
+                                            }
+                                        }}>
+                                            <ImageSelect opac={1.0} url={url} />
+                                            { isPlayingid != story['song'].song.id ? 
+                                            <SvgUri width='50' height='50' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
+                                            <SvgUri width='50' height='50' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
+                                        </TouchableOpacity>
                                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
                                         <View style={{width: 180 * tmpWidth, alignItems: 'center'}}>
                                             <Text style={{fontSize:14 * tmpWidth, marginTop: 29 * tmpWidth }} numberOfLines={1}>{story['song'].song.attributes.artistName}</Text>

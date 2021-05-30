@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
@@ -40,7 +40,6 @@ const CreateBoardPage = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.title}>
                         <View style={{flexDirection: 'row'}}>
@@ -104,7 +103,6 @@ const CreateBoardPage = () => {
                 <TouchableOpacity style={styles.uploadBox} onPress={() => create()}>
                     <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>만들기</Text>
                 </TouchableOpacity> 
-            </ScrollView>
         </View>
     )
 };
@@ -146,7 +144,7 @@ const styles=StyleSheet.create({
     title: {
         width: 327 * tmpWidth,
         height: 44 * tmpWidth,
-        marginTop: 32 * tmpWidth,
+        marginTop: 12 * tmpWidth
     },
     titleInput: {
         borderBottomWidth: 1 * tmpWidth,
@@ -208,7 +206,8 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(169,193,255)',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 12 * tmpWidth
+        bottom: 22 * tmpWidth,
+        position: 'absolute'
     },
     validityInput: {
         borderBottomWidth: 1 * tmpWidth,

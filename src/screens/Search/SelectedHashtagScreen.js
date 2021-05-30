@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
@@ -12,7 +12,7 @@ const SelectedHashtagScreen = ({navigation}) => {
     const data = navigation.getParam('data');
     const hashtag = navigation.getParam('text')
     return (
-        <View style={{height:812 * tmpHeight, backgroundColor:"#fff"}}>
+        <SafeAreaView style={{height:812 * tmpHeight, backgroundColor:"#fff"}}>
         {searchOption =='Hashtag' ?
             <View>
                 <View style={styles.header}>
@@ -63,7 +63,7 @@ const SelectedHashtagScreen = ({navigation}) => {
                     />
                 </View>
             </View> : null }
-        </View>
+        </SafeAreaView>
     )
 };
 SelectedHashtagScreen.navigationOptions = () =>{
@@ -78,10 +78,8 @@ const styles=StyleSheet.create({
     header:{
         alignItems:'center',
         width : 375 * tmpWidth,
-        height:48 * tmpWidth,
         backgroundColor:'rgba(255,255,255,0)',
-        marginTop:30 * tmpWidth,
-        flexDirection:'row'
+        flexDirection:'row',
     },
     backicon:{
         zIndex:2,

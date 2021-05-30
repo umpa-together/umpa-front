@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import SvgUri from 'react-native-svg-uri';
@@ -51,7 +51,6 @@ const CreateContent = () => {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <Text style={styles.boardText}>{state.boards.name}</Text>
                     <View style={styles.title}>
@@ -131,7 +130,6 @@ const CreateContent = () => {
                 <TouchableOpacity style={styles.uploadBox} onPress={() => create()}>
                     <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>업로드하기</Text>
                 </TouchableOpacity> 
-            </ScrollView>
         </View>
         
     );
@@ -171,7 +169,6 @@ const styles=StyleSheet.create({
     },
     boardText: {
         fontSize: 14 * tmpWidth,
-        marginTop: 24 * tmpWidth
     },
     title: {
         width: 327 * tmpWidth,
@@ -196,12 +193,12 @@ const styles=StyleSheet.create({
     },
     comment: {
         width: 327 * tmpWidth,
-        height: 316 * tmpWidth,
+        height: 266 * tmpWidth,
         marginTop: 14 * tmpWidth
     },
     commentBox: {
         width: 327 * tmpWidth,
-        height: 267 * tmpWidth,
+        height: 217 * tmpWidth,
         borderWidth: 1 * tmpWidth,
         borderColor: 'rgb(196,196,196)',
         borderRadius: 8 * tmpWidth,
@@ -231,8 +228,8 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(169,193,255)',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 12 * tmpWidth,
-        marginBottom: 12 * tmpWidth
+        position: 'absolute',
+        bottom: 22 * tmpWidth
     },
     warningIcon: {
         width: 14 * tmpWidth,
