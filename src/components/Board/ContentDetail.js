@@ -215,10 +215,13 @@ const ContentDetail = ({navigation}) => {
                                         }}
                                         style={{fontSize: 14 * tmpWidth, marginLeft: 16.5 * tmpWidth}}
                                         ref={inputRef}
+                                        multiline={true}
                                     />
                                 </View>
                             </View>
-                            <TouchableOpacity onPress={() => create()}>
+                            <TouchableOpacity onPress={() => {
+                                setKeyboardHeight(0)
+                                create()}}>
                                 <Text style={styles.uploadText}>등록</Text>
                             </TouchableOpacity>
                         </View>
@@ -302,7 +305,8 @@ const styles=StyleSheet.create({
     },
     commentBox: {
         width: '100%',
-        height: 68 * tmpWidth,
+        paddingTop: 18 * tmpWidth,
+        paddingBottom: 18 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
@@ -324,8 +328,6 @@ const styles=StyleSheet.create({
     },
     commentInput: {
         width: 250 * tmpWidth,
-        height: 32 * tmpWidth,
-
         justifyContent: 'center',
     },
     uploadText: {

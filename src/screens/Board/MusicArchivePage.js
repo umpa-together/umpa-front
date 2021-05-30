@@ -26,18 +26,17 @@ const MusicArchivePage = ({navigation}) => {
     
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [clickModal, setClickModal] = useState(false);
-    const [storyTok , setStoryTok] = useState(false);
     const [like, setLike] = useState(false);
 
     const [selectedStory, setSelectedStory] = useState(undefined);
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
     const [harmfulModal, setHarmfulModal] = useState(false);
-
     useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+        const listener =navigation.addListener('didFocus', async ()=>{
             getMusicArchive({boardId: state.boards._id});
             getMusicChart({boardId:  state.boards._id});
+            await TrackPlayer.reset()
         });
         return () => {
             listener.remove();
@@ -80,15 +79,11 @@ const MusicArchivePage = ({navigation}) => {
         likeCheck({item})
         setClickModal(true);
         setSelectedStory(item);
-        console.log(selectedStory)
         setSelectedIdx(index);
         if(item.song.attributes.contentRating != 'explicit')    addtracksong({data:item.song});
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
 
-    useEffect(() => {
-        storyClick
-    }, [storyTok]);
     return (
         <View style={styles.container}>
             {state.musicArchive == null || state.musicArchive == null ? <View style={{justifyContent: 'center', alignItems: 'center' ,flex: 1}}><ActivityIndicator /></View> :
@@ -110,16 +105,13 @@ const MusicArchivePage = ({navigation}) => {
                             return (
                                 <View style={styles.musicArchiveContainer}>
                                     <View style={styles.songBox}>
-                                        {isPlayingid == item.song.id ?
-                                        <TouchableOpacity style={styles.songCover} onPress={()=> stoptracksong()}>
-                                            <SongImage play={true} url={item.song.attributes.artwork.url}/>
-                                        </TouchableOpacity> :
-                                        <TouchableOpacity style={styles.songCover} onPress={async ()=>{   {
+                                        <TouchableOpacity style={styles.songCover} onPress={() => {
                                             setOption('archive');
                                             storyClick({item, index})
-                                        }}} >
+                                        }}>
                                             <SongImage play={false} url={item.song.attributes.artwork.url}/>
-                                        </TouchableOpacity> }
+                                        </TouchableOpacity>
+                                        
                                         <View style={styles.nameBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.song.attributes.contentRating == "explicit" ? 
@@ -147,7 +139,6 @@ const MusicArchivePage = ({navigation}) => {
                                 <TouchableOpacity style={styles.popularSongBox} onPress={async () => {
                                     setOption('chart');
                                     storyClick({item, index})
-                                    likeCheck({item})
                                 }}>
                                     <Text style={styles.chartNum}>{index + 1}</Text>
                                     <View style={styles.eachSongBox}>
@@ -219,19 +210,20 @@ const MusicArchivePage = ({navigation}) => {
                                     }}}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                            { isPlayingid == selectedStory.song.id ? 
-                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => stoptracksong()}>
+                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
+                                if(isPlayingid == selectedStory.song.id){
+                                    stoptracksong()
+                                }else{
+                                    addtracksong({data: selectedStory.song})
+                                }
+                            }}>
                                 <View style={styles.songscover}>
                                     <SongImage play={false} url={selectedStory.song.attributes.artwork.url} />
+                                    { isPlayingid != selectedStory.song.id ? 
+                                    <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> :
+                                    <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> }
                                 </View>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalStop.svg')} style={styles.playIcon}/>
-                            </TouchableOpacity> :
-                            <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => addtracksong({data: selectedStory.song})}>
-                                <View style={styles.songscover}>
-                                    <SongImage play={false} url={selectedStory.song.attributes.artwork.url} />
-                                </View>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalPlay.svg')} style={styles.playIcon}/>
-                            </TouchableOpacity> }
+                            </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal} /> : null }
                             {(option == 'archive' && selectedIdx != state.musicArchive.length-1) ||
                                  (option == 'chart' && selectedIdx != state.musicChart.length-1) ? 
@@ -444,10 +436,8 @@ const styles=StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'space-between',
-        paddingLeft: 17 * tmpWidth,
-        paddingRight: 17 * tmpWidth,
         width: '100%',
-        height: 152 * tmpWidth
+        height: 152 * tmpWidth,
     },
     playIcon: {
         width: 40 * tmpWidth,
@@ -461,7 +451,7 @@ const styles=StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,  
         alignItems: 'center', 
-        width: 230 * tmpWidth,
+        width: 190 * tmpWidth,
     },
     modalArtistText: {
         fontSize: 14 * tmpWidth, 

@@ -193,6 +193,15 @@ const postStory = (dispatch) => async ({song}) => {
     }
 }
 
+const deleteStory = (dispatch) => async() => {
+    try {
+        const response = await serverApi.delete('/Story');
+        dispatch({ type: 'myStory', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with postStory' });
+    }
+}
+
 const getMyStory = (dispatch) => async () => {
     try {
         const response = await serverApi.get('/MyStory');
@@ -213,8 +222,7 @@ const getOtherStory = (dispatch) => async () => {
 
 const storyView = (dispatch) => async ({id}) => {
     try {
-        const response = await serverApi.get('/StoryView/'+id);
-        dispatch({ type: 'myStory', payload: response.data });
+        await serverApi.get('/StoryView/'+id);
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with storyView' });
     }
@@ -225,6 +233,6 @@ export const { Provider, Context } = createDataContext(
     { initUser, initOtherUser, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
-        postStory, getMyStory, getOtherStory, storyView },
+        postStory, deleteStory, getMyStory, getOtherStory, storyView },
     { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null }
 )

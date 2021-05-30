@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList} from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
@@ -24,8 +24,8 @@ const ImageSelect = ({url, opac}) => {
 
 const Feed = ({navigation}) => {
     const { state } = useContext(PlaylistContext);
-    const { state: userState, getOtherStory, storyView, getOtheruser,  } = useContext(UserContext);
-    const { state:curation } = useContext(CurationContext);
+    const { state: userState, getOtherStory, storyView, getOtheruser } = useContext(UserContext);
+    const { state: curation } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [storyModal, setStoryModal] = useState(false);
@@ -54,6 +54,7 @@ const Feed = ({navigation}) => {
     };
     const onClose = async () => {
         if(storyModal)  {
+            getOtherStory()
             setStoryModal(false);
             setIsPlayingid('0');
             await TrackPlayer.reset()
@@ -65,12 +66,17 @@ const Feed = ({navigation}) => {
         setSelectedStory(item);
         setSelectedIdx(index);
         setStoryModal(true);
-        if(item.song.view.includes(userState.myInfo._id) == false){
-            storyView({id: item.id});
-            getOtherStory();
-        }
+        storyView({id: item.id});
         if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"]});
     }
+
+    useEffect(() => {
+        const listener = navigation.addListener('didFocus', async () => {
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove()
+    }, []);
+
     return (
         <View style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
             <View style={styles.opt}>
@@ -163,30 +169,37 @@ const Feed = ({navigation}) => {
                             <View style={styles.nextContainer}>
                                 {selectedIdx != 0 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx-1], index: selectedIdx-1})}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                                { isPlayingid == selectedStory.song["song"].id ?
-                                <TouchableOpacity style={styles.songscover} onPress={() => stoptracksong()}>
+                                <TouchableOpacity style={styles.songscover} onPress={() => {
+                                    if(isPlayingid == selectedStory.song["song"].id){
+                                        stoptracksong()
+                                    }else{
+                                        addtracksong({data: selectedStory.song["song"]})
+                                    }
+                                }}>
                                     <ImageSelect opac={1.0} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                </TouchableOpacity> :
-                                <TouchableOpacity style={styles.songscover} onPress={() => addtracksong({data: selectedStory.song["song"]})}>
-                                    <ImageSelect opac={0.5} url={selectedStory.song["song"].attributes.artwork.url}/>
-                                </TouchableOpacity> }
+                                    { isPlayingid != selectedStory.song["song"].id ? 
+                                    <SvgUri width='48' height='48' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> :
+                                    <SvgUri width='48' height='48' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> }
+                                </TouchableOpacity>
                                 { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                 {selectedIdx != userState.otherStory.length-1 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx+1], index: selectedIdx+1})}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/representright.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalRight.svg')}/>
                                 </TouchableOpacity>: <View style={styles.nextIcon}/>}
                             </View>
                         </View>
-                        <View style={styles.textContainer}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                {selectedStory.song["song"].attributes.contentRating == "explicit" ? 
-                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                : null }
-                                <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song["song"].attributes.name}</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <View style={styles.textContainer}>
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    {selectedStory.song["song"].attributes.contentRating == "explicit" ? 
+                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                    : null }
+                                    <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song["song"].attributes.name}</Text>
+                                </View>
+                                <Text numberOfLines={1} style={styles.modalArtistText}>{selectedStory.song["song"].attributes.artistName}</Text>
                             </View>
-                            <Text numberOfLines={1} style={styles.modalArtistText}>{selectedStory.song["song"].attributes.artistName}</Text>
                         </View>
                     </View>
                 </View>
@@ -203,10 +216,9 @@ Feed.navigationOptions = () =>{
 
 
 const styles = StyleSheet.create({
-
     songscover : {
-        width : 200 * tmpWidth,
-        height : 200 * tmpWidth,
+        width : 152 * tmpWidth,
+        height : 152 * tmpWidth,
     },
     header:{
         height:48 * tmpWidth,
@@ -295,7 +307,7 @@ const styles = StyleSheet.create({
     },
     modalBox: {
         width : 305 * tmpWidth,
-        height : 340 * tmpWidth,
+        height : 311 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         borderRadius: 10 * tmpWidth,
         shadowColor: "rgb(0, 0, 0)",
@@ -315,7 +327,9 @@ const styles = StyleSheet.create({
     nextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        width: '100%',
+        height: 152 * tmpWidth,
     },
     nextIcon: {
         width: 36 * tmpWidth,
@@ -324,14 +338,13 @@ const styles = StyleSheet.create({
     textContainer: {
         marginTop: 16 * tmpWidth,
         alignItems: 'center',
-        width: 252 * tmpWidth,
-
+        width: 190 * tmpWidth,
     },
     modalArtistText: {
         fontSize: 14 * tmpWidth,
         color: 'rgb(133,133,133)',
         marginTop: 8 * tmpWidth,
-        marginBottom: 10 * tmpWidth
+        marginBottom: 10 * tmpWidth,
     },
     modalTitleText: {
         fontSize: 16 * tmpWidth

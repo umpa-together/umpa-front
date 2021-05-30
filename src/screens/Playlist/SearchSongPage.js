@@ -3,9 +3,11 @@ import { Text, Image, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndi
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import HarmfulModal from '../../components/HarmfulModal';
 
 const SongImage = ({url}) => {
     url =url.replace('{w}', '300');
@@ -21,6 +23,9 @@ const SearchPage = ({ navigation }) => {
     const addedplayList = navigation.getParam('data');
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
+    const [isPlayingid, setIsPlayingid] = useState('0');
+    const [harmfulModal, setHarmfulModal] = useState(false);
+    const isEdit = navigation.getParam('isEdit');
 
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -57,9 +62,30 @@ const SearchPage = ({ navigation }) => {
 
     const renderLeftActions = () => {
         return (
-            <View style={{width: '100%', height: '90%', backgroundColor:'#fff'}}/>
+            <View style={{width: '30%', height: '90%', backgroundColor:'#fff'}}/>
         )
     }
+
+    const addtracksong= async ({data}) => {
+        const track = new Object();
+        track.id = data.id;
+        track.url = data.attributes.previews[0].url;
+        track.title = data.attributes.name;
+        track.artist = data.attributes.artistName;
+        if (data.attributes.contentRating != "explicit") {
+            await TrackPlayer.reset()
+            setIsPlayingid(data.id);
+            await TrackPlayer.add(track)
+            TrackPlayer.play();
+        } else {
+            setHarmfulModal(true);
+        }
+    };
+
+    const stoptracksong= async () => {    
+        setIsPlayingid('0');
+        await TrackPlayer.reset()
+    };
 
     useEffect(()=>{
         searchinit();
@@ -140,39 +166,54 @@ const SearchPage = ({ navigation }) => {
                                     <TouchableOpacity onPress={() => {
                                         setSelectedId('')
                                         deleteItem({data: item})}}
-                                    >
-                                        <View style={styles.selectedSong}>
-                                            <View style={styles.songCover}>
-                                                <SongImage url={item.attributes.artwork.url}/>
+                                        style={styles.selectedSong}>
+                                        <TouchableOpacity onPress={() => {
+                                            if(isPlayingid == item.id){
+                                                stoptracksong()
+                                            } else {
+                                                addtracksong({data: item})
+                                            }}}
+                                            style={styles.songCover}>
+                                            <SongImage url={item.attributes.artwork.url}/>
+                                            { isPlayingid != item.id ? 
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        </TouchableOpacity>
+                                        <View style={styles.songContainer}>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {item.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                : null }
+                                                <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
-                                            <View style={styles.songContainer}>
-                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                    {item.attributes.contentRating == "explicit" ? 
-                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                    : null }
-                                                    <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
-                                                </View>
-                                                <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                            </View>
+                                            <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                         </View>
                                     </TouchableOpacity> :
                                     <TouchableOpacity onPress={() => {
                                         setSelectedId(item.id)
                                         addItem({ data: item })}}
-                                    >
-                                        <View style={styles.eachSong}>
-                                            <View style={styles.songCover}>
-                                                <SongImage url={item.attributes.artwork.url}/>
+                                        style={styles.eachSong}>
+                                        <TouchableOpacity onPress={() => {
+                                            if(isPlayingid == item.id){
+                                                stoptracksong()
+                                            }else{
+                                                addtracksong({data: item})
+                                            }}}style={styles.songCover}>
+                                            <SongImage url={item.attributes.artwork.url}/>
+                                            { isPlayingid != item.id ? 
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        </TouchableOpacity>
+                                        <View style={styles.songContainer}>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {item.attributes.contentRating == "explicit" ? 
+                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                : null }
+                                                <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
-                                            <View style={styles.songContainer}>
-                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                    {item.attributes.contentRating == "explicit" ? 
-                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                    : null }
-                                                    <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
-                                                </View>
-                                                <Text style={styles.artistText}  numberOfLines={1}>{item.attributes.artistName}</Text>
-                                            </View>
+                                            <Text style={styles.artistText}  numberOfLines={1}>{item.attributes.artistName}</Text>
                                         </View>
                                     </TouchableOpacity> }
                                 </View>
@@ -198,7 +239,9 @@ const SearchPage = ({ navigation }) => {
             <View style={styles.selectedBox}>
                 <View style={styles.selectedBoxHeader}>
                     <Text style={{fontSize: 14 * tmpWidth}}>담은 곡들</Text>
-                    <TouchableOpacity onPress={() => navigate('Create', { data:songs })}>
+                    <TouchableOpacity onPress={async () => {
+                        await TrackPlayer.reset()
+                        navigate('Create', { data:songs, isEdit })}}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>
                 </View>

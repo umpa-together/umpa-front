@@ -34,8 +34,8 @@ const MyContentForm = ({ navigation, Contents }) => {
                                 <View style={styles.footer}>
                                     <Text>{item.boardId.name}</Text>
                                     <View style={{flexDirection: 'row'}}>
-                                        <Text style={styles.likeText}>좋아요 {item.comments.length}</Text>
-                                        <Text style={styles.commentText}>댓글 {item.likes.length}</Text>
+                                        <Text style={styles.likeText}>좋아요 {item.likes.length}</Text>
+                                        <Text style={styles.commentText}>댓글 {item.comments.length}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>

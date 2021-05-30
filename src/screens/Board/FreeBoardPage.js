@@ -90,7 +90,7 @@ const FreeBoardPage = ({ navigation }) => {
                     <TouchableOpacity onPress={() => setPinBoard(!pinBoard)} style={{marginLeft: 4 * tmpWidth}}>
                         {!pinBoard ? 
                         <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> : 
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/up.svg')}/> }
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> }
                     </TouchableOpacity>
                     <Text style={styles.boardText}>즐겨찾는 게시판</Text>
                 </View>
@@ -100,12 +100,12 @@ const FreeBoardPage = ({ navigation }) => {
                     <TouchableOpacity onPress={() => setGenreBoard(!genreBoard)} style={{marginLeft: 4 * tmpWidth}}>
                         {!genreBoard ?
                         <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> :
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/up.svg')}/> }
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> }
                     </TouchableOpacity>
                     <Text style={styles.boardText}>장르별 게시판</Text>
                 </View>
                 {genreBoard ?
-                <View style={{marginLeft: 32 * tmpWidth}}>
+                <View style={{ paddingLeft: 30 * tmpWidth, marginBottom: 8 * tmpWidth}}>
                     <View style={styles.genreBoardContainer}>
                         {genreList.map((item) => {
                             return (
@@ -175,7 +175,7 @@ const styles=StyleSheet.create({
     },
     boardBox: {
         height: 40 * tmpWidth, 
-        borderBottomWidth: 1 * tmpWidth,
+        borderBottomWidth: 0.7 * tmpWidth,
         borderBottomColor: 'rgb(229,231,239)',
         marginLeft: 20 * tmpWidth, 
         marginRight: 20 * tmpWidth, 
@@ -189,12 +189,12 @@ const styles=StyleSheet.create({
     genreView: {
         borderRadius: 100 * tmpWidth, 
         marginRight: 8 * tmpWidth,  
-        paddingLeft: 12 * tmpWidth,
-        paddingRight: 12 * tmpWidth,
-        paddingTop: 5 * tmpWidth,
-        paddingBottom: 5 * tmpWidth,
+        paddingLeft: 17 * tmpWidth,
+        paddingRight: 17 * tmpWidth,
+        paddingTop: 7 * tmpWidth,
+        paddingBottom: 7 * tmpWidth,
         backgroundColor: 'rgb(238,244,255)',
-        marginTop: 12 * tmpWidth
+        marginTop: 8 * tmpWidth
     },
     genreBox: {
         fontSize: 12 * tmpWidth,
@@ -203,12 +203,12 @@ const styles=StyleSheet.create({
     selectedGenreView: {
         borderRadius: 100 * tmpWidth, 
         marginRight: 8 * tmpWidth,  
-        paddingLeft: 12 * tmpWidth,
-        paddingRight: 12 * tmpWidth,
-        paddingTop: 5 * tmpWidth,
-        paddingBottom: 5 * tmpWidth,
+        paddingLeft: 17 * tmpWidth,
+        paddingRight: 17 * tmpWidth,
+        paddingTop: 7 * tmpWidth,
+        paddingBottom: 7 * tmpWidth,
         backgroundColor: 'rgb(169,193,255)',
-        marginTop: 12 * tmpWidth
+        marginTop: 8 * tmpWidth
     },
     selectedGenreBox: {
         fontSize: 12 * tmpWidth,
@@ -217,7 +217,7 @@ const styles=StyleSheet.create({
     genreBoardContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap', 
-        width: 250 * tmpWidth,
+        width: 300 * tmpWidth,
     }
 });
 

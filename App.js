@@ -137,6 +137,8 @@ const Account = createStackNavigator({
     SelectedCuration:SelectedCuration,
     SelectedHashtag: SelectedHashtagScreen,
     FeedBack: FeedBackPage,
+    Create : CreatePlayListPage,
+    SearchSong : SearchSongPage,
 });
 
 main.navigationOptions = ({ navigation }) => {

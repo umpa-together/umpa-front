@@ -62,6 +62,19 @@ const addPlaylist = dispatch => async({ title, textcontent, songs, hashtag, fd }
     }
 };
 
+const editPlaylist = dispatch => async({ title, textcontent, songs, hashtag, playlistId }, callback) => {
+    try {
+        await serverApi.post('/editPlaylist', { title, textcontent, songs, hashtag, playlistId });
+        navigate('Account');
+    }
+    catch(err){
+        dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
+    }
+    if(callback) {
+        callback();
+    }
+}
+
 const deletePlaylist= dispatch => {
     return async ({ id }) => {
         await serverApi.delete('/playlist/'+id);
@@ -219,7 +232,7 @@ const unlikesrecomment = dispatch => {
 
 export const { Provider, Context } = createDataContext(
     playlistReducer,
-    { initPlaylist, addPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist,
+    { initPlaylist, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist,
         addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
     { playlists: null, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
 )

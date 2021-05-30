@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
@@ -56,8 +56,7 @@ const ProfileEditPage = ({navigation}) => {
     }, []);
 
     return (
-        <ScrollView style={{backgroundColor:'rgb(254,254,254)'}}>
-        <View style={{backgroundColor: 'rgb(254,254,254)', flex: 1}}>
+        <View style={{backgroundColor: 'rgb(254,254,254)', flex: 1, }}>
             <View style={styles.header}>
                 <Text style={{fontSize: 16 * tmpWidth}}>프로필 사진</Text>
                 <TouchableOpacity onPress={() => handleUpload()}>
@@ -73,56 +72,57 @@ const ProfileEditPage = ({navigation}) => {
             <View style={{alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View>
-                <View style={styles.nameBox}>
-                    <Text style={{fontSize: 16 * tmpWidth}}>이름</Text>
-                    <View style={{flex: 1}}>
-                        <View style={nameValidity ? styles.input : styles.validityInput}>
-                            <TextInput
-                                value={username}
-                                onChangeText={(text) => {
-                                    if(text.length <=15)   setUsername(text)}}
-                                placeholder="사용자 이름을 적어주세요. (15자 이내)"
-                                placeholderTextColor='rgb(196,196,196)'
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                                style={{fontSize: 14 * tmpWidth, paddingBottom: 9 * tmpWidth }}
-                            />
+                        <View style={styles.nameBox}>
+                            <Text style={{fontSize: 16 * tmpWidth}}>이름</Text>
+                            <View style={{flex: 1}}>
+                                <View style={nameValidity ? styles.input : styles.validityInput}>
+                                    <TextInput
+                                        value={username}
+                                        onChangeText={(text) => {
+                                            if(text.length <=15)   setUsername(text)}}
+                                        placeholder="사용자 이름을 적어주세요. (15자 이내)"
+                                        placeholderTextColor='rgb(196,196,196)'
+                                        autoCapitalize='none'
+                                        autoCorrect={false}
+                                        style={{fontSize: 14 * tmpWidth, paddingBottom: 9 * tmpWidth }}
+                                    />
+                                </View>
+                                {doubleCheck && !authState.doubleCheck ? 
+                                <View style={{flexDirection: 'row', marginTop: 4 * tmpWidth, marginLeft: 14 * tmpWidth}}>
+                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                    <Text style={{color:'rgb(238, 98, 92)', marginLeft: 4 * tmpWidth , fontSize: 12 * tmpWidth}}>현재 사용중인 아이디입니다.</Text>
+                                </View> : null }
+                                {nameValidity ? null :
+                                <View style={{flexDirection: 'row', marginTop: 4 * tmpWidth, marginLeft: 14 * tmpWidth}}>
+                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                    <Text style={{color:'rgb(238, 98, 92)', marginLeft: 4 * tmpWidth , fontSize: 12 * tmpWidth}}>사용자 이름을 입력해주세요.</Text>
+                                </View>}
+                            </View>
                         </View>
-                        {doubleCheck && !authState.doubleCheck ? 
-                        <View style={{flexDirection: 'row', marginTop: 4 * tmpWidth, marginLeft: 14 * tmpWidth}}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                            <Text style={{color:'rgb(238, 98, 92)', marginLeft: 4 * tmpWidth , fontSize: 12 * tmpWidth}}>현재 사용중인 아이디입니다.</Text>
-                        </View> : null }
-                        {nameValidity ? null :
-                        <View style={{flexDirection: 'row', marginTop: 4 * tmpWidth, marginLeft: 14 * tmpWidth}}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                            <Text style={{color:'rgb(238, 98, 92)', marginLeft: 4 * tmpWidth , fontSize: 12 * tmpWidth}}>사용자 이름을 입력해주세요.</Text>
-                        </View>}
+                        <View style={{marginTop: 20 * tmpWidth }}>
+                            <Text style={{fontSize: 16 * tmpWidth}}>소개</Text>
+                            <View style={styles.introduceBox}>
+                                <TextInput
+                                    value={introduction}
+                                    onChangeText={(text) =>  setIntroduction(text)}
+                                    placeholder="소개글을 적어주세요."
+                                    placeholderTextColor='rgb(196,196,196)'
+                                    autoCapitalize='none'
+                                    autoCorrect={false}
+                                    multiline={true}
+                                    style={styles.introducetextinput}
+                                />
+                            </View>
+                        </View>
                     </View>
-                </View>
-                <View style={{marginTop: 20 * tmpWidth }}>
-                    <Text style={{fontSize: 16 * tmpWidth}}>소개</Text>
-                    <View style={styles.introduceBox}>
-                        <TextInput
-                            value={introduction}
-                            onChangeText={(text) =>  setIntroduction(text)}
-                            placeholder="소개글을 적어주세요."
-                            placeholderTextColor='rgb(196,196,196)'
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            multiline={true}
-                            style={styles.introducetextinput}
-                        />
-                    </View>
-                </View>
-                </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>  
+            </View>
+            <View style={{flex: 1, alignItems: 'center'}}>
                 <TouchableOpacity style={styles.uploadBox} onPress={async() => {await upload(); }}>
                     <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>수정하기</Text>
                 </TouchableOpacity>
             </View>
         </View>
-        </ScrollView>
     );
 }
 
@@ -181,7 +181,7 @@ const styles=StyleSheet.create({
     },
     introduceBox: {
         width: 327  * tmpWidth,
-        height: 167.5  * tmpWidth,
+        height: 160.5  * tmpWidth,
         borderWidth: 1 * tmpWidth,
         borderColor: 'rgb(196,196,196)',
         borderRadius: 8 * tmpWidth,
@@ -194,8 +194,8 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(168,193,255)',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 113.5 * tmpWidth,
-        marginBottom: 41.5 * tmpWidth
+        position: 'absolute',
+        bottom: 22 * tmpWidth
     },
     validityInput: {
         borderBottomWidth: 1 * tmpWidth,
@@ -231,9 +231,9 @@ const styles=StyleSheet.create({
     header:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 30 * tmpWidth,
         marginLeft: 24  * tmpWidth,
-        marginRight: 24 * tmpWidth
+        marginRight: 24 * tmpWidth,
+        marginTop: 12 * tmpWidth
     },
     introducetextinput:{
         fontSize: 14 * tmpWidth,

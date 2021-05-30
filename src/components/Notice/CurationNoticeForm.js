@@ -21,13 +21,13 @@ const CurationNoticeForm = ({ notice }) => {
                 </View> : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
                 <View style={styles.content}>
                     <Text style={styles.name}>{notice.curationpost.object.attributes.artistName} - {notice.curationpost.object.attributes.name}</Text>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 </View>
-                <Imagetake url={notice.curationpost.object.attributes.artwork.url}></Imagetake>
+                <Imagetake url={notice.curationpost.object.attributes.artwork.url} />
             </View>
         </View>
     )
@@ -37,7 +37,7 @@ const styles=StyleSheet.create({
     container: {
         marginLeft: 20 * tmpWidth, 
         marginRight: 20 * tmpWidth, 
-        flex: 1
+        flex: 1,
     },
     img: {
         height: 48 * tmpWidth, 
@@ -50,14 +50,17 @@ const styles=StyleSheet.create({
     },
     name: {
         fontSize: 12 * tmpWidth,
-        color: 'rgba(0,0,0,0.61)'
+        color: 'rgba(0,0,0,0.61)',
+        lineHeight: 16 * tmpWidth,
     },
     outerText: {
         fontSize: 14 * tmpWidth, 
-        fontWeight: '500'
+        fontWeight: '500',
+        lineHeight: 16 * tmpWidth,
     },
     innerText: {
-        fontWeight:'400'
+        fontWeight:'400',
+        lineHeight: 16 * tmpWidth,
     }
 });
 
