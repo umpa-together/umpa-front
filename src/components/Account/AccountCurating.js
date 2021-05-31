@@ -18,6 +18,7 @@ const AccountCurating = ({ curating, myAccount }) => {
 
     });
     const { getCuration } = useContext(CurationContext);
+
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
@@ -25,6 +26,9 @@ const AccountCurating = ({ curating, myAccount }) => {
                 data={curating}
                 keyExtractor={(song)=>song._id}
                 renderItem={({item})=> {
+                    console.log(
+                        item.object
+                    )
                     return (
                         <View style={{marginRight: 57 * tmpWidth , marginTop: 14 * tmpWidth  }}>
                             <TouchableOpacity onPress={()=>{
@@ -46,7 +50,7 @@ const AccountCurating = ({ curating, myAccount }) => {
                                         <Imagetake url={item.object.artwork.url}/>
                                     </View>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.name}</Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.albumName}</Text>
                                         <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.artistName}</Text>
                                     </View>
                                 </View> }
