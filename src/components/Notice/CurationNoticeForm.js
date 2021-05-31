@@ -13,6 +13,7 @@ const Imagetake = ({url}) => {
 
 const CurationNoticeForm = ({ notice }) => {
     return (
+        notice.curationpost !=undefined ?
         <View style={styles.container}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 {notice.noticinguser.profileImage == undefined ?
@@ -30,6 +31,9 @@ const CurationNoticeForm = ({ notice }) => {
                 <Imagetake url={notice.curationpost.object.attributes.artwork.url} />
             </View>
         </View>
+        :
+        <Text>삭제된 알람입니다.</Text>
+        
     )
 };
 
