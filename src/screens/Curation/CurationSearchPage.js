@@ -163,7 +163,7 @@ const CurationSearchPage = ({navigation}) => {
                                ListFooterComponent={loading && <ActivityIndicator />}
                                renderItem={({item}) =>{
                                return (
-                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{getCuration({isSong:false ,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating },id:item.id}); navigate('SelectedCuration', {id: item.id});}}>
+                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{getCuration({isSong:false ,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating, id: item.id },id:item.id}); navigate('SelectedCuration', {id: item.id});}}>
                                        <View style={{flexDirection:'row'}}>
                                            <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
                                               <Imagetake url={item.attributes.artwork.url} border={4 * tmpWidth}></Imagetake>

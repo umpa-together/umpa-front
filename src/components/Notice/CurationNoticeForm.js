@@ -20,15 +20,33 @@ const CurationNoticeForm = ({ notice }) => {
                 <View style={styles.img}>
                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                 </View> : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
-                <View style={styles.content}>
-                    <Text style={styles.name}>{notice.curationpost.object.attributes.artistName} - {notice.curationpost.object.attributes.name}</Text>
-                    <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
-                        </Text>
+                {notice.curationpost.isSong ?
+                <View style={{flexDirection: 'row', flex: 1}}>
+                    <View style={styles.content}>
+                        <View style={{width: 200 * tmpWidth}}>
+                            <Text style={styles.name} numberOfLines={1}>{notice.curationpost.object.attributes.artistName} - {notice.curationpost.object.attributes.name}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
+                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
+                                <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                            </Text>
+                        </View>
                     </View>
-                </View>
-                <Imagetake url={notice.curationpost.object.attributes.artwork.url} />
+                    <Imagetake url={notice.curationpost.object.attributes.artwork.url} />
+                </View> : 
+                <View style={{flexDirection: 'row', flex: 1}}>
+                    <View style={styles.content}>
+                        <View style={{width: 200 * tmpWidth}}>
+                            <Text style={styles.name} numberOfLines={1}>{notice.curationpost.object.artistName} - {notice.curationpost.object.albumName}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
+                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
+                                <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                            </Text>
+                        </View>
+                    </View>
+                    <Imagetake url={notice.curationpost.object.artwork.url} />
+                </View> }
             </View>
         </View>
         :
