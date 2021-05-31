@@ -15,7 +15,7 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
                         <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName}>{notice.playlist.title}</Text>
+                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                 <Text style={styles.innerText}> 님이 플레이리스트를 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
                             </Text>
@@ -27,7 +27,7 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
                         <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName}>{notice.playlist.title}</Text>
+                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                 <Text style={styles.innerText}> 님이 댓글을 달았습니다: {notice.playlistcomment.text} <Text style={styles.playlistName}>{notice.time}</Text></Text>
                             </Text>
@@ -39,7 +39,7 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
                         <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName}>{notice.playlist.title}</Text>
+                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                 <Text style={styles.innerText}> 님이 댓글: {notice.playlistcomment.text}를 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
                             </Text>
@@ -51,7 +51,7 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
                         <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName}>{notice.playlist.title}</Text>
+                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                 <Text style={styles.innerText}> 님이 대댓글을 달았습니다: {notice.playlistrecomment.text} <Text style={styles.playlistName}>{notice.time}</Text></Text>
                             </Text>
@@ -63,7 +63,7 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
                         <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName}>{notice.playlist.title}</Text>
+                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                 <Text style={styles.innerText}> 님이 대댓글: {notice.playlistrecomment.text}을 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
                             </Text>
