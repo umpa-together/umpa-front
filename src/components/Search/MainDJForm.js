@@ -13,9 +13,9 @@ const MainDJForm = ({navigation}) => {
     const { getSongs } = useContext(DJContext);
 
     return (
-        <View style={{height:590 * tmpHeight}}>
+        <View>
             <Text style={styles.headertext}>위클리 DJ</Text>
-            <View style={{width: 375 * tmpWidth, height:540 * tmpHeight, marginLeft:0 * tmpWidth}}>
+            <View style={{width: 375 * tmpWidth, height:525 * tmpHeight}}>
                 <FlatList
                     keyboardShouldPersistTaps="handled"
                     data={state.weeklyDJ}

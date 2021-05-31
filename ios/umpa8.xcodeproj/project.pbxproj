@@ -65,6 +65,7 @@
 		5858E030E30F3BC940BD6B68 /* Pods-umpa8-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-tvOS.release.xcconfig"; path = "Target Support Files/Pods-umpa8-tvOS/Pods-umpa8-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5A3C36A17CF4495ABD849CAA /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		5DC3F76E1C331EBD242D42EC /* Pods-umpa8-umpa8Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-umpa8Tests.release.xcconfig"; path = "Target Support Files/Pods-umpa8-umpa8Tests/Pods-umpa8-umpa8Tests.release.xcconfig"; sourceTree = "<group>"; };
+		68E196062664AD4300DBF77F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		697DDDB3B47444689B896919 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F758FC0324A46BDAD5C9F6A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		7D3912F32663BA0C008868CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../중요한거/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -146,7 +147,6 @@
 		13B07FAE1A68108700A75B9A /* umpa8 */ = {
 			isa = PBXGroup;
 			children = (
-				7D3912F32663BA0C008868CD /* GoogleService-Info.plist */,
 				7DD11FAA25DFACAD008B15FE /* umpa8.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
