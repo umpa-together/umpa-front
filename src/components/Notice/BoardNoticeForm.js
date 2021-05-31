@@ -13,42 +13,42 @@ const BoardNoticeForm = ({ notice }) => {
                 </View> : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
                 { notice.noticetype == 'blike' && notice.board != null && notice.boardcontent != null ?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name}
                             <Text style={styles.innerText}> 님이 게시글: {notice.boardcontent.content}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 : notice.noticetype == 'bcom'  && notice.board != null  && notice.boardcomment != null && notice.boardcontent != null ?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'에 댓글을 달았습니다: {notice.boardcomment.comment} <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 : notice.noticetype == 'bcomlike' && notice.board != null  && notice.boardcomment != null && notice.boardcontent != null ?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'의 댓글: {notice.boardcomment.comment}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 : notice.noticetype == 'brecom' && notice.board != null  && notice.boardrecomment != null && notice.boardcontent != null ?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'에 대댓글을 달았습니다: {notice.boardrecomment.comment} <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 : notice.noticetype == 'brecomlike' && notice.board != null  && notice.boardrecomment != null && notice.boardcontent != null?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'의 대댓글: {notice.boardrecomment.comment}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
                     </View>
                 : notice.noticetype == 'bsonglike' && notice.board != null  && notice.boardsong != null ?
                     <View style={styles.content}>
-                        <Text style={styles.boardName}>{notice.board.name}</Text>
+                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
                         <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             <Text style={styles.innerText}> 님이 {notice.boardsong.song.attributes.artistName} - {notice.boardsong.song.attributes.name}를 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
                         </Text>
