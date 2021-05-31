@@ -13,11 +13,11 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		19D66B537EFB7EB884DA8EDE /* libPods-umpa8-umpa8Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AB26F695979B07928D90F00 /* libPods-umpa8-umpa8Tests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* umpa8Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* umpa8Tests.m */; };
 		460FC82C93506B9541288DFD /* libPods-umpa8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10DFEC49F1A8BB9A72C2C2A5 /* libPods-umpa8.a */; };
 		7D3912F42663BA0C008868CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D3912F32663BA0C008868CD /* GoogleService-Info.plist */; };
+		7D75BC992663E32700784C2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D75BC982663E32700784C2C /* Assets.xcassets */; };
 		7DC5AB3325C924FB0090FFE1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5AB3225C924FB0090FFE1 /* File.swift */; };
 		7DD11ED025DF842C008B15FE /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		F32BA3F10951D8F9ADCF5DDE /* libPods-umpa8-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88309709E8485757A7DAC04D /* libPods-umpa8-tvOS.a */; };
@@ -53,7 +53,6 @@
 		13B07F961A680F5B00A75B9A /* umpa8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = umpa8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = umpa8/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = umpa8/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = umpa8/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = umpa8/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = umpa8/main.m; sourceTree = "<group>"; };
 		186B677E05349A3ADA223E5F /* Pods-umpa8-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-umpa8-tvOS/Pods-umpa8-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +68,7 @@
 		697DDDB3B47444689B896919 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F758FC0324A46BDAD5C9F6A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		7D3912F32663BA0C008868CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../중요한거/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7D75BC982663E32700784C2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7DC5AB3125C924FB0090FFE1 /* umpa8-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "umpa8-Bridging-Header.h"; sourceTree = "<group>"; };
 		7DC5AB3225C924FB0090FFE1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		7DD11FAA25DFACAD008B15FE /* umpa8.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpa8.entitlements; path = umpa8/umpa8.entitlements; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				7D75BC982663E32700784C2C /* Assets.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -392,7 +392,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DD11ED025DF842C008B15FE /* main.jsbundle in Resources */,
+				7D75BC992663E32700784C2C /* Assets.xcassets in Resources */,
 				7D3912F42663BA0C008868CD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -844,7 +844,7 @@
 				);
 				INFOPLIST_FILE = umpa8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.09;
+				MARKETING_VERSION = 3.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -873,7 +873,7 @@
 				);
 				INFOPLIST_FILE = umpa8/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.09;
+				MARKETING_VERSION = 3.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
