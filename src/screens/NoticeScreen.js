@@ -101,8 +101,9 @@ const NoticeScreen = ({navigation}) => {
                             (item.noticetype == 'culike' ?
                             <TouchableOpacity onPress={() => {
                                 if(item.curationpost != null){
-                                    getCuration({isSong: item.curationpost.isSong, object:item.curationpost.object.id, id:item.curationpost.object.id})
-                                    navigate('SelectedCuration', {id:item.curationpost.object.id, postid:item.curationpost._id})
+                                    getCuration({isSong : item.curationpost.isSong,object:item.curationpost,id:item.curationpost.songoralbumid})
+                                    navigate('SelectedCuration', {id: item.curationpost.songoralbumid, postid:item.curationpost._id})                                   
+
                                 }
                             }}>
                                 <CurationNoticeForm notice={item} />
