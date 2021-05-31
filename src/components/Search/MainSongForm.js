@@ -61,7 +61,7 @@ const MainSongForm = () => {
                     />
                 </View>
                 <Text style={styles.curationtext}>위클리 큐레이션</Text>
-                <View style={{height:164 * tmpWidth, width: '100%'}}>
+                <View style={{width: '100%'}}>
                     <FlatList
                         data={weeklyState.weekcuration}
                         keyExtractor = {playlists => playlists._id}
@@ -70,21 +70,21 @@ const MainSongForm = () => {
                         bounces={false}
                         renderItem={({item})=> {
                             return (
-                                <View style={{height:164 * tmpWidth,width:114 * tmpWidth,marginLeft: 12 * tmpWidth,}}>
+                                <View style={{width:114 * tmpWidth,marginLeft: 12 * tmpWidth,}}>
                                     { item.isSong ?
                                     <View>
                                         <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid, postid:item._id}); }}>
-                                            <Imagetake borderRadius={8} url={item.object.attributes.artwork.url} />
+                                            <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name}</Text> 
-                                        <Text style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
+                                        <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
                                         <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
                                         </TouchableOpacity>
-                                        <Text snumberOfLines ={1} tyle={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> 
-                                        <Text style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
+                                        <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> 
+                                        <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
                                     </View> }
                                 </View>
                             )
