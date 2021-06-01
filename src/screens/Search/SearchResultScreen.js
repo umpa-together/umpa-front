@@ -60,7 +60,7 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
                             <TouchableOpacity style={styles.resultitem} onPress={() => {
                                 if(searchOption == 'Song'){
                                     getCuration({isSong: true, object: item, id:item.id})
-                                    SearchSongOrArtist({ object: item.attributes.name})    
+                                    SearchSongOrArtist({ id: item.id})    
                                 }else{
                                     searchDJ({songName: item.attributes.name})
                                 }

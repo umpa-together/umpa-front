@@ -25,9 +25,9 @@ const initPlaylist = (dispatch) => async () => {
     }
 };
 
-const SearchSongOrArtist = (dispatch) => async ({ object }) => {
+const SearchSongOrArtist = (dispatch) => async ({ id }) => {
     try {
-        const response = await serverApi.get('/searchSongOrArtist/'+object);
+        const response = await serverApi.get('/searchSongOrArtist/'+id);
         dispatch({ type: 'searchSongOrArtist', payload: response.data});
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with SearchSongOrArtist' });
