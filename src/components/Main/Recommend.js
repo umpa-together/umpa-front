@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity,  FlatList, ScrollView, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { Text, Image, StyleSheet, View, TouchableOpacity,  FlatList, ScrollView, RefreshControl, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TrackPlayer from 'react-native-track-player';
-import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
@@ -11,7 +10,7 @@ import {Context as DJContext} from '../../context/DJContext';
 import {Context as CurationContext} from '../../context/CurationContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
-import HarmfulModal from '../HarmfulModal';
+import RepresentSong from '../RepresentSong';
 
 const ImageSelect = ({url, opac}) => {
     url =url.replace('{w}', '300');
@@ -25,48 +24,19 @@ const Recommend = ({navigation}) => {
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const { getCurationposts } = useContext(CurationContext);
-    const [isPlayingid, setIsPlayingid] = useState('0');
-
     const [representSong, setRepresentSong] = useState(null);
     const [representModal, setRepresentModal] = useState(false);
-    const [idx, setIdx] = useState(0);
-    const [type, setType] = useState('Each');
     const [refreshing, setRefreshing] = useState(false);
     const [isFollow, setIsFollow] = useState([]);
     const [result, setResult] = useState('playlist');
-    const [harmfulModal, setHarmfulModal] = useState(false);
+    const scrollX = useRef(new Animated.Value(0)).current;
     useEffect(()=>{
         recommendDJ();
 
     }, []);
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
     const onClose = async () => {
         setRepresentModal(false);
-        setIsPlayingid('0');
-        setIdx(0);
-        setType('Each');
         await TrackPlayer.reset()
-    }
-    const representNext = ({idx}) => {
-        setIdx(idx);
     }
     const fetchData = async () => {
         setRefreshing(true);
@@ -113,17 +83,48 @@ const Recommend = ({navigation}) => {
                 <Text style={styles.openingText}>취향이 비슷한 사람을 팔로우하고</Text>
                 <Text style={styles.openingText}>피드에서 감상할 수 있어요.</Text>
             </View>
-            <View style={{backgroundColor:'rgba(255,255,255,0)'}}>
-            <FlatList
+            <Animated.FlatList
                 showsHorizontalScrollIndicator={false}
                 data={djState.recommendDJ}
                 keyExtractor={dj => dj._id}
                 horizontal={true}
-                style={{marginTop: 30 * tmpWidth}}
+                snapToInterval={266*tmpWidth}
+                contentContainerStyle={{marginTop: 60 * tmpWidth, paddingLeft: 54.5 * tmpWidth, paddingRight: 54.5 * tmpWidth}}
+                decelerationRate={0}
+                bounces={false}
+                scrollEventThrottle={16}
+                onScroll = {Animated.event(
+                    [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                )}
                 renderItem={({item, index})=>{
+                    const inputRange = [
+                        (index-1) * (266 * tmpWidth),
+                        index * (266 * tmpWidth),
+                        (index+1) * (266 * tmpWidth)
+                    ];
+                    const translateY = scrollX.interpolate({
+                        inputRange,
+                        outputRange: [0, -30, 0]
+                    })
                     return (
-                        <View style={{width:266*tmpWidth, height:tmpWidth*340, backgroundColor:'rgba(255,255,255,0)', marginBottom: 60 * tmpWidth}}>
-                        <View style={styles.recommendBox}>
+                        <Animated.View style={{
+                            width: 236 * tmpWidth,
+                            height: 340 * tmpWidth,
+                            backgroundColor: 'rgba(255,255,255,1)',
+                            borderRadius: 16 * tmpWidth,
+                            shadowColor: "rgba(0, 0, 0, 0.07)",
+                            shadowOffset: {
+                                height: 4 * tmpWidth,
+                                width: 0,
+                            },
+                            shadowRadius: 20 * tmpWidth,
+                            shadowOpacity: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginLeft: 15 * tmpWidth,
+                            marginRight: 15 *tmpWidth,
+                            transform: [{translateY}]
+                        }}>
                             <TouchableOpacity onPress={async () => {
                                 await Promise.all([getOtheruser({id:item._id}),
                                 getSongs({id:item._id})]);
@@ -168,124 +169,11 @@ const Recommend = ({navigation}) => {
                             }}>
                                 <Text style={styles.followText}>팔로우</Text>
                             </TouchableOpacity> }
-                        </View>
-                        </View>
+                        </Animated.View>
                     )
                 }}
             />
-                        </View>
-
-            {representSong != null ? 
-                <Modal
-                    isVisible={representModal}
-                    onBackdropPress={onClose}
-                    backdropOpacity={0.5}
-                    style={{justifyContent:'flex-end', margin:0}}>
-                        <View style={styles.representContainer}>
-                            <View style={styles.representBox}>
-                                <View style={{alignItems: 'center'}}>
-                                    <Text style={styles.songText}>대표곡</Text>
-                                    <Text style={styles.songLengthText}>{representSong.length}곡</Text>
-                                </View>
-                            </View>
-                            {type == 'Each' ? 
-                            <View>
-                                <View style={styles.sideContainer}>
-                                    <View style={styles.leftSideBox}>
-                                        {idx != 0 ? 
-                                        <TouchableOpacity style={{width: 40 * tmpWidth, height: 40 * tmpWidth}} onPress={() => {
-                                            representNext({idx: idx-1})
-                                            stoptracksong()
-                                        }}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/representleft.svg')}/>
-                                        </TouchableOpacity> : null}
-                                    </View>
-                                    <View style={styles.songBox}>
-                                        <View style={{alignItems: 'center'}}>
-                                            <View style={{width: 150 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
-                                                {representSong[idx].attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
-                                                : null }
-                                                <Text style={styles.titleText} numberOfLines={1}>{representSong[idx].attributes.name}</Text>
-                                            </View>
-                                            <TouchableOpacity style={styles.representSongCover} onPress={() => {
-                                                if(isPlayingid == representSong[idx].id){
-                                                    stoptracksong()
-                                                }else{
-                                                    addtracksong({data: representSong[idx]})
-                                                }
-                                            }}>
-                                                <ImageSelect opac={1.0} url={representSong[idx].attributes.artwork.url}/>
-                                                { isPlayingid != representSong[idx].id ? 
-                                                <SvgUri width='50' height='50' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
-                                                <SvgUri width='50' height='50' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
-                                            </TouchableOpacity>
-                                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
-                                            <View style={{width: 150 * tmpWidth, alignItems: 'center'}}>
-                                                <Text style={styles.artistText} numberOfLines={1}>{representSong[idx].attributes.artistName}</Text>
-                                            </View>
-                                            <Text style={styles.releaseDateText}>{representSong[idx].attributes.releaseDate}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.rightSideBox}>
-                                        {idx != representSong.length-1 ? 
-                                        <TouchableOpacity style={{width: 40 * tmpWidth, height: 40 * tmpWidth}} onPress={() => {
-                                            representNext({idx: idx+1})
-                                            stoptracksong()
-                                        }}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/representright.svg')}/>
-                                        </TouchableOpacity> : null }
-                                    </View>
-                                </View>
-                                <View style={{alignItems: 'center', marginTop: 14 * tmpWidth}}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(118,118,118)'}}>{idx+1}/{representSong.length}</Text>
-                                    <TouchableOpacity onPress={() => setType('List')}>
-                                        <Text style={styles.typeText}>목록보기</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View> : 
-                            <View>
-                                <View style={styles.eachHeader}/>
-                                <View style={{height: 335 * tmpWidth}}>
-                                    <FlatList 
-                                        data={representSong}
-                                        keyExtractor={song=>song.attributes.name}
-                                        renderItem={({item}) => {
-                                            return (
-                                                <View style={styles.listBox}>
-                                                    <TouchableOpacity style={styles.listSongCover} onPress={() => {
-                                                        if(isPlayingid == item.id){
-                                                            stoptracksong()
-                                                        }else{
-                                                            addtracksong({data: item})
-                                                        }
-                                                    }}>
-                                                        <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
-                                                        { isPlayingid != item.id ? 
-                                                        <SvgUri width='27' height='27' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
-                                                        <SvgUri width='27' height='27' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
-                                                    </TouchableOpacity>
-                                                    { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
-                                                    <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth}}>
-                                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                            {item.attributes.contentRating == "explicit" ? 
-                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                            : null }
-                                                            <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
-                                                        </View>
-                                                        <Text style={{fontSize: 11 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4.8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                                    </View>
-                                                </View>    
-                                            )
-                                        }}
-                                    />
-                                </View>
-                                <TouchableOpacity onPress={() => setType('Each')} style={{alignItems: 'center'}}>
-                                    <Text style={styles.typeText}>개별 보기</Text>
-                                </TouchableOpacity>
-                            </View> }
-                        </View>
-                </Modal> : null }
+            {representSong != null ? <RepresentSong representModal={representModal} song={representSong} onClose={onClose}/> : null }
             </ScrollView>
         </LinearGradient>
     );
@@ -337,8 +225,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 15 * tmpWidth,
-        marginRight: 15 *tmpWidth
+        marginLeft: 30 * tmpWidth,
+        marginRight: 30 *tmpWidth
     },
     djProfile: {
         width: 92 * tmpWidth,
