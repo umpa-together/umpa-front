@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
@@ -14,9 +15,17 @@ const SongImage = ({url}) => {
     );
 };
 
-const MySharedSongsPage = () => {
+const MySharedSongsPage = ({navigation}) => {
     const { state } = useContext(UserContext);
-    const { getCurrentBoard, getSelectedBoard } = useContext(BoardContext);
+    const { getCurrentBoard, getSelectedBoard, initMusic } = useContext(BoardContext);
+
+    useEffect(() => {
+        const listener =navigation.addListener('didFocus', async ()=>{
+            initMusic()
+            await TrackPlayer.reset()
+        });
+        return () => listener.remove();
+    }, []);
 
     return (
         <View style={styles.container}>

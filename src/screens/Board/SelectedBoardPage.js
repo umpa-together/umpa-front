@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+import TrackPlayer from 'react-native-track-player';
 import { Context as BoardContext } from '../../context/BoardContext';
 import ContentsForm from '../../components/Board/ContentsForm';
 import BoardHeader from '../../components/Board/BoardHeader';
@@ -9,7 +10,7 @@ import { tmpWidth } from '../../components/FontNormalize';
 import Modal from 'react-native-modal';
 
 const SelectedBoard = ({ navigation }) => {
-    const { state, initCurrentContent } = useContext(BoardContext);
+    const { state, initCurrentContent, initMusic } = useContext(BoardContext);
     const [introductionModal, setIntroductionModal] = useState(false);
     const title = navigation.getParam('boardName');
     const introduction = navigation.getParam('introduction');
@@ -18,8 +19,10 @@ const SelectedBoard = ({ navigation }) => {
     }
     
     useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+        const listener =navigation.addListener('didFocus', async ()=>{
             initCurrentContent();
+            initMusic();
+            await TrackPlayer.reset()
         });
         return () => {
             listener.remove();
