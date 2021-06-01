@@ -37,7 +37,6 @@ const OtherAccountScreen = ({navigation}) => {
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [followerNum , setFollowerNum] = useState(0);
     const id = navigation.getParam('otherUserId');
-
     const onClose = async () => {
         setRepresentModal(false);
         setStoryModal(false);
@@ -66,8 +65,8 @@ const OtherAccountScreen = ({navigation}) => {
     const storyClick = () => {
         storyView({id: story.id});
         setStoryModal(true);
-        if(story['song'].song.attributes.contentRating != 'explicit'){
-            addtracksong({data: story['song'].song});
+        if(story['song'].attributes.contentRating != 'explicit'){
+            addtracksong({data: story['song']});
         }
     }
 
@@ -82,13 +81,15 @@ const OtherAccountScreen = ({navigation}) => {
     
     useEffect(() => {
         if(user != null){
-            setStory(userState.otherStory.filter(item => item.id == user._id)[0]);
+            var newDate = new Date();
+            let time = newDate.toFormat('YYYY-MM-DD');
+            setStory(userState.otherUser.todaySong.filter(item => item.time == time)[0]);
             setIsFollow(followCheck({id: userState.myInfo._id}))
         }
     }, [user]);
     useEffect(() => {
         if(story != null){
-            setUrl(story['song'].song.attributes.artwork.url);
+            setUrl(story['song'].attributes.artwork.url);
         }
     }, [story]);
 
@@ -220,26 +221,26 @@ const OtherAccountScreen = ({navigation}) => {
                             <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)', marginTop: 20 * tmpWidth}}>오늘의 곡</Text>
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 5 * tmpWidth, marginBottom:21 * tmpWidth}}>{today}</Text>
                             <TouchableOpacity style={styles.storySongCover} onPress={() => {
-                                if(isPlayingid == story['song'].song.id){
+                                if(isPlayingid == story['song'].id){
                                     stoptracksong()
                                 }else{
-                                    addtracksong({data: story['song'].song})
+                                    addtracksong({data: story['song']})
                                 }
                             }}>
                                 <ImageSelect opac={1.0} url={url} />
-                                { isPlayingid != story['song'].song.id ? 
+                                { isPlayingid != story['song'].id ? 
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> :
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> }
                             </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
                             <View style={{marginTop:21 * tmpWidth , width: 160 * tmpWidth , marginBottom: 6 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
-                                {story['song'].song.attributes.contentRating == "explicit" ? 
+                                {story['song'].attributes.contentRating == "explicit" ? 
                                 <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                 : null }
-                                <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{story['song'].song.attributes.name}</Text>
+                                <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{story['song'].attributes.name}</Text>
                             </View>
                             <View style={{width: 160 * tmpWidth, alignItems: 'center'}}>
-                                <Text style={{fontSize:14 * tmpWidth, color:'rgb(133,133,133)'}} numberOfLines={1}>{story['song'].song.attributes.artistName}</Text>
+                                <Text style={{fontSize:14 * tmpWidth, color:'rgb(133,133,133)'}} numberOfLines={1}>{story['song'].attributes.artistName}</Text>
                             </View>
                         </View>
                     </View> : null}

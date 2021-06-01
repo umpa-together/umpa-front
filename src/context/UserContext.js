@@ -19,6 +19,8 @@ const userReducer = (state, action) => {
             return { ...state, myContents: action.payload };
         case 'getMyBoardSongs':
             return { ...state, myBoardSongs: action.payload };
+        case 'getMyStory' :
+            return { ...state, myStory: action.payload[0], storyViewer: action.payload[1]}
         case 'get_follower':
             return { ...state, follower:action.payload};
         case 'get_following':
@@ -205,7 +207,7 @@ const deleteStory = (dispatch) => async() => {
 const getMyStory = (dispatch) => async () => {
     try {
         const response = await serverApi.get('/MyStory');
-        dispatch({ type: 'myStory', payload: response.data });
+        dispatch({ type: 'getMyStory', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getMyStory' });
     }
@@ -234,5 +236,5 @@ export const { Provider, Context } = createDataContext(
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
         postStory, deleteStory, getMyStory, getOtherStory, storyView },
-    { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null }
+    { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null, storyViewer: [] }
 )

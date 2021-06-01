@@ -72,14 +72,14 @@ const SelectedSongScreen = ({navigation}) => {
                                     <TouchableOpacity
                                     onPress={() => {getCuration({isSong:true,object:song, id:song.id}); navigate('SelectedCuration', {id: song.id});}}
                                     style={styles.curationbox}>
-                                        <Text>곡 큐레이션</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>곡 큐레이션</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row', justifyContent:'flex-start', marginLeft:2.5 * tmpWidth}}>
                                     <TouchableOpacity
                                     onPress={() => {getCuration({isSong:false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating }, id:song.attributes.url.split('?')[0].split('/')[6] }); navigate('SelectedCuration', {id:song.attributes.url.split('?')[0].split('/')[6]});}}
-                                    style={styles.curationbox}>
-                                        <Text>앨범 큐레이션</Text>
+                                    style={styles.albumbox}>
+                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>앨범 큐레이션</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -227,12 +227,24 @@ const styles=StyleSheet.create({
         marginLeft: 20 * tmpWidth,
     },
     curationbox:{
+        width:71 * tmpWidth,
+        height:26 * tmpWidth,
+        backgroundColor:"rgba(255,255,255,0.5)",
+        borderRadius:30 * tmpWidth,
+        justifyContent:'center',
+        alignItems:'center',
+        borderWidth: 1,
+        borderColor: 'rgb(224,224,224)'
+    },
+    albumbox:{
         width:82 * tmpWidth,
         height:26 * tmpWidth,
         backgroundColor:"rgba(255,255,255,0.5)",
         borderRadius:30 * tmpWidth,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        borderWidth: 1,
+        borderColor: 'rgb(224,224,224)'
     },
     middletext:{
         width: 375 * tmpWidth,

@@ -146,7 +146,6 @@ const styles=StyleSheet.create({
         opacity:0.72
     },
     playlistinfo:{
-
         width:331 * tmpWidth,
         height:184 * tmpWidth,
         marginBottom:6 * tmpWidth,
@@ -173,13 +172,13 @@ const styles=StyleSheet.create({
         marginLeft:24 * tmpWidth,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginBottom: 20 * tmpWidth
+        marginBottom: 20 * tmpWidth,
     },
     hashtagbox:{
         borderWidth: 1 * tmpWidth,
         borderColor:'rgb(169,193,255)',
-        borderRadius:8 * tmpWidth,
-        color:'rgb(169,193,255)' ,
+        borderRadius:16 * tmpWidth,
+        color:'rgb(169,193,255)',
         paddingTop: 7 * tmpWidth,
         paddingBottom:7 * tmpWidth,
         paddingRight: 10 * tmpWidth,

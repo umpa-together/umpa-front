@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput, Touchable } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
+import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import AccountPlaylist from  '../../components/Account/AccountPlaylist';
 import AccountCurating from  '../../components/Account/AccountCurating';
@@ -23,8 +24,9 @@ const ImageSelect = ({url, opac}) => {
 };
 
 const MyAccountScreen = ({navigation}) => {
-    const { state: userState, postStory, getMyInfo } = useContext(UserContext);
+    const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
+    const { getSongs } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
     const [representModal, setRepresentModal] = useState(false);
     const [storyModal, setStoryModal] = useState(false);
@@ -39,6 +41,7 @@ const MyAccountScreen = ({navigation}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [viewerModal, setViewerModal] = useState(false);
     const getData = async () => {
         if(searchState.songData.length >= 20){
             setLoading(true);
@@ -55,9 +58,12 @@ const MyAccountScreen = ({navigation}) => {
     };  
 
     const onClose = async () => {
+        if(viewerModal){
+            setViewerModal(false)
+            return;
+        }
         setRepresentModal(false);
         setStoryModal(false);
-
         setIsPlayingid('0');
         if(newStory){
             setNewStory(false);
@@ -79,7 +85,11 @@ const MyAccountScreen = ({navigation}) => {
     }
     const fetchData = async () => {
         setRefreshing(true);
-        await getMyInfo();
+        await Promise.all([
+            getMyInfo(),
+            getMyStory()
+        ])
+        
         setRefreshing(false);
     };
     const addtracksong= async ({data}) => {
@@ -371,9 +381,70 @@ const MyAccountScreen = ({navigation}) => {
                 <View style={styles.storyContainer}>
                     {userState.myStory != null ?
                     <View>
+                        <Modal
+                            isVisible={viewerModal}
+                            onBackdropPress={onClose}
+                            backdropOpacity={0.2}
+                            style={{justifyContent: 'flex-end', alignItems: 'center', margin: 0}}
+                        >
+                            <View style={styles.viewerContainer}>
+                                <FlatList
+                                    data={userState.storyViewer}
+                                    keyExtractor={user => user._id}
+                                    style={{paddingTop: 18 * tmpWidth, marginLeft: 24 *tmpWidth}}
+                                    renderItem={({item})=>{
+                                        return (
+                                            <TouchableOpacity 
+                                                style={{flexDirection: 'row', alignItems: 'center', marginBottom: 18 * tmpWidth}} 
+                                                onPress={async () => {
+                                                    await Promise.all([
+                                                        getOtheruser({id:item._id}),
+                                                        getSongs({id:item._id}),
+                                                        TrackPlayer.reset()
+                                                    ]);
+                                                    setViewerModal(false)
+                                                    setStoryModal(false)
+                                                    navigation.push('OtherAccount', {otherUserId:item._id})
+                                                }}
+                                            >
+                                                { item.profileImage == undefined ?
+                                                <View style={styles.storyProfileImage}>
+                                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                </View> : <Image style={styles.storyProfileImage} source={{uri: item.profileImage}}/> }
+                                                <Text style={{marginLeft: 12 * tmpWidth}}>{item.name}</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                />
+                            </View>
+                        </Modal>
                         <View style={{alignItems: 'center'}}>
+                            {userState.storyViewer.length != 0 ?
+                            <TouchableOpacity 
+                                style={{height: 40 * tmpWidth, position: 'absolute', left: 22 * tmpWidth, top: 22 * tmpWidth}}
+                                onPress={() => {
+                                    setViewerModal(true)
+                                }}
+                            >
+                                <FlatList 
+                                    data={userState.storyViewer}
+                                    keyExtractor={user=>user._id}
+                                    horizontal={true}
+                                    renderItem={({item, index}) => {
+                                        if(index > 1)  return null
+                                        return (
+                                            <View style={index == 0 ? styles.firstPosition : styles.secondPosition}>
+                                                { item.profileImage == undefined ?
+                                                <View style={styles.smallViewr}>
+                                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                </View> : <Image style={styles.smallViewr} source={{uri: item.profileImage}}/> }
+                                            </View>
+                                        )
+                                    }}
+                                />
+                                <Text style={{fontSize:11 * tmpWidth, color: 'rgb(196,196,196)', textAlign: 'center'}}>{userState.storyViewer.length}명</Text>
+                            </TouchableOpacity> : null }
                             <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)', marginTop: 20 * tmpWidth}}>오늘의 곡</Text>
-                            { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'todaySong'} /> : null }
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 5 * tmpWidth, marginBottom:21 * tmpWidth}}>{today}</Text>
                             <TouchableOpacity style={styles.storySongCover} onPress={() => {
                                 if(isPlayingid == userState.myStory.song.id){
@@ -407,6 +478,7 @@ const MyAccountScreen = ({navigation}) => {
                         >
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(255,255,255)'}}>삭제</Text>
                         </TouchableOpacity>  
+                        { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'todaySong'} /> : null }
                     </View> : null}
                 </View>
             </Modal>
@@ -698,7 +770,37 @@ const styles = StyleSheet.create({
         paddingBottom: 11 * tmpWidth,
         borderBottomLeftRadius: 16 * tmpWidth,
         borderBottomRightRadius: 16 * tmpWidth,
+    },
+    viewerContainer: {
+        height: 352 * tmpWidth ,
+        borderRadius: 16 * tmpWidth,
+        backgroundColor: 'rgb(250,250,250)',
+        shadowColor: "rgb(146, 158, 200)",
+        shadowOffset: {
+            height: 0,
+            width: 0,
+        },
+        shadowRadius: 60 * tmpWidth,
+        shadowOpacity: 0.04,
+        width: '100%'
+    },
+    storyProfileImage: {
+        width: 50 * tmpWidth,
+        height: 50 * tmpWidth,
+        borderRadius: 50 * tmpWidth
+    },
+    firstPosition: {
+        position: 'absolute'
+    },
+    secondPosition: {
+        marginLeft: 12 * tmpWidth
+    },
+    smallViewr: {
+        width: 20 * tmpWidth,
+        height: 20 * tmpWidth,
+        borderRadius: 20 * tmpWidth
     }
+
 });
 
 export default MyAccountScreen;
