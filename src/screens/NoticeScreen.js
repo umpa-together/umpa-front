@@ -6,6 +6,7 @@ import { Context as UserContext } from '../context/UserContext';
 import { Context as DJContext } from '../context/DJContext';
 import { Context as CurationContext } from '../context/CurationContext';
 import { Context as BoardContext } from '../context/BoardContext';
+import TrackPlayer from 'react-native-track-player';
 import PlaylistNoticeForm from '../components/Notice/PlaylistNoticeForm';
 import BoardNoticeForm from '../components/Notice/BoardNoticeForm';
 import CurationNoticeForm from '../components/Notice/CurationNoticeForm';
@@ -53,12 +54,13 @@ const NoticeScreen = ({navigation}) => {
     }
 
     useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+        const listener =navigation.addListener('didFocus', async ()=>{
             getnotice()
             initPlaylist()
             initOtherUser()
             initMusic()
             initCurrentContent()
+            await TrackPlayer.reset()
         });
         return () => {
             listener.remove();
