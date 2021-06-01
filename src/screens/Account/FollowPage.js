@@ -223,7 +223,7 @@ const styles=StyleSheet.create({
         paddingRight: 18  * tmpWidth,
         paddingBottom: 10  * tmpWidth,
         borderBottomWidth: 2 * tmpWidth,
-        borderBottomColor: 'rgb(160,172,211)'
+        borderBottomColor: 'rgb(169,193,255)'
     },
     followContainer: {
         paddingLeft: 18  * tmpWidth,

@@ -275,6 +275,12 @@ const SearchPage = ({ navigation }) => {
                                         </View>
                                         <Text style={{fontSize: 12 * tmpWidth, color:'rgb(148,153,163)', marginTop: 6 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
+                                    <TouchableOpacity 
+                                        style={{marginLeft:8*tmpWidth, width:tmpWidth*20, height:tmpWidth*20, justifyContent:'center', alignItems:'center'}}
+                                        onPress={()=>{deleteItem({data: item})}}
+                                    >
+                                        <SvgUri width={11*tmpWidth} height={11*tmpWidth} source={require('../../assets/icons/songdelete.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                    </TouchableOpacity>                                   
                                 </View>
                             </Swipeable>
                         )

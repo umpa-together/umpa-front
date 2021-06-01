@@ -72,11 +72,11 @@ const Playlist = ({ playList, navigation }) => {
                                         </View>
                                         <View style={styles.playlistinfo}>
 
-                                            <View style={{width: 334/5*4 * tmpWidth, height: 59* tmpWidth}}>
-                                               <View style={{width:334/5*4*tmpWidth, height:59/2*tmpWidth}}>
+                                            <View style={{width: 335/5*4 * tmpWidth, height: 59* tmpWidth}}>
+                                               <View style={{width:335/5*4*tmpWidth, height:59/2*tmpWidth}}>
                                                 <Text numberOfLines= {1} style={styles.title}>{item.title}</Text>
                                                </View>
-                                               <View style={{ overflow :'hidden', flexWrap: 'wrap', width:334/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row',height:59/2*tmpWidth}}>
+                                               <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row',height:59/2*tmpWidth}}>
                                                 {item.hashtag != null && item.hashtag.map(el => {
                                                     return (
                                                     <View style={styles.hashtagbox}>
@@ -176,7 +176,7 @@ const styles=StyleSheet.create({
     },
     playlistinfo:{
         flexDirection:'row',
-        width: 334 * tmpWidth,
+        width: 335 * tmpWidth,
         height: 66 * tmpWidth ,
         flexDirection:'row',
         backgroundColor:'#fff',
@@ -196,7 +196,7 @@ const styles=StyleSheet.create({
         fontSize:12 * tmpWidth,
     },
     likeicon:{
-        width: 334/5 * tmpWidth,
+        width: 335/5 * tmpWidth,
         height: 51 * tmpWidth,
         alignItems:'flex-end',
         marginRight:6 * tmpWidth
