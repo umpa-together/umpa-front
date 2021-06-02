@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
@@ -11,8 +11,25 @@ const Imagetake = ({url}) => {
 };
 
 const Curating = ({ curationPosts }) => {
-    const { getCuration, getCurationposts } = useContext(CurationContext);
+    const { state, getCuration, getCurationposts, nextCurationposts } = useContext(CurationContext);
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const getData = async () => {
+        if(curationPosts.length >= 20 && !state.notNext){
+            setLoading(true);
+            await nextCurationposts({ page: state.currentCurationPage });
+            setLoading(false);
+        }
+    };
+
+    const onEndReached = () => {
+        if (loading) {
+            return;
+        } else {
+            getData();
+        }
+    };
+
     const fetchData = async () => {
         setRefreshing(true);
         await getCurationposts();
@@ -32,8 +49,11 @@ const Curating = ({ curationPosts }) => {
             <FlatList
                 data={curationPosts}
                 keyExtractor={(curation)=>curation._id}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0}
                 onRefresh={onRefresh}
                 refreshing={refreshing}
+                ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
                     return (
                         <TouchableOpacity style ={styles.curation} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid, postid:item._id}); }}>

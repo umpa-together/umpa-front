@@ -25,7 +25,7 @@ const ImageSelect = ({url, opac}) => {
 };
 
 const MyAccountScreen = ({navigation}) => {
-    const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser, storyCalendar } = useContext(UserContext);
+    const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser, storyCalendar, getOtherStory } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { getSongs } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
@@ -347,8 +347,10 @@ const MyAccountScreen = ({navigation}) => {
                                                         <Text style={{fontSize:12 * tmpWidth, color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                                     </View>
                                                 </View>
-                                                <TouchableOpacity style={styles.completeView} onPress={() => {
-                                                    postStory({song: item})
+                                                <TouchableOpacity style={styles.completeView} onPress={async () => {
+                                                    await postStory({song: item})
+                                                    await getOtherStory()
+                                                    getMyStory()
                                                     onClose()
                                                 }}>
                                                     <Text style={styles.completeBox}>공유</Text>

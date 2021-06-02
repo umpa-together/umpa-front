@@ -89,8 +89,8 @@ const FreeBoardPage = ({ navigation }) => {
                 <View style={styles.boardBox}>
                     <TouchableOpacity onPress={() => setPinBoard(!pinBoard)} style={{marginLeft: 4 * tmpWidth}}>
                         {!pinBoard ? 
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> : 
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> }
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> :
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> }
                     </TouchableOpacity>
                     <Text style={styles.boardText}>즐겨찾는 게시판</Text>
                 </View>
@@ -99,8 +99,8 @@ const FreeBoardPage = ({ navigation }) => {
                 <View style={styles.boardBox}>
                     <TouchableOpacity onPress={() => setGenreBoard(!genreBoard)} style={{marginLeft: 4 * tmpWidth}}>
                         {!genreBoard ?
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> :
-                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> }
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/right.svg')}/> :
+                        <SvgUri width='32' height='32' source={require('../../assets/icons/down.svg')}/> }
                     </TouchableOpacity>
                     <Text style={styles.boardText}>장르별 게시판</Text>
                 </View>

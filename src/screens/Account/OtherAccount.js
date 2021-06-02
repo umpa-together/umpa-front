@@ -87,7 +87,7 @@ const OtherAccountScreen = ({navigation}) => {
         if(user != null){
             var newDate = new Date();
             let time = newDate.toFormat('YYYY-MM-DD');
-            setStory(userState.otherUser.todaySong.filter(item => item.time == time)[0]);
+            if(userState.otherUser.todaySong != undefined)  setStory(userState.otherUser.todaySong.filter(item => item.time == time)[0]);
             setIsFollow(followCheck({id: userState.myInfo._id}))
         }
     }, [user]);
