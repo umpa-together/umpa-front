@@ -146,7 +146,7 @@ const FollowPage = ({navigation}) => {
                                         await follow({id:item._id})
                                         getMyInfo();
                                     }}>
-                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>팔로우 +</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>팔로우 +</Text>
                                     </TouchableOpacity> :
                                     followCheck({id: item._id}) ?
                                     item._id == state.myInfo._id ? <View style={{width:64*tmpWidth}} /> :
@@ -161,7 +161,7 @@ const FollowPage = ({navigation}) => {
                                         await follow({id:item._id})
                                         getMyInfo();
                                     }}>
-                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>팔로우 +</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>팔로우 +</Text>
                                     </TouchableOpacity> }
                                 </TouchableOpacity>
                             )
