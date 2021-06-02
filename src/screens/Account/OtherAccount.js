@@ -11,6 +11,7 @@ import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
 import HarmfulModal from '../../components/HarmfulModal';
 import RepresentSong from '../../components/RepresentSong';
+import StoryCalendar from '../../components/StoryCalendar';
 
 require('date-utils');
 const ImageSelect = ({url, opac}) => {
@@ -22,7 +23,7 @@ const ImageSelect = ({url, opac}) => {
 };
 
 const OtherAccountScreen = ({navigation}) => {
-    const {state: userState, follow, unfollow, getMyInfo, storyView } = useContext(UserContext);
+    const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar } = useContext(UserContext);
     const {state: djState } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
     const [isFollow, setIsFollow] = useState(false);
@@ -36,6 +37,7 @@ const OtherAccountScreen = ({navigation}) => {
     const [user, setUser] = useState(null);   
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [followerNum , setFollowerNum] = useState(0);
+    const [calendarModal, setCalendarModal] = useState(false);
     const id = navigation.getParam('otherUserId');
     const onClose = async () => {
         setRepresentModal(false);
@@ -145,7 +147,9 @@ const OtherAccountScreen = ({navigation}) => {
                                 <TouchableOpacity style={styles.songImage2}>
                                     <SvgUri width={14*tmpWidth} height={14*tmpWidth} source={require('../../assets/icons/musicnote.svg')} />
                                 </TouchableOpacity> : 
-                                <TouchableOpacity style={styles.songImage} onPress={() => storyClick()}>
+                                <TouchableOpacity style={styles.songImage} onPress={() => {
+                                    storyCalendar({id: userState.otherUser._id})
+                                    storyClick()}}>
                                     <ImageSelect url={url} />
                                 </TouchableOpacity>}
                                 <Text style={{marginTop: 10  * tmpWidth, fontSize: 11 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
@@ -216,6 +220,7 @@ const OtherAccountScreen = ({navigation}) => {
                 backdropOpacity={0.5}
                 style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}
             >
+                <StoryCalendar calendarModal={calendarModal} setCalendarModal={setCalendarModal}/>
                 <View style={styles.storyContainer}>
                     {story != null ? 
                     <View>
@@ -233,6 +238,12 @@ const OtherAccountScreen = ({navigation}) => {
                                 { isPlayingid != story['song'].id ? 
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> :
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> }
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={{height: 40 * tmpWidth, position: 'absolute', right: 14 * tmpWidth, top: 22 * tmpWidth}}
+                                onPress={() => setCalendarModal(true)}
+                            >
+                                <SvgUri width='40' height='40' source={require('../../assets/icons/calendar.svg')} />
                             </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
                             <View style={{marginTop:21 * tmpWidth , width: 160 * tmpWidth , marginBottom: 6 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
