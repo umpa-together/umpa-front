@@ -15,7 +15,7 @@ const ImageSelect = ({url, opac}) => {
     );
 };
 
-const RepresentSong = ({ representModal, onClose, song}) => {
+const RepresentSong = ({ representModal, onClose, song, myAccount}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [type, setType] = useState('Each');
     const scrollX = useRef(new Animated.Value(0)).current;
@@ -55,18 +55,18 @@ const RepresentSong = ({ representModal, onClose, song}) => {
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')}/>
                         </TouchableOpacity>
                     </View>
-                    {type == 'Each' ?
-                    <TouchableOpacity onPress={() => {
+                    { myAccount ? <TouchableOpacity onPress={() => {
                         onClose()
                         navigate('SongEdit', {'data': song})}}
                         style={styles.songedit}
                     >
                         <Text style={{fontSize: 14 * tmpWidth, color:'rgba(141,153,255,0.7)'}}>수정하기</Text>
                         <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../assets/icons/representchange.svg')}/>
-                    </TouchableOpacity> :
+                    </TouchableOpacity> : null }
+                    { type != 'Each' ?
                     <View style={{justifyContent:'center',alignItems:'center'}}>
                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4 * tmpWidth }}>{song.length}곡</Text>
-                    </View> }
+                    </View> : null }
                 </View>
                 {type == 'Each' ? 
                 <View style={{marginTop: 20 * tmpWidth}}>
