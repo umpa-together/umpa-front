@@ -4,19 +4,23 @@ import serverApi from '../api/serverApi';
 const curationReducer = (state, action) => {
     switch(action.type) {
         case 'get_curation':
-            return { ...state,  currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
+            return { ...state, currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
         case 'get_curationposts':
-            return { ...state, maincurationposts:action.payload };
+            return { ...state, maincurationposts:action.payload, currentCurationPage: 1, notNext: false };
+        case 'nextCurationPosts':
+            return { ...state, maincurationposts: state.maincurationposts.concat(action.payload), currentCurationPage: state.currentCurationPage + 1}
+        case 'notNext':
+            return { ...state, notNext: true };
         case 'init_curationposts':
             return { ...state, curationposts:action.payload };
         case 'get_mycuration':
             return { ...state, mycurationpost:action.payload };
         case 'post_curation':
-            return { ...state,  currentCuration: action.payload[0], currentCurationpost:  action.payload[1] };
+            return { ...state, currentCuration: action.payload[0], currentCurationpost:  action.payload[1] };
         case 'edit_curation':
-            return { ...state,  mycurationpost:action.payload[0], currentCurationpost:  action.payload[1] };            
+            return { ...state, mycurationpost:action.payload[0], currentCurationpost:  action.payload[1] };            
         case 'like_curationpost':
-            return { ...state,  currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
+            return { ...state, currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
 
         default:
             return state;
@@ -117,6 +121,19 @@ const getCurationposts = dispatch => {
     }
 };
 
+const nextCurationposts = (dispatch) => async ({ page }) => {
+    try {
+        const response = await serverApi.get('/curationposts/'+page);
+        if(response.data.length != 0){
+            dispatch({ type: 'nextCurationPosts', payload: response.data });
+        }else{
+            dispatch({ type: 'notNext'});
+        }
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with nextCurationposts' });
+    }
+}
+
 const getmyCuration = dispatch => {
     return async ({ id }) => {
         try {
@@ -132,6 +149,6 @@ const getmyCuration = dispatch => {
 export const { Provider, Context } = createDataContext(
     curationReducer,
     { postCuration, editCuration ,deleteCuration, likecurationpost,unlikecurationpost, 
-        initcurationposts, getCuration, getCurationposts, getmyCuration },
-    { currentCuration:{}, currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
+        initcurationposts, getCuration, getCurationposts, nextCurationposts, getmyCuration },
+    { currentCuration:{}, currentCurationPage: 1, notNext: false, currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
 )
