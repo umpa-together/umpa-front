@@ -77,6 +77,8 @@ const SearchPage = ({ navigation }) => {
             setIsPlayingid(data.id);
             await TrackPlayer.add(track)
             TrackPlayer.play();
+            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }

@@ -65,6 +65,8 @@ const MusicArchivePage = ({navigation}) => {
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
+            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }

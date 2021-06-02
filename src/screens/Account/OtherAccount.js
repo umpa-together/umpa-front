@@ -54,6 +54,8 @@ const OtherAccountScreen = ({navigation}) => {
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
+            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
@@ -205,7 +207,7 @@ const OtherAccountScreen = ({navigation}) => {
                     </View>
                 </ScrollView>
             </View> }
-            {user != null ? <RepresentSong representModal={representModal} song={user.songs} onClose={onClose}/> : null }
+            {user != null ? <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={user.songs} /> : null }
             <Modal 
                 animationIn='fadeInRight'
                 animationOut='fadeOutLeft'

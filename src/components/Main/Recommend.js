@@ -173,7 +173,7 @@ const Recommend = ({navigation}) => {
                     )
                 }}
             />
-            {representSong != null ? <RepresentSong representModal={representModal} song={representSong} onClose={onClose}/> : null }
+            {representSong != null ? <RepresentSong representModal={representModal} song={representSong} setRepresentModal={setRepresentModal} /> : null }
             </ScrollView>
         </LinearGradient>
     );

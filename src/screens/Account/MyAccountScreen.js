@@ -103,6 +103,8 @@ const MyAccountScreen = ({navigation}) => {
             setIsPlayingid(data.id);
             await TrackPlayer.add(track)
             TrackPlayer.play();
+            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
@@ -233,7 +235,7 @@ const MyAccountScreen = ({navigation}) => {
                     </View>
                 </ScrollView>
             </View> }
-            <RepresentSong representModal={representModal} song={userState.myInfo.songs} onClose={onClose} myAccount={true}/>
+            <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={userState.myInfo.songs} myAccount={true}/>
             <Modal
                 animationIn="fadeIn"
                 animationOut="fadeOut"
