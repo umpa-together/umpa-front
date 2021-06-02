@@ -62,6 +62,8 @@ const ContentDetail = ({navigation}) => {
         }
         inputRef.current.value='';
         inputRef.current.clear();
+        Keyboard.dismiss()
+        setKeyboardHeight(0)
     };
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
@@ -209,10 +211,6 @@ const ContentDetail = ({navigation}) => {
                                         placeholder="댓글을 입력해주세요."
                                         placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text => inputRef.current.value = text}
-                                        onSubmitEditing={() => {
-                                            create()
-                                            setKeyboardHeight(0)
-                                        }}
                                         style={{fontSize: 14 * tmpWidth, marginLeft: 16.5 * tmpWidth}}
                                         ref={inputRef}
                                         multiline={true}
@@ -220,7 +218,6 @@ const ContentDetail = ({navigation}) => {
                                 </View>
                             </View>
                             <TouchableOpacity onPress={() => {
-                                setKeyboardHeight(0)
                                 create()}}>
                                 <Text style={styles.uploadText}>등록</Text>
                             </TouchableOpacity>

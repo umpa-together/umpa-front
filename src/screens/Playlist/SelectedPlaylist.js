@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableO
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import LinearGradient from 'react-native-linear-gradient';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -388,6 +387,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                     ref={recommentRef}
                                                     onSubmitEditing={() => {
                                                         addreComment({id:playlistid, commentid:item._id, text:recommentRef.current.value});
+                                                        Keyboard.dismiss()
                                                         setKeyboardHeight(0);
                                                         recommentRef.current.clear();
                                                         recommentRef.current.value ='';
@@ -475,12 +475,6 @@ const SelectedPlaylist = ({navigation}) => {
                                     autoCapitalize='none'
                                     autoCorrect={false}
                                     ref={commentRef}
-                                    onSubmitEditing={() => {
-                                        addComment({id:playlistid, text:commentRef.current.value,noticieduser:state.current_playlist.postuser, noticieduseremail:state.current_playlist.email, noticetype:'pcom',thirdid:'0'});
-                                        commentRef.current.clear();
-                                        commentRef.current.value = '';
-                                        setKeyboardHeight(0)
-                                    }}
                                     multiline={true}
                                 />
                             </View>
@@ -488,6 +482,7 @@ const SelectedPlaylist = ({navigation}) => {
                                 addComment({id:playlistid, text:commentRef.current.value,noticieduser:state.current_playlist.postuser, noticieduseremail:state.current_playlist.email, noticetype:'pcom',thirdid:'0'});
                                 commentRef.current.value = '';
                                 commentRef.current.clear();
+                                Keyboard.dismiss()
                                 setKeyboardHeight(0)
                             }}>
                                 <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(69,67,80)'}}>등록</Text>

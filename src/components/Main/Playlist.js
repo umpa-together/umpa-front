@@ -10,11 +10,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Playlist = ({ playList, navigation }) => {
     const { getPlaylist,likesPlaylist, unlikesPlaylist, getPlaylists } = useContext(PlaylistContext);
-    const { state } = useContext(UserContext);
+    const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
     const fetchData = async () => {
         setRefreshing(true);
-        await getPlaylists();
+        await Promise.all([
+            getPlaylists(),
+            getOtherStory()
+        ])
         setRefreshing(false);
     };
 

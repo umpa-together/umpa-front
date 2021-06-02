@@ -29,6 +29,8 @@ const userReducer = (state, action) => {
             return { ...state, myStory: action.payload };
         case 'otherStory':
             return { ...state, otherStory: action.payload };
+        case 'storyCalendar':
+            return { ...state, storyCalendar: action.payload };
         case 'error':
             return { ...state, errorMessage: action.payload };
         default:
@@ -230,11 +232,21 @@ const storyView = (dispatch) => async ({id}) => {
     }
 }
 
+const storyCalendar = (dispatch) => async ({id}) => {
+    try {
+        const response = await serverApi.get('/storyCalendar/'+id);
+        dispatch({ type: 'storyCalendar', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with storyCalendar' });
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     userReducer,
     { initUser, initOtherUser, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
-        postStory, deleteStory, getMyStory, getOtherStory, storyView },
-    { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null, storyViewer: [] }
+        postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
+    { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, 
+        myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null, storyViewer: [], storyCalendar: null }
 )

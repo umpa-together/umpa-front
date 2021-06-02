@@ -18,7 +18,7 @@ const ImageSelect = ({url, opac}) => {
     url =url.replace('{w}', '300');
     url = url.replace('{h}', '300');
     return (
-        <Image style ={{borderRadius :100*tmpWidth ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
+        <Image style ={{borderRadius :100*tmpWidth ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>    
     );
 };
 
@@ -108,6 +108,7 @@ const Feed = ({navigation}) => {
                         data={userState.otherStory}
                         keyExtractor={user=>user.id}
                         horizontal={true}
+                        showsHorizontalScrollIndicator={false}
                         renderItem={({item, index})=>{
                             return (
                                 <View style={{height:115 * tmpWidth,marginRight:24 * tmpWidth,width:64 * tmpWidth}}>
