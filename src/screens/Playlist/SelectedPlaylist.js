@@ -580,7 +580,8 @@ const styles = StyleSheet.create({
     contentText: {
         color: 'rgb(94,94,94)', 
         marginTop: 4 * tmpWidth, 
-        marginBottom: 8 * tmpWidth
+        marginBottom: 8 * tmpWidth,
+        height: 18 * tmpWidth,
     },
     hashtagView: {
         borderWidth: 1 * tmpWidth, 
