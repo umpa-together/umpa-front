@@ -233,7 +233,7 @@ const MyAccountScreen = ({navigation}) => {
                     </View>
                 </ScrollView>
             </View> }
-            <RepresentSong representModal={representModal} song={userState.myInfo.songs} onClose={onClose}/>
+            <RepresentSong representModal={representModal} song={userState.myInfo.songs} onClose={onClose} myAccount={true}/>
             <Modal
                 animationIn="fadeIn"
                 animationOut="fadeOut"

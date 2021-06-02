@@ -120,7 +120,7 @@ const styles=StyleSheet.create({
     },
     noStoryContainer: {
         backgroundColor:"rgb(254,254,254)",
-        height: 625 * tmpHeight, 
+        height: 650 * tmpHeight, 
         width:375 * tmpWidth,
         paddingTop:10*tmpWidth,
     },

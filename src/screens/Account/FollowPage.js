@@ -102,6 +102,7 @@ const FollowPage = ({navigation}) => {
                         keyboardShouldPersistTaps="handled"
                         data={result}
                         keyExtractor={dj=>dj._id}
+                        showsVerticalScrollIndicator={false}
                         renderItem={({item, index})=> {
                             return (
                                 <TouchableOpacity style={styles.userBox} onPress={async () => {
