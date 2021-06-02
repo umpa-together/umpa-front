@@ -15,11 +15,17 @@ const ImageSelect = ({url, opac}) => {
     );
 };
 
-const RepresentSong = ({ representModal, onClose, song, myAccount}) => {
+const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [type, setType] = useState('Each');
     const scrollX = useRef(new Animated.Value(0)).current;
     const [harmfulModal, setHarmfulModal] = useState(false);
+    const onClose = async () => {
+        setRepresentModal(false);
+        setIsPlayingid('0');
+        await TrackPlayer.reset()
+    }
+
     const addtracksong= async ({data}) => {
         const track = new Object();
         track.id = data.id;
@@ -31,6 +37,8 @@ const RepresentSong = ({ representModal, onClose, song, myAccount}) => {
             setIsPlayingid(data.id);
             await TrackPlayer.add(track)
             TrackPlayer.play();
+            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
