@@ -9,7 +9,7 @@ const playlistReducer = (state, action) => {
         case 'init_recomment':
             return { ...state, current_recomments: null }
         case 'get_playlists':
-            return { ...state,  playlists: action.payload, notNext: false };
+            return { ...state,  playlists: action.payload, notNext: false, currentPlaylistPage: 1};
         case 'get_playlist':
             return { ...state, current_playlist:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
         case 'nextPlaylists':
