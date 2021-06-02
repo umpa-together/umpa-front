@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { navigate } from '../../navigationRef';
@@ -9,9 +9,27 @@ import LinearGradient from 'react-native-linear-gradient';
 
 
 const Playlist = ({ playList, navigation }) => {
-    const { getPlaylist,likesPlaylist, unlikesPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { state: playlistState, getPlaylist,likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists } = useContext(PlaylistContext);
     const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    
+    const getData = async () => {
+        if(playList.length >= 20 && !playlistState.notNext){
+            setLoading(true);
+            await nextPlaylists({ page: playlistState.currentPlaylistPage });
+            setLoading(false);
+        }
+    };
+
+    const onEndReached = () => {
+        if (loading) {
+            return;
+        } else {
+            getData();
+        }
+    };
+
     const fetchData = async () => {
         setRefreshing(true);
         await Promise.all([
@@ -36,8 +54,11 @@ const Playlist = ({ playList, navigation }) => {
                 <FlatList
                     data ={playList}
                     keyExtractor = {playlists => playlists._id}
+                    onEndReached={onEndReached}
+                    onEndReachedThreshold={0}
                     onRefresh={onRefresh}
                     refreshing={refreshing}
+                    ListFooterComponent={loading && <ActivityIndicator />}
                     renderItem = {({item}) => {
                         return (
                             <View style={styles.playlist}>

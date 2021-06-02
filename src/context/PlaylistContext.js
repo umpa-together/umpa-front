@@ -9,9 +9,13 @@ const playlistReducer = (state, action) => {
         case 'init_recomment':
             return { ...state, current_recomments: null }
         case 'get_playlists':
-            return { ...state,  playlists: action.payload };
+            return { ...state,  playlists: action.payload, notNext: false };
         case 'get_playlist':
             return { ...state, current_playlist:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
+        case 'nextPlaylists':
+            return { ...state, playlists: state.playlists.concat(action.payload), currentPlaylistPage: state.currentPlaylistPage + 1 };
+        case 'notNext':
+            return { ...state, notNext: true };
         case 'deleted_playlist':
             return { ...state, current_playlist: [] };
         case 'get_comment':
@@ -113,6 +117,19 @@ const getPlaylists = dispatch =>{
         }
     };
 };
+
+const nextPlaylists = (dispatch) => async ({ page }) => {
+    try {
+        const response = await serverApi.get('/playlists/'+page);
+        if(response.data.length != 0){
+            dispatch({ type: 'nextPlaylists', payload: response.data });
+        }else{
+            dispatch({ type: 'notNext'});
+        }
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with nextPlaylists' });
+    }
+}
 
 const getPlaylist = dispatch =>{
     return async ({id,postUserId})=>{
@@ -232,7 +249,7 @@ const unlikesrecomment = dispatch => {
 
 export const { Provider, Context } = createDataContext(
     playlistReducer,
-    { initPlaylist, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist,
+    { initPlaylist, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist, nextPlaylists,
         addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
-    { playlists: null, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
+    { playlists: null, currentPlaylistPage: 1, notNext: false, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
 )
