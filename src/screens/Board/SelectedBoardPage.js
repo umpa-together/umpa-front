@@ -121,7 +121,9 @@ const styles=StyleSheet.create({
     introductionText: {
         fontSize: 13 * tmpWidth, 
         color: 'rgb(128,128,128)', 
-        marginLeft: 4 * tmpWidth
+        marginLeft: 4 * tmpWidth,
+        width: 280 * tmpWidth,
+        height: 18 * tmpWidth,
     },
     deleteContainer: {
         paddingLeft: 12 * tmpWidth,
