@@ -106,6 +106,7 @@ const SignupPage = ({ navigation }) => {
     };
 
     const passwordval = () => {
+        if(isSNS)   return true;
         const check = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/.test(password)
         return check;
     }
@@ -144,7 +145,6 @@ const SignupPage = ({ navigation }) => {
                 return;
             }
         }
-
         if(passwordcheck == undefined || passwordcheck.length == 0){
             setPasswordcheckerr(true);
             return;
