@@ -132,9 +132,9 @@ const nextPlaylists = (dispatch) => async ({ page }) => {
 }
 
 const getPlaylist = dispatch =>{
-    return async ({ id, postUserId, isEnter })=>{
+    return async ({ id, postUserId })=>{
         try {
-            const response = await serverApi.get('/playlist/'+id+'/'+postUserId+'/'+isEnter);
+            const response = await serverApi.get('/playlist/'+id+'/'+postUserId);
             if(response.data[0] == null ){
                 dispatch({type: 'deleted_playlist'})
             }else{

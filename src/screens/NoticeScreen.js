@@ -16,7 +16,7 @@ import { tmpWidth } from '../components/FontNormalize';
 
 const NoticeScreen = ({navigation}) => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);
-    const { getPlaylist, initPlaylist } = useContext(PlaylistContext);
+    const { initPlaylist, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, initOtherUser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const { getCuration } = useContext(CurationContext);

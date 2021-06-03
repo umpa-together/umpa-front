@@ -34,7 +34,7 @@ const MainSongForm = ({navigation}) => {
                         renderItem={({item})=> {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
-                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id, isEnter: true}) 
+                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                     navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >

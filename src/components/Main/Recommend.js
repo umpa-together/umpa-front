@@ -12,7 +12,7 @@ import { tmpWidth } from '../FontNormalize';
 import RepresentSong from '../RepresentSong';
 
 const Recommend = ({navigation}) => {
-    const { getPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const { getCurationposts } = useContext(CurationContext);
@@ -137,7 +137,7 @@ const Recommend = ({navigation}) => {
                                 item.playlist.slice(0,3).map(playlist => {
                                     return (
                                         <TouchableOpacity key={playlist['image']} onPress={async () => {
-                                            await getPlaylist({id:playlist['_id'], postUserId:item._id, isEnter: true})
+                                            await getPlaylist({id:playlist['_id'], postUserId:item._id})
                                             navigation.push('SelectedPlaylist', {id: playlist['_id'], navigation: navigation, postUser: item._id})
                                         }}>
                                             <Image style={styles.playlistBox} source={{uri: playlist['image']}}/>
