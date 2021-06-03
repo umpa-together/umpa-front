@@ -4,6 +4,7 @@ import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
+import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
@@ -20,6 +21,7 @@ const MainSongForm = ({navigation}) => {
     const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { state: weeklyState } = useContext(WeeklyContext);
     const { getPlaylist } = useContext(PlaylistContext);
+    const { getCuration } = useContext(CurationContext);
 
     return (
         <ScrollView>
@@ -78,8 +80,9 @@ const MainSongForm = ({navigation}) => {
                                 <View style={{width:114 * tmpWidth,marginLeft: 12 * tmpWidth,}}>
                                     { item.isSong ?
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item.object})
+                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
+                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
                                         </TouchableOpacity>
@@ -87,8 +90,9 @@ const MainSongForm = ({navigation}) => {
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item.object})
+                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
+                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
                                         </TouchableOpacity>

@@ -101,11 +101,10 @@ const NoticeScreen = ({navigation}) => {
                                 <PlaylistNoticeForm notice={item} /> 
                             </TouchableOpacity> :
                             (item.noticetype == 'culike' ?
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity onPress={async () => {
                                 if(item.curationpost != null){
-                                    getCuration({isSong : item.curationpost.isSong,object:item.curationpost,id:item.curationpost.songoralbumid})
+                                    await getCuration({isSong : item.curationpost.isSong,object:item.curationpost,id:item.curationpost.songoralbumid})
                                     navigate('SelectedCuration', {id: item.curationpost.songoralbumid, postid:item.curationpost._id})                                   
-
                                 }
                             }}>
                                 <CurationNoticeForm notice={item} />
