@@ -42,13 +42,13 @@ const SelectedHashtagScreen = ({navigation}) => {
                                         await getPlaylist({id:item._id, postUserId:item.postUserId})
                                         navigate('SelectedPlaylist', {id: item._id , object:item, navigation: navigation})
                                         }}>
-                                        <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
+                                        <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                             <Image style={ {width:'100%', height:'100%', borderRadius:4 * tmpWidth}} source={{url :item.image}}/>
                                         </View>
                                         <View style={{width:161 * tmpWidth}}>
                                             <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
                                         </View>
-                                        <View style={{width:161 * tmpWidth, flexDirection:'row'}}>
+                                        <View style={{width:161 * tmpWidth, flexDirection:'row', marginTop: 8 * tmpWidth}}>
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, color:'rgba(153,153,153,1)',}}>
                                         {item.hashtag.map((hashtag,index) => {
                                              return (

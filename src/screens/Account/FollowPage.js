@@ -264,7 +264,7 @@ const styles=StyleSheet.create({
         width: 64  * tmpWidth,
         height: 25  * tmpWidth,
         borderRadius: 30 * tmpWidth,
-        backgroundColor: 'rgba(169,193,255,0.5)',
+        backgroundColor: 'rgb(169,193,255)',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -275,7 +275,7 @@ const styles=StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 0.8 * tmpWidth,
-        borderColor: 'rgba(169,193,255,0.5)'
+        borderColor: 'rgb(169,193,255)'
     },
     opt:{
         width: '100%',

@@ -65,7 +65,7 @@ const SelectedSongScreen = ({navigation}) => {
                         </View>
                         <View style={{width:375 * tmpWidth, height:88 * tmpWidth}}>
                             <View style={{width:375 * tmpWidth, height:88/2 * tmpWidth, justifyContent:'center', alignItems:'center' }}>
-                                <Text style={{fontSize:12 * tmpWidth, fontWeight:'bold'}}>{song.attributes.artistName}</Text>
+                                <Text style={{fontSize:16 * tmpWidth, fontWeight:'bold'}}>{song.attributes.artistName}</Text>
                             </View>
                             <View style={{width:375 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row'}}>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row',justifyContent:'flex-end', marginRight:2.5 * tmpWidth}}>
@@ -108,7 +108,7 @@ const SelectedSongScreen = ({navigation}) => {
                                                 navigate('SelectedPlaylist', {id: item._id , object:item, navigation: navigation})
                                                 }}>
                                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                                    <Image style={ {width:'100%', height:'100%', borderRadius:4 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
+                                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
                                                 </View>
                                                 <View style={{width:161 * tmpWidth}}>
                                                     <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>

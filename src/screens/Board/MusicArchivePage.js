@@ -99,7 +99,8 @@ const MusicArchivePage = ({navigation}) => {
                     </View>
                     <FlatList 
                         showsHorizontalScrollIndicator={false}
-                        style={{marginTop: 16 * tmpWidth, paddingLeft: 24 * tmpWidth}}
+                        contentContainerStyle={{paddingLeft: 16 * tmpWidth, paddingRight: 16 * tmpWidth}}
+                        style={{marginTop: 16 * tmpWidth}}
                         data={state.musicArchive}
                         keyExtractor={(song) => song._id}
                         horizontal={true}
@@ -315,7 +316,8 @@ const styles=StyleSheet.create({
         paddingLeft: 24 * tmpWidth,
     },
     musicArchiveContainer: {
-        marginRight: 16 * tmpWidth, 
+        marginRight: 8 * tmpWidth,
+        marginLeft: 8 * tmpWidth, 
         alignItems: 'center',
     },
     songBox: {
