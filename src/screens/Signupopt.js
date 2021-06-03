@@ -32,9 +32,10 @@ const Signupopt = () => {
         });
     };
 
-    const kakaoLogin = () => {
+    const kakaoLogin = async() => {
         KakaoLogins.login([KAKAO_AUTH_TYPES.Talk, KAKAO_AUTH_TYPES.Account])
         .then(async (result) => {
+            console.log(result);
             await getKakaoInfo({ token: result.accessToken });
         })
     };

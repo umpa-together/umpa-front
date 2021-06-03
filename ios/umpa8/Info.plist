@@ -41,7 +41,7 @@
 			<string>kakaologin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao50b6a0e13fa5049cae852af4187b8a34</string>
+				<string>kakaob754cdf62b33d818f51425d17d87018c</string>
 			</array>
 		</dict>
 		<dict>
@@ -58,7 +58,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>50b6a0e13fa5049cae852af4187b8a34</string>
+	<string>b754cdf62b33d818f51425d17d87018c</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>naversearchapp</string>
@@ -85,8 +85,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow access to your camera</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow access to your photo gallery</string>
 	<key>UIAppFonts</key>
