@@ -25,7 +25,7 @@ const Imagebacktake = ({url , border, opac}) => {
 };
 
 const SelectedCuration = ({navigation}) => {
-    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts} = useContext(CurationContext);
+    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts, getCuration} = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [hidden, setHidden] = useState(false);
@@ -42,6 +42,7 @@ const SelectedCuration = ({navigation}) => {
     const [selectedCuration, setSelectedCuration] = useState('');
     const curationid= navigation.getParam('id');
     const postid= navigation.getParam('postid');
+    const songObject = navigation.getParam('object');
     const [reportModal, setReportModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -49,7 +50,6 @@ const SelectedCuration = ({navigation}) => {
     const onClose =() => {
         setShowModal(false);
     }
-
     const addtracksong= async ({data}) => {
         const track = new Object();
         track.id = data.id;
@@ -82,7 +82,8 @@ const SelectedCuration = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-        });
+            getCuration({isSong : songObject.isSong, object:songObject, id: curationid})
+        })
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
@@ -98,9 +99,10 @@ const SelectedCuration = ({navigation}) => {
     },[ref, state.currentCurationpost]);
 
     return (
-        <View style={{backgroundColor:'rgba(252,252,253,1)'}}>
+        <View style={{backgroundColor:'rgba(252,252,253,1)', flex: 1}}>
+            {state.currentCuration.songoralbumid == undefined || (state.currentCuration.songoralbumid !=curationid) ? 
+            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}><ActivityIndicator/></View> :
             <ScrollView showsVerticalScrollIndicator={false}>
-                {state.currentCuration.songoralbumid == undefined || (state.currentCuration.songoralbumid !=curationid) ? <ActivityIndicator/> :
                 <View>
                     <View style={{position :"absolute", zIndex:-2, width: 375 * tmpWidth, height:356 * tmpWidth}}>
                         {state.currentCuration.isSong ? <Imagebacktake opac={0.4} url={state.currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={state.currentCuration.object.artwork.url}></Imagebacktake>}
@@ -444,8 +446,8 @@ const SelectedCuration = ({navigation}) => {
                             </View>
                         </Modal> :null }
                     </View>
-                </View> }
-          </ScrollView>
+                </View> 
+          </ScrollView> }
         </View>
     );
 };

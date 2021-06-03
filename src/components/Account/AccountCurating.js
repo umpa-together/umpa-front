@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { navigate } from '../../navigationRef';
+import React from 'react';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 
 const Imagetake = ({url}) => {
@@ -10,15 +8,13 @@ const Imagetake = ({url}) => {
     return <Image style ={{height:'100%', width:'100%', borderRadius: 100*tmpWidth}} source ={{url:url}}/>
 };
 
-const AccountCurating = ({ curating, myAccount }) => {
+const AccountCurating = ({ curating, myAccount, navigation }) => {
     curating.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
         return 0;           
 
     });
-    const { getCuration } = useContext(CurationContext);
-
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
@@ -26,14 +22,10 @@ const AccountCurating = ({ curating, myAccount }) => {
                 data={curating}
                 keyExtractor={(song)=>song._id}
                 renderItem={({item})=> {
-                    console.log(
-                        item.object
-                    )
                     return (
                         <View style={{marginRight: 57 * tmpWidth , marginTop: 14 * tmpWidth  }}>
                             <TouchableOpacity onPress={()=>{
-                                getCuration({isSong : item.isSong,object:item,id:item.songoralbumid})
-                                navigate('SelectedCuration', {id: item.songoralbumid})
+                                navigation.push('SelectedCuration', {id: item.songoralbumid, object: item})
                             }}>
                                 {item.isSong ?
                                 <View>                                

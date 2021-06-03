@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image }
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
@@ -15,12 +13,10 @@ const Imagetake = ({url ,borderRadius}) => {
     return <Image style ={{height:'100%', width:'100%',borderRadius:borderRadius}} source ={{url:url}}/>
 };
 
-const MainSongForm = () => {
+const MainSongForm = ({navigation}) => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { state: weeklyState } = useContext(WeeklyContext);
-    const { getPlaylist } = useContext(PlaylistContext);
-    const { getCuration } = useContext(CurationContext);
 
     return (
         <ScrollView>
@@ -35,7 +31,9 @@ const MainSongForm = () => {
                         bounces={false}
                         renderItem={({item})=> {
                             return (
-                                <TouchableOpacity style={styles.playlistitem} onPress={() => {navigate('SelectedPlaylist', {id: item._id}); getPlaylist({id:item._id, postUserId:item.postUserId}) ; }}>
+                                <TouchableOpacity style={styles.playlistitem} onPress={() => {
+                                    navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
+                                }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
                                         <Imagetake  borderRadius={8 * tmpWidth} url={item.image}/>
                                     </View>
@@ -73,14 +71,18 @@ const MainSongForm = () => {
                                 <View style={{width:114 * tmpWidth,marginLeft: 12 * tmpWidth,}}>
                                     { item.isSong ?
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid,}); }}>
+                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item.object})
+                                        }}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name}</Text> 
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid, }); }}>
+                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={()=>{
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item.object})
+                                        }}>
                                             <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> 

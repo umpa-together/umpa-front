@@ -1,17 +1,14 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { navigate } from '../../navigationRef';
+import React from 'react';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 
-const AccountPlaylist = ({ playList, myAccount }) => {
+const AccountPlaylist = ({ playList, myAccount, navigation }) => {
     playList.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
         return 0;           
 
     });
-    const { getPlaylist } = useContext(PlaylistContext);
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
@@ -22,8 +19,7 @@ const AccountPlaylist = ({ playList, myAccount }) => {
                     return (
                         <View style={{ height:223*tmpWidth, width:161*tmpWidth, marginRight: 14* tmpWidth , marginTop: 14 * tmpWidth }}>
                             <TouchableOpacity onPress={()=>{ 
-                                getPlaylist({id:item._id, postUserId:item.postUserId})
-                                navigate('SelectedPlaylist', {id: item._id , object:item})
+                                navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
                             }}>
                                 <View style={{alignItems: 'center'}}>
                                     <View style={styles.thumbnail}>

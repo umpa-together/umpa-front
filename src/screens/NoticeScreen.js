@@ -16,7 +16,7 @@ import { tmpWidth } from '../components/FontNormalize';
 
 const NoticeScreen = ({navigation}) => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);
-    const { getPlaylist, initPlaylist } = useContext(PlaylistContext);
+    const { initPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, initOtherUser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const { getCuration } = useContext(CurationContext);
@@ -84,8 +84,7 @@ const NoticeScreen = ({navigation}) => {
                             { item.noticetype == 'plike'  ?
                             <TouchableOpacity onPress={() => {
                                 if(item.playlist != null){
-                                    getPlaylist({id:item.playlist._id, postUserId:item.playlist.postUserId})
-                                    navigate('SelectedPlaylist', {id: item.playlist._id, object:item.playlist})
+                                    navigation.push('SelectedPlaylist', {id: item.playlist._id, navigation: navigation, postUser: item.playlist.postUserId})
                                 }
                             }}>
                                 <PlaylistNoticeForm notice={item} /> 
@@ -94,8 +93,7 @@ const NoticeScreen = ({navigation}) => {
                             || item.noticetype == 'precom' || item.noticetype == 'precomlike' ?
                             <TouchableOpacity onPress={() => {
                                 if(item.playlist != null){
-                                    getPlaylist({id:item.playlist._id, postUserId:item.playlist.postUserId})
-                                    navigate('SelectedPlaylist', {id: item.playlist._id, object:item.playlist, commentid:item.playlistcomment._id})
+                                    navigation.push('SelectedPlaylist', {id: item.playlist._id, navigation: navigation, postUser: item.playlist.postUserId})
                                 }
                             }}>
                                 <PlaylistNoticeForm notice={item} /> 
@@ -103,9 +101,7 @@ const NoticeScreen = ({navigation}) => {
                             (item.noticetype == 'culike' ?
                             <TouchableOpacity onPress={() => {
                                 if(item.curationpost != null){
-                                    getCuration({isSong : item.curationpost.isSong,object:item.curationpost,id:item.curationpost.songoralbumid})
-                                    navigate('SelectedCuration', {id: item.curationpost.songoralbumid, postid:item.curationpost._id})                                   
-
+                                    navigation.push('SelectedCuration', {id: item.curationpost.songoralbumid, object:item.curationpost, postid:item.curationpost._id})
                                 }
                             }}>
                                 <CurationNoticeForm notice={item} />

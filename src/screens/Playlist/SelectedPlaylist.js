@@ -16,11 +16,12 @@ import DeletedModal from '../../components/DeletedModal';
 
 const SelectedPlaylist = ({navigation}) => {
     const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
-        unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
+        unlikescomment, likesrecomment, unlikesrecomment, initRecomment, getPlaylist } = useContext(PlaylistContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const { state: searchState, hashtagHint } = useContext(SearchContext);
     const playlistid= navigation.getParam('id');
+    const postUser = navigation.getParam('postUserId');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
     const [currentcommentid, setCurrentcommentid] = useState('');
@@ -101,6 +102,7 @@ const SelectedPlaylist = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
+            getPlaylist({id:playlistid, postUserId:postUser})
         });
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);

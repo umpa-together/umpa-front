@@ -1,10 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { Text, TextInput,View,Keyboard, Image,FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator  } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
-import { Context as CurationContext } from '../../context/CurationContext'
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
-
-import { navigate } from '../../navigationRef';
 import SvgUri from 'react-native-svg-uri';
 
 const Imagetake = ({url, border}) => {
@@ -19,7 +16,6 @@ const CurationSearchPage = ({navigation}) => {
     const [key, setKey]= useState(true);
 
     const { state, searchsong, searchalbum, songNext, searchHint, initHint } = useContext(SearchContext);
-    const { getCuration } = useContext(CurationContext);
     const [loading, setLoading] = useState(false);
     const getData = async () => {
         if((isSong && state.songData.length >= 20) || (!isSong && state.albumData.length >= 20)){
@@ -127,7 +123,9 @@ const CurationSearchPage = ({navigation}) => {
                                   ListFooterComponent={loading && <ActivityIndicator />}
                                   renderItem={({item}) =>{
                                   return (
-                                      <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth}} onPress={()=>{getCuration({isSong:true,object:item,id:item.id}); navigate('SelectedCuration', {id: item.id}); }}>
+                                      <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth}} onPress={()=>{
+                                          navigation.push('SelectedCuration', {id: item.id, object: item})
+                                          }}>
                                           <View style={{flexDirection:'row'}}>
                                               <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
                                                   <Imagetake url={item.attributes.artwork.url} border={100 * tmpWidth}></Imagetake>
@@ -163,7 +161,9 @@ const CurationSearchPage = ({navigation}) => {
                                ListFooterComponent={loading && <ActivityIndicator />}
                                renderItem={({item}) =>{
                                return (
-                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{getCuration({isSong:false ,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating},id:item.id}); navigate('SelectedCuration', {id: item.id});}}>
+                                   <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={()=>{
+                                       navigation.push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
+                                    }}>
                                        <View style={{flexDirection:'row'}}>
                                            <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
                                               <Imagetake url={item.attributes.artwork.url} border={4 * tmpWidth}></Imagetake>

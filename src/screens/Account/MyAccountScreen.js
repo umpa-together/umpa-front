@@ -233,8 +233,8 @@ const MyAccountScreen = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(250,250,250)'}}>
-                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true}/> :
-                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true}/> }
+                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true} navigation={navigation}/> :
+                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true} navigation={navigation}/> }
                         </View>
                     </View>
                 </ScrollView>
