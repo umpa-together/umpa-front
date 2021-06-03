@@ -212,7 +212,8 @@ const SelectedPlaylist = ({navigation}) => {
                     <ScrollView>
                         <Text style={{marginLeft: 24 * tmpWidth, fontSize: 16 * tmpWidth}}>담긴 곡</Text>
                         <FlatList
-                            style={{paddingTop: 8 * tmpWidth, paddingBottom: 16 * tmpWidth}}
+                            contentContainerStyle={{paddingLeft: 10 * tmpWidth, paddingRight: 10 * tmpWidth}}
+                            style={{paddingTop: 8 * tmpWidth, paddingBottom: 16 * tmpWidth }}
                             data={state.current_songs}
                             keyExtractor={playlist=>playlist.id}
                             horizontal = {true}
@@ -628,7 +629,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3 * tmpWidth,
         shadowOpacity: 0.12 ,
         alignItems: 'center',
-        marginLeft: 20, 
+        marginLeft: 10 * tmpWidth,
+        marginRight: 10 * tmpWidth 
     },
     songCover: {
         width: 92 * tmpWidth,

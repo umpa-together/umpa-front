@@ -298,7 +298,7 @@ const SelectedCuration = ({navigation}) => {
                                     <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:56 * tmpWidth, marginBottom: 24 * tmpWidth}}>
                                     {selectedCuration.hidden ? 
                                     <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text> :
-                                    <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
+                                    <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
                                     </View>
                                 </View>
                             </View>
@@ -350,7 +350,7 @@ const SelectedCuration = ({navigation}) => {
                                         </View>
                                     </View>
                                     <View style={{width:238 * tmpWidth, marginTop:24 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
-                                        <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
+                                    <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
                                     </View>
                                 </View> }
                             </View>
