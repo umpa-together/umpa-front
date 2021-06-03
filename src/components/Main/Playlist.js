@@ -2,14 +2,13 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { navigate } from '../../navigationRef';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
 
 
 const Playlist = ({ playList, navigation }) => {
-    const { state: playlistState, getPlaylist,likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists } = useContext(PlaylistContext);
+    const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists } = useContext(PlaylistContext);
     const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -64,8 +63,8 @@ const Playlist = ({ playList, navigation }) => {
                             <View style={styles.playlist}>
                                 <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth, }}>
                                 <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth, }} onPress={async () => {
-                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                    navigate('SelectedPlaylist', {id: item._id, navigation: navigation}); }}>
+                                    navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId, navigation: navigation})
+                                }}>
                                         <View style={styles.backpic}>
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />
                                         </View>

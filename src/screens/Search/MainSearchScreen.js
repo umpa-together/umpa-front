@@ -36,7 +36,7 @@ const MainSearchScreen = ({navigation}) => {
                 </TouchableOpacity>
             </View>
             <View style={{height:590 * tmpHeight}}>
-            {category == 'Song' ? <MainSongForm /> : <MainDJForm navigation={navigation}/> }
+            {category == 'Song' ? <MainSongForm navigation={navigation}/> : <MainDJForm navigation={navigation}/> }
             </View>
         </View>
     </SafeAreaView>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity,  FlatList, ScrollView, RefreshControl, Animated } from 'react-native';
+import { Text, Image, StyleSheet, View, TouchableOpacity, ScrollView, RefreshControl, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TrackPlayer from 'react-native-track-player';
 import SvgUri from 'react-native-svg-uri';
@@ -20,7 +20,7 @@ const ImageSelect = ({url, opac}) => {
     );
 };
 const Recommend = ({navigation}) => {
-    const { getPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { getPlaylists } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const { getCurationposts } = useContext(CurationContext);
@@ -148,8 +148,7 @@ const Recommend = ({navigation}) => {
                                 item.playlist.slice(0,3).map(playlist => {
                                     return (
                                         <TouchableOpacity key={playlist['image']} onPress={async () => {
-                                            await getPlaylist({id:playlist['_id'], postUserId:item._id})
-                                            navigate('SelectedPlaylist', {id: playlist['_id'], navigation: navigation})
+                                            navigation.push('SelectedPlaylist', {id: playlist['_id'], navigation: navigation, postUser: item._id})
                                         }}>
                                             <Image style={styles.playlistBox} source={{uri: playlist['image']}}/>
                                         </TouchableOpacity>

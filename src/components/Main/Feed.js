@@ -142,7 +142,7 @@ const Feed = ({navigation}) => {
                     />
                 </View> : null }
                 <Playlist playList={state.playlists} navigation={navigation}/>
-            </View> : <View style={{flex:1}}><Curating curationPosts={curation.maincurationposts}/></View> }
+            </View> : <View style={{flex:1}}><Curating curationPosts={curation.maincurationposts} navigation={navigation}/></View> }
             {selectedStory != undefined ?
             <Modal
                 animationIn='fadeInLeft'

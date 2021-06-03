@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { tmpWidth } from '../FontNormalize';
 
 const Imagetake = ({url}) => {
     url =url.replace('{w}', '300');
@@ -10,8 +9,8 @@ const Imagetake = ({url}) => {
     return <Image style ={{height:'100%', width:'100%', borderRadius: 100*tmpWidth}} source ={{url:url}}/>
 };
 
-const Curating = ({ curationPosts }) => {
-    const { state, getCuration, getCurationposts, nextCurationposts } = useContext(CurationContext);
+const Curating = ({ curationPosts, navigation }) => {
+    const { state, getCurationposts, nextCurationposts } = useContext(CurationContext);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
     const getData = async () => {
@@ -44,7 +43,7 @@ const Curating = ({ curationPosts }) => {
         }
     }
     return (
-        <View style={{ height:625 * tmpHeight ,backgroundColor:"rgb(254,254,254)"}}>
+        <View style={{ flex: 1, backgroundColor:"rgb(254,254,254)"}}>
             { curationPosts != undefined && curationPosts.length !=0 ?
             <FlatList
                 data={curationPosts}
@@ -56,7 +55,9 @@ const Curating = ({ curationPosts }) => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
                     return (
-                        <TouchableOpacity style ={styles.curation} onPress={()=>{getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid}); navigate('SelectedCuration', {id: item.songoralbumid, postid:item._id}); }}>
+                        <TouchableOpacity style ={styles.curation} onPress={()=>{
+                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item, postid:item._id})
+                        }}>
                         {(index+1) % 2 == 0 ?
                             <View>
                                 {item.isSong ? 

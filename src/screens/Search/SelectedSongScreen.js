@@ -3,10 +3,8 @@ import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, Activ
 import { FlatList } from 'react-native-gesture-handler';
 import { navigate } from '../../navigationRef';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as DJContext } from '../../context/DJContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
@@ -28,12 +26,8 @@ const SelectedSongScreen = ({navigation}) => {
     const song = navigation.getParam('song');
     const category = navigation.getParam('category');
     const { state } = useContext(SearchPlaylistContext);
-
-    const { getPlaylist } = useContext(PlaylistContext);
     const { state: searchState } = useContext(SearchContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
-
-    const { getCuration } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
     return (
         <View>
@@ -70,14 +64,18 @@ const SelectedSongScreen = ({navigation}) => {
                             <View style={{width:375 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row'}}>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row',justifyContent:'flex-end', marginRight:2.5 * tmpWidth}}>
                                     <TouchableOpacity
-                                    onPress={() => {getCuration({isSong:true,object:song, id:song.id}); navigate('SelectedCuration', {id: song.id});}}
+                                    onPress={() => {
+                                        navigation.push('SelectedCuration', {id: song.id, object: song})
+                                    }}
                                     style={styles.curationbox}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>곡 큐레이션</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row', justifyContent:'flex-start', marginLeft:2.5 * tmpWidth}}>
                                     <TouchableOpacity
-                                    onPress={() => {getCuration({isSong:false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating }, id:song.attributes.url.split('?')[0].split('/')[6] }); navigate('SelectedCuration', {id:song.attributes.url.split('?')[0].split('/')[6]});}}
+                                    onPress={() => {
+                                        navigation.push('SelectedCuration', {id: song.attributes.url.split('?')[0].split('/')[6], object: {albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating },})
+                                    }}
                                     style={styles.albumbox}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>앨범 큐레이션</Text>
                                     </TouchableOpacity>
@@ -104,8 +102,7 @@ const SelectedSongScreen = ({navigation}) => {
                                     return (
                                         <View style={{width:161 * tmpWidth,marginRight:14 * tmpWidth, marginBottom:23 * tmpWidth}}>
                                             <TouchableOpacity onPress={async () => {
-                                                await getPlaylist({id:item._id, postUserId:item.postUserId})
-                                                navigate('SelectedPlaylist', {id: item._id , object:item, navigation: navigation})
+                                                navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                                 }}>
                                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                                     <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>

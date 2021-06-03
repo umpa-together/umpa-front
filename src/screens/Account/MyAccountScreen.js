@@ -232,9 +232,9 @@ const MyAccountScreen = ({navigation}) => {
                                 <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{backgroundColor: 'rgb(255,255,255)'}}>
-                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true}/> :
-                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true}/> }
+                        <View style={{backgroundColor: 'rgb(255,255,255))'}}>
+                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true} navigation={navigation}/> :
+                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true} navigation={navigation}/> }
                         </View>
                     </View>
                 </ScrollView>

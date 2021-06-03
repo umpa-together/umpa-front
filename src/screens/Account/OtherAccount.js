@@ -23,8 +23,8 @@ const ImageSelect = ({url, opac}) => {
 };
 
 const OtherAccountScreen = ({navigation}) => {
-    const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar } = useContext(UserContext);
-    const {state: djState } = useContext(DJContext);
+    const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar, getOtheruser, } = useContext(UserContext);
+    const {state: djState, getSongs } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
     const [isFollow, setIsFollow] = useState(false);
     const [representModal, setRepresentModal] = useState(false);
@@ -107,7 +107,11 @@ const OtherAccountScreen = ({navigation}) => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
         const listener = navigation.addListener('didFocus', async () => {
-            await TrackPlayer.reset()
+            await Promise.all([
+                getOtheruser({id: id}),
+                getSongs({id: id}),
+                TrackPlayer.reset()
+            ]);
         });
         return () => listener.remove()
     }, []);
@@ -205,8 +209,8 @@ const OtherAccountScreen = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255)'}}>
-                            {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false}/> :
-                            <AccountCurating curating={user.curationposts} myAccount={false}/>}
+                            {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false} navigation={navigation}/> :
+                            <AccountCurating curating={user.curationposts} myAccount={false} navigation={navigation}/>}
                         </View>
                     </View>
                 </ScrollView>
