@@ -21,7 +21,7 @@ const SelectedPlaylist = ({navigation}) => {
     const { getSongs } = useContext(DJContext);
     const { state: searchState, hashtagHint } = useContext(SearchContext);
     const playlistid= navigation.getParam('id');
-    const postUser = navigation.getParam('postUserId');
+    const postUser = navigation.getParam('postUser');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
     const [currentcommentid, setCurrentcommentid] = useState('');
@@ -45,7 +45,6 @@ const SelectedPlaylist = ({navigation}) => {
         initRecomment();
         setKeyboardHeight(0);
     }
-
     const recommendedClick = () => {
         comments.sort(function(a, b) {
             if(a.likes.length > b.likes.length) return -1;
@@ -102,7 +101,7 @@ const SelectedPlaylist = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            getPlaylist({id:playlistid, postUserId:postUser})
+            getPlaylist({id:playlistid, postUserId:postUser, isEnter: false})
         });
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);

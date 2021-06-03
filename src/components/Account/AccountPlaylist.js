@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 
 const AccountPlaylist = ({ playList, myAccount, navigation }) => {
@@ -9,6 +10,7 @@ const AccountPlaylist = ({ playList, myAccount, navigation }) => {
         return 0;           
 
     });
+    const { getPlaylist } = useContext(PlaylistContext);
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
@@ -18,7 +20,8 @@ const AccountPlaylist = ({ playList, myAccount, navigation }) => {
                 renderItem = {({item}) => {
                     return (
                         <View style={{ height:223*tmpWidth, width:161*tmpWidth, marginRight: 14* tmpWidth , marginTop: 14 * tmpWidth }}>
-                            <TouchableOpacity onPress={()=>{ 
+                            <TouchableOpacity onPress={async ()=>{ 
+                                await getPlaylist({id:item._id, postUserId:item.postUserId, isEnter: true})
                                 navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
                             }}>
                                 <View style={{alignItems: 'center'}}>

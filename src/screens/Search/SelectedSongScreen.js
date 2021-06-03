@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, Activ
 import { FlatList } from 'react-native-gesture-handler';
 import { navigate } from '../../navigationRef';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
+import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -26,8 +27,11 @@ const SelectedSongScreen = ({navigation}) => {
     const song = navigation.getParam('song');
     const category = navigation.getParam('category');
     const { state } = useContext(SearchPlaylistContext);
+
+    const { getPlaylist } = useContext(PlaylistContext);
     const { state: searchState } = useContext(SearchContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
+
     const { getSongs } = useContext(DJContext);
     return (
         <View>
@@ -102,8 +106,9 @@ const SelectedSongScreen = ({navigation}) => {
                                     return (
                                         <View style={{width:161 * tmpWidth,marginRight:14 * tmpWidth, marginBottom:23 * tmpWidth}}>
                                             <TouchableOpacity onPress={async () => {
+                                                await getPlaylist({id:item._id, postUserId:item.postUserId._id, isEnter: true})
                                                 navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
-                                                }}>
+                                            }}>
                                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                                     <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
                                                 </View>

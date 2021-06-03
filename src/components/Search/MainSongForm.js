@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image }
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
+import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
@@ -17,6 +18,7 @@ const MainSongForm = ({navigation}) => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { state: weeklyState } = useContext(WeeklyContext);
+    const { getPlaylist } = useContext(PlaylistContext);
 
     return (
         <ScrollView>
@@ -31,7 +33,8 @@ const MainSongForm = ({navigation}) => {
                         bounces={false}
                         renderItem={({item})=> {
                             return (
-                                <TouchableOpacity style={styles.playlistitem} onPress={() => {
+                                <TouchableOpacity style={styles.playlistitem} onPress={async () => {
+                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id, isEnter: true}) 
                                     navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
