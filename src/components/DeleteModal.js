@@ -37,7 +37,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
         } else if (type == 'boardReComment') {
             deleteRecomment({ contentId: boardState.currentContent._id, commentId: subjectId })
         } else if (type == 'curation') {
-            deleteCuration({id:curationState.mycurationpost._id.toString()})
+            await deleteCuration({id:curationState.mycurationpost._id.toString()})
             getMyInfo()
         } else if (type == 'todaySong') {
             deleteStory()

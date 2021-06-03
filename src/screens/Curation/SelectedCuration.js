@@ -25,7 +25,7 @@ const Imagebacktake = ({url , border, opac}) => {
 };
 
 const SelectedCuration = ({navigation}) => {
-    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration} = useContext(CurationContext);
+    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts} = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [hidden, setHidden] = useState(false);
@@ -409,6 +409,7 @@ const SelectedCuration = ({navigation}) => {
                                             if(text.length>=50){
                                             await postCuration({isSong:state.currentCuration.isSong , hidden : hidden,  object:state.currentCuration.object, textcontent:text, id:state.currentCuration.songoralbumid})
                                             getMyInfo();
+                                            getCurationposts();
                                             setPostModal(false);
                                             setText('');
                                             }
