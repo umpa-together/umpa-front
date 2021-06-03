@@ -132,7 +132,7 @@ const nextPlaylists = (dispatch) => async ({ page }) => {
 }
 
 const getPlaylist = dispatch =>{
-    return async ({id,postUserId})=>{
+    return async ({ id, postUserId })=>{
         try {
             const response = await serverApi.get('/playlist/'+id+'/'+postUserId);
             if(response.data[0] == null ){

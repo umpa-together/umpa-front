@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 
 const Playlist = ({ playList, navigation }) => {
-    const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists } = useContext(PlaylistContext);
+    const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -63,7 +63,8 @@ const Playlist = ({ playList, navigation }) => {
                             <View style={styles.playlist}>
                                 <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth, }}>
                                 <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth, }} onPress={async () => {
-                                    navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId, navigation: navigation})
+                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
+                                    navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
                                 }}>
                                         <View style={styles.backpic}>
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />

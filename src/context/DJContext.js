@@ -26,14 +26,6 @@ const getSimilarTaste = (dispatch) => async () => {
         dispatch({ type: 'error', payload: 'Something went wrong with getSimilarTaste' });
     }
 };
-const add =()=>async()=>{
-    try {
-            await serverApi.get('/addmode');
-    }catch(err){
-
-    }
-
-};
 const getWeeklyDJ = (dispatch) => async () => {
     try {
         const response = await serverApi.get('/WeeklyDJ');
@@ -80,6 +72,6 @@ const recommendDJ = (dispatch) => async() => {
 
 export const { Provider, Context } = createDataContext(
     DJReducer,
-    { add,  getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ },
+    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ },
     { weeklyDJ: [], tasteDJ: [], songs: null, errorMessage: '', recommendDJ: null }
 )

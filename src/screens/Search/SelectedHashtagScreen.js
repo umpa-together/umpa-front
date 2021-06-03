@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { Context as PlaylistContext } from '../../context/PlaylistContext';
 
 const SelectedHashtagScreen = ({navigation}) => {
+    const { getPlaylist } = useContext(PlaylistContext);
     const searchOption = navigation.getParam('searchOption');
     const data = navigation.getParam('data');
     const hashtag = navigation.getParam('text')
@@ -35,8 +37,9 @@ const SelectedHashtagScreen = ({navigation}) => {
                             return (
                                 <View style={{width:161 * tmpWidth, marginRight:14 * tmpWidth, marginBottom:10 * tmpWidth}}>
                                     <TouchableOpacity onPress={async () => {
+                                        await getPlaylist({id:item._id, postUserId:item.postUserId})
                                         navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId})
-                                        }}>
+                                    }}>
                                         <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                             <Image style={ {width:'100%', height:'100%', borderRadius:4 * tmpWidth}} source={{url :item.image}}/>
                                         </View>

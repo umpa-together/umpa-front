@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity, ScrollView, RefreshControl, Animated } from 'react-native';
+import { Text, Image, StyleSheet, View, TouchableOpacity,  ScrollView, RefreshControl, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import TrackPlayer from 'react-native-track-player';
 import SvgUri from 'react-native-svg-uri';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
@@ -12,15 +11,8 @@ import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import RepresentSong from '../RepresentSong';
 
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
 const Recommend = ({navigation}) => {
-    const { getPlaylists } = useContext(PlaylistContext);
+    const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const { getCurationposts } = useContext(CurationContext);
@@ -34,10 +26,7 @@ const Recommend = ({navigation}) => {
         recommendDJ();
 
     }, []);
-    const onClose = async () => {
-        setRepresentModal(false);
-        await TrackPlayer.reset()
-    }
+
     const fetchData = async () => {
         setRefreshing(true);
         await Promise.all([
@@ -148,6 +137,7 @@ const Recommend = ({navigation}) => {
                                 item.playlist.slice(0,3).map(playlist => {
                                     return (
                                         <TouchableOpacity key={playlist['image']} onPress={async () => {
+                                            await getPlaylist({id:playlist['_id'], postUserId:item._id})
                                             navigation.push('SelectedPlaylist', {id: playlist['_id'], navigation: navigation, postUser: item._id})
                                         }}>
                                             <Image style={styles.playlistBox} source={{uri: playlist['image']}}/>

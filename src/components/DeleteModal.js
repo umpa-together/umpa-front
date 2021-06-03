@@ -7,17 +7,16 @@ import { Context as UserContext } from '../context/UserContext';
 import { Context as BoardContext } from '../context/BoardContext';
 import { Context as CurationContext } from '../context/CurationContext';
 
-const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId }) => {
+const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state: curationState, deleteCuration } = useContext(CurationContext);
-    
+    const [isDelete, setIsDelete] = useState(false);
     const onClose = () =>{
         setDeleteModal(false);
     };
-
     const deleteSelection = async () => {
         setDeleteModal(false)
         if (type == 'playlist') {
@@ -25,7 +24,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
             getMyInfo()
             navigation.goBack()
         } else if (type == 'playlistComment') {
-            deleteComment({id:state.current_playlist._id, commentid : subjectId})
+            await deleteComment({id:playlistId, commentid : subjectId})
         } else if (type == 'playlistReComment') {
             deletereComment({commentid:subjectId})
         } else if (type == 'boardContent') {
@@ -57,6 +56,10 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
             setTitle('오늘의 곡을')
         }
     }, []);
+
+    useEffect(() => {
+        if(isDelete)    setComments(state.current_comments)
+    },[state.current_comments])
     return (
         <Modal
             animationIn="fadeIn"
@@ -72,7 +75,9 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId 
                     <TouchableOpacity style={styles.cancelBox} onPress={() => setDeleteModal(false)}>
                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(133,133,133)'}}>취소하기</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.deleteBox} onPress={() => deleteSelection()}>
+                    <TouchableOpacity style={styles.deleteBox} onPress={async () => {
+                        await setIsDelete(true)
+                        deleteSelection()}}>
                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)'}}>삭제하기</Text>
                     </TouchableOpacity>
                 </View>

@@ -16,16 +16,14 @@ import DeletedModal from '../../components/DeletedModal';
 
 const SelectedPlaylist = ({navigation}) => {
     const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
-        unlikescomment, likesrecomment, unlikesrecomment, initRecomment, getPlaylist } = useContext(PlaylistContext);
+        unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const { state: searchState, hashtagHint } = useContext(SearchContext);
     const playlistid= navigation.getParam('id');
-    const postUser = navigation.getParam('postUserId');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
     const [currentcommentid, setCurrentcommentid] = useState('');
-    const [comments, setComments] = useState([]);
     const [tok, setTok] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -40,12 +38,16 @@ const SelectedPlaylist = ({navigation}) => {
     const [deletedModal, setDeletedModal] = useState(false);
     const commentRef = useRef();
     const recommentRef = useRef();
+
+    const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
+    const [comments, setComments] = useState(state.current_comments);
+    const [currentSongs, setCurrentSongs] = useState(state.current_songs)
+
     const onClose =() => {
         setShowModal('0');
         initRecomment();
         setKeyboardHeight(0);
     }
-
     const recommendedClick = () => {
         comments.sort(function(a, b) {
             if(a.likes.length > b.likes.length) return -1;
@@ -102,7 +104,8 @@ const SelectedPlaylist = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            getPlaylist({id:playlistid, postUserId:postUser})
+            setCurrentPlaylist(state.current_playlist)
+            setCurrentSongs(state.current_songs)
         });
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
@@ -111,12 +114,10 @@ const SelectedPlaylist = ({navigation}) => {
             listener.remove();
         };
     }, []);
-
     useEffect(() => {
-        if(state.current_comments != null){
-            setComments(state.current_comments);
-        }
-    }, [state.current_comments]);
+        if(state.current_playlist._id == playlistid)    setComments(state.current_comments)
+    }, [playlistid, state.current_comments])
+
     useEffect(() => {
         if(searchState.hashtagHint != undefined && searchState.hashtagHint.length != 0 && hashtag != '') navigate('SelectedHashtag', {data: searchState.hashtagHint[0], text: hashtag, searchOption : 'Hashtag' });
     }, [searchState.hashtagHint])
@@ -125,21 +126,21 @@ const SelectedPlaylist = ({navigation}) => {
     },[state.current_playlist])
     return (
         <View style={styles.container}>
-            {state.current_playlist == null || playlistid != state.current_playlist._id ?
+            {currentPlaylist == null ?
             <View style={styles.activityIndicatorContainer}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
                 <View style={{height: 228 * tmpWidth, width: '100%', zIndex: 1, position: 'absolute'}}>
                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/playlistBackgrad.svg')}/>
                 </View>
-                <Image style={styles.thumbnail} source={{uri: state.current_playlist.image}}/>
+                <Image style={styles.thumbnail} source={{uri: currentPlaylist.image}}/>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong();}}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        {userState.myInfo._id == state.current_playlist.postUserId._id ? 
+                        {userState.myInfo._id == currentPlaylist.postUserId._id ? 
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <TouchableOpacity onPress={() => navigate('Create', {'data': state.current_songs, 'isEdit': true})}>
+                            <TouchableOpacity onPress={() => navigate('Create', {'data': currentSongs, 'isEdit': true})}>
                                 <Text style={{color: 'white'}}>수정</Text>
                             </TouchableOpacity>
                             <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
@@ -154,32 +155,32 @@ const SelectedPlaylist = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'playlist'} /> : null }
-                    { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'playlist'} subjectId={state.current_playlist._id} /> : null }
+                    { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'playlist'} subjectId={currentPlaylist._id} /> : null }
                 </View>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                     <View style={styles.profileBox}>
                         <TouchableOpacity onPress={async () => {
-                            if(state.current_playlist.postUserId._id == userState.myInfo._id){
+                            if(currentPlaylist.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
-                                await Promise.all([getOtheruser({id:state.current_playlist.postUserId._id}),
-                                getSongs({id:state.current_playlist.postUserId._id})])
-                                navigation.push('OtherAccount', {otherUserId:state.current_playlist.postUserId._id}); }}}>
-                            {state.current_playlist.postUserId.profileImage == undefined ? 
+                                await Promise.all([getOtheruser({id:currentPlaylist.postUserId._id}),
+                                getSongs({id:currentPlaylist.postUserId._id})])
+                                navigation.push('OtherAccount', {otherUserId:currentPlaylist.postUserId._id}); }}}>
+                            {currentPlaylist.postUserId.profileImage == undefined ? 
                             <View style={styles.profile}>
                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                            </View> : <Image style={styles.profile} source={{uri: state.current_playlist.postUserId.profileImage}}/> }
+                            </View> : <Image style={styles.profile} source={{uri: currentPlaylist.postUserId.profileImage}}/> }
                         </TouchableOpacity>
                         <View style={styles.profileTextBox}>
-                            <Text style={styles.nameText}>{state.current_playlist.postUserId.name}</Text>
+                            <Text style={styles.nameText}>{currentPlaylist.postUserId.name}</Text>
                             <View style={styles.viewContainer}>
                                 <SvgUri width='24' height='24' source={require('../../assets/icons/view.svg')}/>
-                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{state.current_playlist.views}</Text>
+                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{currentPlaylist.views}</Text>
                                 <SvgUri width='24' height='24' source={require('../../assets/icons/playlistMiniHeart.svg')} />
-                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{state.current_playlist.likes.length}</Text>
+                                <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{currentPlaylist.likes.length}</Text>
                             </View>
                         </View>
-                        { state.current_playlist.likes.includes(userState.myInfo._id) ?
+                        { currentPlaylist.likes.includes(userState.myInfo._id) ?
                         <TouchableOpacity onPress={()=>{ unlikesPlaylist({id:playlistid}) }}>
                             <SvgUri width='40' height='40' source={require('../../assets/icons/playlisthearto.svg')}/>
                         </TouchableOpacity> :
@@ -192,11 +193,11 @@ const SelectedPlaylist = ({navigation}) => {
                     <View style={styles.infoContainer}>
                         <View style={styles.infoBox}>
                             <View style={{alignItems: 'center', width: 240 * tmpWidth}}>
-                                <Text style={styles.titleText} numberOfLines={1}>{state.current_playlist.title}</Text>
-                                <Text style={styles.contentText} numberOfLines={1}>{state.current_playlist.textcontent}</Text>
+                                <Text style={styles.titleText} numberOfLines={1}>{currentPlaylist.title}</Text>
+                                <Text style={styles.contentText} numberOfLines={1}>{currentPlaylist.textcontent}</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                {state.current_playlist.hashtag.map(item => {
+                                {currentPlaylist.hashtag.map(item => {
                                     return (
                                         <TouchableOpacity style={styles.hashtagView} key={item._id} onPress={async() => {
                                             setHashtag(item)
@@ -216,7 +217,7 @@ const SelectedPlaylist = ({navigation}) => {
                         <FlatList
                             contentContainerStyle={{paddingLeft: 10 * tmpWidth, paddingRight: 10 * tmpWidth}}
                             style={{paddingTop: 8 * tmpWidth, paddingBottom: 16 * tmpWidth }}
-                            data={state.current_songs}
+                            data={currentSongs}
                             keyExtractor={playlist=>playlist.id}
                             horizontal = {true}
                             showsHorizontalScrollIndicator={false}
@@ -251,7 +252,7 @@ const SelectedPlaylist = ({navigation}) => {
                         >
                         </FlatList>
                         <View style={styles.commentHeader}>
-                            <Text style={styles.headerCommentText}>댓글   {state.current_comments.length}</Text>
+                            <Text style={styles.headerCommentText}>댓글   {comments.length}</Text>
                             <View style={{flexDirection: 'row'}}>
                                 <TouchableOpacity onPress={() => recommendedClick()}>
                                     <Text style={styles.headerText}>추천순</Text>
@@ -321,7 +322,7 @@ const SelectedPlaylist = ({navigation}) => {
                                             }}>
                                                 <Text style={styles.deleteText}>지우기</Text>
                                             </TouchableOpacity> : null }
-                                            { commentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={commentDeleteModal} setDeleteModal={setCommentDeleteModal} type={'playlistComment'} subjectId={deleteId}/> : null }
+                                            { commentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={commentDeleteModal} setDeleteModal={setCommentDeleteModal} type={'playlistComment'} subjectId={deleteId} setComments={setComments} playlistId={playlistid}/> : null }
                                         </View>
                                     </View>
                                     {showModal == item._id ?
@@ -481,8 +482,8 @@ const SelectedPlaylist = ({navigation}) => {
                                     multiline={true}
                                 />
                             </View>
-                            <TouchableOpacity onPress={() => {
-                                addComment({id:playlistid, text:commentRef.current.value,noticieduser:state.current_playlist.postuser, noticieduseremail:state.current_playlist.email, noticetype:'pcom',thirdid:'0'});
+                            <TouchableOpacity onPress={async () => {
+                                await addComment({id:playlistid, text:commentRef.current.value,noticieduser:currentPlaylist.postuser, noticieduseremail:currentPlaylist.email, noticetype:'pcom',thirdid:'0'});
                                 commentRef.current.value = '';
                                 commentRef.current.clear();
                                 Keyboard.dismiss()
