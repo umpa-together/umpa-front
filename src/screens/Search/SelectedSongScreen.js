@@ -7,6 +7,7 @@ import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
+import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
 
@@ -30,7 +31,7 @@ const SelectedSongScreen = ({navigation}) => {
     const { state: searchState } = useContext(SearchContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getPlaylist } = useContext(PlaylistContext);
-
+    const { getCuration } = useContext(CurationContext);
     const { getSongs } = useContext(DJContext);
     return (
         <View>
@@ -67,8 +68,9 @@ const SelectedSongScreen = ({navigation}) => {
                             <View style={{width:375 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row'}}>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row',justifyContent:'flex-end', marginRight:2.5 * tmpWidth}}>
                                     <TouchableOpacity
-                                    onPress={() => {
-                                        navigation.push('SelectedCuration', {id: song.id, object: song})
+                                    onPress={async () => {
+                                        await getCuration({isSong : true,object:song,id:song.id})
+                                        navigation.push('SelectedCuration', {id: song.id})
                                     }}
                                     style={styles.curationbox}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>곡 큐레이션</Text>
@@ -76,7 +78,8 @@ const SelectedSongScreen = ({navigation}) => {
                                 </View>
                                 <View style={{width:375/2 * tmpWidth, height:88/2 * tmpWidth, flexDirection:'row', justifyContent:'flex-start', marginLeft:2.5 * tmpWidth}}>
                                     <TouchableOpacity
-                                    onPress={() => {
+                                    onPress={async () => {
+                                        await getCuration({isSong : false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating},id:song.attributes.url.split('?')[0].split('/')[6]})
                                         navigation.push('SelectedCuration', {id: song.attributes.url.split('?')[0].split('/')[6], object: {albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating },})
                                     }}
                                     style={styles.albumbox}>

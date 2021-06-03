@@ -10,7 +10,7 @@ const Imagetake = ({url}) => {
 };
 
 const Curating = ({ curationPosts, navigation }) => {
-    const { state, getCurationposts, nextCurationposts } = useContext(CurationContext);
+    const { state, getCurationposts, nextCurationposts, getCuration } = useContext(CurationContext);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
     const getData = async () => {
@@ -55,8 +55,9 @@ const Curating = ({ curationPosts, navigation }) => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
                     return (
-                        <TouchableOpacity style ={styles.curation} onPress={()=>{
-                            navigation.push('SelectedCuration', {id: item.songoralbumid, object: item, postid:item._id})
+                        <TouchableOpacity style ={styles.curation} onPress={async ()=>{
+                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                            navigation.push('SelectedCuration', {id: item.songoralbumid, postid:item._id})
                         }}>
                         {(index+1) % 2 == 0 ?
                             <View>

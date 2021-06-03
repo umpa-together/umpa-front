@@ -9,10 +9,10 @@ import { Context as CurationContext } from '../context/CurationContext';
 
 const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
     const [title, setTitle] = useState('');
-    const { state, deletePlaylist, deleteComment, deletereComment, } = useContext(PlaylistContext);
+    const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
-    const { state: curationState, deleteCuration } = useContext(CurationContext);
+    const { state: curationState, deleteCuration, getCurationposts } = useContext(CurationContext);
     const [isDelete, setIsDelete] = useState(false);
     const onClose = () =>{
         setDeleteModal(false);
@@ -22,6 +22,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
         if (type == 'playlist') {
             await deletePlaylist({id:state.current_playlist._id});
             getMyInfo()
+            getPlaylists()
             navigation.goBack()
         } else if (type == 'playlistComment') {
             await deleteComment({id:playlistId, commentid : subjectId})
@@ -38,6 +39,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
         } else if (type == 'curation') {
             await deleteCuration({id:curationState.mycurationpost._id.toString()})
             getMyInfo()
+            getCurationposts()
         } else if (type == 'todaySong') {
             deleteStory()
         }

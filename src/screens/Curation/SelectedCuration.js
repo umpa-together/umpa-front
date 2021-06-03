@@ -25,7 +25,7 @@ const Imagebacktake = ({url , border, opac}) => {
 };
 
 const SelectedCuration = ({navigation}) => {
-    const {state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts, getCuration} = useContext(CurationContext);
+    const { state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts } = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [hidden, setHidden] = useState(false);
@@ -42,11 +42,12 @@ const SelectedCuration = ({navigation}) => {
     const [selectedCuration, setSelectedCuration] = useState('');
     const curationid= navigation.getParam('id');
     const postid= navigation.getParam('postid');
-    const songObject = navigation.getParam('object');
     const [reportModal, setReportModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
+    const [currentCuration, setCurrentCuration] = useState(state.currentCuration);
+    const [currentCurationPosts, setCurrentCurationPosts] = useState(state.currentCurationpost);
     const onClose =() => {
         setShowModal(false);
     }
@@ -82,7 +83,7 @@ const SelectedCuration = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            getCuration({isSong : songObject.isSong, object:songObject, id: curationid})
+            //setCurrentCuration(state.currentCuration)
         })
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
@@ -98,14 +99,23 @@ const SelectedCuration = ({navigation}) => {
         }
     },[ref, state.currentCurationpost]);
 
+    useEffect(() => {
+        if(state.currentCuration != {} && state.currentCuration.object.id == curationid){
+            setCurrentCurationPosts(state.currentCurationpost)
+        }
+    }, [curationid, state.currentCurationpost])
+    useEffect(() => {
+        if(state.currentCuration != {} && state.currentCuration.object.id == curationid)   setCurrentCuration(state.currentCuration)
+    }, [curationid, state.currentCuration])
+
     return (
         <View style={{backgroundColor:'rgba(252,252,253,1)', flex: 1}}>
-            {state.currentCuration.songoralbumid == undefined || (state.currentCuration.songoralbumid !=curationid) ? 
+            {currentCuration.songoralbumid == undefined || (currentCuration.songoralbumid != curationid) ? 
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}><ActivityIndicator/></View> :
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <View style={{position :"absolute", zIndex:-2, width: 375 * tmpWidth, height:356 * tmpWidth}}>
-                        {state.currentCuration.isSong ? <Imagebacktake opac={0.4} url={state.currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={state.currentCuration.object.artwork.url}></Imagebacktake>}
+                        {currentCuration.isSong ? <Imagebacktake opac={0.4} url={currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={currentCuration.object.artwork.url}></Imagebacktake>}
                     </View>
                     <View style={styles.back}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
@@ -113,58 +123,58 @@ const SelectedCuration = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{width:204 * tmpWidth, height:204 * tmpWidth, marginTop:27 * tmpWidth, marginLeft:86 * tmpWidth}}>
-                        {state.currentCuration.isSong ? 
+                        {currentCuration.isSong ? 
                         <TouchableOpacity onPress={() => {
-                            if(isPlayingid == state.currentCuration.object.id){
+                            if(isPlayingid == currentCuration.object.id){
                                 stoptracksong()
                             }else{
-                                addtracksong({data: state.currentCuration.object})
+                                addtracksong({data: currentCuration.object})
                             }
                         }}>
-                            <Imagetake border ={200 * tmpWidth} opac={1} url={state.currentCuration.object.attributes.artwork.url} /> 
-                            { isPlayingid != state.currentCuration.object.id ? 
+                            <Imagetake border ={200 * tmpWidth} opac={1} url={currentCuration.object.attributes.artwork.url} /> 
+                            { isPlayingid != currentCuration.object.id ? 
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> :
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> }
                         </TouchableOpacity> :
-                        <Imagetake opac={1} border={200 * tmpWidth} url={state.currentCuration.object.artwork.url} /> }
+                        <Imagetake opac={1} border={200 * tmpWidth} url={currentCuration.object.artwork.url} /> }
                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                     </View>
                     <View style={styles.curationinfo}>
-                        {state.currentCuration.isSong ?
+                        {currentCuration.isSong ?
                         <View style={{alignItems:'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
-                                {state.currentCuration.object.attributes.contentRating == "explicit" ? 
+                                {currentCuration.object.attributes.contentRating == "explicit" ? 
                                 <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
                                 : null }
-                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth, marginTop:16 * tmpWidth }} numberOfLines={1}>{state.currentCuration.object.attributes.name}</Text>
+                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth, marginTop:16 * tmpWidth }} numberOfLines={1}>{currentCuration.object.attributes.name}</Text>
                             </View>
                             <View style={{width: 280 * tmpWidth, alignItems: 'center'}}>
-                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{state.currentCuration.object.attributes.artistName}</Text>
+                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{currentCuration.object.attributes.artistName}</Text>
                             </View>
                         </View> :
                         <View style={{alignItems:'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
-                                {state.currentCuration.object.contentRating == "explicit" ? 
+                                {currentCuration.object.contentRating == "explicit" ? 
                                 <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
                                 : null }
-                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth ,marginTop:16 * tmpWidth}} numberOfLines={1}>{state.currentCuration.object.albumName}</Text>
+                                <Text style={{color : 'black' , fontSize : 18 * tmpWidth ,marginTop:16 * tmpWidth}} numberOfLines={1}>{currentCuration.object.albumName}</Text>
                             </View>
                             <View style={{width: 280 * tmpWidth, alignItems: 'center'}}>
-                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{state.currentCuration.object.artistName}</Text>
+                                <Text style={{marginTop:6 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}} numberOfLines={1}>{currentCuration.object.artistName}</Text>
                             </View>
                         </View> }
-                        <Text style={{marginTop:10 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}}>{'큐레이션에 참여한 사람 '+state.currentCuration.participate.length+'명'}</Text>
+                        <Text style={{marginTop:10 * tmpWidth, fontSize:14 * tmpWidth, color:"#737373"}}>{'큐레이션에 참여한 사람 '+currentCuration.participate.length+'명'}</Text>
                     </View>
                     <View style ={styles.curationpost}>
                         <View style={{justifyContent:'center',width:335/2 * tmpWidth,backgroundColor:'rgba(252,252,253,1)' }}>
-                            <Text style={{fontSize:14 * tmpWidth, color:"rgba(79,79,79,1)"}}>큐레이션 {state.currentCuration.participate.length}개</Text>
+                            <Text style={{fontSize:14 * tmpWidth, color:"rgba(79,79,79,1)"}}>큐레이션 {currentCuration.participate.length}개</Text>
                         </View>
                         <View style={{alignItems:'flex-end', width:335/2 * tmpWidth,backgroundColor:'rgba(252,252,253,1)'}}>
-                            {state.currentCuration.participate.includes(userState.myInfo._id) ?
+                            {currentCuration.participate.includes(userState.myInfo._id) ?
                             <TouchableOpacity
                                  onPress={() => {
                                  setShowModal(true)
-                                 getmyCuration({id:state.currentCuration.songoralbumid})
+                                 getmyCuration({id:currentCuration.songoralbumid})
                             }}
                                 style={{alignItems:'flex-end', justifyContent:'flex-end',width:70 * tmpWidth, height:40 * tmpWidth,justifyContent:'center'}}>
                                <Text style={{fontSize:14, color:'rgb(79,79,79)'}}>작성글 보기</Text>
@@ -179,14 +189,14 @@ const SelectedCuration = ({navigation}) => {
                         </View>
                     </View>
                     <View style={{backgroundColor:'rgba(252,252,253,1)', height:340 * tmpWidth}}>
-                        { state.currentCurationpost.length == 0 ? 
+                        { currentCurationPosts.length == 0 ? 
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Text style={{color: 'rgb(93,93,93)'}}>현재 작성된 큐레이션이 없습니다.</Text>
                             <Text style={{color: 'rgb(93,93,93)', marginTop: 10 * tmpWidth}}>당신의 큐레이션을 작성해주세요!</Text>
                         </View> : 
                         <FlatList
                             style={{marginTop:8 * tmpWidth}}
-                            data={state.currentCurationpost}
+                            data={currentCurationPosts}
                             keyExtractor={comment => comment._id}
                             initialScrollIndex ={cidx}
                             ref={(ref)=>setRef(ref)}
@@ -201,7 +211,7 @@ const SelectedCuration = ({navigation}) => {
                                         setShowpost(true);
                                         } else {
                                             
-                                            getmyCuration({id:state.currentCuration.songoralbumid})
+                                            getmyCuration({id:currentCuration.songoralbumid})
                                             setShowModal(true);
 
                                         }
@@ -409,7 +419,7 @@ const SelectedCuration = ({navigation}) => {
                                         style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
                                         onPress ={async () => {
                                             if(text.length>=50){
-                                            await postCuration({isSong:state.currentCuration.isSong , hidden : hidden,  object:state.currentCuration.object, textcontent:text, id:state.currentCuration.songoralbumid})
+                                            await postCuration({isSong:currentCuration.isSong , hidden : hidden,  object:currentCuration.object, textcontent:text, id:currentCuration.songoralbumid})
                                             getMyInfo();
                                             getCurationposts();
                                             setPostModal(false);

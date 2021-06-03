@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { Context as CurationContext } from '../../context/CurationContext';
 
 const Imagetake = ({url}) => {
     url =url.replace('{w}', '300');
@@ -15,6 +16,8 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
         return 0;           
 
     });
+    const { getCuration } = useContext(CurationContext);
+
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
@@ -24,8 +27,9 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                 renderItem={({item})=> {
                     return (
                         <View style={{marginRight: 57 * tmpWidth , marginTop: 14 * tmpWidth  }}>
-                            <TouchableOpacity onPress={()=>{
-                                navigation.push('SelectedCuration', {id: item.songoralbumid, object: item})
+                            <TouchableOpacity onPress={async ()=>{
+                                await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                navigation.push('SelectedCuration', {id: item.songoralbumid})
                             }}>
                                 {item.isSong ?
                                 <View>                                
