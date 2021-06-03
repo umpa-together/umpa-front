@@ -79,16 +79,16 @@ const ContentsForm = ({ Contents }) => {
                                             <View style={{width: 250 * tmpWidth}}>
                                                 <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
                                             </View>
-                                            
+                                            <View style={styles.footer}>
+                                                <Text style={styles.footerText}>댓글 {item.comments.length}</Text>
+                                                <Text style={styles.footerText}>좋아요 {item.likes.length}</Text>
+                                                <Text style={{fontSize: 12 * tmpWidth}}>스크랩 {item.scrabs.length}</Text>
+                                            </View> 
                                         </View>
                                         {item.image.length != 0 ? <Image style={styles.image} source={{uri: item.image[0]}} />
                                         : <View style={{width: 64 * tmpWidth}}/> }
                                     </View>   
-                                    <View style={styles.footer}>
-                                        <Text style={styles.footerText}>댓글 {item.comments.length}</Text>
-                                        <Text style={styles.footerText}>좋아요 {item.likes.length}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth}}>스크랩 {item.scrabs.length}</Text>
-                                    </View> 
+                                    
                                 </View>
                             </TouchableOpacity>
                         )
@@ -149,7 +149,7 @@ const styles=StyleSheet.create({
     },
     footer: {
         flexDirection: 'row', 
-        marginTop: 12 * tmpWidth
+        marginTop: 12 * tmpWidth,
     },
     footerText: {
         fontSize: 12 * tmpWidth,
