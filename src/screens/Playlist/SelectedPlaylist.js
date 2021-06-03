@@ -115,7 +115,7 @@ const SelectedPlaylist = ({navigation}) => {
         };
     }, []);
     useEffect(() => {
-        if(state.current_playlist._id == playlistid)    setComments(state.current_comments)
+        if(state.current_playlist != null && state.current_playlist._id == playlistid)    setComments(state.current_comments)
     }, [playlistid, state.current_comments])
 
     useEffect(() => {
