@@ -12,7 +12,7 @@ const ContentsForm = ({ Contents }) => {
     const [refreshing, setRefreshing] = useState(false);
 
     const getData = async () => {
-        if(Contents.length >= 20){
+        if(Contents.length >= 20 && !state.boardNotNext){
             setLoading(true);
             await nextContents({ boardId: state.boards._id, page: state.currentBoardPage });
             setLoading(false);

@@ -18,11 +18,13 @@ const BoardReducer = (state, action) => {
         case 'getGenreBoard':
             return { ...state, genreBoard: action.payload };
         case 'getCurrentBoard':
-            return { ...state, currentBoard: action.payload, currentBoardPage: 1 };
+            return { ...state, currentBoard: action.payload, currentBoardPage: 1, boardNotNext: false };
         case 'editContentBoard':
             return { ...state, currentBoard: action.payload };
         case 'nextContents':
             return { ...state, currentBoard: state.currentBoard.concat(action.payload), currentBoardPage: state.currentBoardPage+1 };
+        case'boardNotNext':
+            return { ...state, boardNotNext: true };
         case 'createContent':
             return { ...state, currentBoard: action.payload };
         case 'getCurrentContent':
@@ -164,7 +166,11 @@ const getCurrentBoard = (dispatch) => async ({ boardId }) => {
 const nextContents = (dispatch) => async ({ boardId, page }) => {
     try {
         const response = await serverApi.get('/nextContents/'+boardId+'/'+page);
-        if(response.data.length != 0)       dispatch({ type: 'nextContents', payload: response.data });
+        if(response.data.length != 0){
+            dispatch({ type: 'nextContents', payload: response.data })
+        }else{
+            dispatch({ type: 'boardNotNext' });
+        }
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with nextContents' });
     }
@@ -392,5 +398,5 @@ export const { Provider, Context } = createDataContext(
         createComment, deleteComment, createReComment, deleteRecomment, likeComment, unlikeComment, likeRecomment, unlikeRecomment, nextComments,
         addSong, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart },
     { boards: null, genreBoard: null, searchContent: null, currentBoard: null, currentContent: null, currentComment: null, 
-        musicArchive: null, musicChart: null, musicTime: [], errorMessage: '', currentBoardPage: 0, currentCommentPage: 0 }
+        musicArchive: null, musicChart: null, musicTime: [], errorMessage: '', currentBoardPage: 0, currentCommentPage: 0, boardNotNext: false }
 )
