@@ -6,6 +6,7 @@ import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Imagetake = ({url ,borderRadius}) => {
     url =url.replace('{w}', '300');
@@ -37,6 +38,8 @@ const MainSongForm = ({navigation}) => {
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
                                         <Imagetake  borderRadius={8 * tmpWidth} url={item.image}/>
                                     </View>
+                                    <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)','rgba(0,0,0,0.1)' ]} style={styles.playlistitem2}>
+                                   
                                     <View style={{flexDirection:'row' ,width:331 * tmpWidth, height:40 * tmpWidth}}>
                                         <View style={styles.playlistprofile}>
                                             {item.postUserId.profileImage == null ?
@@ -53,6 +56,7 @@ const MainSongForm = ({navigation}) => {
                                         <Text style={{fontSize:12 * tmpWidth,color:"#fff", marginRight:12 * tmpWidth,fontWeight:'bold', marginBottom:tmpWidth*4}}>{item.title}</Text>
                                         <Text style={{fontSize:11 *tmpWidth, color:'#c6c6c6',marginRight:12 * tmpWidth, marginBottom:tmpWidth*6}}>{item.hashtag.map(hashtag => ' #'+hashtag+'')}</Text>
                                     </View>
+                                    </LinearGradient>
                                 </TouchableOpacity>
                             )
                         }}
@@ -132,6 +136,11 @@ const styles=StyleSheet.create({
         borderRadius:8 * tmpWidth,
         backgroundColor:'#aaa',
         marginLeft:12 * tmpWidth,
+    },
+    playlistitem2:{
+        width:331* tmpWidth,
+        height:224 * tmpWidth,
+        borderRadius:8 * tmpWidth,
     },
     playlistprofile:{
         marginLeft:12 * tmpWidth,

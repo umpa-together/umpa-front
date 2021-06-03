@@ -117,7 +117,7 @@ const OtherAccountScreen = ({navigation}) => {
     }, []);
 
     return (
-        <View style={{flex:1,backgroundColor: 'rgb(255,255,255)'}}>
+        <View style={{flex:1,backgroundColor: 'rgb(250,250,250)'}}>
             {user == null || (djState.songs == null) ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
                 <View style={styles.header}>
@@ -139,7 +139,7 @@ const OtherAccountScreen = ({navigation}) => {
                                 }}>
                                     <ImageSelect  url={user.songs[0].attributes.artwork.url}/> 
                                 </TouchableOpacity>
-                                <Text style={{marginTop: 10 * tmpWidth , fontSize: 11 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
+                                <Text style={{marginTop: 10 * tmpWidth , fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
                             </View>
                             { user.profileImage == undefined ?
                             <View style={styles.profileImage}>
@@ -156,7 +156,7 @@ const OtherAccountScreen = ({navigation}) => {
                                     storyClick()}}>
                                     <ImageSelect url={url} />
                                 </TouchableOpacity>}
-                                <Text style={{marginTop: 10  * tmpWidth, fontSize: 11 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
+                                <Text style={{marginTop: 10  * tmpWidth, fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
                             </View>
                         </View>
                         <View style={styles.nameBox}>
@@ -165,13 +165,13 @@ const OtherAccountScreen = ({navigation}) => {
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth, alignItems:'center', }} onPress={() => {
                                         navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'following'})
                                     }}>
-                                        <Text style={{fontSize: 12 * tmpWidth, }}>팔로잉 </Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, }}>팔로잉 </Text>
                                         <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{user.following.length}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth,alignItems:'center', }} onPress={() => {
                                         navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'follower'})
                                     }}>
-                                        <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
+                                        <Text style={{fontSize: 14 * tmpWidth}}>팔로워 </Text>
                                         <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{followerNum}</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -202,13 +202,13 @@ const OtherAccountScreen = ({navigation}) => {
                         </View> : null }
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text>플레이리스트 {user.playlists.length}</Text>
+                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>플레이리스트 {user.playlists.length}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text>큐레이션 {user.curationposts.length}</Text>
+                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>큐레이션 {user.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{backgroundColor: 'rgb(250,250,250)'}}>
+                        <View style={{backgroundColor: 'rgb(255,255,255)'}}>
                             {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false} navigation={navigation}/> :
                             <AccountCurating curating={user.curationposts} myAccount={false} navigation={navigation}/>}
                         </View>
@@ -250,13 +250,13 @@ const OtherAccountScreen = ({navigation}) => {
                                 <SvgUri width='40' height='40' source={require('../../assets/icons/calendar.svg')} />
                             </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }       
-                            <View style={{marginTop:21 * tmpWidth , width: 160 * tmpWidth , marginBottom: 6 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                            <View style={{marginTop:15 * tmpWidth , width: 160 * tmpWidth , marginBottom: 6 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
                                 {story['song'].attributes.contentRating == "explicit" ? 
                                 <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                 : null }
-                                <Text style={{fontSize: 18 * tmpWidth, fontWeight: 'bold'}} numberOfLines={1}>{story['song'].attributes.name}</Text>
+                                <Text style={{fontSize: 18 * tmpWidth, fontWeight: '400'}} numberOfLines={1}>{story['song'].attributes.name}</Text>
                             </View>
-                            <View style={{width: 160 * tmpWidth, alignItems: 'center'}}>
+                            <View style={{marginBottom: 6*tmpWidth,width: 160 * tmpWidth, alignItems: 'center'}}>
                                 <Text style={{fontSize:14 * tmpWidth, color:'rgb(133,133,133)'}} numberOfLines={1}>{story['song'].attributes.artistName}</Text>
                             </View>
                         </View>
@@ -275,8 +275,8 @@ OtherAccountScreen.navigationOptions = ({navigation})=>{
 
 const styles = StyleSheet.create({
     profileImage: {
-        width: 128 * tmpWidth ,
-        height: 128  * tmpWidth,
+        width: 114 * tmpWidth ,
+        height: 114  * tmpWidth,
         borderRadius: 128 * tmpWidth,
         marginLeft: 32 * tmpWidth ,
         marginRight: 32 * tmpWidth
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         paddingLeft: 20  * tmpWidth,
         paddingRight: 16 * tmpWidth ,
-        marginTop: 42 * tmpWidth
+        marginTop: 41 * tmpWidth
     },
     infoBox: {
         width: 334 * tmpWidth ,
@@ -327,13 +327,14 @@ const styles = StyleSheet.create({
         marginBottom: 20 * tmpWidth,
     },
     selectedOption: {
+        height: 28*tmpWidth,
         paddingLeft: 9 * tmpWidth ,
         paddingRight: 9  * tmpWidth,
-        paddingBottom: 6 * tmpWidth ,
-        borderBottomWidth: 2 * tmpWidth,
-        borderBottomColor: 'rgba(25,25,25,0.5)'
+        borderBottomWidth: 1.4 * tmpWidth,
+        borderBottomColor: 'rgba(25,25,25,1)'
     },
     notselectedOption: {
+        height: 28*tmpWidth,
         paddingLeft: 9  * tmpWidth,
         paddingRight: 9 * tmpWidth ,
     },
@@ -434,11 +435,13 @@ const styles = StyleSheet.create({
     opt:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems:'center',
+        alignItems:'flex-end',
         paddingLeft: 60 * tmpWidth,
         paddingRight: 60  * tmpWidth,
         height:52 * tmpWidth,
-        backgroundColor:'rgb(255,255,255)',
+        backgroundColor:'rgb(250,250,250)',
+        borderBottomWidth : 1*tmpWidth,
+        borderColor:'rgba(153,153,153,0.2)'
    },
    line:{
     borderBottomWidth: 0.7 * tmpWidth,

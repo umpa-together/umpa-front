@@ -23,7 +23,7 @@ const AccountPlaylist = ({ playList, myAccount, navigation }) => {
                             }}>
                                 <View style={{alignItems: 'center'}}>
                                     <View style={styles.thumbnail}>
-                                    <Image  style={{height:'100%', width:'100%', borderRadius: 4 * tmpWidth}} source={{url:item.image}} />
+                                    <Image  style={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source={{url:item.image}} />
                                     </View>
                                     <View style={styles.titleBox}>
                                         <Text numberOfLines={2} style={{fontSize: 14 * tmpWidth, color: 'rgb(79,79,79)'}}>{item.title}</Text>
@@ -56,7 +56,7 @@ const styles=StyleSheet.create({
     thumbnail: {
         width: 161 * tmpWidth ,
         height: 157 * tmpWidth,
-        borderRadius: 4 * tmpWidth
+        borderRadius: 8 * tmpWidth
     },
     titleBox: {
         width: 161 * tmpWidth ,
