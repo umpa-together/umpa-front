@@ -474,7 +474,7 @@ const MyAccountScreen = ({navigation}) => {
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> }
                             </TouchableOpacity>
                             { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
-                            <View style={{marginTop:15 * tmpWidth , width: 160 * tmpWidth , marginBottom: 6 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+                            <View style={{marginTop:15 * tmpWidth , width: 160 * tmpWidth , marginBottom: 11 * tmpWidth, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
                                 {userState.myStory.song.attributes.contentRating == "explicit" ? 
                                 <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                 : null }
