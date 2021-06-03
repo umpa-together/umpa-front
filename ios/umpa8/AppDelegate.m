@@ -46,18 +46,15 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
+  if ([KOSession isKakaoAccountLoginCallback:url]) {
+      return [KOSession handleOpenURL:url];
+  }
+
    return [[NaverThirdPartyLoginConnection getSharedInstance] application:app openURL:url options:options];
 }
-/*
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-                                                options:(NSDictionary<NSString *,id> *)options {
-    if ([KOSession isKakaoAccountLoginCallback:url]) {
-        return [KOSession handleOpenURL:url];
-    }
 
-    return false;
-}
-*/
+
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
