@@ -267,8 +267,8 @@ const styles=StyleSheet.create({
     },
     searchContainer: {
         width: '100%', 
-        height: '100%', 
-        backgroundColor: 'rgb(250,250,250)'
+        flex: 1,
+        backgroundColor: 'rgb(250,250,250)',
     },
     completeView: {
         borderWidth: 1 * tmpWidth, 
