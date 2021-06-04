@@ -14,8 +14,8 @@ const SigninScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const iosKeys = {
-        kConsumerKey: "O2vg3UJdkCPHv1RFRbWo",
-        kConsumerSecret: "6UI8oEPz6O",
+        kConsumerKey: "so3Gjl6buzJ29rXRalJm",
+        kConsumerSecret: "hSEE4AQSqf",
         kServiceAppName: "umpa",
         kServiceAppUrlScheme: "naverlogin" // only for iOS
       };
