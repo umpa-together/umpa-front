@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { tmpWidth } from './FontNormalize';
 import TrackPlayer from 'react-native-track-player';
@@ -69,8 +69,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
           setIsPlayingid(data.id);
           await TrackPlayer.add(track)
           TrackPlayer.play();
-          const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-          return () => clearTimeout(trackPlayer);
       } else {
           setHarmfulModal(true);
       }
@@ -79,6 +77,10 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
 
     const onClose = () => {
       setCalendarModal(false)

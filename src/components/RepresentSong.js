@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Animated, FlatList, Image} from 'react-native'
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -37,8 +37,6 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
             setIsPlayingid(data.id);
             await TrackPlayer.add(track)
             TrackPlayer.play();
-            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
@@ -47,7 +45,10 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
-
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
     return (
         <Modal
             isVisible={representModal}

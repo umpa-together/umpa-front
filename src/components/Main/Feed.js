@@ -44,8 +44,6 @@ const Feed = ({navigation}) => {
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
-            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
@@ -54,6 +52,10 @@ const Feed = ({navigation}) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
     const onClose = async () => {
         if(storyModal)  {
             getOtherStory()
