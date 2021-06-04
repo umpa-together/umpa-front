@@ -578,16 +578,18 @@ const styles = StyleSheet.create({
         shadowRadius: 5 * tmpWidth,
         shadowOpacity: 0.14,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     titleText: {
-        fontSize: 14 * tmpWidth
+        fontSize: 16 * tmpWidth,
+        marginTop: 2 * tmpWidth
     },
     contentText: {
         color: 'rgb(94,94,94)', 
-        marginTop: 4 * tmpWidth, 
-        marginBottom: 8 * tmpWidth,
+        marginTop: 6 * tmpWidth, 
+        marginBottom: 2 * tmpWidth,
         height: 18 * tmpWidth,
+        fontSize: 12 * tmpWidth,
     },
     hashtagView: {
         borderWidth: 1 * tmpWidth, 

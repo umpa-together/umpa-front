@@ -408,7 +408,7 @@ const styles=StyleSheet.create({
         height:664 * tmpHeight,
         backgroundColor:"#FAFAFA",
         borderTopWidth:1 * tmpWidth,
-        borderColor:'rgba(153,153,153,0.2)'
+        borderColor:'rgba(153,153,153,0.2)',
     },
     searchoptdj:{
         flexDirection:'row',

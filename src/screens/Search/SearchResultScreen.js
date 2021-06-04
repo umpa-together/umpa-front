@@ -44,11 +44,12 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
         };
     }, []);
     return (
-        <View style={{height:650 * tmpHeight,marginTop:10 * tmpWidth}}>
+        <View style={{height:650 * tmpHeight}}>
             {searchState.songData.length == 0 && text.length!=0 ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> : 
                 <View>
                 { searchOption == 'Song' || searchOption == 'DJSong'? 
                 <FlatList 
+                    style={{paddingTop: 10 * tmpWidth}}
                     data={searchState.songData}
                     keyExtractor={song=>song.id}
                     maxToRenderPerBatch={1}
