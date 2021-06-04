@@ -8,9 +8,15 @@ const curationReducer = (state, action) => {
         case 'get_curationposts':
             return { ...state, maincurationposts:action.payload, currentCurationPage: 1, notNext: false };
         case 'nextCurationPosts':
-            return { ...state, maincurationposts: state.maincurationposts.concat(action.payload), currentCurationPage: state.currentCurationPage + 1}
+            return { ...state, maincurationposts: state.maincurationposts.concat(action.payload), currentCurationPage: state.currentCurationPage + 1 }
         case 'notNext':
             return { ...state, notNext: true };
+        case 'getAllCurationPost':
+            return { ...state, allCurationPost: action.payload, currentAllCurationPage: 1, notAllCurationNext: false}
+        case 'nextAllCurationPost':
+            return { ...state, allCurationPost: state.allCurationPost.concat(action.payload), currentAllCurationPage: state.currentCurationPage + 1 }
+        case 'notAllCurationNext':
+            return { ...state, notAllCurationNext: true };
         case 'init_curationposts':
             return { ...state, curationposts:action.payload };
         case 'get_mycuration':
@@ -134,6 +140,29 @@ const nextCurationposts = (dispatch) => async ({ page }) => {
     }
 }
 
+const getAllCurationPost = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/allCurationPost');
+        dispatch({ type: 'getAllCurationPost', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with getAllCurationPost' });
+
+    }
+}
+
+const nextAllCurationPost = (dispatch) => async ({ page }) => {
+    try {
+        const response = await serverApi.get('/allCurationPost/'+page);
+        if(response.data.length != 0){
+            dispatch({ type: 'nextAllCurationPost', payload: response.data });
+        }else{
+            dispatch({ type: 'notAllCurationNext'});
+        }
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with nextAllCurationPost' });
+    }
+}
+
 const getmyCuration = dispatch => {
     return async ({ id }) => {
         try {
@@ -149,6 +178,7 @@ const getmyCuration = dispatch => {
 export const { Provider, Context } = createDataContext(
     curationReducer,
     { postCuration, editCuration ,deleteCuration, likecurationpost,unlikecurationpost, 
-        initcurationposts, getCuration, getCurationposts, nextCurationposts, getmyCuration },
-    { currentCuration:{}, currentCurationPage: 1, notNext: false, currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
+        initcurationposts, getCuration, getCurationposts, nextCurationposts, getmyCuration, getAllCurationPost, nextAllCurationPost },
+    { currentCuration:{}, currentCurationPage: 1, notNext: false, allCurationPost: null, currentAllCurationPage: 1, notAllCurationNext: false, 
+        currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
 )
