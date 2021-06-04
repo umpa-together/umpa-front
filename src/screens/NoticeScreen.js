@@ -55,7 +55,6 @@ const NoticeScreen = ({navigation}) => {
 
     useEffect(() => {
         const listener =navigation.addListener('didFocus', async ()=>{
-            getnotice()
             initPlaylist()
             initOtherUser()
             initMusic()
