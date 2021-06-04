@@ -13,8 +13,8 @@ import SvgUri from 'react-native-svg-uri';
 const Signupopt = () => {
     const { getGoogleInfo, getKakaoInfo, getNaverInfo } = useContext(AuthContext);
     const iosKeys = {
-        kConsumerKey: "O2vg3UJdkCPHv1RFRbWo",
-        kConsumerSecret: "6UI8oEPz6O",
+        kConsumerKey: "so3Gjl6buzJ29rXRalJm",
+        kConsumerSecret: "hSEE4AQSqf",
         kServiceAppName: "umpa",
         kServiceAppUrlScheme: "naverlogin" // only for iOS
       };
@@ -28,14 +28,14 @@ const Signupopt = () => {
     }, []);
     const naverLogin = (iosKeys) => {
         NaverLogin.login(iosKeys, async (err, token) => {
+            console.log(token);
             await getNaverInfo({ token: token.accessToken });
         });
     };
 
     const kakaoLogin = async() => {
-        KakaoLogins.login([KAKAO_AUTH_TYPES.Talk, KAKAO_AUTH_TYPES.Account])
+        await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk, KAKAO_AUTH_TYPES.Account])
         .then(async (result) => {
-            console.log(result);
             await getKakaoInfo({ token: result.accessToken });
         })
     };
