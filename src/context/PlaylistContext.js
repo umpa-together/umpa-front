@@ -8,6 +8,12 @@ const playlistReducer = (state, action) => {
             return { ...state, current_playlist: null, current_comments:null, current_songs:[] };
         case 'init_recomment':
             return { ...state, current_recomments: null }
+        case 'getAllPlaylists':
+            return { ...state, allPlaylists: action.payload, notAllPlaylistsNext: false, currentAllPlaylistsPage: 1 }
+        case 'nextAllPlaylists':
+            return { ...state, allPlaylists: state.allPlaylists.concat(action.payload), currentAllPlaylistsPage: state.currentAllPlaylistsPage + 1 }
+        case 'notAllPlaylistsNext':
+            return { ...state, notAllPlaylistsNext: true}
         case 'get_playlists':
             return { ...state,  playlists: action.payload, notNext: false, currentPlaylistPage: 1};
         case 'get_playlist':
@@ -50,6 +56,29 @@ const initRecomment = (dispatch) => () => {
         dispatch({ type: 'error', payload: 'Something went wrong with initRecomment' });
     }
 }
+
+const getAllPlaylists = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/allPlaylists');
+        dispatch({ type: 'getAllPlaylists' , payload: response.data});
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
+    }
+}
+
+const nextAllPlaylists = (dispatch) => async ({page}) => {
+    try {
+        const response = await serverApi.get('/allPlaylists/'+page)
+        if(response.data.length != 0){
+            dispatch({ type: 'nextAllPlaylists', payload: response.data });
+        }else{
+            dispatch({ type: 'notAllPlaylistsNext'});
+        }
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
+    }
+}
+
 
 const addPlaylist = dispatch => async({ title, textcontent, songs, hashtag, fd } ,  callback) =>{
     try {
@@ -249,7 +278,7 @@ const unlikesrecomment = dispatch => {
 
 export const { Provider, Context } = createDataContext(
     playlistReducer,
-    { initPlaylist, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist, nextPlaylists,
+    { initPlaylist, getAllPlaylists, nextAllPlaylists, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylists, getPlaylist, nextPlaylists,
         addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
-    { playlists: null, currentPlaylistPage: 1, notNext: false, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
+    { allPlaylists: null, notAllPlaylistsNext: false, currentAllPlaylistsPage: 1, playlists: null, currentPlaylistPage: 1, notNext: false, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, userplaylists:null, errorMessage: '' }
 )
