@@ -11,6 +11,8 @@ const NoticeReducer = (state, action) => {
                   return { ...state, notice: state.notice.concat(action.payload), currentNoticePage: state.currentNoticePage + 1}
             case 'set_token' :
                 return {...state , token : action.payload};
+            case 'notNext':
+                  return { ...state, notNext: true };
             case 'error':
                 return { ...state, errorMessage: action.payload };
             default:
@@ -30,7 +32,11 @@ const getnotice = (dispatch) => async () => {
 const nextNotice = (dispatch) => async ({page}) => {
       try {
             const response = await serverApi.get('/nextNotice/' + page);
-            if(response.data.length != 0) dispatch({ type: 'nextNotice', payload: response.data});
+            if(response.data.length != 0){
+                  dispatch({ type: 'nextNotice', payload: response.data});
+            }else{
+                  dispatch({ type: 'notNext'});
+            }
       } catch (err) {
             dispatch({ type: 'error', payload: 'Something went wrong with nextNotice' });
       }  
@@ -65,5 +71,5 @@ const deletenoticetoken = (dispatch) => async () => {
 export const { Provider, Context } = createDataContext(
     NoticeReducer,
     { deletenoticetoken, getnotice, deletenotice, setnoticetoken, nextNotice },
-    { notice: null, errorMessage: '', currentNoticePage: 0 }
+    { notice: null, errorMessage: '', currentNoticePage: 0, notNext: false }
 )
