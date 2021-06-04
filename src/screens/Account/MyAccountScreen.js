@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput, Touchable } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -105,12 +105,14 @@ const MyAccountScreen = ({navigation}) => {
             setIsPlayingid(data.id);
             await TrackPlayer.add(track)
             TrackPlayer.play();
-            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
     };
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
     const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()

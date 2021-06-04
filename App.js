@@ -48,7 +48,7 @@ import SearchScreen from './src/screens/Search/SearchScreen';
 import SearchResultScreen from './src/screens/Search/SearchResultScreen';
 import SelectedSongScreen from './src/screens/Search/SelectedSongScreen';
 import SelectedHashtagScreen from './src/screens/Search/SelectedHashtagScreen';
-
+import AllContentsScreen from './src/screens/Search/AllContentsScreen';
 
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -86,6 +86,7 @@ const Search = createStackNavigator({
     SelectedSong: SelectedSongScreen,
     Create : CreatePlayListPage,
     SearchSong : SearchSongPage,
+    AllContents: AllContentsScreen,
 
     OtherAccount : OtherAccount,
     Follow : FollowPage,

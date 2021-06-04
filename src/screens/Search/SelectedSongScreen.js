@@ -111,7 +111,7 @@ const SelectedSongScreen = ({navigation}) => {
                                                 await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                                 navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                             }}>
-                                                <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:4 * tmpWidth, marginBottom: 10 * tmpWidth}}>
+                                                <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                                     <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
                                                 </View>
                                                 <View style={{width:161 * tmpWidth}}>

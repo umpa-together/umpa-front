@@ -65,12 +65,14 @@ const MusicArchivePage = ({navigation}) => {
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
-            const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-            return () => clearTimeout(trackPlayer);
         } else {
             setHarmfulModal(true);
         }
     };
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
     const stoptracksong= async () => {    
         setIsPlayingid('0');
         await TrackPlayer.reset()
