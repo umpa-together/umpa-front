@@ -34,6 +34,7 @@ const MainSongForm = ({navigation}) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         bounces={false}
+                        contentContainerStyle={{paddingLeft: 6 * tmpWidth, paddingRight: 6 * tmpWidth}}
                         renderItem={({item})=> {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
@@ -75,9 +76,10 @@ const MainSongForm = ({navigation}) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         bounces={false}
+                        contentContainerStyle={{paddingLeft: 6 * tmpWidth, paddingRight: 6 * tmpWidth}}
                         renderItem={({item})=> {
                             return (
-                                <View style={{width:114 * tmpWidth,marginLeft: 12 * tmpWidth,}}>
+                                <View style={{width:114 * tmpWidth,marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth}}>
                                     { item.isSong ?
                                     <View>
                                         <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
@@ -142,7 +144,8 @@ const styles=StyleSheet.create({
         height:224 * tmpWidth,
         borderRadius:8 * tmpWidth,
         backgroundColor:'#aaa',
-        marginLeft:12 * tmpWidth,
+        marginLeft:6 * tmpWidth,
+        marginRight: 6 * tmpWidth
     },
     playlistitem2:{
         width:331* tmpWidth,
