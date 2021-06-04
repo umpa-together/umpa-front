@@ -22,7 +22,7 @@ const PlaylistCreatePage = ({ navigation }) => {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const playList = navigation.getParam('data');
-    const { state, addPlaylist, editPlaylist } = useContext(PlaylistContext);
+    const { state, addPlaylist, editPlaylist, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext);
     const [titleValidity, setTitleValidity] = useState(true);
     const [contentValidity, setContentValidity] = useState(true);
@@ -77,6 +77,7 @@ const PlaylistCreatePage = ({ navigation }) => {
             await addPlaylist({ title, textcontent: comment, songs: playList, hashtag, fd });            
         }
         getMyInfo();
+        getPlaylists();
     }
     const handleUpload = () => {
         launchImageLibrary({maxWidth: 500, maxHeight: 500}, (response) => {
