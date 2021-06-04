@@ -84,7 +84,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
       setCalendarModal(false)
       setSelectedStory(null)
       setSelectedIdx(null)
-      stoptracksong()
     }
 
     
