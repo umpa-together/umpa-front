@@ -47,7 +47,7 @@ const SelectedCuration = ({navigation}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [currentCuration, setCurrentCuration] = useState(state.currentCuration);
-    const [currentCurationPosts, setCurrentCurationPosts] = useState(state.currentCurationpost);
+    const [currentCurationPosts, setCurrentCurationPosts] = useState([]);
     const onClose =() => {
         setShowModal(false);
     }
@@ -83,7 +83,6 @@ const SelectedCuration = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            //setCurrentCuration(state.currentCuration)
         })
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
@@ -100,14 +99,13 @@ const SelectedCuration = ({navigation}) => {
     },[ref, state.currentCurationpost]);
 
     useEffect(() => {
-        if(state.currentCuration != {} && state.currentCuration.object.id == curationid){
+        if(state.currentCuration.object.id == curationid){
             setCurrentCurationPosts(state.currentCurationpost)
         }
-    }, [curationid, state.currentCurationpost])
+    }, [state.currentCurationpost])
     useEffect(() => {
         if(state.currentCuration != {} && state.currentCuration.object.id == curationid)   setCurrentCuration(state.currentCuration)
     }, [curationid, state.currentCuration])
-
     return (
         <View style={{backgroundColor:'rgba(252,252,253,1)', flex: 1}}>
             {currentCuration.songoralbumid == undefined || (currentCuration.songoralbumid != curationid) ? 
@@ -361,7 +359,7 @@ const SelectedCuration = ({navigation}) => {
                                             </TouchableOpacity>                                           
                                         </View>
                                     </View>
-                                    <View style={{width:238 * tmpWidth, marginTop:24 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
+                                    <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
                                     <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
                                     </View>
                                 </View> }
@@ -440,6 +438,7 @@ const SelectedCuration = ({navigation}) => {
                                         onPress ={async () => {
                                             if(text.length>=50){
                                             await editCuration({ hidden : hidden , textcontent:text, id:editid})
+                                            getCurationposts();
                                             setEdit(false);
                                             setPostModal(false);
                                             setText('');
