@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
@@ -22,7 +22,9 @@ const MainSongForm = ({navigation}) => {
     const { state: weeklyState } = useContext(WeeklyContext);
     const { getPlaylist } = useContext(PlaylistContext);
     const { getCuration } = useContext(CurationContext);
-
+    useEffect(() => {
+        currentHashtag()
+    }, [])
     return (
         <ScrollView>
             <View style={{height: '100%'}}>
