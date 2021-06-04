@@ -20,15 +20,22 @@ const MainSongForm = ({navigation}) => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { state: weeklyState } = useContext(WeeklyContext);
-    const { getPlaylist } = useContext(PlaylistContext);
-    const { getCuration } = useContext(CurationContext);
+    const { getPlaylist, getAllPlaylists } = useContext(PlaylistContext);
+    const { getCuration, getAllCurationPost } = useContext(CurationContext);
     useEffect(() => {
         currentHashtag()
     }, [])
     return (
         <ScrollView>
             <View style={{height: '100%'}}>
-                <Text style={styles.headertext}>위클리 플레이리스트</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 * tmpWidth, marginBottom: 18 * tmpWidth, alignItems: 'center'}}>
+                    <Text style={styles.headertext}>위클리 플레이리스트</Text>
+                    <TouchableOpacity onPress={async () => {
+                        await getAllPlaylists()
+                        navigate('AllContents', {type: '플레이리스트'})}}>
+                        <Text style={styles.subheaderText}>플레이리스트 둘러보기 {'>'}</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{width: '100%', height:224 * tmpWidth}}>
                     <FlatList
                         data={weeklyState.weeklyPlaylist}
@@ -70,7 +77,15 @@ const MainSongForm = ({navigation}) => {
                         }}
                     />
                 </View>
-                <Text style={styles.curationtext}>위클리 큐레이션</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 26 * tmpWidth, marginBottom: 14 * tmpWidth,}}> 
+                    <Text style={styles.curationtext}>위클리 큐레이션</Text>
+                    <TouchableOpacity onPress={async () => {
+                        await getAllCurationPost()
+                        navigate('AllContents', {type: '큐레이션'})
+                    }}>
+                        <Text style={styles.subCurationText}>큐레이션 둘러보기 {'>'}</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{width: '100%'}}>
                     <FlatList
                         data={weeklyState.weekcuration}
@@ -135,11 +150,13 @@ const MainSongForm = ({navigation}) => {
 
 const styles=StyleSheet.create({
     headertext:{
-        marginTop: 8 * tmpWidth,
         marginLeft: 24 * tmpWidth,
-        marginBottom: 18 * tmpWidth,
         fontSize: 16 * tmpWidth,
         fontWeight: '500'
+    },
+    subheaderText: {
+        marginRight: 12 * tmpWidth,
+        color: 'rgb(153,153,153)'
     },
     playlistitem:{
         width:331 * tmpWidth,
@@ -176,11 +193,13 @@ const styles=StyleSheet.create({
         alignItems:'flex-end'
     },
     curationtext:{
-        marginTop: 26 * tmpWidth,
         marginLeft: 24 * tmpWidth,
-        marginBottom: 14 * tmpWidth,
         fontSize: 16 * tmpWidth,
         fontWeight: '500'
+    },
+    subCurationText: {
+        marginRight: 12 * tmpWidth,
+        color: 'rgb(153,153,153)',
     },
     hashtag:{
         marginTop: 26 * tmpWidth,
