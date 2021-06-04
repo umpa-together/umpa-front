@@ -24,7 +24,7 @@ const NoticeScreen = ({navigation}) => {
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const getData = async () => {
-        if(state.notice.length >= 20){
+        if(state.notice.length >= 20 && !state.notNext){
             setLoading(true);
             await nextNotice({page: state.currentNoticePage})
             setLoading(false);
