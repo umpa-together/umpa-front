@@ -42,7 +42,6 @@ const SelectedPlaylist = ({navigation}) => {
     const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
     const [comments, setComments] = useState(state.current_comments);
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
-
     const onClose =() => {
         setShowModal('0');
         initRecomment();
@@ -57,11 +56,7 @@ const SelectedPlaylist = ({navigation}) => {
         setTok(!tok);
     }
     const newestClick = () => {
-        comments.sort(function(a, b) {
-            if(a.time > b.time) return -1;
-            if(a.time< b.time) return 1;
-            return 0;
-        })
+        comments.reverse();
         setTok(!tok);
     }
     const addtracksong= async ({data}) => {
