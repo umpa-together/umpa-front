@@ -217,13 +217,13 @@ const styles=StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 47 * tmpWidth,
-      backgroundColor: 'rgba(169,193,255,0.5)'
+      backgroundColor: 'rgb(152,187,255)'
     },
     notActiveText: {
         textAlign: 'center',
     },
     activeText: {
-        color: 'rgba(169,193,255, 0.5)',
+        color: 'rgb(152,187,255)',
         textAlign: 'center',
     },
     songsCover: {

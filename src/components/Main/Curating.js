@@ -63,7 +63,7 @@ const Curating = ({ curationPosts, navigation }) => {
                             <View>
                                 {item.isSong ? 
                                 <View style={{flexDirection: 'row',}}>
-                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width:190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width:190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13}}>
                                         <Imagetake opac={1.0} url={item.object.attributes.artwork.url}/>
                                     </View> 
                                     <View style={styles.contentl}>
@@ -75,7 +75,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                             <Text numberOfLines ={3}  style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*11, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={styles.postuserl}>
-                                            <Text style={{color: 'rgb(93,93,93)',marginRight:20 * tmpWidth, }}>By {item.postUser}</Text>
+                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth }}>By {item.postUser}</Text>
                                         </View>
                                     </View>
                                 </View> : 
@@ -92,7 +92,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                             <Text numberOfLines ={3} style={{ color: 'rgb(93,93,93)', fontSize: tmpWidth*11, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={styles.postuserlalbum}>
-                                            <Text style={{color: 'rgb(93,93,93)',marginRight:20 * tmpWidth,}}>By {item.postUser}</Text>
+                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth}}>By {item.postUser}</Text>
                                         </View>
                                     </View>
                                 </View> }   
@@ -110,11 +110,11 @@ const Curating = ({ curationPosts, navigation }) => {
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth,color: '#000'}}>{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15 ? '...':null}</Text>
                                             </View>
                                         </View>
-                                        <View style ={{width : 231 * tmpWidth, height:63 * tmpWidth}}>
+                                        <View style ={{width : 270 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*11, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginLeft: 32 * tmpWidth,marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={{alignItems:'flex-end'}}>
-                                            <Text numberOfLines ={1} style={{color: 'rgb(93,93,93)',marginRight:109 * tmpWidth, marginTop:9 * tmpWidth}}>By {item.postUser}</Text>
+                                            <Text numberOfLines ={1} style={{color: 'rgb(128,128,128)',marginRight:109 * tmpWidth, marginTop:9 * tmpWidth, fontSize: 12 * tmpWidth}}>By {item.postUser}</Text>
                                         </View>
                                     </View>
                                 </View> :
@@ -128,11 +128,11 @@ const Curating = ({ curationPosts, navigation }) => {
                                             
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, }}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...':null}</Text>
                                         </View>
-                                        <View style ={{width : 231 * tmpWidth, height:63 * tmpWidth}}>
+                                        <View style ={{width : 270 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*11, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginLeft: 32 * tmpWidth,marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={{alignItems:'flex-end'}}>
-                                            <Text numberOfLines={1} style={{color: 'rgb(93,93,93)',marginRight:109 * tmpWidth, marginTop:9 * tmpWidth}}>By {item.postUser}</Text>
+                                            <Text numberOfLines={1} style={{color: 'rgb(128,128,128)',marginRight:109 * tmpWidth, marginTop:9 * tmpWidth, fontSize: 12 * tmpWidth}}>By {item.postUser}</Text>
                                         </View>
                                     </View>
                                 </View> }
@@ -153,7 +153,7 @@ const styles=StyleSheet.create({
     curation:{
         height:180 * tmpWidth,
         width:350 * tmpWidth,
-        marginBottom:8 * tmpWidth
+        marginBottom:8 * tmpWidth,
     },
     contentl:{
         backgroundColor : "#ffffff",

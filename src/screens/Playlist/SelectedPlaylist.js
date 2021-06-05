@@ -257,7 +257,7 @@ const SelectedPlaylist = ({navigation}) => {
                             <Text style={styles.headerCommentText}>댓글   {comments.length}</Text>
                             <View style={{flexDirection: 'row'}}>
                                 <TouchableOpacity onPress={() => recommendedClick()}>
-                                    <Text style={styles.headerText}>추천순</Text>
+                                    <Text style={styles.headerText}>좋아요순</Text>
                                 </TouchableOpacity>
                                 <Text style={styles.headerText}>ㅣ</Text>
                                 <TouchableOpacity onPress={() => newestClick()}>
@@ -553,7 +553,8 @@ const styles = StyleSheet.create({
     nameText: {
         height: 19 * tmpWidth, 
         color: 'rgb(255,255,255)',
-        paddingLeft: 5 * tmpWidth
+        paddingLeft: 5 * tmpWidth,
+        paddingTop: 2 * tmpWidth
     },
     viewContainer: {
         flexDirection: 'row', 
@@ -582,7 +583,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 16 * tmpWidth,
-        marginTop: 2 * tmpWidth
+        marginTop: 2 * tmpWidth,
     },
     contentText: {
         color: 'rgb(94,94,94)', 
@@ -650,7 +651,6 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingTop: 18 * tmpWidth,
         paddingBottom: 18 * tmpWidth,
-        //height: 68 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     commentHeader: {
-        marginTop: 18 * tmpWidth,
+        marginTop: 24 * tmpWidth,
         marginLeft: 20 * tmpWidth, 
         marginRight: 20 * tmpWidth, 
         flexDirection: 'row', 
@@ -688,7 +688,7 @@ const styles = StyleSheet.create({
     commentUserText: {
         marginRight: 14 * tmpWidth, 
         fontSize: 12 * tmpWidth, 
-        color: 'rgba(0,0,0,0.72)'
+        color: 'rgba(0,0,0,0.72)',
     },
     commentTimeText: {
         fontSize: 11 * tmpWidth, 

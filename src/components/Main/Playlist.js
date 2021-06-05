@@ -61,8 +61,8 @@ const Playlist = ({ playList, navigation }) => {
                     renderItem = {({item}) => {
                         return (
                             <View style={styles.playlist}>
-                                <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth, }}>
-                                <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth, }} onPress={async () => {
+                                <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth}}>
+                                <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth }} onPress={async () => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                     navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
                                 }}>
@@ -95,12 +95,11 @@ const Playlist = ({ playList, navigation }) => {
                                         </LinearGradient>  
                                         </View>
                                         <View style={styles.playlistinfo}>
-
-                                            <View style={{width: 335/5*4 * tmpWidth, height: 59* tmpWidth}}>
-                                               <View style={{width:335/5*4*tmpWidth, height:59/2*tmpWidth}}>
+                                            <View style={{width: 335/5*4 * tmpWidth}}>
+                                               <View style={{width:335/5*4*tmpWidth, }}>
                                                 <Text numberOfLines= {1} style={styles.title}>{item.title}</Text>
                                                </View>
-                                               <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row',height:59/2*tmpWidth}}>
+                                               <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row',}}>
                                                 {item.hashtag != null && item.hashtag.map(el => {
                                                     return (
                                                     <View style={styles.hashtagbox}>
@@ -167,7 +166,7 @@ const styles=StyleSheet.create({
         width:'100%',
         height:'100%',
         borderTopLeftRadius: 16 * tmpWidth,
-        borderTopRightRadius:16 * tmpWidth
+        borderTopRightRadius:16 * tmpWidth,
     },
     playlisthead:{
         flexDirection: 'row',
@@ -201,23 +200,16 @@ const styles=StyleSheet.create({
     playlistinfo:{
         flexDirection:'row',
         width: 335 * tmpWidth,
-        height: 66 * tmpWidth ,
+        //height: 66 * tmpWidth ,
         flexDirection:'row',
         backgroundColor:'#fff',
-        borderBottomLeftRadius:10 * tmpWidth,
-        borderBottomRightRadius:10 * tmpWidth,
-
-    },
-    title:{
-        color:'rgb(0,0,0)',
-        fontSize:12 * tmpWidth,
-        marginLeft:16 * tmpWidth,
-        marginTop:8 * tmpWidth
+        borderBottomLeftRadius:16 * tmpWidth,
+        borderBottomRightRadius:16 * tmpWidth,
     },
     title:{
         marginLeft:16 * tmpWidth,
         marginTop:12 * tmpWidth,
-        fontSize:12 * tmpWidth,
+        fontSize:13 * tmpWidth,
     },
     likeicon:{
         width: 335/5 * tmpWidth,
@@ -238,7 +230,7 @@ const styles=StyleSheet.create({
         paddingTop:2*tmpWidth,
         paddingBottom:2*tmpWidth,
         borderWidth: 1 * tmpWidth,
-        marginTop:tmpWidth*3,
+        marginTop:tmpWidth*5,
         borderColor:'rgb(169,193,255)' ,
         marginRight:6*tmpWidth,
     },

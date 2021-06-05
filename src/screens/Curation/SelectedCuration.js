@@ -307,7 +307,7 @@ const SelectedCuration = ({navigation}) => {
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                    <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:56 * tmpWidth, marginBottom: 24 * tmpWidth}}>
+                                    <View style={{width:250 * tmpWidth, marginLeft:62 * tmpWidth, marginBottom: 20 * tmpWidth}}>
                                     {selectedCuration.hidden ? 
                                     <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text> :
                                     <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
@@ -328,7 +328,7 @@ const SelectedCuration = ({navigation}) => {
                             <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', }}>
                                 { state.mycurationpost.likes == undefined ? <ActivityIndicator/> :
                                 <View>
-                                    <View style={{width:319 * tmpWidth, alignItems:'center', flexDirection:'row', marginTop:24 * tmpWidth, marginLeft:16 * tmpWidth, height:32 * tmpWidth}}>
+                                    <View style={{width:319 * tmpWidth, alignItems:'center', flexDirection:'row', marginTop:20 * tmpWidth, marginLeft:16 * tmpWidth, height:32 * tmpWidth}}>
                                         <TouchableOpacity style={{width:32 * tmpWidth, height:32 * tmpWidth}}>
                                             {state.mycurationpost.postUserId.profileImage == null || state.mycurationpost.postUserId.profileImage==undefined ?
                                             <View style={styles.profileImage}>
@@ -341,13 +341,12 @@ const SelectedCuration = ({navigation}) => {
                                                 <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/>
                                             : null }
                                         </View>
-                                        <View style={{marginLeft:10, width:70 * tmpWidth,height:20 * tmpWidth, flexDirection:'row'}}>
+                                        <View style={{marginLeft:10, width:70 * tmpWidth,height:20 * tmpWidth, flexDirection:'row', alignItems: 'center'}}>
                                             <TouchableOpacity onPress={()=> {
                                                 setShowModal(false);
                                                 setHidden(false);
                                                 setDeleteModal(true);}}>
-                                            
-                                                <Text>삭제</Text>
+                                                <Text style={{fontSize: 13 * tmpWidth}}>삭제</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity style ={{marginLeft:10*tmpWidth}}onPress={()=> {
                                                 setEdit(true);
@@ -357,11 +356,11 @@ const SelectedCuration = ({navigation}) => {
                                                 setText(state.mycurationpost.textcontent);
                                                 setHidden(state.mycurationpost.hidden);
                                                 }}>
-                                                <Text>수정</Text>
+                                                <Text style={{fontSize: 13 * tmpWidth}}>수정</Text>
                                             </TouchableOpacity>                                           
                                         </View>
                                     </View>
-                                    <View style={{width:238 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 24 * tmpWidth}}>
+                                    <View style={{width:250 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 20 * tmpWidth}}>
                                     <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
                                     </View>
                                 </View> }
@@ -531,7 +530,7 @@ const styles = StyleSheet.create({
         width:319 * tmpWidth,
         alignItems:'center',
         flexDirection:'row',
-        marginTop:24 * tmpWidth,
+        marginTop:20 * tmpWidth,
         marginLeft:16 * tmpWidth,
         height:32 * tmpWidth,
     },
