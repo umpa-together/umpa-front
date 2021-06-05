@@ -288,7 +288,7 @@ const MyAccountScreen = ({navigation}) => {
                         { tok ?
                         searchState.songData.length == 0 ? <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1}}><ActivityIndicator /></View> :
                         <FlatList
-                            style={{marginTop: 14 * tmpWidth }}
+                            contentContainerStyle={{paddingTop: 14 * tmpWidth}}
                             data={searchState.songData}
                             keyExtractor={song=>song._id}
                             onEndReached={onEndReached}
