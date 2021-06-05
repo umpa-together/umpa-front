@@ -98,7 +98,9 @@ const PlaylistCreatePage = ({ navigation }) => {
             setImage(state.current_playlist.image)
         }
     }, [isEdit]);
-
+    useEffect(() => {
+        if(playList.length >= 3)    setSongValidity(true)
+    }, [playList])
     useEffect(() => {
         const listener = navigation.addListener('didFocus', async () => {
             await TrackPlayer.reset()
