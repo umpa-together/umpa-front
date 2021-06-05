@@ -22,15 +22,14 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const [selectedStory, setSelectedStory] = useState(undefined)
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [selectedIdx, setSelectedIdx] = useState(null);
-    const monthName = monthFormatter.format(currentDate);
+    const [monthName, setMonthName] = useState(monthFormatter.format(currentDate))
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const lastDate = new Date(year, month + 1, 0).getDate();
     const firstWeekday = new Date(year, month, 1).getDay();
     const lastWeekday = new Date(year, month, lastDate).getDay();
+    const [calendarDates, setCalendarDates] = useState()
     const weekdays = [];
-
-    const prevDates = [];
     for (let idx = 0; idx <= 6; idx++) {
         const matchMonth = new Date(2020, 5, idx);
         const weekDay = matchMonth.toLocaleString('default', {
@@ -38,23 +37,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
         });
         weekdays.push(weekDay);
     }
-    for (let idx = 0; idx < firstWeekday; idx++) {
-        const date = new Date(year, month, 0);
-        date.setDate(date.getDate() - idx);
-        prevDates.unshift(date.toFormat('YYYY-MM-DD'));
-    }
-    
-    const dates = [];
-    for (let idx = 1; idx <= lastDate; idx++)
-        dates.push(new Date(year, month, idx).toFormat('YYYY-MM-DD'));
-
-    const nextDates = [];
-    if (6 - lastWeekday >= 1)
-        for (let idx = 1; idx <= 6 - lastWeekday; idx++)
-            nextDates.push(new Date(year, month + 1, idx).toFormat('YYYY-MM-DD'));
-
-    const calendarDates = [...prevDates, ...dates, ...nextDates];
-
     for(let key in state.storyCalendar) {
         storyDate.push(state.storyCalendar[key].time)
     }
@@ -77,18 +59,72 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
+    const onClose = () => {
+        setCalendarModal(false)
+        setSelectedStory(null)
+        setSelectedIdx(null)
+    }
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
 
-    const onClose = () => {
-      setCalendarModal(false)
-      setSelectedStory(null)
-      setSelectedIdx(null)
+    const changeMonth = (type) => {
+        let tmpDate;
+        if(type == 'prev'){
+            tmpDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth()-1,
+                currentDate.getDate()
+            )
+            setCurrentDate(tmpDate)
+        }else if(type == 'next'){
+            tmpDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth()+1,
+                currentDate.getDate()
+            )
+            setCurrentDate(tmpDate)
+        }
+        const year = tmpDate.getFullYear();
+        const month = tmpDate.getMonth();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+        const firstWeekday = new Date(year, month, 1).getDay();
+        const lastWeekday = new Date(year, month, lastDate).getDay();
+        const prevDates = [];
+        const dates = [];
+        const nextDates = [];
+        for (let idx = 0; idx < firstWeekday; idx++) {
+            const date = new Date(year, month, 0);
+            date.setDate(date.getDate() - idx);
+            prevDates.unshift(date.toFormat('YYYY-MM-DD'));
+        } 
+        for (let idx = 1; idx <= lastDate; idx++)
+            dates.push(new Date(year, month, idx).toFormat('YYYY-MM-DD'));
+        if (6 - lastWeekday >= 1)
+            for (let idx = 1; idx <= 6 - lastWeekday; idx++)
+                nextDates.push(new Date(year, month + 1, idx).toFormat('YYYY-MM-DD'));
+        setCalendarDates(() => [...prevDates, ...dates, ...nextDates])
+        setMonthName(monthFormatter.format(tmpDate))
     }
 
-    
+    useEffect(() => {
+        const prevDates = [];
+        const dates = [];
+        const nextDates = [];
+        for (let idx = 0; idx < firstWeekday; idx++) {
+            const date = new Date(year, month, 0);
+            date.setDate(date.getDate() - idx);
+            prevDates.unshift(date.toFormat('YYYY-MM-DD'));
+        }
+        for (let idx = 1; idx <= lastDate; idx++)
+            dates.push(new Date(year, month, idx).toFormat('YYYY-MM-DD'));
+        if (6 - lastWeekday >= 1)
+            for (let idx = 1; idx <= 6 - lastWeekday; idx++)
+                nextDates.push(new Date(year, month + 1, idx).toFormat('YYYY-MM-DD'));
+        setCalendarDates([...prevDates, ...dates, ...nextDates])
+    },[])
+
     return (
         <Modal
             isVisible={calendarModal}
@@ -100,10 +136,22 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                 <View style={styles.rowContainer}>
                     <View style={styles.calendarContainer}>
                         <View style={styles.headerStyle}>
+                            <TouchableOpacity 
+                                onPress={() => changeMonth('prev')}
+                                style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
+                            >
+                                <SvgUri width='43' height='43' source={require('../assets/icons/representleft.svg')}/>
+                            </TouchableOpacity>
                             <View style={styles.titleContainer}>
                                 <Text style={styles.titleText}>{monthName}</Text>
                                 <Text style={styles.yearText}>{year}</Text>
                             </View>
+                            <TouchableOpacity 
+                                onPress={() => changeMonth('next')}
+                                style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
+                            >
+                                <SvgUri width='43' height='43' source={require('../assets/icons/representright.svg')} />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.rowContainer}>
                             {weekdays.map((week) => {
@@ -115,6 +163,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                             })}
                         </View>
                         <FlatList
+                            showsVerticalScrollIndicator={false}
                             style={styles.dayContainer}
                             data={calendarDates}
                             numColumns={7}
@@ -183,9 +232,12 @@ const styles=StyleSheet.create({
     },
     headerStyle: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         paddingBottom: 10 * tmpWidth,
-        marginTop: 30 * tmpWidth
+        marginTop: 30 * tmpWidth,
+        width: '100%',
+        paddingLeft: 8 * tmpWidth,
+        paddingRight: 8 * tmpWidth
     },
     titleContainer: {
         display: 'flex',
