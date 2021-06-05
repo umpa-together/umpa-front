@@ -86,10 +86,10 @@ const Feed = ({navigation}) => {
             <View style={styles.opt}>
                 <View style={styles.optleft}>
                     <TouchableOpacity style={styles.opt1} onPress={() => setResult('playlist')}>
-                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>플레이리스트</Text>}
+                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>플레이리스트</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.opt2} onPress={() => setResult('curating')}>
-                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>큐레이션</Text> }
+                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>큐레이션</Text> }
                     </TouchableOpacity>
                 </View>
                 <View style={styles.optright}>
