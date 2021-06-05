@@ -33,15 +33,17 @@ const SettingPage = () => {
                 <TouchableOpacity>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 14 * tmpWidth }}>공지사항</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigate('InformationUse', {type: '서비스 이용약관'})}>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 14 * tmpWidth }}>서비스 이용약관</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigate('InformationUse', {type: '개인정보 처리방침'})}>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 14 * tmpWidth }}>개인정보 처리방침</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                {/* 
+                <TouchableOpacity onPress={() => navigate('InformationUse', {type: '오픈소스 라이선스'})}>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 14 * tmpWidth }}>오픈소스 라이선스</Text>
                 </TouchableOpacity>
+                */}
                 <TouchableOpacity onPress={() => navigate('FeedBack')}>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)' }}>피드백 및 건의사항</Text>
                 </TouchableOpacity>

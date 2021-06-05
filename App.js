@@ -23,6 +23,7 @@ import ProfileEditPage from './src/screens/Account/ProfileEditPage';
 import SettingPage from './src/screens/Account/SettingPage';
 import SongEditPage from './src/screens/Account/SongEditPage';
 import FeedBackPage from './src/screens/Account/FeedbackPage';
+import InformationUsePage from './src/screens/Account/InformationUsePage';
 
 import HelloScreen from './src/screens/HelloScreen';
 import LoadingPage from './src/screens/LoadingPage';
@@ -49,7 +50,6 @@ import SearchResultScreen from './src/screens/Search/SearchResultScreen';
 import SelectedSongScreen from './src/screens/Search/SelectedSongScreen';
 import SelectedHashtagScreen from './src/screens/Search/SelectedHashtagScreen';
 import AllContentsScreen from './src/screens/Search/AllContentsScreen';
-
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as SearchProvider } from './src/context/SearchContext';
@@ -140,6 +140,7 @@ const Account = createStackNavigator({
     FeedBack: FeedBackPage,
     Create : CreatePlayListPage,
     SearchSong : SearchSongPage,
+    InformationUse: InformationUsePage,
 });
 
 main.navigationOptions = ({ navigation }) => {
