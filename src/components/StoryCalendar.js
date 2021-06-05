@@ -137,7 +137,10 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                     <View style={styles.calendarContainer}>
                         <View style={styles.headerStyle}>
                             <TouchableOpacity 
-                                onPress={() => changeMonth('prev')}
+                                onPress={() => {
+                                    setSelectedIdx(null)
+                                    changeMonth('prev')
+                                }}
                                 style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
                             >
                                 <SvgUri width='43' height='43' source={require('../assets/icons/representleft.svg')}/>
@@ -147,7 +150,10 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                                 <Text style={styles.yearText}>{year}</Text>
                             </View>
                             <TouchableOpacity 
-                                onPress={() => changeMonth('next')}
+                                onPress={() => {
+                                    setSelectedIdx(null)
+                                    changeMonth('next')
+                                }}
                                 style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
                             >
                                 <SvgUri width='43' height='43' source={require('../assets/icons/representright.svg')} />
