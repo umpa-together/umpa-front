@@ -99,7 +99,6 @@ const FollowPage = ({navigation}) => {
                 </TouchableWithoutFeedback>
                 <View style={{flex: 1}}>
                     <FlatList
-                        style={{paddingTop: 26 * tmpWidth,}}
                         keyboardShouldPersistTaps="handled"
                         data={result}
                         keyExtractor={dj=>dj._id}
