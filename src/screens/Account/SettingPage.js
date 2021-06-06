@@ -30,7 +30,7 @@ const SettingPage = () => {
             </View>
             <View style={styles.section}>
                 <Text style={{fontSize: 16 * tmpWidth , marginBottom: 14  * tmpWidth  }}>이용 안내</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigate('InformationUse', {type: '공지사항'})}>
                     <Text style={{fontSize: 16 * tmpWidth , color: 'rgb(118,118,118)', marginBottom: 14 * tmpWidth }}>공지사항</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigate('InformationUse', {type: '서비스 이용약관'})}>

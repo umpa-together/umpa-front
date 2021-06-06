@@ -5,6 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 import TosForm from '../../components/Setting/TosForm';
 import PrivacyPolicyForm from '../../components/Setting/PrivacyPolicyForm';
 import OpenSourceForm from '../../components/Setting/OpenSourceForm';
+import NoticeForm from '../../components/Setting/NoticeForm';
 
 const InformationUsePage = ({navigation}) => {
     const type = navigation.getParam('type')
@@ -14,7 +15,8 @@ const InformationUsePage = ({navigation}) => {
             style={{backgroundColor: 'rgb(254,254,254)',}}
         >
             { type == '서비스 이용약관' ? <TosForm /> :  
-              type == '개인정보 처리방침' ? <PrivacyPolicyForm /> : <OpenSourceForm /> }
+              type == '개인정보 처리방침' ? <PrivacyPolicyForm /> :
+              type == '공지사항' ? <NoticeForm /> : <OpenSourceForm /> }
         </ScrollView>
     )
 }
