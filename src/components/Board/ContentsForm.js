@@ -4,7 +4,7 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
-
+import Guide from '../Guide';
 
 const ContentsForm = ({ Contents }) => {
     const { state, getCurrentBoard, getCurrentContent, nextContents } = useContext(BoardContext);
@@ -43,6 +43,7 @@ const ContentsForm = ({ Contents }) => {
     
     return (
         <View style={styles.container}>
+            <Guide type={'board'}/>
             <FlatList 
                 data={Contents}
                 keyExtractor={(content) => content._id}

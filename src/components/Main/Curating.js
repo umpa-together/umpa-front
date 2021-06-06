@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { tmpWidth } from '../FontNormalize';
+import Guide from '../Guide';
 
 const Imagetake = ({url}) => {
     url =url.replace('{w}', '300');
@@ -44,6 +45,7 @@ const Curating = ({ curationPosts, navigation }) => {
     }
     return (
         <View style={{ flex: 1, backgroundColor:"rgb(254,254,254)"}}>
+            <Guide type={'curation'}/>
             { curationPosts != undefined && curationPosts.length !=0 ?
             <FlatList
                 data={curationPosts}
@@ -161,7 +163,7 @@ const styles=StyleSheet.create({
         shadowColor : "rgb(235,236,238)",
         shadowRadius: 5* tmpWidth ,
         shadowOffset:{height:0,},
-        shadowOpacity : 0.8,
+        shadowOpacity : 1,
         width : 334 * tmpWidth,
         height : 144 * tmpWidth,
         marginRight: 21 * tmpWidth,
@@ -187,7 +189,7 @@ const styles=StyleSheet.create({
         shadowColor : "rgb(235,236,238)",
         shadowRadius: 5* tmpWidth ,
         shadowOffset:{height:0,},
-        shadowOpacity : 0.8,
+        shadowOpacity : 1,
         width : 334 * tmpWidth,
         height : 144 * tmpWidth,
         marginRight: 21 * tmpWidth,
@@ -214,7 +216,7 @@ const styles=StyleSheet.create({
         shadowColor : "rgb(235,236,238)",
         shadowRadius: 5* tmpWidth ,
         shadowOffset:{height:0,},
-        shadowOpacity : 0.8,
+        shadowOpacity : 1,
         width : 334 * tmpWidth,
         height : 144 * tmpWidth,
         marginRight: 21 * tmpWidth,
@@ -234,7 +236,7 @@ const styles=StyleSheet.create({
         shadowColor : "rgb(235,236,238)",
         shadowRadius: 5* tmpWidth ,
         shadowOffset:{height:0,},
-        shadowOpacity : 0.8,
+        shadowOpacity : 1,
         width : 334 * tmpWidth,
         height : 144 * tmpWidth,
         marginRight: 21 * tmpWidth,
