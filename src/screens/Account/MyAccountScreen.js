@@ -170,7 +170,7 @@ const MyAccountScreen = ({navigation}) => {
                 >
                     <View style={{height: '100%'}}>
                         <View>
-                            <View style={{flexDirection: 'row', width:375 * tmpWidth, height:128 * tmpWidth, justifyContent: 'center', marginTop:10 * tmpWidth }}>
+                            <View style={{flexDirection: 'row', width:375 * tmpWidth, height:128 * tmpWidth, justifyContent: 'center', marginTop:10 * tmpWidth}}>
                                 <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                                     <TouchableOpacity style={styles.songImage} onPress={() => {
                                         setRepresentModal(true)
@@ -202,14 +202,14 @@ const MyAccountScreen = ({navigation}) => {
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center', marginRight: 12 * tmpWidth }} onPress={() => {
                                             navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})
                                         }}>
-                                            <Text style={{fontSize: 14 * tmpWidth}}>팔로잉 </Text>
-                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.myInfo.following.length}</Text>
+                                            <Text style={{fontSize: 12 * tmpWidth}}>팔로잉 </Text>
+                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.following.length}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center',marginRight: 12 * tmpWidth }} onPress={() => {
                                             navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})
                                         }}>
-                                            <Text style={{fontSize: 14 * tmpWidth}}>팔로워 </Text>
-                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{userState.myInfo.follower.length}</Text>
+                                            <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
+                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.follower.length}</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{ width:155 * tmpWidth, alignItems:'flex-end'}}>
@@ -228,10 +228,10 @@ const MyAccountScreen = ({navigation}) => {
                         </View>
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
+                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
+                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255))'}}>
@@ -432,7 +432,7 @@ const MyAccountScreen = ({navigation}) => {
                         <View style={{alignItems: 'center'}}>
                             {userState.storyViewer.length != 0 ?
                             <TouchableOpacity 
-                                style={{height: 40 * tmpWidth, position: 'absolute', left: 22 * tmpWidth, top: 22 * tmpWidth}}
+                                style={{height: 40 * tmpWidth, position: 'absolute', left: 20 * tmpWidth, top: 20 * tmpWidth}}
                                 onPress={() => {
                                     setViewerModal(true)
                                 }}
@@ -458,7 +458,7 @@ const MyAccountScreen = ({navigation}) => {
                             <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)', marginTop: 20 * tmpWidth}}>오늘의 곡</Text>
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 5 * tmpWidth, marginBottom:21 * tmpWidth}}>{today}</Text>
                             <TouchableOpacity 
-                                style={{height: 40 * tmpWidth, position: 'absolute', right: 14 * tmpWidth, top: 22 * tmpWidth}}
+                                style={{height: 40 * tmpWidth, position: 'absolute', right: 13 * tmpWidth, top: 13 * tmpWidth}}
                                 onPress={() => setCalendarModal(true)}
                             >
                                 <SvgUri width='40' height='40' source={require('../../assets/icons/calendar.svg')} />
@@ -537,24 +537,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 20  * tmpWidth,
         paddingRight: 16 * tmpWidth,
-        marginTop:37 * tmpWidth,
+        marginTop: 25 * tmpWidth,
     },
     infoBox: {
         width: 334 * tmpWidth ,
-        marginTop: 25 * tmpWidth ,
-        marginBottom: 20 * tmpWidth,
+        marginTop: 15 * tmpWidth ,
     },
     selectedOption: {
         height: 28*tmpWidth,
-        paddingLeft: 9 * tmpWidth ,
-        paddingRight: 9  * tmpWidth,
         borderBottomWidth: 1.4 * tmpWidth,
-        borderBottomColor: 'rgba(25,25,25,1)'
+        borderBottomColor: 'rgba(25,25,25,1)',
+        width: 160 * tmpWidth,
     },
     notselectedOption: {
         height: 28*tmpWidth,
-        paddingLeft: 9 * tmpWidth,
-        paddingRight: 9  * tmpWidth,
+        width: 160 * tmpWidth
     },
     representSongBox: {
         height:463 * tmpWidth ,
@@ -692,7 +689,7 @@ const styles = StyleSheet.create({
         width:375 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     songedit:{
         height:16 * tmpWidth,
@@ -767,12 +764,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:'flex-end',
-        paddingLeft: 60 * tmpWidth,
-        paddingRight: 60  * tmpWidth,
+        paddingLeft: 20 * tmpWidth,
+        paddingRight: 20  * tmpWidth,
         height:52 * tmpWidth,
         backgroundColor:'rgb(250,250,250)',
         borderBottomWidth : 1*tmpWidth,
-        borderColor:'rgba(153,153,153,0.2)'       
+        borderColor:'rgba(153,153,153,0.2)',
+        marginTop: 5 * tmpWidth
     },
     deleteBox: {
         alignItems:'center', 

@@ -134,7 +134,7 @@ const OtherAccountScreen = ({navigation}) => {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{height: '100%'}}>
-                        <View style={{flexDirection: 'row',  justifyContent: 'center', marginTop: 10 * tmpWidth }}>
+                        <View style={{flexDirection: 'row',  justifyContent: 'center', marginTop: 10 * tmpWidth}}>
                             <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                                 <TouchableOpacity style={styles.songImage} onPress={() => {
                                     setRepresentModal(true)
@@ -167,14 +167,14 @@ const OtherAccountScreen = ({navigation}) => {
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth, alignItems:'center', }} onPress={() => {
                                         navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'following'})
                                     }}>
-                                        <Text style={{fontSize: 14 * tmpWidth, }}>팔로잉 </Text>
-                                        <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{user.following.length}</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth, }}>팔로잉 </Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{user.following.length}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth,alignItems:'center', }} onPress={() => {
                                         navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'follower'})
                                     }}>
-                                        <Text style={{fontSize: 14 * tmpWidth}}>팔로워 </Text>
-                                        <Text style={{fontSize: 14 * tmpWidth, fontWeight: 'bold'}}>{followerNum}</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{followerNum}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 {isFollow ?
@@ -192,7 +192,7 @@ const OtherAccountScreen = ({navigation}) => {
                                     getMyInfo();
                                     setFollowerNum(prev=>prev+1)
                                 }}>
-                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>팔로우 +</Text>
+                                    <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>팔로우 +</Text>
                                 </TouchableOpacity> }
                             </View>
                         </View>
@@ -204,10 +204,10 @@ const OtherAccountScreen = ({navigation}) => {
                         </View> : null }
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>플레이리스트 {user.playlists.length}</Text>
+                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {user.playlists.length}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)'}}>큐레이션 {user.curationposts.length}</Text>
+                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {user.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255)'}}>
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         width: 64 * tmpWidth ,
         height: 25 * tmpWidth ,
         borderRadius: 30 * tmpWidth,
-        backgroundColor: 'rgba(169,193,255,0.5)',
+        backgroundColor: 'rgb(169,193,255)',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -321,24 +321,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         paddingLeft: 20  * tmpWidth,
         paddingRight: 16 * tmpWidth ,
-        marginTop: 41 * tmpWidth
+        marginTop: 25 * tmpWidth,
     },
     infoBox: {
         width: 334 * tmpWidth ,
-        marginTop: 25 * tmpWidth ,
-        marginBottom: 20 * tmpWidth,
+        marginTop: 15 * tmpWidth ,
     },
     selectedOption: {
         height: 28*tmpWidth,
-        paddingLeft: 9 * tmpWidth ,
-        paddingRight: 9  * tmpWidth,
         borderBottomWidth: 1.4 * tmpWidth,
-        borderBottomColor: 'rgba(25,25,25,1)'
+        borderBottomColor: 'rgba(25,25,25,1)',
+        width: 160 * tmpWidth
     },
     notselectedOption: {
         height: 28*tmpWidth,
-        paddingLeft: 9  * tmpWidth,
-        paddingRight: 9 * tmpWidth ,
+        width: 160 * tmpWidth
     },
     representSongBox: {
         height:463  * tmpWidth,
@@ -438,12 +435,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:'flex-end',
-        paddingLeft: 60 * tmpWidth,
-        paddingRight: 60  * tmpWidth,
+        paddingLeft: 20 * tmpWidth,
+        paddingRight: 20  * tmpWidth,
         height:52 * tmpWidth,
         backgroundColor:'rgb(250,250,250)',
         borderBottomWidth : 1*tmpWidth,
-        borderColor:'rgba(153,153,153,0.2)'
+        borderColor:'rgba(153,153,153,0.2)',
+        marginTop: 5 * tmpWidth
    },
    line:{
     borderBottomWidth: 0.7 * tmpWidth,
