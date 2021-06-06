@@ -20,7 +20,7 @@ const FeedBackPage = ({navigation}) => {
                     <TextInput 
                         ref={feedbackRef}
                         onChangeText={text=> feedbackRef.current.value = text}
-                        placeholder="음파 테스트를 이용해주셔서 감사합니다. &#13;&#10;앱을 더 좋은 방향으로 발전시키고자, &#13;&#10;피드백을 받고 있습니다!! &#13;&#10;사소한 의견이라도 괜찮습니다.&#13;&#10;소중한 의견 감사합니다:)"
+                        placeholder="음파를 이용해주셔서 감사합니다. &#13;&#10;앱을 더 좋은 방향으로 발전시키고자, &#13;&#10;피드백을 받고 있습니다!! &#13;&#10;사소한 의견이라도 괜찮습니다.&#13;&#10;소중한 의견 감사합니다:)"
                         autoCapitalize='none'
                         autoCorrect={false}
                         multiline={true}
@@ -39,7 +39,7 @@ const FeedBackPage = ({navigation}) => {
 
 FeedBackPage.navigationOptions = ({navigation})=>{
     return {
-        title: '설정',
+        title: '피드백 및 건의사항',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
         }, 
