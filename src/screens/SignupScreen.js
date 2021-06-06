@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, TouchableWithoutFeedback, FlatList, Modal, Image, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, Image, ActivityIndicator } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as SearchContext } from '../context/SearchContext';
 import { Context as DJContext } from '../context/DJContext';
@@ -7,6 +7,9 @@ import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import HarmfulModal from '../components/HarmfulModal';
+import Modal from 'react-native-modal';
+import TosForm from '../components/Setting/TosForm';
+import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
 
 const ImageSelect = ({url, opac}) => {
     url =url.replace('{w}', '300');
@@ -39,7 +42,8 @@ const SignupPage = ({ navigation }) => {
     const [agree2, setAgree2] = useState(false);
     const [agree1Err, setAgree1Err] = useState(false);
     const [agree2Err, setAgree2Err] = useState(false);
-
+    const [agree1Modal, setAgree1Modal] = useState(false);
+    const [agree2Modal, setAgree2Modal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -177,8 +181,14 @@ const SignupPage = ({ navigation }) => {
         }else{
             setAgree1Err(false);
         }
+        if(!agree2) {
+            setAgree2Err(true);
+            return;
+        }else{
+            setAgree2Err(false);
+        }
 
-        if( !emailerr && !passworderr && password==passwordcheck&&!passwordcheckerr && !nameerr && passwordcheck && agree1 && double){
+        if( !emailerr && !passworderr && password==passwordcheck&&!passwordcheckerr && !nameerr && passwordcheck && agree1 && agree2 && double){
             nextCheck();
         }
     }
@@ -190,6 +200,11 @@ const SignupPage = ({ navigation }) => {
             setTok(false)
         }
     }, [text]);
+    const onClose = () => {
+        setModalVisible(false)
+        setAgree1Modal(false)
+        setAgree2Modal(false)
+    }
     return (
         <View style={{flex: 1, backgroundColor:'rgb(255,255,255)'}}>
             <ScrollView>
@@ -341,9 +356,23 @@ const SignupPage = ({ navigation }) => {
                             }
                             <Text style={!agree1Err ? styles.agreeText : styles.agreeWarning}>이용약관 동의 (필수)</Text>
                         </View>
-                        <TouchableOpacity style={styles.detail}>
+                        <TouchableOpacity style={styles.detail} onPress={() => setAgree1Modal(true)}>
                             <Text style={{fontSize:11 * tmpWidth, color:'rgb(80,80,80)', }}>자세히 보기</Text>
                         </TouchableOpacity>
+                        <Modal
+                            animationIn="fadeIn"
+                            animationOut="fadeOut"
+                            isVisible={agree1Modal}
+                            backdropOpacity={0.4}
+                            onBackdropPress={onClose}
+                            style={{margin: 0, alignItems: 'center'}}
+                        >
+                            <View style={{width: '90%', height: '80%', backgroundColor: 'white', borderRadius: 8 * tmpWidth}}>
+                                <ScrollView >
+                                    <TosForm />
+                                </ScrollView>
+                            </View>
+                        </Modal>
                     </View>
                     <View style={{flexDirection:'row', marginTop:23 * tmpWidth, alignItems: 'center', justifyContent: 'space-between', paddingRight: 24 * tmpWidth}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -368,11 +397,25 @@ const SignupPage = ({ navigation }) => {
                             
                             </TouchableOpacity>
                             }
-                            <Text style={styles.agreeText}>개인정보 수집 및 이용 동의 (선택)</Text>
+                            <Text style={!agree2Err ? styles.agreeText : styles.agreeWarning}>개인정보 수집 및 이용 동의 (필수)</Text>
                         </View>
-                        <TouchableOpacity style={styles.detail}>
+                        <TouchableOpacity style={styles.detail} onPress={() => setAgree2Modal(true)}>
                             <Text style={{fontSize:11 * tmpWidth, color:'rgb(80,80,80)', }}>자세히 보기</Text>
                         </TouchableOpacity>
+                        <Modal
+                            animationIn="fadeIn"
+                            animationOut="fadeOut"
+                            isVisible={agree2Modal}
+                            backdropOpacity={0.4}
+                            onBackdropPress={onClose}
+                            style={{margin: 0, alignItems: 'center'}}
+                        >
+                            <View style={{width: '90%', height: '80%', backgroundColor: 'white', borderRadius: 8 * tmpWidth}}>
+                            <ScrollView>
+                                <PrivacyPolicyForm />
+                            </ScrollView>
+                            </View>
+                        </Modal>
                     </View>
                     <TouchableOpacity onPress={() => singupfun()}>
                         <View style={styles.singupbutton}>
@@ -381,7 +424,14 @@ const SignupPage = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-            <Modal animationType="fade" transparent={true} visible={modalVisible}>
+            <Modal
+                animationIn="fadeIn"
+                animationOut="fadeOut"
+                isVisible={modalVisible}
+                backdropOpacity={0.4}
+                onBackdropPress={onClose}
+                style={{margin: 0, alignItems: 'center'}}
+            >
                 <View style={styles.modalBackground}>
                   <View style={styles.modalbox}>
                     <View style={{width:335 * tmpWidth, height:56 * tmpWidth,flexDirection:'row'}}>
