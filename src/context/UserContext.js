@@ -55,6 +55,18 @@ const initOtherUser = (dispatch) => () => {
     }
 }
 
+const postGuide = (dispatch) => async ({type}) => {
+    try {
+        const response = await serverApi.post('/guide', {type});
+        dispatch({ type: 'getMyInfo', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with postGuide' });
+    }
+}
+
+
+
+
 const getMyInfo = (dispatch) => async () => {
     try{
         const response = await serverApi.get('/getMyInfo');
@@ -243,7 +255,7 @@ const storyCalendar = (dispatch) => async ({id}) => {
 
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { initUser, initOtherUser, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
+    { initUser, initOtherUser, postGuide, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
         postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
