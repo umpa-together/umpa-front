@@ -48,6 +48,7 @@ const SelectedCuration = ({navigation}) => {
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [currentCuration, setCurrentCuration] = useState(state.currentCuration);
     const [currentCurationPosts, setCurrentCurationPosts] = useState([]);
+    console.log(state.currentCuration.songoralbumid)
     const onClose =() => {
         setShowModal(false);
     }
@@ -101,12 +102,12 @@ const SelectedCuration = ({navigation}) => {
     },[ref, state.currentCurationpost]);
 
     useEffect(() => {
-        if(state.currentCuration.object.id == curationid){
+        if(state.currentCuration.songoralbumid == curationid){
             setCurrentCurationPosts(state.currentCurationpost)
         }
     }, [state.currentCurationpost])
     useEffect(() => {
-        if(state.currentCuration != {} && state.currentCuration.object.id == curationid)   setCurrentCuration(state.currentCuration)
+        if(state.currentCuration != {} && state.currentCuration.songoralbumid == curationid)   setCurrentCuration(state.currentCuration)
     }, [curationid, state.currentCuration])
     return (
         <View style={{backgroundColor:'rgba(252,252,253,1)', flex: 1}}>

@@ -76,8 +76,8 @@ const AllCurationForm = ({navigation}) => {
                                 }}>
                                     <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
                                 </TouchableOpacity>
-                                <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.attributes.name}</Text> 
-                                <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
+                                <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.attributes.name}</Text> 
+                                <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                             </View> :
                             <View>
                                 <TouchableOpacity style={{width:161 * tmpWidth, height:157 * tmpWidth, borderRadius: 8 * tmpWidth}} onPress={async ()=>{
@@ -86,8 +86,8 @@ const AllCurationForm = ({navigation}) => {
                                 }}>
                                     <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
                                 </TouchableOpacity>
-                                <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:12 * tmpWidth}}>{item.object.albumName}</Text> 
-                                <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:8 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
+                                <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.albumName}</Text> 
+                                <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
                             </View> }
                         </View>
                     )

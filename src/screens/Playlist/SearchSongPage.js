@@ -8,6 +8,7 @@ import { Context as SearchContext } from '../../context/SearchContext'
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
+import Guide from '../../components/Guide';
 
 const SongImage = ({url}) => {
     url =url.replace('{w}', '300');
@@ -115,6 +116,7 @@ const SearchPage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Guide type={'create'}/>
              <View style={{width: '100%'}}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.goBack()}>

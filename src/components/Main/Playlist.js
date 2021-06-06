@@ -5,7 +5,7 @@ import { Context as UserContext } from '../../context/UserContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-
+import Guide from '../Guide';
 
 const Playlist = ({ playList, navigation }) => {
     const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
@@ -47,6 +47,7 @@ const Playlist = ({ playList, navigation }) => {
     }
     return (
         <View>
+            <Guide type={'playlist'}/>
             {state.otherStory != null ? 
             <View style={state.otherStory.length == 0 ? styles.noStoryContainer : styles.hasStoryContainer}>
                 { playList.length !=0 ?
