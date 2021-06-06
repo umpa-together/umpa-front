@@ -21,37 +21,44 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
     return (
         <View style={myAccount ? styles.myAccount : styles.otherAccount}>
             <FlatList
-                numColumns={2}
                 data={curating}
                 keyExtractor={(song)=>song._id}
+                contentContainerStyle={{paddingTop: 15 * tmpWidth}}
                 renderItem={({item})=> {
                     return (
-                        <View style={{marginRight: 57 * tmpWidth , marginTop: 14 * tmpWidth  }}>
-                            <TouchableOpacity onPress={async ()=>{
+                        <TouchableOpacity 
+                            style={styles.curationBox}
+                            onPress={async ()=>{
                                 await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                                 navigation.push('SelectedCuration', {id: item.songoralbumid})
-                            }}>
-                                {item.isSong ?
-                                <View>                                
-                                    <View style={styles.songs}>
-                                        <Imagetake url={item.object.attributes.artwork.url}></Imagetake>
-                                    </View>
+                            }}
+                        >
+                            {item.isSong ?
+                            <View style={{flexDirection: 'row'}}>                                
+                                <View style={styles.songs}>
+                                    <Imagetake url={item.object.attributes.artwork.url}></Imagetake>
+                                </View>
+                                <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.attributes.name}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.attributes.artistName}</Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,15)}{item.object.attributes.name.length>=15? '...' : null}</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}} >{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
                                     </View>
-                                </View> : 
-                                <View>
-                                    <View style={styles.songs}>
-                                        <Imagetake url={item.object.artwork.url}/>
-                                    </View>
+                                    <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
+                                </View>
+                            </View> : 
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={styles.songs}>
+                                    <Imagetake url={item.object.artwork.url}/>
+                                </View>
+                                <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.albumName}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(148,153,163)', marginTop: 4 * tmpWidth, textAlign: 'center'}} numberOfLines={2}>{item.object.artistName}</Text>
+                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,15)}{item.object.albumName.length>=15? '...' : null }</Text>
+                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...' : null }</Text>
                                     </View>
-                                </View> }
-                            </TouchableOpacity>
-                        </View>
+                                    <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
+                                </View>
+                            </View> }
+                        </TouchableOpacity>
                     )
                 }}
             />
@@ -62,22 +69,43 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
 const styles=StyleSheet.create({
     myAccount: {
         height:600 * tmpHeight,
-        paddingLeft:41*tmpWidth,
+        paddingLeft:20*tmpWidth,
     },
     otherAccount: {
         height:660 * tmpHeight,
-        paddingLeft:41*tmpWidth,
+        paddingLeft:20*tmpWidth,
     },
     songs: {
-        width: 118 * tmpWidth  ,
-        height: 114 * tmpWidth  ,
-        borderRadius: 100 * tmpWidth
+        width: 79 * tmpWidth  ,
+        height: 79 * tmpWidth  ,
+        borderRadius: 44 * tmpWidth
     },
     infoBox: {
-        justifyContent: 'center',
         alignItems: 'center', 
-        marginTop: 10  * tmpWidth ,
-        width: 118 * tmpWidth
+        flexDirection: 'row',
+    },
+    curationBox: {
+        width: 336 * tmpWidth,
+        height: 128 * tmpWidth,
+        borderRadius: 16 * tmpWidth,
+        shadowColor : "rgb(235,236,238)",
+        shadowOffset: {
+            height: 0 * tmpWidth,
+            width: 0 * tmpWidth,
+        },
+        shadowRadius: 5 * tmpWidth,
+        shadowOpacity : 0.7,
+        paddingLeft: 14 * tmpWidth,
+        justifyContent: 'center',
+        marginBottom: 14 * tmpWidth,
+        backgroundColor: 'rgb(255,255,255)'
+    },
+    contentText: {
+        width: 200 * tmpWidth, 
+        color: 'rgb(93,93,93)', 
+        lineHeight: 16 * tmpWidth, 
+        fontSize: 11 * tmpWidth, 
+        marginTop: 8 * tmpWidth
     }
 });
 
