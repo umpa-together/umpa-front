@@ -4,7 +4,7 @@ import { tmpWidth } from '../FontNormalize';
 
 const TosForm = () => {
     return (
-        <View style={{marginLeft: 20 * tmpWidth, marginRight: 20 * tmpWidth}}>
+        <View style={{margin: 20 * tmpWidth}}>
             <Text style={{fontWeight: '700', marginTop : 20 * tmpWidth}}>제1장. 총칙</Text>
             <Text style={styles.title}>제 1 조 (목적)</Text>
             <Text style={styles.top}>본 약관은 회원이 ㈜음파(이하 “회사”라 합니다)에서 제공하는 유무선 온라인상에서 제공되는 umpa 서비스(이하 '서비스'라 한다)의 회원과 회사간의 권리, 의무, 책임사항 및 회원의 서비스 이용조건 및 절차 등 기본적인 사항을 규정함을 목적으로 합니다.</Text>
