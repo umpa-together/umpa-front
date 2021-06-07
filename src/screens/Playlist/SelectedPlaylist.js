@@ -101,7 +101,6 @@ const SelectedPlaylist = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            setCurrentPlaylist(state.current_playlist)
             setCurrentSongs(state.current_songs)
         });
         return () => {
@@ -114,6 +113,9 @@ const SelectedPlaylist = ({navigation}) => {
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist._id == playlistid)    setComments(state.current_comments)
     }, [playlistid, state.current_comments])
+    useEffect(() => {
+        if(state.current_playlist != null && state.current_playlist._id == playlistid) setCurrentPlaylist(state.current_playlist)
+    }, [playlistid, state.current_playlist])
 
     useEffect(() => {
         if(searchState.hashtagHint != undefined && searchState.hashtagHint.length != 0 && hashtag != '') navigate('SelectedHashtag', {data: searchState.hashtagHint[0], text: hashtag, searchOption : 'Hashtag' });
