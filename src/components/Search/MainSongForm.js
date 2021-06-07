@@ -68,7 +68,7 @@ const MainSongForm = ({navigation}) => {
                                     </View>
                                     <View style={styles.playlistinfo}>
                                         <Text style={{fontSize:14 * tmpWidth,color:"#fff", marginRight:12 * tmpWidth,fontWeight:'bold', marginBottom:tmpWidth*4}}>{item.title}</Text>
-                                        <Text style={{fontSize:12 *tmpWidth, color:'rgba(255,255,255,0.8)',marginRight:12 * tmpWidth, marginBottom:tmpWidth*8}}>{item.hashtag.map(hashtag => ' #'+hashtag+'')}</Text>                                    
+                                        <Text style={{fontSize:12 *tmpWidth, color:'rgba(255,255,255,0.8)',marginRight:12 * tmpWidth, marginBottom:tmpWidth*8}}>{item.hashtag.map(hashtag => ' #'+hashtag+'')}</Text>
                                     </View>
                                     </LinearGradient>
                                 </TouchableOpacity>
