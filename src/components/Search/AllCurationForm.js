@@ -101,7 +101,8 @@ const styles=StyleSheet.create({
     result:{
         marginTop:18 * tmpWidth,
         paddingLeft:20 * tmpWidth,
-        height: '100%'
+        height: '100%',
+        paddingBottom: 18 * tmpWidth,
     }
 })
 
