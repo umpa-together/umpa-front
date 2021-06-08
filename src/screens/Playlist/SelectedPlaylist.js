@@ -101,6 +101,7 @@ const SelectedPlaylist = ({navigation}) => {
         const listener =navigation.addListener('didFocus', ()=>{
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
+            setCurrentSongs(state.current_songs)
         });
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
@@ -113,10 +114,7 @@ const SelectedPlaylist = ({navigation}) => {
         if(state.current_playlist != null && state.current_playlist._id == playlistid)    setComments(state.current_comments)
     }, [playlistid, state.current_comments])
     useEffect(() => {
-        if(state.current_playlist != null && state.current_playlist._id == playlistid){
-            setCurrentPlaylist(state.current_playlist)
-            setCurrentSongs(state.current_songs)
-        }
+        if(state.current_playlist != null && state.current_playlist._id == playlistid)  setCurrentPlaylist(state.current_playlist)
     }, [playlistid, state.current_playlist])
 
     useEffect(() => {
