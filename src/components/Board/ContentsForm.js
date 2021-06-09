@@ -73,11 +73,11 @@ const ContentsForm = ({ Contents }) => {
                                         </View>
                                     </View>
                                     <View style={styles.contentContainer}>
-                                        <View>
-                                            <View style={{width: 250 * tmpWidth}}>
+                                        <View style={{marginRight: 20 * tmpWidth}}>
+                                            <View style={{width: 240 * tmpWidth}}>
                                                 <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
                                             </View>
-                                            <View style={{width: 250 * tmpWidth}}>
+                                            <View style={{width: 240 * tmpWidth}}>
                                                 <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
                                             </View>
                                             <View style={styles.footer}>
