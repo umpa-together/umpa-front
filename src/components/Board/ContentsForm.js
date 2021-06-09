@@ -60,7 +60,7 @@ const ContentsForm = ({ Contents }) => {
                                 getCurrentContent({id: item._id })
                                 navigate('SelectedContent', { boardName: state.boards.name })
                             }}>
-                                <View style={{flex: 1, marginLeft: 23 * tmpWidth, marginRight: 23 * tmpWidth}}>
+                                <View style={{paddingLeft: 23 * tmpWidth, paddingRight: 23 * tmpWidth}}>
                                     <View style={{flexDirection: 'row'}}>
                                         { item.postUserId.profileImage == undefined ?
                                         <View style={styles.profile}>
@@ -73,21 +73,32 @@ const ContentsForm = ({ Contents }) => {
                                         </View>
                                     </View>
                                     <View style={styles.contentContainer}>
-                                        <View style={{marginRight: 20 * tmpWidth}}>
-                                            <View style={{width: 240 * tmpWidth}}>
-                                                <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                        {item.image.length != 0 ? 
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
+                                            <View>
+                                                <View style={{width: 240 * tmpWidth}}>
+                                                    <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                                </View>
+                                                <View style={{width: 240 * tmpWidth}}>
+                                                    <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
+                                                </View>
+                                                <View style={styles.footer}>
+                                                    <Text style={styles.footerText}>댓글 {item.comments.length}</Text>
+                                                    <Text style={styles.footerText}>좋아요 {item.likes.length}</Text>
+                                                    <Text style={{fontSize: 12 * tmpWidth}}>스크랩 {item.scrabs.length}</Text>
+                                                </View> 
                                             </View>
-                                            <View style={{width: 240 * tmpWidth}}>
-                                                <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
-                                            </View>
+                                            <Image style={styles.image} source={{uri: item.image[0]}} />
+                                        </View> :
+                                        <View>
+                                            <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                            <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
                                             <View style={styles.footer}>
                                                 <Text style={styles.footerText}>댓글 {item.comments.length}</Text>
                                                 <Text style={styles.footerText}>좋아요 {item.likes.length}</Text>
                                                 <Text style={{fontSize: 12 * tmpWidth}}>스크랩 {item.scrabs.length}</Text>
                                             </View> 
-                                        </View>
-                                        {item.image.length != 0 ? <Image style={styles.image} source={{uri: item.image[0]}} />
-                                        : <View style={{width: 64 * tmpWidth}}/> }
+                                        </View> }
                                     </View>   
                                     
                                 </View>
@@ -110,7 +121,6 @@ const styles=StyleSheet.create({
         paddingBottom: 16 * tmpWidth,
         borderBottomWidth: 2 * tmpWidth,
         borderBottomColor: 'rgb(242, 242, 242)',
-        alignItems: 'center',
         flex: 1,
     },
     profile: {
@@ -121,7 +131,7 @@ const styles=StyleSheet.create({
     image: {
         height: 64 * tmpWidth,
         width: 64 * tmpWidth,
-        borderRadius: 4 * tmpWidth
+        borderRadius: 4 * tmpWidth,
     },
     nameBox: {
         marginLeft: 12 * tmpWidth, 
