@@ -121,19 +121,19 @@ const SigninScreen = () => {
                     <View style={{width:375 * tmpWidth, height:14 * tmpWidth, justifyContent:'center', alignItems:'center'}}>
                         <Text style={{fontSize:12 * tmpWidth, color:'rgb(169,193,255)'}}>아이디 / 비밀번호 찾기</Text>
                     </View>
-                    <View style={{width:180 * tmpWidth, height:60 * tmpWidth, marginTop:19 * tmpWidth, flexDirection:'row'}}>
+                    <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:19 * tmpWidth, flexDirection:'row'}}>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
-                        <Text>애플로그인</Text>
-                        </TouchableOpacity>  
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
-                          </TouchableOpacity>
+                        </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => kakaoLogin()}>
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/kakao.png')} />
                         </TouchableOpacity>
+                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
+                            <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/apple.png')} />
+                        </TouchableOpacity>  
                     </View>
                 </View>
             </View>
