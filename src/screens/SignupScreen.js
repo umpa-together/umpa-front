@@ -492,7 +492,7 @@ const SignupPage = ({ navigation }) => {
                         <View>
                             {tok ? searchState.songData.length == 0 ? <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}><ActivityIndicator /></View> :
                             <FlatList
-                                style={{marginTop:14 * tmpWidth}}
+                                contentContainerStyle={{paddingTop: 14 * tmpWidth}}
                                 data={searchState.songData}
                                 keyExtractor={song=>song.id}
                                 onEndReached={onEndReached}
