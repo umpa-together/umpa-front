@@ -36,12 +36,14 @@ const SelectedPlaylist = ({navigation}) => {
     const [hashtag, setHashtag] = useState('');
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
+    const [weeklyModal, setWeeklyModal] = useState(false);
     const commentRef = useRef();
     const recommentRef = useRef();
 
     const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
     const [comments, setComments] = useState(state.current_comments);
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
+    console.log(currentPlaylist.isWeekly)
     const onClose =() => {
         setShowModal('0');
         initRecomment();
@@ -143,7 +145,13 @@ const SelectedPlaylist = ({navigation}) => {
                                 <Text style={{color: 'white'}}>수정</Text>
                             </TouchableOpacity>
                             <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
-                            <TouchableOpacity onPress={() => setDeleteModal(true)}>
+                            <TouchableOpacity onPress={() => {
+                                if(!currentPlaylist.isWeekly){
+                                    setDeleteModal(true)
+                                }else {
+                                    setWeeklyModal(true)
+                                    setTimeout(() => setWeeklyModal(false), 1200);
+                                }}}>
                                 <Text style={{color: 'white'}}>삭제</Text>
                             </TouchableOpacity>
                             <Text style={{marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth, color: 'white'}}>|</Text>
@@ -155,6 +163,17 @@ const SelectedPlaylist = ({navigation}) => {
                     </View>
                     { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'playlist'} /> : null }
                     { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'playlist'} subjectId={currentPlaylist._id} /> : null }
+                    <Modal
+                        animationIn="fadeIn"
+                        animationOut="fadeOut"
+                        isVisible={weeklyModal}
+                        backdropOpacity={0.5}
+                        style={{alignItems: 'center'}}
+                    >
+                        <View style={{backgroundColor: 'white', paddingTop: 20 * tmpWidth, paddingBottom: 20 *tmpWidth, paddingLeft: 10 * tmpWidth, paddingRight: 10 * tmpWidth, borderRadius: 8 * tmpWidth}}>
+                            <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(86,86,86)', }}>위클리 플레이리스트는 삭제 불가능합니다.</Text>
+                        </View>
+                    </Modal>
                 </View>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                     <View style={styles.profileBox}>
