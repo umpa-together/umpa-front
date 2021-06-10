@@ -10,20 +10,21 @@ import { NaverLogin } from "@react-native-seoul/naver-login";
 import { tmpWidth } from '../components/FontNormalize';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import jwtDecode from 'jwt-decode';
+import * as config from '../config'
 
 const SigninScreen = () => {
     const { state, signin, getGoogleInfo, getKakaoInfo, getNaverInfo, getAppleInfo,clearErrorMessage } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const iosKeys = {
-        kConsumerKey: "so3Gjl6buzJ29rXRalJm",
-        kConsumerSecret: "hSEE4AQSqf",
+        kConsumerKey: config.kConsumerKey,
+        kConsumerSecret: config.kConsumerSecret,
         kServiceAppName: "umpa",
         kServiceAppUrlScheme: "naverlogin" // only for iOS
       };
     useEffect(() => {
         GoogleSignin.configure({
-            webClientId: '217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com',
+            webClientId: config.webClientId,
             offlineAccess: true, 
             hostedDomain: '', 
             forceConsentPrompt: true, 

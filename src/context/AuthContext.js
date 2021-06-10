@@ -94,7 +94,6 @@ const getAppleInfo = (dispatch) => async ({ email, id }) => {
             navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
         }else{
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
-            console.log(res);
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
             navigate('Hello');
