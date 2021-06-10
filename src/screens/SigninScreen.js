@@ -8,9 +8,11 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, {KAKAO_AUTH_TYPES} from '@react-native-seoul/kakao-login';
 import { NaverLogin } from "@react-native-seoul/naver-login";
 import { tmpWidth } from '../components/FontNormalize';
+import appleAuth from '@invertase/react-native-apple-authentication';
+import jwtDecode from 'jwt-decode';
 
 const SigninScreen = () => {
-    const { state, signin, getGoogleInfo, getKakaoInfo, getNaverInfo, clearErrorMessage } = useContext(AuthContext);
+    const { state, signin, getGoogleInfo, getKakaoInfo, getNaverInfo, getAppleInfo,clearErrorMessage } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const iosKeys = {
@@ -47,6 +49,33 @@ const SigninScreen = () => {
         const userInfo = await GoogleSignin.signIn();
         await getGoogleInfo({email: userInfo.user.email, id: userInfo.user.id})
     };
+    const appleLogin = async() => {
+        try {
+            // performs login request
+             const appleAuthRequestResponse = await appleAuth.performRequest({
+               requestedOperation: appleAuth.Operation.LOGIN,
+               requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+             });
+           
+             // get current authentication state for user
+             const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+           
+             // use credentialState response to ensure the user is authenticated
+             if (credentialState === appleAuth.State.AUTHORIZED) {
+                const decodedToken = jwtDecode(appleAuthRequestResponse.identityToken);
+                await getAppleInfo({email: decodedToken.email, id: decodedToken.sub});
+
+                  
+             }
+           
+           } catch (error) {
+               if (error.code === appleAuth.Error.CANCELED) {
+                   // login canceled
+               } else {
+                   // login error
+               }
+        }
+    }
     return (
         <SafeAreaView style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
             <NavigationEvents onWillBlur={clearErrorMessage} />
@@ -95,6 +124,9 @@ const SigninScreen = () => {
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
                         </TouchableOpacity>
+                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
+                        <Text>애플로그인</Text>
+                        </TouchableOpacity>  
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
                           </TouchableOpacity>

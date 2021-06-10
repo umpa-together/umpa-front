@@ -67,6 +67,7 @@
 		5DC3F76E1C331EBD242D42EC /* Pods-umpa8-umpa8Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpa8-umpa8Tests.release.xcconfig"; path = "Target Support Files/Pods-umpa8-umpa8Tests/Pods-umpa8-umpa8Tests.release.xcconfig"; sourceTree = "<group>"; };
 		697DDDB3B47444689B896919 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		6F758FC0324A46BDAD5C9F6A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		7D71B17826719E97004F4B91 /* umpa8Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpa8Release.entitlements; path = umpa8/umpa8Release.entitlements; sourceTree = "<group>"; };
 		7D75BC982663E32700784C2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7D8C97B8266DD234004B717D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../중요한거/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DC5AB3125C924FB0090FFE1 /* umpa8-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "umpa8-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 		13B07FAE1A68108700A75B9A /* umpa8 */ = {
 			isa = PBXGroup;
 			children = (
+				7D71B17826719E97004F4B91 /* umpa8Release.entitlements */,
 				7DD11FAA25DFACAD008B15FE /* umpa8.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -873,7 +875,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = umpa8/umpa8.entitlements;
+				CODE_SIGN_ENTITLEMENTS = umpa8/umpa8Release.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

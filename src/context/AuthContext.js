@@ -87,6 +87,24 @@ const getGoogleInfo = (dispatch) => async ({ email, id }) => {
     }
 }
 
+const getAppleInfo = (dispatch) => async ({ email, id }) => {
+    try {
+        const response = await serverApi.get('/appleIdToken/'+email+'/'+id);
+        if(response.data[0] == false){
+            navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
+        }else{
+            const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
+            console.log(res);
+            await AsyncStorage.setItem('token', res.data.token);
+            dispatch({ type: 'signin', payload: res.data.token });
+            navigate('Hello');
+            //navigate('Main');
+        }
+    } catch (err) {
+        dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+    }
+}
+
 const getKakaoInfo = (dispatch) => async ({ token }) => {
     try {
         const response = await serverApi.get('kakaoInfo/'+token);
@@ -132,6 +150,6 @@ const checkName = (dispatch) => async ({name}) => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signin, signup, signout, tryLocalSignin, getGoogleInfo, getKakaoInfo, getNaverInfo, clearErrorMessage, checkName },
+    { signin, signup, signout, tryLocalSignin, getGoogleInfo, getAppleInfo ,getKakaoInfo, getNaverInfo, clearErrorMessage, checkName },
     { token: null, errorMessage: '', email: '', password: '', firstLogin: false, doubleCheck: true }
 )
