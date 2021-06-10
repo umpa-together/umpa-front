@@ -84,9 +84,9 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow access to your camera</string>
+	<string>당신의 카메라 권한을 허용하시겠습니까? 당신의 카메라는 사진 공유를 위해 쓰일 것입니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow access to your photo gallery</string>
+	<string>당신의 갤러리 권한을 허용하시겠습니까? 당신의 갤러리 접근은 사진 공유를 위해 쓰일 것입니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
