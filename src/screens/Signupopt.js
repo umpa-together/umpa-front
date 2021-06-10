@@ -6,21 +6,23 @@ import { tmpWidth } from '../components/FontNormalize';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, {KAKAO_AUTH_TYPES} from '@react-native-seoul/kakao-login';
 import { NaverLogin } from "@react-native-seoul/naver-login";
-
-
+import appleAuth from '@invertase/react-native-apple-authentication';
 import SvgUri from 'react-native-svg-uri';
+import jwtDecode from 'jwt-decode';
+import * as config from '../config'
 
 const Signupopt = () => {
-    const { getGoogleInfo, getKakaoInfo, getNaverInfo } = useContext(AuthContext);
+    
+    const { getGoogleInfo, getKakaoInfo, getNaverInfo,getAppleInfo } = useContext(AuthContext);
     const iosKeys = {
-        kConsumerKey: "so3Gjl6buzJ29rXRalJm",
-        kConsumerSecret: "hSEE4AQSqf",
+        kConsumerKey: config.kConsumerKey,
+        kConsumerSecret: config.kConsumerSecret,
         kServiceAppName: "umpa",
         kServiceAppUrlScheme: "naverlogin" // only for iOS
       };
     useEffect(() => {
         GoogleSignin.configure({
-            webClientId: '217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com',
+            webClientId: config.webClientId,
             offlineAccess: true,
             hostedDomain: '',
             forceConsentPrompt: true,
@@ -44,6 +46,34 @@ const Signupopt = () => {
         const userInfo = await GoogleSignin.signIn();
         await getGoogleInfo({email: userInfo.user.email, id: userInfo.user.id});
     };
+
+    const appleLogin = async() => {
+        try {
+            // performs login request
+             const appleAuthRequestResponse = await appleAuth.performRequest({
+               requestedOperation: appleAuth.Operation.LOGIN,
+               requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+             });
+           
+             // get current authentication state for user
+             const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+           
+             // use credentialState response to ensure the user is authenticated
+             if (credentialState === appleAuth.State.AUTHORIZED) {
+                const decodedToken = jwtDecode(appleAuthRequestResponse.identityToken);
+                await getAppleInfo({email: decodedToken.email, id: decodedToken.sub});
+
+                  
+             }
+           
+           } catch (error) {
+               if (error.code === appleAuth.Error.CANCELED) {
+                   // login canceled
+               } else {
+                   // login error
+               }
+        }
+    }
     return (
         <View style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 106 * tmpWidth}}>
@@ -65,6 +95,9 @@ const Signupopt = () => {
                     <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
                       <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
                     </TouchableOpacity>
+                    <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
+                        <Text>애플로그인</Text>
+                    </TouchableOpacity>                    
                     <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
                       <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
                       </TouchableOpacity>
