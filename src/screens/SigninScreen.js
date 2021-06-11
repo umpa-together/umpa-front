@@ -84,7 +84,7 @@ const SigninScreen = () => {
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/loadingLogo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
                     </View>
                 </View>
                 </TouchableWithoutFeedback>

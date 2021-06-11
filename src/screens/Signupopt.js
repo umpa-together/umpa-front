@@ -79,7 +79,7 @@ const Signupopt = () => {
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 106 * tmpWidth}}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/loadingLogo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
                     </View>
                 </View>
                 <View style={{alignItems: 'center'}}>
