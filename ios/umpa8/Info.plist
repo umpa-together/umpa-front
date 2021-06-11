@@ -74,6 +74,8 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSAllowsArbitraryLoadsUsageDescription</key>
+		<dict/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -86,6 +88,8 @@
 	<key>NSCameraUsageDescription</key>
 	<string>당신의 카메라 권한을 허용하시겠습니까? 당신의 카메라는 사진 공유를 위해 쓰일 것입니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string>당신의 갤러리 권한을 허용하시겠습니까? 당신의 갤러리 접근은 사진 공유를 위해 쓰일 것입니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>당신의 갤러리 권한을 허용하시겠습니까? 당신의 갤러리 접근은 사진 공유를 위해 쓰일 것입니다.</string>
 	<key>UIAppFonts</key>
 	<array>

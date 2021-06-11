@@ -71,7 +71,9 @@ const Curating = ({ curationPosts, navigation }) => {
                                     <View style={styles.contentl}>
                                         <View style={styles.songinfol}>
                                             <Text numberOfLines ={1} style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.attributes.name.substr(0,15)}{item.object.attributes.name.length>=15? '...' : null}</Text>
+                                            <View style={{width:90*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth, }}>{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
+                                            </View>
                                         </View>
                                         <View style ={{ marginLeft:113 * tmpWidth, width : 200 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3}  style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth}}>{item.textcontent}</Text>
@@ -87,8 +89,10 @@ const Curating = ({ curationPosts, navigation }) => {
                                     </View> 
                                     <View style={styles.albumcontentl}>
                                         <View style={styles.albuminfol}>
-                                            <Text style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15 ? '...' : null}</Text>
-                                            <Text style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth}}>{item.object.artistName.substr(0, 15)}{item.object.artistName.length>=15 ? '...' : null}</Text>
+                                            <Text numberOfLines ={1}  style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15 ? '...' : null}</Text>
+                                            <View style={{width:90*tmpWidth}}>
+                                            <Text numberOfLines ={1}  style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth}}>{item.object.artistName.substr(0, 15)}{item.object.artistName.length>=15 ? '...' : null}</Text>
+                                            </View>
                                         </View>
                                         <View style ={{width : 200 * tmpWidth, marginLeft:113 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{ color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
@@ -127,8 +131,9 @@ const Curating = ({ curationPosts, navigation }) => {
                                     <View style={styles.albuminfor}>
                                         <View style={{flexDirection: 'row', marginTop:21 * tmpWidth, alignItems: 'center'}}>
                                             <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth,marginLeft: 32 * tmpWidth, marginRight:16 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15? '...':null}</Text>
-                                            
+                                            <View style={{width:60*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, }}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...':null}</Text>
+                                            </View>
                                         </View>
                                         <View style ={{width : 270 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginLeft: 32 * tmpWidth,marginRight:20 * tmpWidth}}>{item.textcontent}</Text>

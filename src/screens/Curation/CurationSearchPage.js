@@ -88,7 +88,7 @@ const CurationSearchPage = ({navigation}) => {
                     </View>
                     <View style ={styles.keyoutput}>
                         <FlatList
-                            style={{marginTop: 14 * tmpWidth,}}
+                            contentContainerStyle={{marginTop: 14 * tmpWidth}}
                             data={state.hint}
                             keyboardShouldPersistTaps="handled"
                             keyExtractor={term=>term}
@@ -118,7 +118,7 @@ const CurationSearchPage = ({navigation}) => {
                     <View style ={styles.result}>
                         {isSong ?
                             <FlatList
-                                  style={{marginTop: 9 * tmpWidth}}
+                                contentContainerStyle={{paddingTop: 14 * tmpWidth}}
                                   data={state.songData}
                                   keyExtractor={posts => posts.id}
                                   onEndReached={onEndReached}
@@ -157,7 +157,7 @@ const CurationSearchPage = ({navigation}) => {
                              />
                         :
                          <FlatList
-                               style={{marginTop: 9 * tmpWidth}}
+                         contentContainerStyle={{paddingTop: 14 * tmpWidth}}
                                data={state.albumData}
                                keyExtractor={posts => posts.id}
                                onEndReached={onEndReached}
@@ -284,7 +284,6 @@ const styles=StyleSheet.create({
         width:375 * tmpWidth,
         height:621 * tmpHeight,
         backgroundColor:"rgb(250,250,250)",
-        paddingTop:14 * tmpWidth
     },
 });
 
