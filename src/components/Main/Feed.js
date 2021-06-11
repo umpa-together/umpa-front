@@ -111,6 +111,7 @@ const Feed = ({navigation}) => {
                         keyExtractor={user=>user.id}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={{paddingLeft: 27 * tmpWidth}}
                         renderItem={({item, index})=>{
                             return (
                                 <View style={{height:115 * tmpWidth,marginRight:24 * tmpWidth,width:64 * tmpWidth}}>
@@ -272,7 +273,6 @@ const styles = StyleSheet.create({
      },
     story:{
         backgroundColor:"rgb(254,254,254)",
-        paddingLeft:27 * tmpWidth,
         width:375 * tmpWidth,
         paddingTop:7 * tmpWidth,
         height:100 * tmpWidth,
