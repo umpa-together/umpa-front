@@ -90,6 +90,7 @@ const SelectedCuration = ({navigation}) => {
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+            stoptracksong()
             listener.remove();
         };
     }, []);
