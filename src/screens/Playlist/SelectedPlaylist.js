@@ -395,7 +395,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                 </View>
                                             </View>
                                             <View style={styles.inputRecommentBox}>
-                                                {item.postUserId.profileImage == undefined ? 
+                                                {userState.myInfo.profileImage == undefined ? 
                                                 <View style={styles.commentProfile}>
                                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                                 </View> : <Image style={styles.commentProfile} source={{uri: userState.myInfo.profileImage}}/> }
