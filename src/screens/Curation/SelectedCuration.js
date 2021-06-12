@@ -301,7 +301,7 @@ const SelectedCuration = ({navigation}) => {
                                                 <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: selectedCuration.postUserId.profileImage}} ></Image> }
                                         </TouchableOpacity>
                                         <View style={{width:210 * tmpWidth, height:32 * tmpWidth, alignItems: 'center', flexDirection: 'row'}}>
-                                            <Text style={{marginLeft:12 * tmpWidth}}>{selectedCuration.postUser}</Text>
+                                            <Text style={{marginLeft:12 * tmpWidth}}>{selectedCuration.postUserId.name}</Text>
                                             <TouchableOpacity onPress={() => {
                                                 setShowpost(false)
                                                 setReportModal(true)}}>
@@ -338,7 +338,7 @@ const SelectedCuration = ({navigation}) => {
                                             </View> : <Image style={{width:'100%', height:'100%', borderRadius:32 }}source={{uri: state.mycurationpost.postUserId.profileImage}}/> }
                                         </TouchableOpacity>
                                         <View style={{width:200 * tmpWidth, alignItems:'center', flexDirection:'row'}}>
-                                            <Text numberOfLines ={1} style={{marginLeft:12 * tmpWidth}}>{state.mycurationpost.postUser}</Text>
+                                            <Text numberOfLines ={1} style={{marginLeft:12 * tmpWidth}}>{state.mycurationpost.postUserId.name}</Text>
                                             {state.mycurationpost.hidden ? 
                                                 <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/>
                                             : null }
