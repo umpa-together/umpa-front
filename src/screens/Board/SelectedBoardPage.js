@@ -42,7 +42,7 @@ const SelectedBoard = ({ navigation }) => {
             </View>
             
             { state.currentBoard == null ? <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}><ActivityIndicator /></View> :
-            <View style={{height: '100%'}}>
+            <View style={{flex: 1}}>
                 <TouchableOpacity style={styles.introductionBox} onPress={() => setIntroductionModal(true)}>
                     <SvgUri width='32' height='32' source={require('../../assets/icons/boardIntroduction.svg')}/>
                     <Text style={styles.introductionText} numberOfLines={1}>{introduction}</Text>
@@ -82,6 +82,7 @@ SelectedBoard.navigationOptions = ({ navigation }) => {
 const styles=StyleSheet.create({
     container: {
         backgroundColor: 'rgb(255,255,255)', 
+        flex: 1
     },
     headerContainer: {
         backgroundColor: 'rgb(255,255,255)',
