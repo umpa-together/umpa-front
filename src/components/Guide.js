@@ -24,8 +24,6 @@ const Guide = ({type}) => {
     }, [])
     return (
         <Modal
-            animationIn='fadeIn'
-            animationOut='fadeOut'
             isVisible={guideModal}
             backdropOpacity={1}
             style={{alignItems: 'center'}}
@@ -40,7 +38,7 @@ const Guide = ({type}) => {
             <TouchableOpacity onPress={() => {
                 setGuideModal(false)
                 onClose()}}>
-            <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../assets/icons/guideExit.svg')} 
+            <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/guideExit.svg')} 
                 style={(type == 'playlist' || type == 'curation' || type == 'board') ? styles.firstOpt : styles.secondOpt}/>
             </TouchableOpacity>
         </Modal>
