@@ -65,13 +65,15 @@ const Curating = ({ curationPosts, navigation }) => {
                             <View>
                                 {item.isSong ? 
                                 <View style={{flexDirection: 'row',}}>
-                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width:190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13}}>
+                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth, width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13}}>
                                         <Imagetake opac={1.0} url={item.object.attributes.artwork.url}/>
                                     </View> 
                                     <View style={styles.contentl}>
                                         <View style={styles.songinfol}>
                                             <Text numberOfLines ={1} style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.attributes.name.substr(0,15)}{item.object.attributes.name.length>=15? '...' : null}</Text>
+                                            <View style={{width:90*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth, }}>{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
+                                            </View>                                       
                                         </View>
                                         <View style ={{ marginLeft:113 * tmpWidth, width : 200 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3}  style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth}}>{item.textcontent}</Text>
@@ -82,13 +84,15 @@ const Curating = ({ curationPosts, navigation }) => {
                                     </View>
                                 </View> : 
                                 <View  style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width: 190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth,  width: 190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
                                         <Imagetake opac={1.0} url={item.object.artwork.url}/>                            
                                     </View> 
                                     <View style={styles.albumcontentl}>
                                         <View style={styles.albuminfol}>
-                                            <Text style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15 ? '...' : null}</Text>
-                                            <Text style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth}}>{item.object.artistName.substr(0, 15)}{item.object.artistName.length>=15 ? '...' : null}</Text>
+                                            <Text numberOfLines ={1}  style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15 ? '...' : null}</Text>
+                                            <View style={{width:90*tmpWidth}}>
+                                            <Text numberOfLines ={1}  style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth}}>{item.object.artistName.substr(0, 15)}{item.object.artistName.length>=15 ? '...' : null}</Text>
+                                            </View>
                                         </View>
                                         <View style ={{width : 200 * tmpWidth, marginLeft:113 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{ color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
@@ -102,13 +106,13 @@ const Curating = ({ curationPosts, navigation }) => {
                             <View>
                                 {item.isSong ?
                                 <View style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width:190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
                                         <Imagetake opac={1.0} url={item.object.attributes.artwork.url}/>
                                     </View>
                                     <View style={styles.contentr}>
                                         <View style={styles.songinfor}>
                                             <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth,marginLeft: 32 * tmpWidth, marginRight:16 * tmpWidth}}>{item.object.attributes.name.substr(0,14)}{item.object.attributes.name.length>=14 ? '...':null}</Text>
-                                            <View style={{width:60*tmpWidth}}>
+                                            <View style={{width:90*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth,color: '#000'}}>{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15 ? '...':null}</Text>
                                             </View>
                                         </View>
@@ -121,14 +125,15 @@ const Curating = ({ curationPosts, navigation }) => {
                                     </View>
                                 </View> :
                                 <View  style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:5 * tmpWidth+index * tmpWidth, width:190 * tmpWidth, height:180 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
                                         <Imagetake opac={1.0} url={item.object.artwork.url}/>
                                     </View>
                                     <View style={styles.albuminfor}>
                                         <View style={{flexDirection: 'row', marginTop:21 * tmpWidth, alignItems: 'center'}}>
                                             <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth,marginLeft: 32 * tmpWidth, marginRight:16 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15? '...':null}</Text>
-                                            
+                                            <View style={{width:90*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, }}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...':null}</Text>
+                                            </View>
                                         </View>
                                         <View style ={{width : 270 * tmpWidth, height:63 * tmpWidth}}>
                                             <Text numberOfLines ={3} style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginLeft: 32 * tmpWidth,marginRight:20 * tmpWidth}}>{item.textcontent}</Text>

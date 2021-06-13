@@ -40,8 +40,10 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                                 </View>
                                 <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,15)}{item.object.attributes.name.length>=15? '...' : null}</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}} >{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
+                                        <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,12)}{item.object.attributes.name.length>=12? '...' : null}</Text>
+                                        <View style={{width:80*tmpWidth}}>
+                                        <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}} >{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
+                                        </View>
                                     </View>
                                     <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
                                 </View>
@@ -52,8 +54,10 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                                 </View>
                                 <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
-                                        <Text style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,15)}{item.object.albumName.length>=15? '...' : null }</Text>
-                                        <Text style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...' : null }</Text>
+                                        <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,12)}{item.object.albumName.length>=12? '...' : null }</Text>
+                                        <View style={{width:80*tmpWidth}}>
+                                        <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...' : null }</Text>
+                                        </View>
                                     </View>
                                     <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
                                 </View>

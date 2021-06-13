@@ -304,7 +304,7 @@ const SelectedPlaylist = ({navigation}) => {
                                     </TouchableOpacity>
                                     <View>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                            <Text style={styles.commentUserText}>{item.postUser}</Text>
+                                            <Text style={styles.commentUserText}>{item.postUserId.name}</Text>
                                             <Text style={styles.commentTimeText}>{item.time}</Text>
                                         </View>
                                         <View style={{marginRight: 50 * tmpWidth}}>
@@ -369,7 +369,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                 </TouchableOpacity>
                                                 <View >
                                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                        <Text style={styles.commentUserText}>{item.postUser}</Text>
+                                                        <Text style={styles.commentUserText}>{item.postUserId.name}</Text>
                                                         <Text style={styles.commentTimeText}>{item.time}</Text>
                                                     </View>
                                                     <View style={{width: 280 * tmpWidth}}>
@@ -440,7 +440,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                             </TouchableOpacity>
                                                             <View >
                                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                                    <Text style={styles.commentUserText}>{item.postUser}</Text>
+                                                                    <Text style={styles.commentUserText}>{item.postUserId.name}</Text>
                                                                     <Text style={styles.commentTimeText}>{item.time}</Text>
                                                                 </View>
                                                                 <View style={{marginRight: 50 * tmpWidth}}>
