@@ -64,7 +64,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')}/>
                         </TouchableOpacity>
                     </View>
-                    { myAccount ? <TouchableOpacity onPress={() => {
+                    { myAccount && type == 'Each' ? <TouchableOpacity onPress={() => {
                         onClose()
                         navigate('SongEdit', {'data': song})}}
                         style={styles.songedit}
@@ -144,7 +144,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                     /> 
                     <View style={{alignItems: 'center', marginTop: 14 * tmpWidth}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 4 * tmpWidth }}>{song.length}곡</Text>
+                        <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(153,153,153)' }}>{song.length}곡</Text>
                     </View>
                         <TouchableOpacity style={styles.representlistbutton} onPress={() => {
                             setType('List')}}>
@@ -191,7 +191,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                     </View>
                     <TouchableOpacity style={{alignItems: 'center'}} onPress={() => {
                         setType('Each')}} >
-                        <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 33 * tmpWidth}}>개별 보기</Text>
+                        <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 15 * tmpWidth}}>개별 보기</Text>
                     </TouchableOpacity>
                 </View> }
             </View>
@@ -254,7 +254,7 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
-        marginTop:10 * tmpWidth
+        marginTop:4 * tmpWidth
     },
     line:{
         borderBottomWidth: 0.7 * tmpWidth,
