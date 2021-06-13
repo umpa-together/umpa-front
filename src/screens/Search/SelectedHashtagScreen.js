@@ -30,6 +30,7 @@ const SelectedHashtagScreen = ({navigation}) => {
                 </View>
                 <View style={styles.result}>
                     <FlatList
+                        contentContainerStyle={{paddingBottom: 30 * tmpWidth}}
                         numColumns={2}
                         data ={data.playlistId}
                         keyExtractor = {playlist => playlist._id}
