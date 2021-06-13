@@ -280,7 +280,7 @@ const SelectedCuration = ({navigation}) => {
                             style={{justifyContent: 'center', alignItems: 'center', margin: 0}}
                         >
                             <View 
-                                style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff',marginTop: 40 * tmpWidth, marginBottom: 40 * tmpWidth}}
+                                style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff',marginTop: 120 * tmpWidth, marginBottom: 120 * tmpWidth}}
                             >
                                 <ScrollView>
                                     <View style={styles.curationpostuser}>
@@ -329,7 +329,7 @@ const SelectedCuration = ({navigation}) => {
                             backdropOpacity={0.4}
                             style={{justifyContent: 'center', alignItems: 'center', margin: 0}}
                         >
-                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', marginTop: 40 * tmpWidth, marginBottom: 40 * tmpWidth}}>
+                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', marginTop: 120 * tmpWidth, marginBottom: 120 * tmpWidth}}>
                                 { state.mycurationpost.likes == undefined ? <ActivityIndicator/> :
                                 <ScrollView>
                                     <View style={{width:319 * tmpWidth, alignItems:'center', flexDirection:'row', marginTop:20 * tmpWidth, marginLeft:16 * tmpWidth, height:32 * tmpWidth}}>
