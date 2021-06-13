@@ -277,10 +277,12 @@ const SelectedCuration = ({navigation}) => {
                             isVisible={true}
                             onBackdropPress={()=>{setShowpost(false);}}
                             backdropOpacity={0.4}
-                            style={{justifyContent:'center', marginBottom:keyboardHeight }}
+                            style={{justifyContent: 'center', alignItems: 'center', margin: 0}}
                         >
-                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff' }}>
-                                <View>
+                            <View 
+                                style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff',marginTop: 40 * tmpWidth, marginBottom: 40 * tmpWidth}}
+                            >
+                                <ScrollView>
                                     <View style={styles.curationpostuser}>
                                         <TouchableOpacity
                                             onPress={async () => {
@@ -314,7 +316,7 @@ const SelectedCuration = ({navigation}) => {
                                     <Text style={{fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text> :
                                     <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
                                     </View>
-                                </View>
+                                </ScrollView>
                             </View>
                         </Modal> : null }
                         { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'curation'} subjectId={selectedCuration._id} /> : null }
@@ -325,11 +327,11 @@ const SelectedCuration = ({navigation}) => {
                             isVisible={true}
                             onBackdropPress={onClose}
                             backdropOpacity={0.4}
-                            style={{justifyContent:'center', marginBottom:keyboardHeight}}
+                            style={{justifyContent: 'center', alignItems: 'center', margin: 0}}
                         >
-                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', }}>
+                            <View style={{width:335 * tmpWidth, borderRadius:8 * tmpWidth, backgroundColor:'#fff', marginTop: 40 * tmpWidth, marginBottom: 40 * tmpWidth}}>
                                 { state.mycurationpost.likes == undefined ? <ActivityIndicator/> :
-                                <View>
+                                <ScrollView>
                                     <View style={{width:319 * tmpWidth, alignItems:'center', flexDirection:'row', marginTop:20 * tmpWidth, marginLeft:16 * tmpWidth, height:32 * tmpWidth}}>
                                         <TouchableOpacity style={{width:32 * tmpWidth, height:32 * tmpWidth}}>
                                             {state.mycurationpost.postUserId.profileImage == null || state.mycurationpost.postUserId.profileImage==undefined ?
@@ -365,7 +367,7 @@ const SelectedCuration = ({navigation}) => {
                                     <View style={{width:250 * tmpWidth, marginLeft:60 * tmpWidth, marginBottom: 20 * tmpWidth}}>
                                     <Text style={{lineHeight:17*tmpWidth, fontSize:12 * tmpWidth, color:'rgb(93,93,93)'}} >{state.mycurationpost.textcontent}</Text>
                                     </View>
-                                </View> }
+                                </ScrollView> }
                             </View>
                         </Modal> : null }
                         { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'curation'} /> : null}
