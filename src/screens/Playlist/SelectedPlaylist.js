@@ -6,7 +6,7 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { Context as SearchContext } from '../../context/SearchContext';
+import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
@@ -19,7 +19,7 @@ const SelectedPlaylist = ({navigation}) => {
         unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    const { state: searchState, hashtagHint } = useContext(SearchContext);
+    const { state: searchState, SearchHashtag } = useContext(SearchPlaylistContext);
     const playlistid= navigation.getParam('id');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
@@ -43,7 +43,6 @@ const SelectedPlaylist = ({navigation}) => {
     const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
     const [comments, setComments] = useState(state.current_comments);
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
-    console.log(currentPlaylist.isWeekly)
     const onClose =() => {
         setShowModal('0');
         initRecomment();
@@ -120,8 +119,8 @@ const SelectedPlaylist = ({navigation}) => {
     }, [playlistid, state.current_playlist])
 
     useEffect(() => {
-        if(searchState.hashtagHint != undefined && searchState.hashtagHint.length != 0 && hashtag != '') navigate('SelectedHashtag', {data: searchState.hashtagHint[0], text: hashtag, searchOption : 'Hashtag' });
-    }, [searchState.hashtagHint])
+        if(searchState.playList != null && hashtag != '') navigate('SelectedHashtag', {data: searchState.playList, text: hashtag, searchOption : 'Hashtag' });
+    }, [searchState.playList])
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist.length == 0)    setDeletedModal(true);
     },[state.current_playlist])
@@ -219,7 +218,7 @@ const SelectedPlaylist = ({navigation}) => {
                                     return (
                                         <TouchableOpacity style={styles.hashtagView} key={item._id} onPress={async() => {
                                             setHashtag(item)
-                                            await hashtagHint({term: item})
+                                            SearchHashtag({ object: item })
                                         }}>
                                             <Text style={styles.hashtagBox}>{'#' + item}</Text>
                                         </TouchableOpacity>
