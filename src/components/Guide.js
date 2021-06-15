@@ -28,6 +28,9 @@ const Guide = ({type}) => {
             backdropOpacity={1}
             style={{alignItems: 'center'}}
         >
+            <TouchableOpacity onPress={() => {
+                setGuideModal(false)
+                onClose()}}>
             { type == 'playlist' ? 
             <Image style={{flex: 1, resizeMode: 'contain'}} source={require('../assets/icons/playlistGuide.png')}/>:
             type == 'curation' ?
@@ -35,11 +38,6 @@ const Guide = ({type}) => {
             type == 'board' ?
             <Image style={{flex: 1, resizeMode: 'contain'}} source={require('../assets/icons/boardGuide.png')}/> :
             <Image style={{flex: 1, resizeMode: 'contain'}} source={require('../assets/icons/createGuide.png')}/> } 
-            <TouchableOpacity onPress={() => {
-                setGuideModal(false)
-                onClose()}}>
-            <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/guideExit.svg')} 
-                style={(type == 'playlist' || type == 'curation' || type == 'board') ? styles.firstOpt : styles.secondOpt}/>
             </TouchableOpacity>
         </Modal>
     )
