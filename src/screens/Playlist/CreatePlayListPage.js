@@ -193,7 +193,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                                         }
                                     }}
                                     autoCorrect={false}
-                                    style={{fontSize: 13 * tmpWidth}}
+                                    style={{fontSize: 13 * tmpWidth, width : tmpWidth*215}}
                                 />
                                 </View>
                             <TouchableOpacity onPress={() => {
