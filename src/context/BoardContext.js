@@ -26,7 +26,7 @@ const BoardReducer = (state, action) => {
         case'boardNotNext':
             return { ...state, boardNotNext: true };
         case 'createContent':
-            return { ...state, currentBoard: action.payload };
+            return { ...state, currentBoard: action.payload, currentBoardPage: 1, boardNotNext: false };
         case 'getCurrentContent':
             return { ...state, currentContent: action.payload[0], currentComment: action.payload[1], currentCommentPage: state.currentCommentPage+1 };
         case 'nextComments':
