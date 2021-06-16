@@ -28,9 +28,11 @@ const PlaylistCreatePage = ({ navigation }) => {
     const [contentValidity, setContentValidity] = useState(true);
     const [thumbnailValidity, setThumbnailValidity] = useState(true);
     const [songValidity, setSongValidity] = useState(true);
+    const [hashtagValidity, setHashtagValidty] = useState(true);
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
     const isEdit = navigation.getParam('isEdit');
+    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
     const addhashtag = ({data}) => {
         if (hashtag.length < 3 && data != '') {
             setHashtag([...hashtag, data]);
@@ -178,16 +180,26 @@ const PlaylistCreatePage = ({ navigation }) => {
                                     placeholderTextColor='rgb(196,196,196)'
                                     autoCapitalize='none'
                                     onSubmitEditing={() => {
-                                        addhashtag({data:temphash})
-                                        setTemphash('')
+                                        if(!pattern_spc.test(temphash)){
+                                            addhashtag({data:temphash})
+                                            setTemphash('')
+                                            setHashtagValidty(true)
+                                        }else{
+                                            setHashtagValidty(false)
+                                        }
                                     }}
                                     autoCorrect={false}
                                     style={{fontSize: 13 * tmpWidth}}
                                 />
                                 </View>
                             <TouchableOpacity onPress={() => {
-                                addhashtag({data:temphash})
-                                setTemphash('')}}
+                                if(!pattern_spc.test(temphash)){
+                                    addhashtag({data:temphash})
+                                    setTemphash('')
+                                    setHashtagValidty(true)
+                                }else{
+                                    setHashtagValidty(false)
+                                }}}
                             >
                                 <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
                             </TouchableOpacity>
@@ -213,6 +225,11 @@ const PlaylistCreatePage = ({ navigation }) => {
                             }}
                         />
                     </View>
+                    {hashtagValidity ? null :
+                    <View style={{flexDirection:'row', marginTop: 4 * tmpWidth, marginLeft: 65 * tmpWidth,}}>
+                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                        <Text style={styles.warningText}>특수문자는 불가능합니다.</Text>
+                    </View>}
                 </View>
                 <View style={styles.thumbnail}>
                     <View>
