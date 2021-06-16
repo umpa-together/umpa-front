@@ -33,6 +33,10 @@ const PlaylistCreatePage = ({ navigation }) => {
     const [comment, setComment] = useState('');
     const isEdit = navigation.getParam('isEdit');
     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+    const pattern_num = /[0-9]/;
+    const pattern_eng = /[a-zA-Z]/;
+    const pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
     const addhashtag = ({data}) => {
         if (hashtag.length < 3 && data != '') {
             setHashtag([...hashtag, data]);
@@ -180,7 +184,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                                     placeholderTextColor='rgb(196,196,196)'
                                     autoCapitalize='none'
                                     onSubmitEditing={() => {
-                                        if(!pattern_spc.test(temphash)){
+                                        if(!pattern_spc.test(temphash) && (pattern_eng.test(temphash) || pattern_kor.test(temphash) || pattern_num.test(temphash))){
                                             addhashtag({data:temphash})
                                             setTemphash('')
                                             setHashtagValidty(true)
@@ -193,7 +197,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                                 />
                                 </View>
                             <TouchableOpacity onPress={() => {
-                                if(!pattern_spc.test(temphash)){
+                                if(!pattern_spc.test(temphash) && (pattern_eng.test(temphash) || pattern_kor.test(temphash) || pattern_num.test(temphash))){
                                     addhashtag({data:temphash})
                                     setTemphash('')
                                     setHashtagValidty(true)
