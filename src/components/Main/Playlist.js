@@ -169,7 +169,7 @@ const styles=StyleSheet.create({
     backpic:{
         position: 'absolute',
         width: '100%',
-        height: '75.4%',
+        height: '100%',
     },
     backpicimg:{
         width:'100%',
