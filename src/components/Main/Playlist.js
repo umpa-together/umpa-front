@@ -129,6 +129,14 @@ const Playlist = ({ playList, navigation }) => {
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{color: 'rgb(93,93,93)'}}>팔로우한 사람이 올린 플레이리스트가 없습니다.</Text>
                     <Text style={{color: 'rgb(93,93,93)', marginTop: 10 * tmpWidth}}>다른 사람들을 팔로우 해보세요!</Text>
+
+                    <TouchableOpacity 
+                        style={{justiftyContent:'center', alignItems:'center',backgroundColor:'rgb(169,193,255)', borderRadius:20,width:80*tmpWidth,height: 30*tmpWidth,marginTop: 20*tmpWidth,}}
+                        onPress={()=>{fetchData();}}
+                        >
+                            
+                        <Text style={{color:'white',marginTop:8*tmpWidth}}>새로고침</Text>
+                    </TouchableOpacity>
                 </View> }
             </View> : null }
         </View>
