@@ -44,6 +44,7 @@ const AllCurationForm = ({navigation}) => {
     }
 
     useEffect(() => {
+        if(state.allCurationPost != null){
         setAllCuration(
         state.allCurationPost.filter((item, i) => {
             return (
@@ -53,9 +54,11 @@ const AllCurationForm = ({navigation}) => {
             )
         })
         )
+    }
     }, [state.allCurationPost]);
     return (
         <View style={styles.result}>
+            { state.allCurationPost == null ? <View style={{flex: 1,justifyContent: 'center', alignContent: 'center'}}><ActivityIndicator/></View> :
             <FlatList
                 numColumns={2}
                 onEndReached={onEndReached}
@@ -92,7 +95,7 @@ const AllCurationForm = ({navigation}) => {
                         </View>
                     )
                 }}
-            />
+            /> }
         </View>
     )
 }
