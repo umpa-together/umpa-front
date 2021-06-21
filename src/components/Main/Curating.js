@@ -1,14 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { tmpWidth } from '../FontNormalize';
 import Guide from '../Guide';
-
-const Imagetake = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100*tmpWidth}} source ={{url:url}}/>
-};
+import { SongImage } from '../SongImage'
 
 const Curating = ({ curationPosts, navigation }) => {
     const { state, getCurationposts, nextCurationposts, getCuration } = useContext(CurationContext);
@@ -66,7 +61,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                 {item.isSong ? 
                                 <View style={{flexDirection: 'row',}}>
                                     <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth, width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13}}>
-                                        <Imagetake opac={1.0} url={item.object.attributes.artwork.url}/>
+                                        <SongImage url={item.object.attributes.artwork.url} size={190} border={190}/>
                                     </View> 
                                     <View style={styles.contentl}>
                                         <View style={styles.songinfol}>
@@ -85,7 +80,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                 </View> : 
                                 <View  style={{flexDirection: 'row'}}>
                                     <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth,  width: 190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
-                                        <Imagetake opac={1.0} url={item.object.artwork.url}/>                            
+                                        <SongImage url={item.object.artwork.url} size={190} border={190}/>
                                     </View> 
                                     <View style={styles.albumcontentl}>
                                         <View style={styles.albuminfol}>
@@ -107,7 +102,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                 {item.isSong ?
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
-                                        <Imagetake opac={1.0} url={item.object.attributes.artwork.url}/>
+                                        <SongImage url={item.object.attributes.artwork.url} size={190} border={190}/>
                                     </View>
                                     <View style={styles.contentr}>
                                         <View style={styles.songinfor}>
@@ -126,7 +121,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                 </View> :
                                 <View  style={{flexDirection: 'row'}}>
                                     <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
-                                        <Imagetake opac={1.0} url={item.object.artwork.url}/>
+                                        <SongImage url={item.object.artwork.url} size={190} border={190}/>
                                     </View>
                                     <View style={styles.albuminfor}>
                                         <View style={{flexDirection: 'row', marginTop:21 * tmpWidth, alignItems: 'center'}}>

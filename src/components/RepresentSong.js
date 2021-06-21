@@ -1,19 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Animated, FlatList, Image} from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native'
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../navigationRef';
 import { tmpWidth } from './FontNormalize';
 import TrackPlayer from 'react-native-track-player';
 import HarmfulModal from './HarmfulModal';
-
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from './SongImage'
 
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -119,14 +112,14 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                             : null }
                                             <Text style={styles.representsongname} numberOfLines={1}>{item.attributes.name}</Text>
                                         </View>
-                                        <TouchableOpacity style={styles.representSongCover} onPress={() => {
+                                        <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id) {
                                                 stoptracksong()
                                             }else{
                                                 addtracksong({data:item})
                                             }
                                         }}>
-                                            <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
+                                            <SongImage url={item.attributes.artwork.url} size={134} border={134}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='50' height='50' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
                                             <SvgUri width='50' height='50' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
@@ -162,14 +155,14 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                             renderItem={({item}) => {
                                 return (
                                     <View style={styles.listBox}>
-                                        <TouchableOpacity style={styles.listSongCover} onPress={() => {
+                                        <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
                                                 stoptracksong()
                                             }else{
                                                 addtracksong({data: item})
                                             }
                                         }}>
-                                            <ImageSelect opac={1.0} url={item.attributes.artwork.url}/>
+                                            <SongImage url={item.attributes.artwork.url} size={57} border={57}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='27' height='27' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='27' height='27' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -219,22 +212,12 @@ const styles=StyleSheet.create({
         borderRadius: 16 * tmpWidth,
         backgroundColor: 'rgb(254,254,254)' 
     },
-    representSongCover: {
-        width: 134 * tmpWidth ,
-        height: 134  * tmpWidth,
-        borderRadius: 134 * tmpWidth,
-    },
     listBox: {
         height: 57 * tmpWidth ,
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 20 * tmpWidth ,
         marginTop: 12 * tmpWidth
-    },
-    listSongCover:{
-        width: 57 * tmpWidth,
-        height: 57  * tmpWidth,
-        borderRadius: 57 * tmpWidth,
     },
     songedit:{
         height:16 * tmpWidth,

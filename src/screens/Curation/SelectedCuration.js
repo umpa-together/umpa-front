@@ -1,5 +1,5 @@
 import React, { useContext,useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView,Keyboard,KeyboardEvent ,ImageBackground,StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -11,18 +11,7 @@ import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
 import DeleteModal from '../../components/DeleteModal';
 import HarmfulModal from '../../components/HarmfulModal';
-
-const Imagetake = ({url , border, opac}) => {
-    url =url.replace('{w}', '700');
-    url = url.replace('{h}', '700');
-    return <Image style ={{ opacity : opac, height:'100%', width:'100%',borderRadius: border }} resizeMode ="stretch"  source ={{url:url}}/>
-};
-
-const Imagebacktake = ({url , border, opac}) => {
-    url =url.replace('{w}', '700');
-    url = url.replace('{h}', '700');
-    return  <ImageBackground style ={{ opacity : opac, height:'100%', width:'100%',borderRadius: border }} resizeMode ="stretch"  source ={{url:url}}/>
-};
+import { SongImage, SongImageBack } from '../../components/SongImage'
 
 const SelectedCuration = ({navigation}) => {
     const { state, postCuration, getmyCuration, likecurationpost,unlikecurationpost,editCuration, getCurationposts } = useContext(CurationContext);
@@ -117,7 +106,9 @@ const SelectedCuration = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <View style={{position :"absolute", zIndex:-2, width: 375 * tmpWidth, height:356 * tmpWidth}}>
-                        {currentCuration.isSong ? <Imagebacktake opac={0.4} url={currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={currentCuration.object.artwork.url}></Imagebacktake>}
+                        {currentCuration.isSong ? 
+                        <SongImageBack url={currentCuration.object.attributes.artwork.url} width={375} height={356} opac={0.4} border={0} /> : 
+                        <SongImageBack url={currentCuration.object.artwork.url} width={375} height={356} opac={0.4} border={0} />}
                     </View>
                     <View style={styles.back}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
@@ -133,12 +124,12 @@ const SelectedCuration = ({navigation}) => {
                                 addtracksong({data: currentCuration.object})
                             }
                         }}>
-                            <Imagetake border ={200 * tmpWidth} opac={1} url={currentCuration.object.attributes.artwork.url} /> 
+                            <SongImage url={currentCuration.object.attributes.artwork.url} size={204} border={204} />
                             { isPlayingid != currentCuration.object.id ? 
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> :
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> }
                         </TouchableOpacity> :
-                        <Imagetake opac={1} border={200 * tmpWidth} url={currentCuration.object.artwork.url} /> }
+                        <SongImage url={currentCuration.object.artwork.url} size={204} border={204} /> }
                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                     </View>
                     <View style={styles.curationinfo}>

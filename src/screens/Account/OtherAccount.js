@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native';
+import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import Modal from 'react-native-modal';
@@ -12,15 +12,8 @@ import ReportModal from '../../components/ReportModal';
 import HarmfulModal from '../../components/HarmfulModal';
 import RepresentSong from '../../components/RepresentSong';
 import StoryCalendar from '../../components/StoryCalendar';
-
+import { SongImage } from '../../components/SongImage'
 require('date-utils');
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
 
 const OtherAccountScreen = ({navigation}) => {
     const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar, getOtheruser, } = useContext(UserContext);
@@ -136,10 +129,10 @@ const OtherAccountScreen = ({navigation}) => {
                     <View style={{height: '100%'}}>
                         <View style={{flexDirection: 'row',  justifyContent: 'center', marginTop: 10 * tmpWidth}}>
                             <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
-                                <TouchableOpacity style={styles.songImage} onPress={() => {
+                                <TouchableOpacity onPress={() => {
                                     setRepresentModal(true)
                                 }}>
-                                    <ImageSelect  url={user.songs[0].attributes.artwork.url}/> 
+                                    <SongImage url={user.songs[0].attributes.artwork.url} size={68} border={68}/>
                                 </TouchableOpacity>
                                 <Text style={{marginTop: 10 * tmpWidth , fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
                             </View>
@@ -153,10 +146,10 @@ const OtherAccountScreen = ({navigation}) => {
                                 <TouchableOpacity style={styles.songImage2}>
                                     <SvgUri width={14*tmpWidth} height={14*tmpWidth} source={require('../../assets/icons/musicnote.svg')} />
                                 </TouchableOpacity> : 
-                                <TouchableOpacity style={styles.songImage} onPress={() => {
+                                <TouchableOpacity onPress={() => {
                                     storyCalendar({id: userState.otherUser._id})
                                     storyClick()}}>
-                                    <ImageSelect url={url} />
+                                        <SongImage url={url} size={68} border={68}/>
                                 </TouchableOpacity>}
                                 <Text style={{marginTop: 10  * tmpWidth, fontSize: 12 * tmpWidth, color: 'rgb(80,80,80)'}}>오늘의 곡</Text>
                             </View>
@@ -233,14 +226,14 @@ const OtherAccountScreen = ({navigation}) => {
                         <View style={{alignItems: 'center'}}>
                             <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)', marginTop: 20 * tmpWidth}}>오늘의 곡</Text>
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 5 * tmpWidth, marginBottom:21 * tmpWidth}}>{today}</Text>
-                            <TouchableOpacity style={styles.storySongCover} onPress={() => {
+                            <TouchableOpacity onPress={() => {
                                 if(isPlayingid == story['song'].id){
                                     stoptracksong()
                                 }else{
                                     addtracksong({data: story['song']})
                                 }
                             }}>
-                                <ImageSelect opac={1.0} url={url} />
+                                <SongImage url={url} size={155} border={155}/>
                                 { isPlayingid != story['song'].id ? 
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> :
                                 <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 49 * tmpWidth, top: 49 * tmpWidth}}/> }
@@ -337,65 +330,6 @@ const styles = StyleSheet.create({
         height: 28*tmpWidth,
         width: 160 * tmpWidth
     },
-    representSongBox: {
-        height:463  * tmpWidth,
-        backgroundColor: 'rgb(250,250,250)', 
-        borderTopRightRadius: 16 * tmpWidth,
-        borderTopLeftRadius: 16 * tmpWidth,
-        shadowColor: "rgb(146, 158, 200)",
-        shadowOffset: {
-            height: 0,
-            width: 0,
-        },
-        shadowRadius: 60 * tmpWidth,
-        shadowOpacity: 0.04,
-    },
-    songBox: {
-        width: 215  * tmpWidth,
-        height: 289  * tmpWidth,
-        borderRadius: 16 * tmpWidth,
-        backgroundColor: 'rgb(254,254,254)' 
-    },
-    leftSideBox: {
-        width: 48  * tmpWidth,
-        height: 289  * tmpWidth,
-        borderTopRightRadius: 16 * tmpWidth,
-        borderBottomRightRadius: 16 * tmpWidth,
-        backgroundColor: 'rgb(254,254,254)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    rightSideBox: {
-        width: 48  * tmpWidth,
-        height: 289  * tmpWidth,
-        borderTopLeftRadius: 16 * tmpWidth,
-        borderBottomLeftRadius: 16 * tmpWidth,
-        backgroundColor: 'rgb(254,254,254)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    representSongCover: {
-        width: 134  * tmpWidth,
-        height: 134  * tmpWidth,
-        borderRadius: 134 * tmpWidth,
-    },
-    nextIcon: {
-        width: 7 * tmpWidth,
-        height: 24  * tmpWidth,
-        borderWidth: 1 * tmpWidth
-    },
-    listBox: {
-        height: 57  * tmpWidth,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 20  * tmpWidth,
-        marginTop: 12 * tmpWidth
-    },
-    listSongCover:{
-        width: 57  * tmpWidth,
-        height: 57  * tmpWidth,
-        borderRadius: 57 * tmpWidth,
-    },
     storyContainer: {
         width: 271 * tmpWidth ,
         height: 322 * tmpWidth ,
@@ -408,11 +342,6 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 60 * tmpWidth,
         shadowOpacity: 0.04,
-    },
-    storySongCover: {
-        width: 155 * tmpWidth,
-        height: 155 * tmpWidth,
-        borderRadius: 155 * tmpWidth
     },
     innerContainer: {
         width: 215  * tmpWidth,

@@ -10,14 +10,7 @@ import HarmfulModal from '../components/HarmfulModal';
 import Modal from 'react-native-modal';
 import TosForm from '../components/Setting/TosForm';
 import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
-
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100 ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from '../components/SongImage'
 
 const SignupPage = ({ navigation }) => {
     const { state, checkName, signup, signin } = useContext(AuthContext);
@@ -509,7 +502,7 @@ const SignupPage = ({ navigation }) => {
                                                     addtracksong({data: item})
                                                 }
                                             }}>
-                                                <ImageSelect opac={1.0} url={item.attributes.artwork.url} />
+                                                <SongImage url={item.attributes.artwork.url} size={50} border={50} />
                                                 { isPlayingid != item.id ? 
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -565,9 +558,7 @@ const SignupPage = ({ navigation }) => {
                                 return (
                                     <TouchableOpacity style={{width:64 * tmpWidth, height:64 * tmpWidth, marginRight:14 * tmpWidth}} onPress={() => deleteItem({data: item})}>
                                         <View style={{alignItems: 'center'}}>
-                                            <View style={{width:64 * tmpWidth, height:64 * tmpWidth}}>
-                                                <ImageSelect opac={1.0} url={item.attributes.artwork.url}></ImageSelect>
-                                            </View>
+                                            <SongImage url={item.attributes.artwork.url} size={64} border={64} />
                                             <SvgUri width={20 * tmpWidth} height={20 * tmpWidth} source={require('../assets/icons/modalexit.svg')} />
                                         </View>
                                     </TouchableOpacity>

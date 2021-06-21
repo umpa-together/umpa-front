@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
@@ -8,12 +8,7 @@ import { Context as CurationContext } from '../../context/CurationContext'
 import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-
-const Imagetake = ({url, borderRadius}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: borderRadius}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
 
 const SearchResultScreen = ({navigation, searchOption, text}) => {
     const { state: searchState, songNext, searchDJ } = useContext(SearchContext);
@@ -66,9 +61,7 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
                                     searchDJ({songName: item.attributes.name})
                                 }
                                 navigate('SelectedSong', {song: item, category: searchOption})}}>
-                                <View style={{width: 56 * tmpWidth, height: 54.4 * tmpWidth}}>
-                                    <Imagetake borderRadius={70} url={item.attributes.artwork.url}/>
-                                </View>
+                                <SongImage url={item.attributes.artwork.url} size={56} border={56} />
                                 <View style={{marginLeft: 24 * tmpWidth, width:tmpWidth*220, }}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         {item.attributes.contentRating == "explicit" ? 

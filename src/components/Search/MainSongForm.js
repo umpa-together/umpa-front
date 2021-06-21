@@ -9,12 +9,7 @@ import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-
-const Imagetake = ({url ,borderRadius}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%',borderRadius:borderRadius}} source ={{url:url}}/>
-};
+import { SongImage } from '../SongImage'
 
 const MainSongForm = ({navigation}) => {
     const { state, currentHashtag } = useContext(SearchContext);
@@ -59,7 +54,7 @@ const MainSongForm = ({navigation}) => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
-                                        <Imagetake  borderRadius={8 * tmpWidth} url={item.image}/>
+                                        <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{url:item.image}}/>
                                     </View>
                                     <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)','rgba(0,0,0,0.1)' ]} style={styles.playlistitem2}>
                                     <View style={{flexDirection:'row' ,width:331 * tmpWidth, height:40 * tmpWidth}}>
@@ -106,21 +101,21 @@ const MainSongForm = ({navigation}) => {
                                 <View style={{width:114 * tmpWidth,marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth}}>
                                     { item.isSong ?
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
-                                                                                        navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                        <TouchableOpacity onPress={async ()=>{
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                                         }}>
-                                            <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
+                                            <SongImage  url={item.object.attributes.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.attributes.name}</Text> 
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
+                                        <TouchableOpacity onPress={async ()=>{
                                             navigation.push('SelectedCuration', {id: item.songoralbumid})
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                                         }}>
-                                            <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
+                                            <SongImage url={item.object.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.albumName}</Text> 
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
