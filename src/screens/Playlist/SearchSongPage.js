@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
@@ -9,12 +9,7 @@ import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import Guide from '../../components/Guide';
-
-const SongImage = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
 
 const SearchPage = ({ navigation }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -183,8 +178,8 @@ const SearchPage = ({ navigation }) => {
                                             } else {
                                                 addtracksong({data: item})
                                             }}}
-                                            style={styles.songCover}>
-                                            <SongImage url={item.attributes.artwork.url}/>
+                                        >
+                                            <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -209,8 +204,9 @@ const SearchPage = ({ navigation }) => {
                                                 stoptracksong()
                                             }else{
                                                 addtracksong({data: item})
-                                            }}}style={styles.songCover}>
-                                            <SongImage url={item.attributes.artwork.url}/>
+                                            }}}
+                                        >
+                                            <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -270,9 +266,7 @@ const SearchPage = ({ navigation }) => {
                                 }}   
                             >
                                 <View style={styles.selecetedSongBox}>
-                                    <View style={styles.selectedSongCover}>
-                                        <SongImage url={item.attributes.artwork.url} />
-                                    </View>
+                                    <SongImage url={item.attributes.artwork.url} size={44} border={44}/>
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             {item.attributes.contentRating == "explicit" ? 
@@ -364,10 +358,6 @@ const styles = StyleSheet.create({
         paddingLeft: 24 * tmpWidth,
         backgroundColor: 'rgb(238,244,255)',
     },
-    songCover: {
-        width: 56 * tmpWidth,
-        height: 56 * tmpWidth,
-    },
     songContainer: {
         marginTop: 10 * tmpWidth, 
         marginLeft: 24 * tmpWidth, 
@@ -417,10 +407,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20.7 * tmpWidth,
         marginBottom: 8 * tmpWidth,
     },
-    selectedSongCover: {
-        width: 44 * tmpWidth,
-        height: 44 * tmpWidth,
-    }
 });
 
 export default SearchPage;

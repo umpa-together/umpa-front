@@ -5,6 +5,7 @@ import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from '../context/UserContext';
+import { SongImage } from './SongImage'
 
 const ImageSelect = ({url, opac}) => {
   url =url.replace('{w}', '300');
@@ -190,14 +191,14 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                   </View>
                   {selectedStory != undefined ? 
                   <View style={{flexDirection: 'row', paddingLeft: 24 * tmpWidth, paddingTop: 12 * tmpWidth}}>
-                    <TouchableOpacity style={styles.songsCover} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                       if(isPlayingid == selectedStory.song.id){
                           stoptracksong()
                       }else{
                           addtracksong({data: selectedStory.song})
                       }
                     }}>
-                      <ImageSelect opac={1.0} url={selectedStory.song.attributes.artwork.url}/>
+                        <SongImage url={selectedStory.song.attributes.artwork.url} size={120} border={120}/>
                         { isPlayingid != selectedStory.song.id ? 
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> :
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> }
@@ -283,10 +284,6 @@ const styles=StyleSheet.create({
     activeText: {
         color: 'rgb(152,187,255)',
         textAlign: 'center',
-    },
-    songsCover: {
-      width: 120 * tmpWidth,
-      height: 120 * tmpWidth,
     },
     whiteText: {
       color: 'white'

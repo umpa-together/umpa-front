@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as UserContext } from '../../context/UserContext'
 import { Context as DJContext } from '../../context/DJContext'
@@ -9,12 +9,7 @@ import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
-
-const SongImage = ({url, opacity}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth, opacity}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
 
 const SongEditPage = ({navigation}) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -225,8 +220,8 @@ const SongEditPage = ({navigation}) => {
                                         }else{
                                             addtracksong({data: item})
                                         }}}
-                                        style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url} opacity={1}/>
+                                    >
+                                        <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -252,8 +247,8 @@ const SongEditPage = ({navigation}) => {
                                         }else{
                                             addtracksong({data: item})
                                         }}}
-                                        style={styles.songCover}>
-                                        <SongImage url={item.attributes.artwork.url} opacity={1}/>
+                                    >
+                                        <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                         { isPlayingid != item.id ? 
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                         <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -302,9 +297,7 @@ const SongEditPage = ({navigation}) => {
                                     deleteItem({data: item})}}
                             >
                                 <View style={styles.selecetedSongBox}>
-                                    <View style={styles.selectedSongCover}>
-                                        <SongImage url={item.attributes.artwork.url} opacity={1} />
-                                    </View>
+                                    <SongImage url={item.attributes.artwork.url} size={44} border={44} />
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             {item.attributes.contentRating == "explicit" ? 
@@ -349,7 +342,7 @@ const SongEditPage = ({navigation}) => {
                         renderItem={({item, index}) => {
                             return (
                                 <View style={{flexDirection: 'row', marginTop: 12 * tmpWidth}}>
-                                    <TouchableOpacity style={styles.selectedSongCover} onPress={() => {
+                                    <TouchableOpacity onPress={() => {
                                         if(orderLists.includes(index)){
                                             setOrderLists(orderLists.filter(order => order != index))
                                         }else{
@@ -357,8 +350,8 @@ const SongEditPage = ({navigation}) => {
                                         }
                                     }}>
                                         {orderLists.includes(index) ? 
-                                        <SongImage url={item.attributes.artwork.url} opacity={1.0}/> : 
-                                        <SongImage url={item.attributes.artwork.url} opacity={0.5}/> }
+                                        <SongImage url={item.attributes.artwork.url} opac={1.0} size={44} border={44}/> : 
+                                        <SongImage url={item.attributes.artwork.url} opac={0.5} size={44} border={44}/> }
                                     </TouchableOpacity>
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -443,10 +436,6 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(238,244,255)',
         paddingLeft: 25 * tmpWidth,
     },
-    songCover: {
-        width: 56  * tmpWidth ,
-        height: 56 * tmpWidth  ,
-    },
     eachSong: {
         width: 375  * tmpWidth ,
         height: 76  * tmpWidth ,
@@ -476,10 +465,6 @@ const styles=StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 20.7   * tmpWidth,
         marginBottom: 8  * tmpWidth
-    },
-    selectedSongCover: {
-        width: 44   * tmpWidth,
-        height: 44   * tmpWidth,
     },
     mysong:{
         flexDirection: 'row',

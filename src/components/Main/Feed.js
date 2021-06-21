@@ -13,14 +13,7 @@ import Curating from  './Curating';
 import Playlist from  './Playlist';
 import { tmpWidth } from '../FontNormalize';
 import HarmfulModal from '../HarmfulModal';
-
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100*tmpWidth ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>    
-    );
-};
+import { SongImage } from '../SongImage'
 
 const Feed = ({navigation}) => {
     const { state } = useContext(PlaylistContext);
@@ -177,14 +170,14 @@ const Feed = ({navigation}) => {
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx-1], index: selectedIdx-1})}>
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
-                                <TouchableOpacity style={styles.songscover} onPress={() => {
+                                <TouchableOpacity onPress={() => {
                                     if(isPlayingid == selectedStory.song["song"].id){
                                         stoptracksong()
                                     }else{
                                         addtracksong({data: selectedStory.song["song"]})
                                     }
                                 }}>
-                                    <ImageSelect opac={1.0} url={selectedStory.song["song"].attributes.artwork.url}/>
+                                    <SongImage url={selectedStory.song["song"].attributes.artwork.url} size={152} border={152}/>
                                     { isPlayingid != selectedStory.song["song"].id ? 
                                     <SvgUri width='48' height='48' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> :
                                     <SvgUri width='48' height='48' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> }
@@ -222,10 +215,6 @@ Feed.navigationOptions = () =>{
 
 
 const styles = StyleSheet.create({
-    songscover : {
-        width : 152 * tmpWidth,
-        height : 152 * tmpWidth,
-    },
     headertext:{
         fontSize: 30 * tmpWidth,
         fontWeight: 'bold',

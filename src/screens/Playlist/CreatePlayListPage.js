@@ -8,12 +8,7 @@ import { Context as PlaylistContext } from '../../context/PlaylistContext'
 import { Context as UserContext } from '../../context/UserContext'
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
-
-const SongImage = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
 
 const PlaylistCreatePage = ({ navigation }) => {
     const [hashtag, setHashtag] = useState([]);
@@ -271,9 +266,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                             renderItem={({item}) => {
                                 return (
                                     <View style={styles.eachSong}>
-                                        <View style={styles.songCover}>
-                                            <SongImage url={item.attributes.artwork.url}/>
-                                        </View>
+                                        <SongImage url={item.attributes.artwork.url} size={48} border={48} />
                                         <View style={styles.songTextContainer}>
                                             <View style={styles.songTextWidth}>
                                                 <Text style ={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
@@ -454,10 +447,6 @@ const styles=StyleSheet.create({
         paddingTop: 12 * tmpWidth,
         paddingLeft: 20 * tmpWidth,
         borderRadius: 8 * tmpWidth
-    },
-    songCover: {
-        width: 48 * tmpWidth,
-        height: 48 * tmpWidth,
     },
     songTextContainer: {
         paddingTop: 6 * tmpWidth,  
