@@ -1,19 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from './FontNormalize';
-import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from '../context/UserContext';
 import { SongImage } from './SongImage'
-
-const ImageSelect = ({url, opac}) => {
-  url =url.replace('{w}', '300');
-  url = url.replace('{h}', '300');
-  return (
-      <Image style ={{borderRadius :100 * tmpWidth, opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-  );
-};
+import HarmfulModal from './HarmfulModal'
+import { addtracksong, stoptracksong } from './TrackPlayer'
 
 const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const { state } = useContext(UserContext);
@@ -30,6 +23,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const firstWeekday = new Date(year, month, 1).getDay();
     const lastWeekday = new Date(year, month, lastDate).getDay();
     const [calendarDates, setCalendarDates] = useState()
+    const [harmfulModal, setHarmfulModal] = useState(false)
     const weekdays = [];
     for (let idx = 0; idx <= 6; idx++) {
         const matchMonth = new Date(2020, 5, idx);
@@ -41,25 +35,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     for(let key in state.storyCalendar) {
         storyDate.push(state.storyCalendar[key].time)
     }
-    const addtracksong= async ({data}) => {
-      const track = new Object();
-      track.id = data.id;
-      track.url = data.attributes.previews[0].url;
-      track.title = data.attributes.name;
-      track.artist = data.attributes.artistName;
-      if (data.attributes.contentRating != "explicit") {
-          await TrackPlayer.reset()
-          setIsPlayingid(data.id);
-          await TrackPlayer.add(track)
-          TrackPlayer.play();
-      } else {
-          setHarmfulModal(true);
-      }
-    };
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
     const onClose = () => {
         setCalendarModal(false)
         setSelectedStory(null)
@@ -193,9 +168,9 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                   <View style={{flexDirection: 'row', paddingLeft: 24 * tmpWidth, paddingTop: 12 * tmpWidth}}>
                     <TouchableOpacity onPress={() => {
                       if(isPlayingid == selectedStory.song.id){
-                          stoptracksong()
+                          stoptracksong({ setIsPlayingid })
                       }else{
-                          addtracksong({data: selectedStory.song})
+                          addtracksong({ data: selectedStory.song, setIsPlayingid, setHarmfulModal })
                       }
                     }}>
                         <SongImage url={selectedStory.song.attributes.artwork.url} size={120} border={120}/>
@@ -203,9 +178,15 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> :
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> }
                     </TouchableOpacity>
-                    <View style={{justifyContent: 'center', width: 180 * tmpWidth, marginLeft: 24 * tmpWidth}}>
-                      <Text style={{fontSize: 18 * tmpWidth, fontWeight: '500'}} numberOfLines={1}>{selectedStory.song.attributes.name}</Text>
-                      <Text style={{fontSize:14 * tmpWidth, color:'rgb(133,133,133)', marginTop: 4 * tmpWidth}} numberOfLines={1}>{selectedStory.song.attributes.artistName}</Text>
+                    { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                    <View style={{justifyContent: 'center', width: 160 * tmpWidth, marginLeft: 24 * tmpWidth}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            {selectedStory.song.attributes.contentRating == "explicit" ? 
+                            <SvgUri width="17" height="17" source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                            : null }
+                            <Text style={{fontSize: 18 * tmpWidth, fontWeight: '500'}} numberOfLines={1}>{selectedStory.song.attributes.name}</Text>
+                        </View>
+                        <Text style={{fontSize:14 * tmpWidth, color:'rgb(133,133,133)', marginTop: 4 * tmpWidth}} numberOfLines={1}>{selectedStory.song.attributes.artistName}</Text>
                     </View>
                   </View> : null }
               </View>

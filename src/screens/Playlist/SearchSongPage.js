@@ -10,6 +10,7 @@ import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import Guide from '../../components/Guide';
 import { SongImage } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
 const SearchPage = ({ navigation }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -62,32 +63,11 @@ const SearchPage = ({ navigation }) => {
         )
     }
 
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            await TrackPlayer.reset()
-            setIsPlayingid(data.id);
-            await TrackPlayer.add(track)
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
-
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
-
+    
     useEffect(()=>{
         searchinit();
         if(addedplayList != undefined) {
@@ -174,9 +154,9 @@ const SearchPage = ({ navigation }) => {
                                         style={styles.selectedSong}>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             } else {
-                                                addtracksong({data: item})
+                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                             }}}
                                         >
                                             <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
@@ -201,9 +181,9 @@ const SearchPage = ({ navigation }) => {
                                         style={styles.eachSong}>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             }else{
-                                                addtracksong({data: item})
+                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                             }}}
                                         >
                                             <SongImage url={item.attributes.artwork.url} size={56} border={56}/>

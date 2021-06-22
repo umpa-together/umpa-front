@@ -14,6 +14,7 @@ import Playlist from  './Playlist';
 import { tmpWidth } from '../FontNormalize';
 import HarmfulModal from '../HarmfulModal';
 import { SongImage } from '../SongImage'
+import { addtracksong, stoptracksong } from '../TrackPlayer'
 
 const Feed = ({navigation}) => {
     const { state } = useContext(PlaylistContext);
@@ -26,25 +27,7 @@ const Feed = ({navigation}) => {
     const [selectedStory, setSelectedStory] = useState(undefined);
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
+
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
@@ -59,12 +42,12 @@ const Feed = ({navigation}) => {
     }
 
     const storyClick = ({item, index}) => {
-        stoptracksong();
+        stoptracksong({ setIsPlayingid });
         setSelectedStory(item);
         setSelectedIdx(index);
         setStoryModal(true);
         storyView({id: item.id});
-        if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"]});
+        if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"], setIsPlayingid, setHarmfulModal});
     }
 
     useEffect(() => {
@@ -172,9 +155,9 @@ const Feed = ({navigation}) => {
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                                 <TouchableOpacity onPress={() => {
                                     if(isPlayingid == selectedStory.song["song"].id){
-                                        stoptracksong()
+                                        stoptracksong({ setIsPlayingid })
                                     }else{
-                                        addtracksong({data: selectedStory.song["song"]})
+                                        addtracksong({data: selectedStory.song["song"], setIsPlayingid, setHarmfulModal})
                                     }
                                 }}>
                                     <SongImage url={selectedStory.song["song"].attributes.artwork.url} size={152} border={152}/>

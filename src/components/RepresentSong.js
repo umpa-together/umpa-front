@@ -7,6 +7,7 @@ import { tmpWidth } from './FontNormalize';
 import TrackPlayer from 'react-native-track-player';
 import HarmfulModal from './HarmfulModal';
 import { SongImage } from './SongImage'
+import { addtracksong, stoptracksong } from './TrackPlayer'
 
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -18,26 +19,6 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
         setIsPlayingid('0');
         await TrackPlayer.reset()
     }
-
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            await TrackPlayer.reset()
-            setIsPlayingid(data.id);
-            await TrackPlayer.add(track)
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
@@ -114,9 +95,9 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                         </View>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id) {
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             }else{
-                                                addtracksong({data:item})
+                                                addtracksong({ data:item, setIsPlayingid, setHarmfulModal })
                                             }
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={134} border={134}/>
@@ -157,9 +138,9 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                     <View style={styles.listBox}>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             }else{
-                                                addtracksong({data: item})
+                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                             }
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={57} border={57}/>

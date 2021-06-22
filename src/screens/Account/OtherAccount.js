@@ -13,6 +13,8 @@ import HarmfulModal from '../../components/HarmfulModal';
 import RepresentSong from '../../components/RepresentSong';
 import StoryCalendar from '../../components/StoryCalendar';
 import { SongImage } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+
 require('date-utils');
 
 const OtherAccountScreen = ({navigation}) => {
@@ -38,34 +40,15 @@ const OtherAccountScreen = ({navigation}) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     };
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
     const storyClick = () => {
         storyView({id: story.id});
         setStoryModal(true);
         if(story['song'].attributes.contentRating != 'explicit'){
-            addtracksong({data: story['song']});
+            addtracksong({ data: story['song'], setIsPlayingid, setHarmfulModal });
         }
     }
 
@@ -228,9 +211,9 @@ const OtherAccountScreen = ({navigation}) => {
                             <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(153,153,153)', marginTop: 5 * tmpWidth, marginBottom:21 * tmpWidth}}>{today}</Text>
                             <TouchableOpacity onPress={() => {
                                 if(isPlayingid == story['song'].id){
-                                    stoptracksong()
+                                    stoptracksong({ setIsPlayingid })
                                 }else{
-                                    addtracksong({data: story['song']})
+                                    addtracksong({ data: story['song'], setIsPlayingid, setHarmfulModal })
                                 }
                             }}>
                                 <SongImage url={url} size={155} border={155}/>
