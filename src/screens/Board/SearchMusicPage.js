@@ -1,30 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as BoardContext } from '../../context/BoardContext'
-import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
+import { SongImage } from '.././../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
-const SongImage = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
-};
-
-const SearchMusicPage = () => {
+const SearchMusicPage = ({ navigation }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { state:boardState, addSong } = useContext(BoardContext);
     const [text, setText] = useState('');
-    const [song, setSong] = useState({});
+    const [musicArchiveSong, setMusicArchiveSong] = useState({});
+    const setSong = navigation.getParam('setSong')
     const [loading, setLoading] = useState(false);
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-
+    const isMusicArchive = navigation.getParam('isMusicArchive')
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -42,37 +37,21 @@ const SearchMusicPage = () => {
     };
 
     const okPress = async () => {
-        navigate('MusicArchive');
-        await addSong({boardId: boardState.boards._id, song});
+        navigation.goBack();
+        if(isMusicArchive)  await addSong({boardId: boardState.boards._id, song: musicArchiveSong});
     }
 
     const selectSong = ({item}) => {
-        setSong(item);
-    };
-
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
+        if(isMusicArchive){
+            setMusicArchiveSong(item);
+        }else{
+            setSong(item)
         }
     };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
 
     useEffect(() => {
         searchinit()
@@ -138,13 +117,13 @@ const SearchMusicPage = () => {
                             <TouchableOpacity onPress={() => setSelectedId('')} style={styles.selectedSong}>
                                 <TouchableOpacity onPress={() => {
                                     if(isPlayingid == item.id){
-                                        stoptracksong()
+                                        stoptracksong({ setIsPlayingid })
                                     }else{
-                                        addtracksong({data: item})
+                                        addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                     }
                                 }}
-                                style={styles.songCover}>
-                                    <SongImage url={item.attributes.artwork.url}/>
+                            >
+                                    <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                     { isPlayingid != item.id ? 
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -173,12 +152,12 @@ const SearchMusicPage = () => {
                                 style={styles.eachSong}>
                                 <TouchableOpacity onPress={() => {
                                     if(isPlayingid == item.id){
-                                        stoptracksong()
+                                        stoptracksong({ setIsPlayingid })
                                     }else{
-                                        addtracksong({data: item})
+                                        addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                     }}}
-                                    style={styles.songCover}>
-                                    <SongImage url={item.attributes.artwork.url}/>
+                                >
+                                    <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                     { isPlayingid != item.id ? 
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
