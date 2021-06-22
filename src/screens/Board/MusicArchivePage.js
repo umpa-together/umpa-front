@@ -10,6 +10,7 @@ import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
 const MusicArchivePage = ({navigation}) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
@@ -46,29 +47,10 @@ const MusicArchivePage = ({navigation}) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     }
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
 
     const storyClick = async ({item, index}) => {
         stoptracksong()
@@ -76,7 +58,7 @@ const MusicArchivePage = ({navigation}) => {
         setClickModal(true);
         setSelectedStory(item);
         setSelectedIdx(index);
-        if(item.song.attributes.contentRating != 'explicit')    addtracksong({data:item.song});
+        if(item.song.attributes.contentRating != 'explicit')    addtracksong({ data:item.song, setIsPlayingid, setHarmfulModal });
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
 
@@ -179,7 +161,7 @@ const MusicArchivePage = ({navigation}) => {
                     <View style={{flex: 1, margin: 16 * tmpWidth}}>
                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
                             setClickModal(false)
-                            stoptracksong()
+                            stoptracksong({ setIsPlayingid })
                             if(selectedStory.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
@@ -209,9 +191,9 @@ const MusicArchivePage = ({navigation}) => {
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                             <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                                 if(isPlayingid == selectedStory.song.id){
-                                    stoptracksong()
+                                    stoptracksong({setIsPlayingid})
                                 }else{
-                                    addtracksong({data: selectedStory.song})
+                                    addtracksong({ data: selectedStory.song, setIsPlayingid, setHarmfulModal })
                                 }
                             }}>
                                 <View style={styles.songscover}>
