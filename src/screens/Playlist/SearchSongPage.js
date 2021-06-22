@@ -248,7 +248,7 @@ const SearchPage = ({ navigation }) => {
                                 <View style={styles.selecetedSongBox}>
                                     <SongImage url={item.attributes.artwork.url} size={44} border={44}/>
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
-                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', width: item.attributes.contentRating == "explicit" ? 160 * tmpWidth : null }}>
                                             {item.attributes.contentRating == "explicit" ? 
                                             <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                             : null }
