@@ -1,21 +1,22 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard, ScrollView } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import SvgUri from 'react-native-svg-uri';
 import {Context as BoardContext} from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import { SongImage } from '../../components/SongImage'
 
 const CreateContent = () => {
-    const { state, createContent } = useContext(BoardContext);
+    const { state, createContent, addSong } = useContext(BoardContext);
     const [img, setImage] = useState([]);
     const [contentValidity, setContentValidity] = useState(true);
     const [titleValidity, setTitleValidity] = useState(true);
+    const [song, setSong] = useState(null)
     const titleRef = useRef();
     const contentRef = useRef();
     const fd = new FormData();
-
     const create = async () => {
         if (titleRef.current.value == undefined || titleRef.current.value.length == 0){
             setTitleValidity(false);
@@ -37,7 +38,8 @@ const CreateContent = () => {
             });
         });
         navigate('SelectedBoard');
-        createContent({ title: titleRef.current.value, content: contentRef.current.value, boardId: state.boards._id, fd });
+        createContent({ title: titleRef.current.value, content: contentRef.current.value, boardId: state.boards._id, fd, song });
+        if(song != null)    addSong({boardId: state.boards._id, song})
     };
 
     const handleUpload = async () => {
@@ -51,6 +53,7 @@ const CreateContent = () => {
 
     return (
         <View style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <Text style={styles.boardText}>{state.boards.name}</Text>
                     <View style={styles.title}>
@@ -97,14 +100,42 @@ const CreateContent = () => {
                         </View>}
                     </View>
                 </TouchableWithoutFeedback>
+                <View style={styles.musicContainer}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={styles.menuText}>음악 공유하기</Text>
+                        <TouchableOpacity onPress={() => navigate('SearchMusic', {isMusicArchive: false, setSong: setSong})}>
+                            <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
+                        </TouchableOpacity>
+                    </View>
+                    {song != null ?
+                    <View style={styles.selectMusicBox}>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', paddingLeft: 20.7 * tmpWidth }}>
+                            <SongImage url={song.attributes.artwork.url} size={44} border={44} />
+                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={styles.infoBox}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center', width: song.attributes.contentRating == "explicit" ? 160 * tmpWidth : null}}>
+                                        {song.attributes.contentRating == "explicit" ? 
+                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        : null }
+                                        <Text style={styles.titleText} numberOfLines={1}>{song.attributes.name}</Text>
+                                    </View>
+                                    <Text style={styles.artistText} numberOfLines={1}>{song.attributes.artistName}</Text>
+                                </View>
+                                <TouchableOpacity onPress={() => setSong(null)}>
+                                    <SvgUri width={16*tmpWidth} height={16*tmpWidth} source={require('../../assets/icons/songdelete.svg')}/> 
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View> : null }
+                </View>
                 <View style={styles.photoContainer}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.menuText}>사진 업로드하기</Text>
                         <TouchableOpacity onPress={() => handleUpload()}>
-                            <SvgUri width='28' height='28' source={require('../../assets/icons/songPlus.svg')}/>
+                            <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
                         </TouchableOpacity>
                     </View>
-                    <View style={{height: 100 * tmpWidth}}>
+                    <View style={{height: 110 * tmpWidth}}>
                         <FlatList 
                             style={{marginTop: 12 * tmpWidth}}
                             data={img}
@@ -130,6 +161,7 @@ const CreateContent = () => {
                 <TouchableOpacity style={styles.uploadBox} onPress={() => create()}>
                     <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>업로드하기</Text>
                 </TouchableOpacity> 
+            </ScrollView>
         </View>
         
     );
@@ -217,9 +249,22 @@ const styles=StyleSheet.create({
         width: 64 * tmpWidth,
         height: 64 * tmpWidth,
     },
+    musicContainer: {
+        marginTop: 14 * tmpWidth,   
+        width: 327 * tmpWidth,
+        height: 120 * tmpWidth,
+    },
     photoContainer: {
         marginTop: 14 * tmpWidth,   
         width: 327 * tmpWidth
+    },
+    selectMusicBox: {
+        width: 327 * tmpWidth,
+        height: 60 * tmpWidth,
+        borderWidth: 1 * tmpWidth,
+        borderColor: 'rgb(199,218,255)',
+        borderRadius: 8 * tmpWidth,
+        marginTop: 16 * tmpWidth
     },
     uploadBox: {
         width: 327 * tmpWidth,
@@ -228,8 +273,7 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(169,193,255)',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute',
-        bottom: 22 * tmpWidth
+        marginBottom: 24 * tmpWidth
     },
     warningIcon: {
         width: 14 * tmpWidth,
@@ -263,7 +307,20 @@ const styles=StyleSheet.create({
         color:'rgb(238, 98, 92)', 
         marginLeft: 4 * tmpWidth, 
         fontSize: 12 * tmpWidth
-    }
+    },
+    infoBox: {
+        marginLeft: 22.4 * tmpWidth,  
+        marginRight: 25 * tmpWidth, 
+        width: 180 * tmpWidth,
+    },
+    titleText: {
+        fontSize: 14 * tmpWidth
+    },
+    artistText: {
+        fontSize: 12 * tmpWidth, 
+        color:'rgb(148,153,163)', 
+        marginTop: 6 * tmpWidth
+    },
 });
 
 export default CreateContent;
