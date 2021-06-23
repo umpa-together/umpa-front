@@ -25,6 +25,7 @@ import SettingPage from './src/screens/Account/SettingPage';
 import SongEditPage from './src/screens/Account/SongEditPage';
 import FeedBackPage from './src/screens/Account/FeedbackPage';
 import InformationUsePage from './src/screens/Account/InformationUsePage';
+import MusicBoxScreen from './src/screens/Account/MusicBoxScreen'
 
 import HelloScreen from './src/screens/HelloScreen';
 import LoadingPage from './src/screens/LoadingPage';
@@ -142,6 +143,7 @@ const Account = createStackNavigator({
     Create : CreatePlayListPage,
     SearchSong : SearchSongPage,
     InformationUse: InformationUsePage,
+    MusicBox: MusicBoxScreen,
 });
 
 main.navigationOptions = ({ navigation }) => {
