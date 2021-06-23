@@ -27,6 +27,10 @@ const curationReducer = (state, action) => {
             return { ...state, mycurationpost:action.payload[0], currentCurationpost:  action.payload[1] };            
         case 'like_curationpost':
             return { ...state, currentCuration: action.payload[0], currentCurationpost:action.payload[1] };
+        case 'add_comment':
+            return { ...state, comments: action.payload[1] };  
+        case 'get_comment' :
+            return { ...state, comments: action.payload};          
 
         default:
             return state;
@@ -34,9 +38,9 @@ const curationReducer = (state, action) => {
 };
 
 const postCuration = dispatch => {
-    return async ({ isSong, object, hidden, textcontent, id, }) => {
+    return async ({ isSong, object, hidden, textcontent, id,anonymous }) => {
         try {
-            const response = await serverApi.post('/curationpost/'+id, { isSong, object, hidden ,textcontent, });
+            const response = await serverApi.post('/curationpost/'+id, { isSong, object, hidden ,textcontent,anonymous });
             dispatch({ type: 'post_curation', payload: response.data });
         }
         catch(err){
@@ -46,9 +50,9 @@ const postCuration = dispatch => {
 };
 
 const editCuration = dispatch => {
-    return async ({  hidden, textcontent, id }) => {
+    return async ({  hidden, textcontent, id,anonymous }) => {
         try {
-            const response = await serverApi.put('/curationpost/'+id, { hidden ,textcontent });
+            const response = await serverApi.put('/curationpost/'+id, { hidden ,textcontent ,anonymous});
             dispatch({ type: 'edit_curation', payload: response.data });
         }
         catch(err){
@@ -175,10 +179,48 @@ const getmyCuration = dispatch => {
     }
 };
 
+const addComment = dispatch => {
+    return async ({ id, text }) => {
+        try {
+            const response = await serverApi.post('/curationcomment/'+id,{text});
+            dispatch({ type: 'add_comment', payload: response.data });
+        }
+        catch(err){
+            dispatch({ type: 'error', payload: 'Something went wrong with getmyCuration' });
+        }
+    }
+};
+
+const deleteComment = dispatch => {
+    return async ({ id, commentid}) => {
+        try {
+            const response = await serverApi.delete('/curationcomment/'+id+'/'+commentid);
+            dispatch({ type: 'add_comment', payload: response.data });
+        }
+        catch(err){
+            dispatch({ type: 'error', payload: 'Something went wrong with getmyCuration' });
+        }
+    }
+};
+
+
+const getComment = dispatch => {
+    return async ({id}) => {
+        try {
+            const response = await serverApi.get('/curationcomment/'+id);
+            dispatch({ type: 'get_comment', payload: response.data });
+        }
+        catch(err){
+            dispatch({ type: 'error', payload: 'Something went wrong with getmyCuration' });
+        }
+    }
+};
+
+
 export const { Provider, Context } = createDataContext(
     curationReducer,
-    { postCuration, editCuration ,deleteCuration, likecurationpost,unlikecurationpost, 
+    { postCuration, getComment ,addComment, deleteComment, editCuration ,deleteCuration, likecurationpost,unlikecurationpost, 
         initcurationposts, getCuration, getCurationposts, nextCurationposts, getmyCuration, getAllCurationPost, nextAllCurationPost },
     { currentCuration:{}, currentCurationPage: 1, notNext: false, allCurationPost: null, currentAllCurationPage: 1, notAllCurationNext: false, 
-        currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: ''}
+        currentCurationpost:[], mycurationpost:{}, curationposts: [], errorMessage: '', comments:[] }
 )

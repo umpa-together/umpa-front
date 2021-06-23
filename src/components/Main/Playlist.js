@@ -173,9 +173,9 @@ const styles=StyleSheet.create({
     },
     backpicimg:{
         width:'100%',
-        height:'100%',
-        borderTopLeftRadius: 16 * tmpWidth,
-        borderTopRightRadius:16 * tmpWidth,
+        height:'99%',
+
+        borderRadius:16 * tmpWidth,
     },
     playlisthead:{
         flexDirection: 'row',
