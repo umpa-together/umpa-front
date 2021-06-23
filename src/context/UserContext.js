@@ -8,7 +8,7 @@ const userReducer = (state, action) => {
         case 'initOtherUser':
             return { ...state, otherUser: null };
         case 'getMyInfo':
-            return { ...state, myInfo: action.payload };
+            return { ...state, myInfo: action.payload, myPlayList: action.payload.myPlaylists.reverse() };
         case 'get_otheruser':
             return { ...state, otherUser:action.payload};
         case 'getMyBookmark':
@@ -19,12 +19,16 @@ const userReducer = (state, action) => {
             return { ...state, myContents: action.payload };
         case 'getMyBoardSongs':
             return { ...state, myBoardSongs: action.payload };
+        case 'getLikePlaylists':
+            return { ...state, likePlaylists: action.payload };
         case 'getMyStory' :
             return { ...state, myStory: action.payload[0], storyViewer: action.payload[1]}
         case 'get_follower':
             return { ...state, follower:action.payload};
         case 'get_following':
             return { ...state, following:action.payload};
+        case 'myPlaylist':
+            return { ...state, myPlayList: action.payload.reverse() };
         case 'myStory':
             return { ...state, myStory: action.payload };
         case 'otherStory':
@@ -200,6 +204,33 @@ const getMyBoardSongs = (dispatch) => async () => {
     }
 };
 
+const getLikePlaylists = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/getLikePlaylists');
+        dispatch({ type: 'getLikePlaylists', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with getLikePlaylists' });
+    }
+}
+
+const addSonginPlaylists = (dispatch) => async ({ song }) => {
+    try {
+        const response = await serverApi.post('/addSonginPlaylists', {song});
+        dispatch({ type: 'myPlaylist', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
+    }
+}
+
+const deleteSonginPlaylists = (dispatch) => async({ time }) => {
+    try {
+        const response = await serverApi.get('/deleteSonginPlaylists/'+time);
+        dispatch({ type: 'myPlaylist', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
+    }
+}
+
 const postStory = (dispatch) => async ({song}) => {
     try {
         const response = await serverApi.post('/Story', {song});
@@ -257,8 +288,8 @@ export const { Provider, Context } = createDataContext(
     userReducer,
     { initUser, initOtherUser, postGuide, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
         follow, unfollow, getFollower ,getFollowing,
-        getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, 
-        postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
-    { myInfo: null, myPlayList: null, myCurating: null,  otherUser:null, boardBookmark: null, 
+        getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, getLikePlaylists,
+        addSonginPlaylists, deleteSonginPlaylists, postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
+    { myInfo: null, myPlayList: null, likePlaylists: null, otherUser:null, boardBookmark: null, 
         myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null, storyViewer: [], storyCalendar: null }
 )
