@@ -10,19 +10,7 @@ import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
-
-const Imagetake = ({url, borderRadius}) => {
-    url =url.replace('{w}', '1000');
-    url = url.replace('{h}', '1000');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: borderRadius}} source ={{url:url}}/>
-};
-const Imagebacktake = ({url , border, opac}) => {
-    url =url.replace('{w}', '700');
-    url = url.replace('{h}', '700');
-    return (
-        <ImageBackground style ={{ opacity : opac, height:'100%', width:'100%',borderRadius: border }} resizeMode ="stretch"  source ={{url:url}}/>
-    );
-};
+import { SongImage, SongImageBack } from '../../components/SongImage'
 
 const SelectedSongScreen = ({navigation}) => {
     const song = navigation.getParam('song');
@@ -41,7 +29,7 @@ const SelectedSongScreen = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <SafeAreaView style={{backgroundColor:"rgba(250,250,250,1)"}}>
                     <View style={{position :"absolute", zIndex:-3, width:375 * tmpWidth, height:354 * tmpWidth}}>
-                        <Imagebacktake opac={0.4} url={song.attributes.artwork.url}></Imagebacktake>
+                        <SongImageBack url={song.attributes.artwork.url} opac={0.4} width={375} height={354} border={0} />
                     </View>
                     <View style={styles.header}>
                         <View style={{ height:40 * tmpWidth, width: 40 * tmpWidth}}>
@@ -59,7 +47,7 @@ const SelectedSongScreen = ({navigation}) => {
                     </View>
                     <View style={{height:'100%'}}>
                         <View style={{width:146 * tmpWidth, height:146 * tmpWidth, marginTop:22 * tmpWidth, marginLeft:115 * tmpWidth}}>
-                            <Imagetake borderRadius ={200 * tmpWidth} opac={1} url={song.attributes.artwork.url} />
+                            <SongImage url={song.attributes.artwork.url} size={146} border={146} />
                         </View>
                         <View style={{width:375 * tmpWidth, height:88 * tmpWidth}}>
                             <View style={{width:375 * tmpWidth, height:88/2 * tmpWidth, justifyContent:'center', alignItems:'center' }}>

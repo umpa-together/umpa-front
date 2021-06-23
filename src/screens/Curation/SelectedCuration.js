@@ -1,29 +1,20 @@
 import React, { useContext,useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView,Keyboard,KeyboardEvent ,ImageBackground,StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer, { RATING_THUMBS_UP_DOWN } from 'react-native-track-player';
-import { tmpHeight, tmpWidth } from '../../components/FontNormalize';
+import { set } from 'react-native-reanimated';
+
+
+import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
 import DeleteModal from '../../components/DeleteModal';
 import HarmfulModal from '../../components/HarmfulModal';
-import { set } from 'react-native-reanimated';
-
-const Imagetake = ({url , border, opac}) => {
-    url =url.replace('{w}', '700');
-    url = url.replace('{h}', '700');
-    return <Image style ={{ opacity : opac, height:'100%', width:'100%',borderRadius: border }} resizeMode ="stretch"  source ={{url:url}}/>
-};
-
-const Imagebacktake = ({url , border, opac}) => {
-    url =url.replace('{w}', '700');
-    url = url.replace('{h}', '700');
-    return  <ImageBackground style ={{ opacity : opac, height:'100%', width:'100%',borderRadius: border }} resizeMode ="stretch"  source ={{url:url}}/>
-};
+import { SongImage, SongImageBack } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
 const SelectedCuration = ({navigation}) => {
     const { state, postCuration, getmyCuration,addComment, deleteComment,getComment, likecurationpost,unlikecurationpost,editCuration, getCurationposts } = useContext(CurationContext);
@@ -59,29 +50,10 @@ const SelectedCuration = ({navigation}) => {
     const onClose =() => {
         setShowModal(false);
     }
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true)
-        }
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
 
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
@@ -97,7 +69,7 @@ const SelectedCuration = ({navigation}) => {
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-            stoptracksong()
+            stoptracksong({ setIsPlayingid })
             listener.remove();
         };
     }, []);
@@ -124,7 +96,9 @@ const SelectedCuration = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <View style={{position :"absolute", zIndex:-2, width: 375 * tmpWidth, height:356 * tmpWidth}}>
-                        {currentCuration.isSong ? <Imagebacktake opac={0.4} url={currentCuration.object.attributes.artwork.url}></Imagebacktake> : <Imagebacktake opac={0.4} url={currentCuration.object.artwork.url}></Imagebacktake>}
+                        {currentCuration.isSong ? 
+                        <SongImageBack url={currentCuration.object.attributes.artwork.url} width={375} height={356} opac={0.4} border={0} /> : 
+                        <SongImageBack url={currentCuration.object.artwork.url} width={375} height={356} opac={0.4} border={0} />}
                     </View>
                     <View style={styles.back}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
@@ -135,17 +109,17 @@ const SelectedCuration = ({navigation}) => {
                         {currentCuration.isSong ? 
                         <TouchableOpacity onPress={() => {
                             if(isPlayingid == currentCuration.object.id){
-                                stoptracksong()
+                                stoptracksong({ setIsPlayingid })
                             }else{
-                                addtracksong({data: currentCuration.object})
+                                addtracksong({ data: currentCuration.object, setIsPlayingid, setHarmfulModal })
                             }
                         }}>
-                            <Imagetake border ={200 * tmpWidth} opac={1} url={currentCuration.object.attributes.artwork.url} /> 
+                            <SongImage url={currentCuration.object.attributes.artwork.url} size={204} border={204} />
                             { isPlayingid != currentCuration.object.id ? 
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> :
                             <SvgUri width='76' height='76' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 64 * tmpWidth, top: 64 * tmpWidth}}/> }
                         </TouchableOpacity> :
-                        <Imagetake opac={1} border={200 * tmpWidth} url={currentCuration.object.artwork.url} /> }
+                        <SongImage url={currentCuration.object.artwork.url} size={204} border={204} /> }
                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                     </View>
                     <View style={styles.curationinfo}>

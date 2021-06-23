@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useContext, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Animated } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
@@ -9,12 +9,7 @@ import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-
-const Imagetake = ({url ,borderRadius}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%',borderRadius:borderRadius}} source ={{url:url}}/>
-};
+import { SongImage } from '../SongImage'
 
 const MainSongForm = ({navigation}) => {
     const { state, currentHashtag } = useContext(SearchContext);
@@ -22,6 +17,7 @@ const MainSongForm = ({navigation}) => {
     const { state: weeklyState } = useContext(WeeklyContext);
     const { getPlaylist, getAllPlaylists } = useContext(PlaylistContext);
     const { getCuration, getAllCurationPost } = useContext(CurationContext);
+    const scrollX = useRef(new Animated.Value(0)).current;
     useEffect(() => {
         currentHashtag()
     }, [])
@@ -31,27 +27,34 @@ const MainSongForm = ({navigation}) => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 * tmpWidth, marginBottom: 18 * tmpWidth, alignItems: 'center'}}>
                     <Text style={styles.headertext}>위클리 플레이리스트</Text>
                     <TouchableOpacity onPress={async () => {
+                        navigate('AllContents', {type: '플레이리스트'})
                         await getAllPlaylists()
-                        navigate('AllContents', {type: '플레이리스트'})}}>
+                        }}>
                         <Text style={styles.subheaderText}>플레이리스트 둘러보기 {'>'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{width: '100%', height:240 * tmpWidth}}>
-                    <FlatList
+                    <Animated.FlatList
                         data={weeklyState.weeklyPlaylist}
                         keyExtractor = {playlists => playlists._id}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
+                        snapToInterval={344*tmpWidth }
+                        decelerationRate={0}
                         bounces={false}
+                        scrollEventThrottle={16}
                         contentContainerStyle={{paddingLeft: 18 * tmpWidth, paddingRight: 6 * tmpWidth}}
+                        onScroll = {Animated.event(
+                            [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                        )}
                         renderItem={({item})=> {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
-                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                     navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
+                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
-                                        <Imagetake  borderRadius={8 * tmpWidth} url={item.image}/>
+                                        <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{url:item.image}}/>
                                     </View>
                                     <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)','rgba(0,0,0,0.1)' ]} style={styles.playlistitem2}>
                                     <View style={{flexDirection:'row' ,width:331 * tmpWidth, height:40 * tmpWidth}}>
@@ -79,8 +82,8 @@ const MainSongForm = ({navigation}) => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 26 * tmpWidth, marginBottom: 14 * tmpWidth,}}> 
                     <Text style={styles.curationtext}>위클리 큐레이션</Text>
                     <TouchableOpacity onPress={async () => {
-                        await getAllCurationPost()
                         navigate('AllContents', {type: '큐레이션'})
+                        await getAllCurationPost()
                     }}>
                         <Text style={styles.subCurationText}>큐레이션 둘러보기 {'>'}</Text>
                     </TouchableOpacity>
@@ -98,21 +101,21 @@ const MainSongForm = ({navigation}) => {
                                 <View style={{width:114 * tmpWidth,marginLeft: 6 * tmpWidth, marginRight: 6 * tmpWidth}}>
                                     { item.isSong ?
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
-                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                        <TouchableOpacity onPress={async ()=>{
                                             navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                                         }}>
-                                            <Imagetake borderRadius={8 * tmpWidth} url={item.object.attributes.artwork.url} />
+                                            <SongImage  url={item.object.attributes.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.attributes.name}</Text> 
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.attributes.artistName}</Text>
                                     </View> :
                                     <View>
-                                        <TouchableOpacity style={{width:114 * tmpWidth, height:114 * tmpWidth,}} onPress={async ()=>{
-                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                        <TouchableOpacity onPress={async ()=>{
                                             navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                                         }}>
-                                            <Imagetake borderRadius={8 * tmpWidth} url={item.object.artwork.url} />
+                                            <SongImage url={item.object.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
                                         <Text numberOfLines ={1} style={{fontSize:14 * tmpWidth, marginTop:8 * tmpWidth}}>{item.object.albumName}</Text> 
                                         <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, marginTop:4 * tmpWidth, color:"#999999"}}>{item.object.artistName}</Text>
@@ -134,8 +137,8 @@ const MainSongForm = ({navigation}) => {
                             <TouchableOpacity
                                 key={item._id}
                                 onPress={() => {
-                                SearchHashtag({ object: item.hashtag })
-                                navigate('SelectedHashtag', {data: item, text: item.hashtag, searchOption: 'Hashtag'})
+                                    navigate('SelectedHashtag', {data: item, text: item.hashtag, searchOption: 'Hashtag'})
+                                    SearchHashtag({ object: item.hashtag })
                             }}>
                                 <Text style={styles.hashtagbox}>#{item.hashtag}</Text>
                             </TouchableOpacity>

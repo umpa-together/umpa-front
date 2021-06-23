@@ -2,14 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, Image} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../FontNormalize';
-
-const Imagetake = ({url}) => {
-    url = url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius: 10 * tmpWidth, height: 48 * tmpWidth, width: 48 * tmpWidth}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from '../SongImage'
 
 const CurationNoticeForm = ({ notice }) => {
     return (
@@ -36,7 +29,7 @@ const CurationNoticeForm = ({ notice }) => {
                             </Text>
                         </View>
                     </View>
-                    <Imagetake url={notice.curationpost.object.attributes.artwork.url} />
+                    <SongImage url={notice.curationpost.object.attributes.artwork.url} size={48} border={10}/>
                 </View> : 
                 <View style={{flexDirection: 'row', flex: 1}}>
                     <View style={styles.content}>
@@ -53,7 +46,7 @@ const CurationNoticeForm = ({ notice }) => {
                             </Text>
                         </View>
                     </View>
-                    <Imagetake url={notice.curationpost.object.artwork.url} />
+                    <SongImage url={notice.curationpost.object.artwork.url} size={48} border={10} />
                 </View> }
             </View>
         </View>

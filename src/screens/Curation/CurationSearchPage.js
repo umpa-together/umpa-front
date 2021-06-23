@@ -4,12 +4,7 @@ import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as CurationContext } from '../../context/CurationContext'
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-
-const Imagetake = ({url, border}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: border}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
 
 const CurationSearchPage = ({navigation}) => {
     const [text, setState] = useState('');
@@ -131,24 +126,22 @@ const CurationSearchPage = ({navigation}) => {
                                             navigation.push('SelectedCuration', {id: item.id, object: item})
                                         }}>
                                           <View style={{flexDirection:'row'}}>
-                                              <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
-                                                  <Imagetake url={item.attributes.artwork.url} border={100 * tmpWidth}></Imagetake>
-                                              </View>
-                                              <View>
-                                                 <View style={{marginLeft: 24 * tmpWidth, width: 220 * tmpWidth,}}>
-                                                      <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
-                                                        {item.attributes.contentRating == "explicit" ? 
-                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                        : null }
-                                                        <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name.split("(feat.")[0]}</Text>
-                                                      </View>
-                                                      <View style={{flexDirection:'row', marginTop: 8 * tmpWidth, width: 150 * tmpWidth}}>
-                                                        <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                                        { item.attributes.name.split("(feat.")[1] ?
-                                                        <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>  feat. {item.attributes.name.split("(feat.")[1].slice(0,-1)}</Text> :
-                                                        null}
-                                                      </View>
-                                                 </View>
+                                                <SongImage url={item.attributes.artwork.url} size={56} border={56} />
+                                                <View>
+                                                    <View style={{marginLeft: 24 * tmpWidth, width: 220 * tmpWidth,}}>
+                                                        <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
+                                                            {item.attributes.contentRating == "explicit" ? 
+                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                            : null }
+                                                            <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name.split("(feat.")[0]}</Text>
+                                                        </View>
+                                                        <View style={{flexDirection:'row', marginTop: 8 * tmpWidth, width: 150 * tmpWidth}}>
+                                                            <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                            { item.attributes.name.split("(feat.")[1] ?
+                                                            <Text style={{fontSize:14 * tmpWidth, color:"#9499A3"}} numberOfLines={1}>  feat. {item.attributes.name.split("(feat.")[1].slice(0,-1)}</Text> 
+                                                            : null}
+                                                        </View>
+                                                    </View>
                                               </View>
                                            </View>
                                       </TouchableOpacity>
@@ -170,22 +163,20 @@ const CurationSearchPage = ({navigation}) => {
                                         navigation.push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
                                     }}>
                                        <View style={{flexDirection:'row'}}>
-                                           <View style={{width:56 * tmpWidth, height:56 * tmpWidth}}>
-                                              <Imagetake url={item.attributes.artwork.url} border={4 * tmpWidth}></Imagetake>
-                                           </View>
-                                           <View>
-                                             <View style={{marginLeft: 24 * tmpWidth}}>
-                                                <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
-                                                    {item.attributes.contentRating == "explicit" ? 
-                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                    : null }
-                                                   <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                            <SongImage url={item.attributes.artwork.url} size={56} border={4}/>
+                                            <View>
+                                                <View style={{marginLeft: 24 * tmpWidth}}>
+                                                    <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
+                                                        {item.attributes.contentRating == "explicit" ? 
+                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                        : null }
+                                                    <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                    </View>
+                                                    <View>
+                                                       <Text style={{fontSize:14 * tmpWidth, color:"#9499A3", marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                    </View>
                                                 </View>
-                                                <View>
-                                                   <Text style={{fontSize:14 * tmpWidth, color:"#9499A3", marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                                </View>
-                                              </View>
-                                           </View>
+                                            </View>
                                         </View>
                                    </TouchableOpacity>
                                 )

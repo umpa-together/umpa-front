@@ -178,9 +178,9 @@ const nextContents = (dispatch) => async ({ boardId, page }) => {
 
 // Content
 
-const createContent = (dispatch) => async ({ title, content, boardId, fd }) => {
+const createContent = (dispatch) => async ({ title, content, boardId, fd, song }) => {
     try {
-        const response = await serverApi.post('/createContent', { title, content, boardId });
+        const response = await serverApi.post('/createContent', { title, content, boardId, song });
         fd.append('contentId', response.data._id);
         fd.append('boardId', boardId)
         const res = await serverApi.post('/boardImgUpload', fd, { header: {"content-type": "multipart/form-data"}});
