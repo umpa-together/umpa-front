@@ -512,7 +512,7 @@ const SelectedCuration = ({navigation}) => {
                                         <TouchableOpacity
                                             onPress={async () => {
                                                 
-                                            
+                                            if(!commentitem.anonymous){
                                                 setCommentModal(false)
                                             if(commentitem.postUserId._id == userState.myInfo._id){
                                                 navigate('Account');
@@ -520,6 +520,7 @@ const SelectedCuration = ({navigation}) => {
                                                 await Promise.all([getOtheruser({id:commentitem.postUserId._id}),
                                                 getSongs({id: commentitem.postUserId._id})]);
                                                 navigation.push('OtherAccount', {otherUserId:commentitem.postUserId._id});
+                                            }
                                             }
                                             
                                         }}
@@ -606,7 +607,7 @@ const SelectedCuration = ({navigation}) => {
                                                         <TouchableOpacity
                                                             onPress={async () => {
                                                 
-                                                               
+                                                                
                                                                 setCommentModal(false)
                                                                 if(item.postUserId._id == userState.myInfo._id){
                                                                     navigate('Account');
