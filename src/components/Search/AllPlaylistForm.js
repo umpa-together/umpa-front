@@ -14,7 +14,6 @@ const AllPlaylistForm = ({navigation}) => {
             setLoading(false);
         }
     };
-
     const onEndReached = () => {
         if (loading) {
             return;
@@ -37,6 +36,7 @@ const AllPlaylistForm = ({navigation}) => {
     }
     return (
         <View style={styles.result}>
+            { state.allPlaylists == null ? <View style={{flex: 1,justifyContent: 'center', alignContent: 'center'}}><ActivityIndicator/></View> :
             <FlatList 
                 numColumns={2}
                 onEndReached={onEndReached}
@@ -71,7 +71,7 @@ const AllPlaylistForm = ({navigation}) => {
                         </View>
                     )
                 }}
-            />
+            /> }
         </View>
     )
 }

@@ -9,15 +9,8 @@ import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
-
-const SongImage = ({url, play}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        play ? <Image style ={{borderRadius: 152 * tmpWidth , height:'100%', width:'100%', opacity: 0.5}} source ={{url:url}}/>
-    : <Image style ={{borderRadius: 152 * tmpWidth, height:'100%', width:'100%', opacity: 1.0}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
 const MusicArchivePage = ({navigation}) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
@@ -54,29 +47,10 @@ const MusicArchivePage = ({navigation}) => {
         setIsPlayingid('0');
         await TrackPlayer.reset()
     }
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
 
     const storyClick = async ({item, index}) => {
         stoptracksong()
@@ -84,7 +58,7 @@ const MusicArchivePage = ({navigation}) => {
         setClickModal(true);
         setSelectedStory(item);
         setSelectedIdx(index);
-        if(item.song.attributes.contentRating != 'explicit')    addtracksong({data:item.song});
+        if(item.song.attributes.contentRating != 'explicit')    addtracksong({ data:item.song, setIsPlayingid, setHarmfulModal });
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
 
@@ -95,7 +69,7 @@ const MusicArchivePage = ({navigation}) => {
                 <View style={styles.shareBox}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.shareText}>공유된 음악</Text>
-                        <TouchableOpacity onPress={() => navigate('SearchMusic', {name: navigation.getParam('name')})}>
+                        <TouchableOpacity onPress={() => navigate('SearchMusic', {navigation: navigation, isMusicArchive: true})}>
                             <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>    
                         </TouchableOpacity>
                     </View>
@@ -114,7 +88,7 @@ const MusicArchivePage = ({navigation}) => {
                                             setOption('archive');
                                             storyClick({item, index})
                                         }}>
-                                            <SongImage play={false} url={item.song.attributes.artwork.url}/>
+                                            <SongImage url={item.song.attributes.artwork.url} size={92} border={92}/>
                                         </TouchableOpacity>
                                         
                                         <View style={styles.nameBox}>
@@ -149,7 +123,7 @@ const MusicArchivePage = ({navigation}) => {
                                     <View style={styles.eachSongBox}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             <View style={styles.popularSongCover}>
-                                                <SongImage play={false} url={item.song.attributes.artwork.url} />
+                                                <SongImage play={false} url={item.song.attributes.artwork.url} size={48} border={48} />
                                             </View>
                                             <View style={styles.popularNameBox}>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -187,7 +161,7 @@ const MusicArchivePage = ({navigation}) => {
                     <View style={{flex: 1, margin: 16 * tmpWidth}}>
                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
                             setClickModal(false)
-                            stoptracksong()
+                            stoptracksong({ setIsPlayingid })
                             if(selectedStory.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
@@ -217,13 +191,13 @@ const MusicArchivePage = ({navigation}) => {
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                             <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                                 if(isPlayingid == selectedStory.song.id){
-                                    stoptracksong()
+                                    stoptracksong({setIsPlayingid})
                                 }else{
-                                    addtracksong({data: selectedStory.song})
+                                    addtracksong({ data: selectedStory.song, setIsPlayingid, setHarmfulModal })
                                 }
                             }}>
                                 <View style={styles.songscover}>
-                                    <SongImage play={false} url={selectedStory.song.attributes.artwork.url} />
+                                    <SongImage play={false} url={selectedStory.song.attributes.artwork.url} size={152} border={152}/>
                                     { isPlayingid != selectedStory.song.id ? 
                                     <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> :
                                     <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> }

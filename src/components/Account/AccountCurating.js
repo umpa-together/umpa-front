@@ -1,13 +1,8 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import { Context as CurationContext } from '../../context/CurationContext';
-
-const Imagetake = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100*tmpWidth}} source ={{url:url}}/>
-};
+import { SongImage } from '../SongImage'
 
 const AccountCurating = ({ curating, myAccount, navigation }) => {
     curating.sort(function(a,b){
@@ -35,9 +30,7 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                         >
                             {item.isSong ?
                             <View style={{flexDirection: 'row'}}>                                
-                                <View style={styles.songs}>
-                                    <Imagetake url={item.object.attributes.artwork.url}></Imagetake>
-                                </View>
+                                <SongImage url={item.object.attributes.artwork.url} size={79} border={79}/>
                                 <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
                                         <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,12)}{item.object.attributes.name.length>=12? '...' : null}</Text>
@@ -49,9 +42,7 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                                 </View>
                             </View> : 
                             <View style={{flexDirection: 'row'}}>
-                                <View style={styles.songs}>
-                                    <Imagetake url={item.object.artwork.url}/>
-                                </View>
+                                <SongImage url={item.object.artwork.url} size={79} border={79}/>
                                 <View style={{marginLeft: 14 * tmpWidth}}>
                                     <View style={styles.infoBox}>
                                         <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,12)}{item.object.albumName.length>=12? '...' : null }</Text>
@@ -78,11 +69,6 @@ const styles=StyleSheet.create({
     otherAccount: {
         height:660 * tmpHeight,
         paddingLeft:20*tmpWidth,
-    },
-    songs: {
-        width: 79 * tmpWidth  ,
-        height: 79 * tmpWidth  ,
-        borderRadius: 44 * tmpWidth
     },
     infoBox: {
         alignItems: 'center', 

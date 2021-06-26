@@ -1,23 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, Image, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, ActivityIndicator } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as SearchContext } from '../context/SearchContext';
 import { Context as DJContext } from '../context/DJContext';
-import TrackPlayer from 'react-native-track-player';
 import { tmpWidth } from '../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import HarmfulModal from '../components/HarmfulModal';
 import Modal from 'react-native-modal';
 import TosForm from '../components/Setting/TosForm';
 import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
-
-const ImageSelect = ({url, opac}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius :100 ,opacity : opac , height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from '../components/SongImage'
+import { addtracksong, stoptracksong } from '../components/TrackPlayer'
 
 const SignupPage = ({ navigation }) => {
     const { state, checkName, signup, signin } = useContext(AuthContext);
@@ -68,29 +61,10 @@ const SignupPage = ({ navigation }) => {
             getData();
         }
     };
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track)
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
     const doubleCheck = async (name) => {
         await checkName({name})
         setDouble(true)
@@ -436,7 +410,7 @@ const SignupPage = ({ navigation }) => {
                   <View style={styles.modalbox}>
                     <View style={{width:335 * tmpWidth, height:56 * tmpWidth,flexDirection:'row'}}>
                         <TouchableOpacity style={styles.modalexiticon} onPress={()=>{
-                            stoptracksong()
+                            stoptracksong({ setIsPlayingid })
                             setModalVisible(false)}} >
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')} />
                         </TouchableOpacity>
@@ -447,7 +421,7 @@ const SignupPage = ({ navigation }) => {
                                 await setSongs({ songs: songs })
                                 await signin({ email, password });
                                 setModalVisible(false)
-                                stoptracksong()}}
+                                stoptracksong({ setIsPlayingid })}}
                             >
                                     <Text style={{fontSize:16 * tmpWidth, color:'rgba(169,193,255,1)'}}>완료</Text>
                             </TouchableOpacity> : null }
@@ -504,12 +478,12 @@ const SignupPage = ({ navigation }) => {
                                             <TouchableOpacity style={styles.Songs} onPress={() => {
                                                 setIdc(item.id)
                                                 if(isPlayingid == item.id){
-                                                    stoptracksong()
+                                                    stoptracksong({ setIsPlayingid })
                                                 }else{
-                                                    addtracksong({data: item})
+                                                    addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                                 }
                                             }}>
-                                                <ImageSelect opac={1.0} url={item.attributes.artwork.url} />
+                                                <SongImage url={item.attributes.artwork.url} size={50} border={50} />
                                                 { isPlayingid != item.id ? 
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -565,9 +539,7 @@ const SignupPage = ({ navigation }) => {
                                 return (
                                     <TouchableOpacity style={{width:64 * tmpWidth, height:64 * tmpWidth, marginRight:14 * tmpWidth}} onPress={() => deleteItem({data: item})}>
                                         <View style={{alignItems: 'center'}}>
-                                            <View style={{width:64 * tmpWidth, height:64 * tmpWidth}}>
-                                                <ImageSelect opac={1.0} url={item.attributes.artwork.url}></ImageSelect>
-                                            </View>
+                                            <SongImage url={item.attributes.artwork.url} size={64} border={64} />
                                             <SvgUri width={20 * tmpWidth} height={20 * tmpWidth} source={require('../assets/icons/modalexit.svg')} />
                                         </View>
                                     </TouchableOpacity>

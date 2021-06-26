@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
@@ -9,12 +9,8 @@ import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import Guide from '../../components/Guide';
-
-const SongImage = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return <Image style ={{height:'100%', width:'100%', borderRadius: 100 * tmpWidth}} source ={{url:url}}/>
-};
+import { SongImage } from '../../components/SongImage'
+import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
 const SearchPage = ({ navigation }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -67,32 +63,11 @@ const SearchPage = ({ navigation }) => {
         )
     }
 
-    const addtracksong= async ({data}) => {
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            await TrackPlayer.reset()
-            setIsPlayingid(data.id);
-            await TrackPlayer.add(track)
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true);
-        }
-    };
-
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
-
+    
     useEffect(()=>{
         searchinit();
         if(addedplayList != undefined) {
@@ -179,12 +154,12 @@ const SearchPage = ({ navigation }) => {
                                         style={styles.selectedSong}>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             } else {
-                                                addtracksong({data: item})
+                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
                                             }}}
-                                            style={styles.songCover}>
-                                            <SongImage url={item.attributes.artwork.url}/>
+                                        >
+                                            <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -206,11 +181,12 @@ const SearchPage = ({ navigation }) => {
                                         style={styles.eachSong}>
                                         <TouchableOpacity onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             }else{
-                                                addtracksong({data: item})
-                                            }}}style={styles.songCover}>
-                                            <SongImage url={item.attributes.artwork.url}/>
+                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+                                            }}}
+                                        >
+                                            <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
@@ -270,11 +246,9 @@ const SearchPage = ({ navigation }) => {
                                 }}   
                             >
                                 <View style={styles.selecetedSongBox}>
-                                    <View style={styles.selectedSongCover}>
-                                        <SongImage url={item.attributes.artwork.url} />
-                                    </View>
+                                    <SongImage url={item.attributes.artwork.url} size={44} border={44}/>
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
-                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', width: item.attributes.contentRating == "explicit" ? 160 * tmpWidth : null }}>
                                             {item.attributes.contentRating == "explicit" ? 
                                             <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                             : null }
@@ -364,10 +338,6 @@ const styles = StyleSheet.create({
         paddingLeft: 24 * tmpWidth,
         backgroundColor: 'rgb(238,244,255)',
     },
-    songCover: {
-        width: 56 * tmpWidth,
-        height: 56 * tmpWidth,
-    },
     songContainer: {
         marginTop: 10 * tmpWidth, 
         marginLeft: 24 * tmpWidth, 
@@ -417,10 +387,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20.7 * tmpWidth,
         marginBottom: 8 * tmpWidth,
     },
-    selectedSongCover: {
-        width: 44 * tmpWidth,
-        height: 44 * tmpWidth,
-    }
 });
 
 export default SearchPage;

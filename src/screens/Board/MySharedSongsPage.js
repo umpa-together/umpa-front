@@ -1,19 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
-
-const SongImage = ({url}) => {
-    url =url.replace('{w}', '300');
-    url = url.replace('{h}', '300');
-    return (
-        <Image style ={{borderRadius : 50 * tmpWidth, height:'100%', width:'100%'}} source ={{url:url}}/>
-    );
-};
+import { SongImage } from '../../components/SongImage'
 
 const MySharedSongsPage = ({navigation}) => {
     const { state } = useContext(UserContext);
@@ -40,7 +33,7 @@ const MySharedSongsPage = ({navigation}) => {
                             await getSelectedBoard({id: item.boardId._id})
                             navigate('MusicArchive', {name:item.boardId.name})}}>
                             <View style={styles.songCover}>
-                                <SongImage url={item.song.attributes.artwork.url}/>
+                                <SongImage url={item.song.attributes.artwork.url} size={56} border={56}/>
                             </View>
                             <View style={styles.textBox}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
