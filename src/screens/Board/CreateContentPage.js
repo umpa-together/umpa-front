@@ -288,7 +288,7 @@ const styles=StyleSheet.create({
     },
     validityCommentBox: {
         width: 327 * tmpWidth,
-        height: 267 * tmpWidth,
+        height: 217 * tmpWidth,
         borderWidth: 1 * tmpWidth,
         borderColor: 'rgb(238,98,92)',
         borderRadius: 8 * tmpWidth,

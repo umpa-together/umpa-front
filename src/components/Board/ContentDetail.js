@@ -13,6 +13,8 @@ import { tmpWidth } from '../FontNormalize';
 import ReportModal from '../ReportModal';
 import DeleteModal from '../DeleteModal';
 import DeletedModal from '../DeletedModal';
+import { SongImage } from '../SongImage'
+import { addtracksong, stoptracksong } from '../TrackPlayer'
 
 const ContentDetail = ({navigation}) => {
     const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
@@ -29,6 +31,9 @@ const ContentDetail = ({navigation}) => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
     const [reportModal, setReportModal] = useState(false);
+    const [isPlayingid, setIsPlayingid] = useState('0');
+    const [harmfulModal, setHarmfulModal] = useState(false);
+
     const img = [];
     const inputRef = useRef();
     const getData = async () => {
@@ -157,6 +162,29 @@ const ContentDetail = ({navigation}) => {
                                         <Text style={styles.titleText}>{state.currentContent.title}</Text>
                                         <Text style={styles.contentText}>{state.currentContent.content}</Text>
                                     </View>
+                                    {(state.currentContent.song != null || state.currentContent.song != undefined) && 
+                                    <View style={styles.musicBox}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            <SongImage url={state.currentContent.song.attributes.artwork.url} size={38} border={38}/>
+                                            <View style={{marginLeft: 15 * tmpWidth, width: 160 * tmpWidth}}>
+                                                <Text style={{fontSize: 13 * tmpWidth}} numberOfLines={1}>{state.currentContent.song.attributes.name}</Text>
+                                                <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(148,153,163)', marginTop: 3 * tmpWidth}} numberOfLines={1}>{state.currentContent.song.attributes.artistName}</Text>
+                                            </View>
+                                        </View>
+                                        <TouchableOpacity style={{marginRight: 5 * tmpWidth}}
+                                            onPress={() =>{
+                                                if(isPlayingid == state.currentContent.song.id){
+                                                    stoptracksong({ setIsPlayingid })
+                                                } else { 
+                                                    addtracksong({data: state.currentContent.song, setIsPlayingid, setHarmfulModal })
+                                                }
+                                            }
+                                        }>
+                                            { isPlayingid != state.currentContent.song.id ?
+                                            <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicPlay.svg')}/> :
+                                            <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicStop.svg')}/> }
+                                        </TouchableOpacity>
+                                    </View>}
                                     {state.currentContent != null && state.currentContent.image.length == 0 ? null:
                                     <FlatList
                                         style={{marginTop: 12 * tmpWidth}}
@@ -345,6 +373,18 @@ const styles=StyleSheet.create({
         color: 'rgb(86,86,86)',
         marginTop: 24 * tmpWidth
     },
+    musicBox: {
+        width: 285 * tmpWidth, 
+        height: 46 * tmpWidth, 
+        borderWidth: 1, 
+        borderColor: 'rgb(212,212,212)', 
+        borderRadius: 100 * tmpWidth, 
+        marginTop: 12 * tmpWidth, 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        paddingLeft: 7 * tmpWidth, 
+        justifyContent: 'space-between'
+    }
 });
 
 export default ContentDetail;

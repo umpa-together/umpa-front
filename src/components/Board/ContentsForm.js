@@ -76,8 +76,10 @@ const ContentsForm = ({ Contents }) => {
                                         {item.image.length != 0 ? 
                                         <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
                                             <View>
-                                                <View style={{width: 240 * tmpWidth}}>
+                                                <View style={{width: 240 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                                    { (item.song != null || item.song != undefined) && 
+                                                    <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/boardMusicIcon.svg')} /> }
                                                 </View>
                                                 <View style={{width: 240 * tmpWidth}}>
                                                     <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
@@ -91,7 +93,12 @@ const ContentsForm = ({ Contents }) => {
                                             <Image style={styles.image} source={{uri: item.image[0]}} />
                                         </View> :
                                         <View>
-                                            <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                            <View style={{flexDirection: 'row', alignItems: 'center', width: item.song != null || item.song != undefined ? 300 * tmpWidth : null}}>
+                                                <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
+                                                { item.song != null || item.song != undefined ? 
+                                                <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/boardMusicIcon.svg')} />
+                                                : null }
+                                            </View>
                                             <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
                                             <View style={styles.footer}>
                                                 <Text style={styles.footerText}>댓글 {item.comments.length}</Text>
@@ -100,7 +107,6 @@ const ContentsForm = ({ Contents }) => {
                                             </View> 
                                         </View> }
                                     </View>   
-                                    
                                 </View>
                             </TouchableOpacity>
                         )

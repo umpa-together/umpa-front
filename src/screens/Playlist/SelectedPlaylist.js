@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, KeyboardEvent, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -13,12 +13,15 @@ import ReportModal from '../../components/ReportModal';
 import DeleteModal from '../../components/DeleteModal';
 import HarmfulModal from '../../components/HarmfulModal';
 import DeletedModal from '../../components/DeletedModal';
+import { SongImage } from '../../components/SongImage'
+import { stoptracksong } from '../../components/TrackPlayer'
 
 const SelectedPlaylist = ({navigation}) => {
     const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
         unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
-    const { state: userState, getOtheruser } = useContext(UserContext);
+    const { state: userState, getOtheruser, addSonginPlaylists } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
+
     const { state: searchState, SearchHashtag } = useContext(SearchPlaylistContext);
     const playlistid= navigation.getParam('id');
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -37,9 +40,12 @@ const SelectedPlaylist = ({navigation}) => {
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
     const [weeklyModal, setWeeklyModal] = useState(false);
+    const [selectedSong, setSelectedSong] = useState(null);
+    const [completeModal, setCompleteModal] = useState(false);
+
+    const opacity = useState(new Animated.Value(1))[0];
     const commentRef = useRef();
     const recommentRef = useRef();
-
     const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
     const [comments, setComments] = useState(state.current_comments);
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
@@ -61,6 +67,7 @@ const SelectedPlaylist = ({navigation}) => {
         setTok(!tok);
     }
     const addtracksong= async ({data}) => {
+        setSelectedSong(data)
         const track = new Object();
         track.id = data.id;
         track.url = data.attributes.previews[0].url;
@@ -75,22 +82,24 @@ const SelectedPlaylist = ({navigation}) => {
             setHarmfulModal(true)
         }
     };
+    const onClickMusicPlus = ({song}) => {
+        setCompleteModal(true)
+        addSonginPlaylists({song})
+        setTimeout(() => {
+            Animated.timing(opacity, {
+                toValue: 0,
+                duration: 1000,
+            }).start()
+            setTimeout(() => {
+                setCompleteModal(false)
+                opacity.setValue(1);
+            }, 1000)
+        }, 1000);
+    }
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const stoptracksong= async () => {    
-        setIsPlayingid('0');
-        await TrackPlayer.reset()
-    };
-    const SongImage = ({url, play}) => {
-        url =url.replace('{w}', '300');
-        url = url.replace('{h}', '300');
-        return (
-            play ? <Image style ={{borderRadius: 50 * tmpWidth, height:'100%', width:'100%', opacity: 0.5}} source ={{url:url}}/>
-        : <Image style ={{borderRadius: 50 * tmpWidth, height:'100%', width:'100%', opacity: 1.0}} source ={{url:url}}/>
-        );
-    };
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
     }
@@ -107,7 +116,7 @@ const SelectedPlaylist = ({navigation}) => {
         return () => {
             Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-            stoptracksong();
+            stoptracksong({ setIsPlayingid });
             listener.remove();
         };
     }, []);
@@ -134,7 +143,7 @@ const SelectedPlaylist = ({navigation}) => {
                 </View>
                 <Image style={styles.thumbnail} source={{uri: currentPlaylist.image}}/>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong();}}>
+                    <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong({ setIsPlayingid });}}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -243,17 +252,24 @@ const SelectedPlaylist = ({navigation}) => {
                                     <View style={styles.songBox}>
                                         <TouchableOpacity style={styles.songCover} onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong()
+                                                stoptracksong({ setIsPlayingid })
                                             }else{
-                                                addtracksong({data: item})
+                                                addtracksong({ data: item })
                                             }
                                         }}>
-                                           <SongImage play={false} url={item.attributes.artwork.url}/>
+                                           <SongImage url={item.attributes.artwork.url} size={92} border={92}/>
                                            { isPlayingid != item.id ? 
                                             <SvgUri width='34' height='34' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
                                             <SvgUri width='34' height='34' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        {isPlayingid == item.id ?
+                                        <TouchableOpacity style={{width: 79 * tmpWidth, height: 28 * tmpWidth, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 14 * tmpWidth, marginLeft: 9 * tmpWidth}}
+                                            onPress={() => onClickMusicPlus({song: selectedSong})}
+                                        >
+                                            <Text>곡 담기</Text>
+                                            <SvgUri width='24' height='24' source={require('../../assets/icons/musicBoxPlus.svg')} />
+                                        </TouchableOpacity> :
                                         <View style={styles.songWidthBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 
@@ -262,7 +278,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                 <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
                                             <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                        </View>
+                                        </View> }
                                     </View>
                                 )
                             }}
@@ -481,6 +497,14 @@ const SelectedPlaylist = ({navigation}) => {
                         })}
                         </View>
                     </ScrollView>
+                    {completeModal && 
+                    <Animated.View style={{
+                        backgroundColor: 'rgba(0,0,0,0.46)', width:196 * tmpWidth, height: 29 * tmpWidth, 
+                        borderRadius: 100 * tmpWidth, justifyContent: 'center', alignItems: 'center',
+                        bottom: 16 * tmpWidth, left: 89 * tmpWidth, opacity: opacity
+                    }}>
+                        <Animated.Text style={{fontSize: 14 * tmpWidth, color: '#ffffff', opacity: opacity}}>곡을 보관함에 담았습니다!</Animated.Text>
+                    </Animated.View> }
                     <View style={{marginBottom: keyboardHeight}}>
                         <View style={styles.inputBox}>
                             <View style={{flexDirection: 'row'}}>
@@ -662,6 +686,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 12 * tmpWidth,
     },
+    floatingCover: {
+        width: 48 * tmpWidth,
+        height: 48 * tmpWidth, 
+        borderRadius: 48 * tmpWidth,
+    },
     inputBox: {
         width: '100%',
         paddingTop: 18 * tmpWidth,
@@ -802,7 +831,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 5.5 * tmpWidth
-    }
+    },
+
 });
 
 export default SelectedPlaylist;

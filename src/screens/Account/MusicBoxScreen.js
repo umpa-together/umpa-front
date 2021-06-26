@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image, Button } from 'react-native'
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
@@ -17,8 +17,8 @@ const MusicBoxScreen = ({ navigation }) => {
     const [deletePlaylistModal, setDeletePlaylistModal] = useState(false)
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const [selectedId, setSelectedId] = useState('0');
     const [time, setTime] = useState('')
+    const [idx, setIdx] = useState('-1')
     const fetchData = async () => {
         setRefreshing(true);
         if(title == '좋아요한 플레이리스트'){
@@ -36,6 +36,9 @@ const MusicBoxScreen = ({ navigation }) => {
             fetchData();
         }
     }
+    useEffect(() => {
+        if(!deletePlaylistModal)    setIdx('-1')
+    },[deletePlaylistModal])
     return (
         <View style={{flex: 1, backgroundColor: 'rgb(255,255,255)'}}>
             <View style={styles.header}>
@@ -88,14 +91,15 @@ const MusicBoxScreen = ({ navigation }) => {
                     data={state.myPlayList}
                     keyExtractor={song=>song.time}
                     contentContainerStyle={{marginTop: 8 * tmpWidth, paddingBottom: 18 * tmpWidth}}
-                    renderItem={({item}) => {
+                    renderItem={({item, index}) => {
+                        console.log(idx, index)
                         return (
-                            <TouchableOpacity style={selectedId == item.id ? styles.selectedSongBox: styles.eachSongBox}
+                            <TouchableOpacity style={idx == index ? styles.selectedSongBox: styles.eachSongBox}
                                 onPress={() => {
-                                    if(selectedId == '0' || selectedId != item.id){
-                                        setSelectedId(item.id)
+                                    if(idx == '-1' || idx != index){
+                                        setIdx(index)
                                     }else{
-                                        setSelectedId('0')
+                                        setIdx('-1')
                                     }
                                 }}
                             >
@@ -125,7 +129,7 @@ const MusicBoxScreen = ({ navigation }) => {
                                         <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
                                     </View>
                                 </View>
-                                {selectedId == item.id &&
+                                {idx == index &&
                                 <TouchableOpacity style={styles.completeView} onPress={() => {
                                     setDeletePlaylistModal(true)
                                     setTime(item.time)}}>
