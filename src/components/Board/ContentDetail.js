@@ -98,6 +98,11 @@ const ContentDetail = ({navigation}) => {
             listener.remove();
         };
     }, []);
+    
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
 
     useEffect(() => {
         if(keyboardHeight == 0) setRecomment(false);
