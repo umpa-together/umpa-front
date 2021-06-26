@@ -39,6 +39,10 @@ const MusicBoxScreen = ({ navigation }) => {
     useEffect(() => {
         if(!deletePlaylistModal)    setIdx('-1')
     },[deletePlaylistModal])
+    useEffect(() => {
+        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
+        return () => clearTimeout(trackPlayer);
+    },[isPlayingid])
     return (
         <View style={{flex: 1, backgroundColor: 'rgb(255,255,255)'}}>
             <View style={styles.header}>
@@ -56,6 +60,7 @@ const MusicBoxScreen = ({ navigation }) => {
                     refreshing={refreshing}
                     data={state.likePlaylists}
                     keyExtractor={playlist=>playlist._id}
+                    contentContainerStyle={{paddingBottom: 18 * tmpWidth}}
                     renderItem={({item}) => {
                         return (
                             <View style={{width: 161 * tmpWidth, marginRight: 14 * tmpWidth, marginBottom: 10 * tmpWidth}}>
@@ -92,7 +97,6 @@ const MusicBoxScreen = ({ navigation }) => {
                     keyExtractor={song=>song.time}
                     contentContainerStyle={{marginTop: 8 * tmpWidth, paddingBottom: 18 * tmpWidth}}
                     renderItem={({item, index}) => {
-                        console.log(idx, index)
                         return (
                             <TouchableOpacity style={idx == index ? styles.selectedSongBox: styles.eachSongBox}
                                 onPress={() => {
@@ -170,8 +174,7 @@ const styles=StyleSheet.create({
     playlistContainer: {
         marginTop:20 * tmpWidth,
         paddingLeft:20 * tmpWidth,
-        height: '100%',
-        paddingBottom: 18 * tmpWidth,
+        flex: 1
     },
     songContainer: {
         backgroundColor: 'rgb(250,250,250)',
