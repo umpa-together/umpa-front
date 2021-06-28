@@ -20,6 +20,7 @@ const MainDJForm = ({navigation}) => {
                     keyboardShouldPersistTaps="handled"
                     data={state.weeklyDJ}
                     keyExtractor={dj=>dj._id}
+                    contentContainerStyle={{paddingBottom: 24 * tmpWidth}}
                     renderItem={({item, index})=> {
                         return (
                             <View style={{width: 344 * tmpWidth, height:75 * tmpWidth, }}>

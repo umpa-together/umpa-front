@@ -741,7 +741,7 @@ const styles = StyleSheet.create({
     commentText: {
         fontSize: 12 * tmpWidth, 
         marginTop: 8 * tmpWidth, 
-        marginBottom: 8 * tmpWidth
+        marginBottom: 8 * tmpWidth,
     },
     likeText: {
         fontSize: 11 * tmpWidth, 
@@ -785,11 +785,11 @@ const styles = StyleSheet.create({
     }, 
     recommentText: {
         width: '100%',
-        height: 116 * tmpWidth,
         backgroundColor: 'rgb(238,244,255)',
         flexDirection: 'row',
         paddingLeft: 20 * tmpWidth,
         paddingTop: 30 * tmpWidth,
+        paddingBottom: 16 * tmpWidth,
     },
     inputRecommentBox: {
         marginTop: 20 * tmpWidth,

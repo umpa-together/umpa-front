@@ -14,6 +14,7 @@ import NoticeScreen from './src/screens/NoticeScreen';
 
 import CurationSearchPage from './src/screens/Curation/CurationSearchPage';
 import SelectedCuration from './src/screens/Curation/SelectedCuration';
+import SelectedComment from './src/screens/Curation/SelectedCuration';
 
 
 import AccountScreen from './src/screens/Account/MyAccountScreen';

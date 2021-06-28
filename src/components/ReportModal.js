@@ -15,7 +15,7 @@ const ReportModal = ({ reportModal, setReportModal, type, subjectId }) => {
     useEffect(() => {
         if (type == 'boardContent') {
             setTitle('게시글을')
-        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment') {
+        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment' || type=='curationcomment') {
             setTitle('댓글을')
         } else if (type == 'playlist'){
             setTitle('플레이리스트를')

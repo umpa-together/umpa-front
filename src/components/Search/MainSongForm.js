@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useContext, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Animated } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
@@ -17,6 +17,7 @@ const MainSongForm = ({navigation}) => {
     const { state: weeklyState } = useContext(WeeklyContext);
     const { getPlaylist, getAllPlaylists } = useContext(PlaylistContext);
     const { getCuration, getAllCurationPost } = useContext(CurationContext);
+    const scrollX = useRef(new Animated.Value(0)).current;
     useEffect(() => {
         currentHashtag()
     }, [])
@@ -33,13 +34,19 @@ const MainSongForm = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={{width: '100%', height:240 * tmpWidth}}>
-                    <FlatList
+                    <Animated.FlatList
                         data={weeklyState.weeklyPlaylist}
                         keyExtractor = {playlists => playlists._id}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
+                        snapToInterval={344*tmpWidth }
+                        decelerationRate={0}
                         bounces={false}
+                        scrollEventThrottle={16}
                         contentContainerStyle={{paddingLeft: 18 * tmpWidth, paddingRight: 6 * tmpWidth}}
+                        onScroll = {Animated.event(
+                            [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                        )}
                         renderItem={({item})=> {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
