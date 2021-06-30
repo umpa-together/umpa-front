@@ -598,7 +598,7 @@ const SelectedCuration = ({navigation}) => {
                                             style={{}}
                                             data={state.comments}
                                             keyExtractor={comment => comment._id}
-
+                                            contentContainerStyle={{paddingBottom: 16 * tmpWidth}}
                                             renderItem={({item}) =>{  
                                             return(
                                                 <View style={{marginTop:16 * tmpWidth}}>
@@ -674,7 +674,7 @@ const SelectedCuration = ({navigation}) => {
                                         <View style={styles.profileImage}>
                                             <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                         </View> :
-                                        <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: commentitem.postUserId.profileImage}} ></Image> 
+                                        <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: userState.myInfo.profileImage}} ></Image> 
                                     }    
                                     </View>        
                                     <TextInput
@@ -726,7 +726,7 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 32 * tmpWidth,
         height: 32 * tmpWidth,
-        borderRadius: 50 * tmpWidth,
+        borderRadius: 32 * tmpWidth,
         backgroundColor:"#222"
     },
     back:{
@@ -789,10 +789,9 @@ const styles = StyleSheet.create({
         height:32 * tmpWidth,
     },
     curationpostuser3:{
-        width:42 * tmpWidth,
+        width:32 * tmpWidth,
         alignItems:'center',
         flexDirection:'row',
- 
         height:32 * tmpWidth,
     },
     textInput: {
@@ -880,30 +879,3 @@ const styles = StyleSheet.create({
 });
 
 export default SelectedCuration ;
-
-/* 
-                                <View style={{width:375*tmpWidth, height:50*tmpWidth,flexDirection:'row',  }}>
-                                    <View style={styles.curationpostuser3}> 
-                                    { userState.myInfo.profileImage == null || userState.myInfo.profileImage == undefined ?                                              
-                                        <View style={styles.profileImage}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                        </View> :
-                                        <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: commentitem.postUserId.profileImage}} ></Image> 
-                                    }    
-                                    </View>        
-                                    <TextInput
-                                        style={{marginLeft: 10*tmpWidth, width:tmpWidth*250,height:50*tmpWidth,}}
-                                        onChangeText={text=> setCommenttext(text)}
-                                        placeholder="댓글을 입력해주세요"
-                                        placeholderTextColor="rgb(164,164,164)"
-                                        autoCapitalize='none'
-                                        autoCorrect={false}  
-                                        value={commenttext}
-                                        onSubmitEditing={()=>{
-                                            addComment({text:commenttext, id: commentitem._id});
-                                            setCommenttext('');
-                                        }}                                
-                                    />                                          
-
-                                </View>  
-*/
