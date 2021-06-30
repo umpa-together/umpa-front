@@ -1,16 +1,25 @@
-import React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Context as UserContext } from '../../context/UserContext'
+import { Context as DJContext } from '../../context/DJContext'
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../FontNormalize';
 
-const PlaylistNoticeForm = ({ notice }) => {
+const PlaylistNoticeForm = ({ navigation, notice }) => {
+    const { getOtheruser } = useContext(UserContext);
+    const { getSongs } = useContext(DJContext);
     return (
         <View style={styles.container}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                {notice.noticinguser.profileImage == undefined ?
-                <View style={styles.img}>
-                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                </View> : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
+                <TouchableOpacity style={styles.img} onPress={async () =>{
+                    await Promise.all([getOtheruser({id:notice.noticinguser._id}),
+                    getSongs({id:notice.noticinguser._id})]);
+                    navigation.push('OtherAccount', {otherUserId:notice.noticinguser._id})
+                }}>
+                    { notice.noticinguser.profileImage == undefined ?
+                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                    : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
+                </TouchableOpacity> 
                 { notice.noticetype == 'plike'&& notice.playlist != null ?
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <View style={styles.content}>
