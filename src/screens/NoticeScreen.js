@@ -87,7 +87,7 @@ const NoticeScreen = ({navigation}) => {
                                     navigation.push('SelectedPlaylist', {id: item.playlist._id, navigation: navigation, postUser: item.playlist.postUserId})
                                 }
                             }}>
-                                <PlaylistNoticeForm notice={item} /> 
+                                <PlaylistNoticeForm notice={item} navigation={navigation} /> 
                             </TouchableOpacity> :
                             ( item.noticetype == 'pcom' || item.noticetype == 'pcomlike' 
                             || item.noticetype == 'precom' || item.noticetype == 'precomlike' ?
@@ -97,7 +97,7 @@ const NoticeScreen = ({navigation}) => {
                                     navigation.push('SelectedPlaylist', {id: item.playlist._id, navigation: navigation, postUser: item.playlist.postUserId})
                                 }
                             }}>
-                                <PlaylistNoticeForm notice={item} /> 
+                                <PlaylistNoticeForm notice={item} navigation={navigation} /> 
                             </TouchableOpacity> :
                             (item.noticetype == 'culike' || item.noticetype=='ccom' ?
                             <TouchableOpacity onPress={async () => {
@@ -106,7 +106,7 @@ const NoticeScreen = ({navigation}) => {
                                     navigate('SelectedCuration', {id: item.curationpost.songoralbumid, postid:item.curationpost._id})                                   
                                 }
                             }}>
-                                <CurationNoticeForm notice={item} />
+                                <CurationNoticeForm notice={item} navigation={navigation} />
                             </TouchableOpacity> :
                             (item.noticetype == 'blike' || item.noticetype == 'bcom' || item.noticetype == 'bcomlike' 
                             || item.noticetype == 'brecom' || item.noticetype == 'brecomlike' ?
@@ -116,14 +116,14 @@ const NoticeScreen = ({navigation}) => {
                                     navigate('SelectedContent', { boardName: item.board.name, boardId:item.board._id})
                                 }
                             }}>
-                                <BoardNoticeForm notice={item} />
+                                <BoardNoticeForm notice={item} navigation={navigation} />
                             </TouchableOpacity> :
                             (item.noticetype == 'bsonglike' ?
                             <TouchableOpacity onPress={async () => {
                                 await getSelectedBoard({id: item.board._id})
                                 navigate('MusicArchive', {name: item.board.name})
                             }}>
-                                <BoardNoticeForm notice={item} />
+                                <BoardNoticeForm notice={item} navigation={navigation} />
                             </TouchableOpacity> :
                             (item.noticetype == 'follow' ?
                             <TouchableOpacity onPress = {async () => {
@@ -131,7 +131,7 @@ const NoticeScreen = ({navigation}) => {
                                 getSongs({id:item.noticinguser._id})]);
                                 navigation.push('OtherAccount', {otherUserId: item.noticinguser._id})
                             }}>
-                                <UserNoticeForm notice={item} />
+                                <UserNoticeForm notice={item} navigation={navigation} />
                             </TouchableOpacity> : null )))))}
                         </View>
                     )
