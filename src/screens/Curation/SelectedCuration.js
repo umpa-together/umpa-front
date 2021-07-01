@@ -21,7 +21,6 @@ const SelectedCuration = ({navigation}) => {
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [hidden, setHidden] = useState(false);
-    const [anonymous, setAnonymous] = useState(false);
     const [commentitem, setCommentitem] = useState();
     const [text, setText] = useState('');
     const [commenttext, setCommenttext] = useState('');
@@ -201,7 +200,6 @@ const SelectedCuration = ({navigation}) => {
                                     }}>
                                         <View style={styles.curationpostitem}>
                                             <TouchableOpacity onPress={async () => {
-                                                if(item.anonymous == false){
                                                     if(item.postUserId._id == userState.myInfo._id){
                                                         navigate('Account');
                                                     }else{
@@ -209,15 +207,10 @@ const SelectedCuration = ({navigation}) => {
                                                         getSongs({id:item.postUserId._id})])
                                                         navigation.push('OtherAccount', {otherUserId: item.postUserId._id});
                                                     }
-                                                }
+                                                
                                             }}
                                                 style={{width:32 * tmpWidth, height:32 * tmpWidth, marginTop:12 * tmpWidth, marginLeft:16 * tmpWidth}}>
                                                 {item.postUserId.profileImage == null || item.postUserId.profileImage == undefined ?
-                                                     item.anonymous ?
-                                                     <View style={styles.profileImage}>
-                                                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                                    </View>
-                                                     :
 
                                                     <View style={styles.profileImage}>
                                                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
@@ -226,11 +219,9 @@ const SelectedCuration = ({navigation}) => {
                                             <View>
                                                 <View style={{flexDirection:'row',  height:32 * tmpWidth, width:200 * tmpWidth,marginTop:10 * tmpWidth, }}>
                                                     <View style={{width:200 * tmpWidth,height:32 * tmpWidth, flexDirection:'row',alignItems:'center'}}>
-                                                        {item.anonymous ? 
-                                                        <Text numberOfLines={1} style={{fontSize:13 * tmpWidth,marginLeft:11 * tmpWidth,}}>익명</Text>                                                      
-                                                        :
+
                                                         <Text numberOfLines={1} style={{fontSize:13 * tmpWidth,marginLeft:11 * tmpWidth,}}>{item.postUserId.name}</Text>
-                                                        }   
+                                                           
                                                         {item.hidden ?
                                                         <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/>
                                                         : null }
@@ -281,7 +272,7 @@ const SelectedCuration = ({navigation}) => {
                                         <TouchableOpacity
                                             onPress={async () => {
                                                 
-                                            if(selectedCuration.anonymous == false){
+                                           
                                                 setShowpost(false)
                                             if(selectedCuration.postUserId._id == userState.myInfo._id){
                                                 navigate('Account');
@@ -290,16 +281,12 @@ const SelectedCuration = ({navigation}) => {
                                                 getSongs({id: selectedCuration.postUserId._id})]);
                                                 navigation.push('OtherAccount', {otherUserId:selectedCuration.postUserId._id});
                                             }
-                                            }
+                                            
                                         }}
                                             style={{width:32 * tmpWidth, height:32 * tmpWidth}}
                                         >
                                             { selectedCuration.postUserId.profileImage == null || selectedCuration.postUserId.profileImage == undefined ?
-                                                selectedCuration.anonymous ?
-                                                    <View style={styles.profileImage}>
-                                                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                                    </View>
-                                                     :                                                
+                                             
                                                 <View style={styles.profileImage}>
                                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                                 </View> :
@@ -307,11 +294,9 @@ const SelectedCuration = ({navigation}) => {
                                         </TouchableOpacity>
                                         <View style={{width:270 * tmpWidth, height:32 * tmpWidth, alignItems: 'center', flexDirection: 'row'}}>
                                             <View style={{width:194*tmpWidth}}>
-                                            {selectedCuration.anonymous ? 
-                                                <Text numberOfLines={1} style={{fontSize:13 * tmpWidth,marginLeft:11 * tmpWidth,}}>익명</Text>                                                      
-                                                :                                           
+                                      
                                                 <Text style={{fontSize:13 * tmpWidth,marginLeft:12 * tmpWidth}}>{selectedCuration.postUserId.name}</Text>
-                                            } 
+                                             
                                             </View>
                                             <TouchableOpacity onPress={() => {
                                                 setShowpost(false)
@@ -374,7 +359,6 @@ const SelectedCuration = ({navigation}) => {
                                                 setEditid(state.mycurationpost._id);
                                                 setText(state.mycurationpost.textcontent);
                                                 setHidden(state.mycurationpost.hidden);
-                                                setAnonymous(state.mycurationpost.anonymous);
                                                 }}>
                                                 <Text style={{fontSize: 13 * tmpWidth}}>수정</Text>
                                             </TouchableOpacity>                                                         
@@ -442,18 +426,9 @@ const SelectedCuration = ({navigation}) => {
                                             <TouchableOpacity onPress={()=>setHidden(false)} style={{width:14 * tmpWidth, height:14 * tmpWidth,backgroundColor:'rgb(168,192,239)', marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, }}>
                                                 <SvgUri width='100%' height='100%' source={require('../../assets/icons/invalidName.svg')}/>
                                             </TouchableOpacity> :
-                                            <TouchableOpacity onPress={()=>{setHidden(true); setAnonymous(false);}}  style={{width:14 * tmpWidth, height:14 * tmpWidth,marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, borderWidth:0.5 * tmpWidth}}>
+                                            <TouchableOpacity onPress={()=>{setHidden(true); }}  style={{width:14 * tmpWidth, height:14 * tmpWidth,marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, borderWidth:0.5 * tmpWidth}}>
                                             </TouchableOpacity> }
-                                            <Text style={{marginLeft: 8*tmpWidth, marginTop:8 * tmpWidth, fontSize:14 * tmpWidth, color:'rgb(79,79,79)'}}>익명글</Text>
-                                            {anonymous ?
-                                             <TouchableOpacity onPress={()=>setAnonymous(false)} style={{width:14 * tmpWidth, height:14 * tmpWidth,backgroundColor:'rgb(168,192,239)', marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, }}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/invalidName.svg')}/>
-                                             </TouchableOpacity> :
-                                             <TouchableOpacity onPress={()=>{setHidden(false); setAnonymous(true); }}  style={{width:14 * tmpWidth, height:14 * tmpWidth,marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, borderWidth:0.5 * tmpWidth}}>
-                                             </TouchableOpacity>                                           
-
-
-                                            }
+                                                                               
                                         </View>
                                         <View style={{width:327/2 * tmpWidth, height:40 * tmpWidth,alignItems:'flex-end'}}>
                                             <Text style={{marginTop:8 * tmpWidth,fontSize:14 * tmpWidth,color:'rgb(196,196,196)'}}>{text.length}/5000</Text>
@@ -467,7 +442,7 @@ const SelectedCuration = ({navigation}) => {
                                         style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
                                         onPress ={async () => {
                                             
-                                            await postCuration({isSong:currentCuration.isSong , anonymous: anonymous, hidden : hidden,  object:currentCuration.object, textcontent:text, id:currentCuration.songoralbumid})
+                                            await postCuration({isSong:currentCuration.isSong , hidden : hidden,  object:currentCuration.object, textcontent:text, id:currentCuration.songoralbumid})
                                             getMyInfo();
                                             getCurationposts();
                                             setPostModal(false);
@@ -484,7 +459,7 @@ const SelectedCuration = ({navigation}) => {
                                         style={{ width:327 * tmpWidth, height:52 * tmpWidth, justifyContent:'center', alignItems:'center'}}
                                         onPress ={async () => {
                                             
-                                            await editCuration({ hidden : hidden , anonymous: anonymous, textcontent:text, id:editid})
+                                            await editCuration({ hidden : hidden ,  textcontent:text, id:editid})
                                             getCurationposts();
                                             setEdit(false);
                                             setPostModal(false);
@@ -512,7 +487,7 @@ const SelectedCuration = ({navigation}) => {
                                         <TouchableOpacity
                                             onPress={async () => {
                                                 
-                                            if(!commentitem.anonymous){
+                                           
                                                 setCommentModal(false)
                                             if(commentitem.postUserId._id == userState.myInfo._id){
                                                 navigate('Account');
@@ -521,17 +496,13 @@ const SelectedCuration = ({navigation}) => {
                                                 getSongs({id: commentitem.postUserId._id})]);
                                                 navigation.push('OtherAccount', {otherUserId:commentitem.postUserId._id});
                                             }
-                                            }
+                                            
                                             
                                         }}
                                             style={{width:32 * tmpWidth, height:32 * tmpWidth}}
                                         >
                                             { commentitem.postUserId.profileImage == null || commentitem.postUserId.profileImage == undefined ?
-                                                commentitem.anonymous ?
-                                                    <View style={styles.profileImage}>
-                                                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                                    </View>
-                                                     :                                                
+                                                                                         
                                                 <View style={styles.profileImage}>
                                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                                 </View> :
@@ -539,11 +510,9 @@ const SelectedCuration = ({navigation}) => {
                                         </TouchableOpacity>
                                         <View style={{width:375 * tmpWidth, height:32 * tmpWidth, alignItems: 'center', flexDirection: 'row'}}>
                                             <View style={{width:200*tmpWidth}}>
-                                            {commentitem.anonymous ? 
-                                                <Text numberOfLines={1} style={{marginLeft:11 * tmpWidth,}}>익명</Text>                                                      
-                                                :                                           
+                                                                                   
                                                 <Text numberOfLines={1} style={{marginLeft:12 * tmpWidth}}>{commentitem.postUserId.name}</Text>
-                                            } 
+                                             
                                             </View>
                                             {commentitem.postUserId._id == userState.myInfo._id ? 
                                                 <View style={{flexDirection:'row',width:tmpWidth*119, justifyContent:'flex-end'}}>
@@ -554,7 +523,6 @@ const SelectedCuration = ({navigation}) => {
                                                         setEditid(state.mycurationpost._id);
                                                         setText(state.mycurationpost.textcontent);
                                                         setHidden(state.mycurationpost.hidden);
-                                                        setAnonymous(state.mycurationpost.anonymous);
 
                                                     }}>
                                                         <Text style={{marginRight:tmpWidth*8, fontSize:13*tmpWidth}} >수정</Text>
@@ -599,7 +567,7 @@ const SelectedCuration = ({navigation}) => {
                                             style={{}}
                                             data={state.comments}
                                             keyExtractor={comment => comment._id}
-
+                                            contentContainerStyle={{paddingBottom: 16 * tmpWidth}}
                                             renderItem={({item}) =>{  
                                             return(
                                                 <View style={{marginTop:16 * tmpWidth}}>
@@ -621,11 +589,7 @@ const SelectedCuration = ({navigation}) => {
                                                             style={{width:32 * tmpWidth, height:32 * tmpWidth}}
                                                         >
                                                             { item.postUserId.profileImage == null || item.postUserId.profileImage == undefined ?
-                                                                item.anonymous ?
-                                                                    <View style={styles.profileImage}>
-                                                                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                                                    </View>
-                                                                        :                                                
+                                                                                                            
                                                                     <View style={styles.profileImage}>
                                                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                                                     </View> :
@@ -675,7 +639,7 @@ const SelectedCuration = ({navigation}) => {
                                         <View style={styles.profileImage}>
                                             <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
                                         </View> :
-                                        <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: commentitem.postUserId.profileImage}} ></Image> 
+                                        <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: userState.myInfo.profileImage}} ></Image> 
                                     }    
                                     </View>        
                                     <TextInput
@@ -685,14 +649,21 @@ const SelectedCuration = ({navigation}) => {
                                         placeholderTextColor="rgb(164,164,164)"
                                         autoCapitalize='none'
                                         autoCorrect={false}  
-                                        multiline={false}
+                                        multiline={true}
+
                                         value={commenttext}
-                                        onSubmitEditing={()=>{
+       
+                                    />     
+                                    <TouchableOpacity 
+                                        style={{width:tmpWidth*40, alignItems:'center', justifyContent:'center'}}
+                                        onPress={async () => {
                                             addComment({text:commenttext, id: commentitem._id});
                                             setCommenttext('');
-                                            Keyboard.dismiss();
-                                        }}                                
-                                    />                                          
+                                            Keyboard.dismiss()
+                                            setKeyboardHeight(0)
+                                    }}>
+                                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(69,67,80)'}}>등록</Text>
+                                    </TouchableOpacity>                                                                        
 
                                 </View>
                                 </View>
@@ -790,16 +761,17 @@ const styles = StyleSheet.create({
         height:32 * tmpWidth,
     },
     curationpostuser3:{
-        width:42 * tmpWidth,
+        width:32 * tmpWidth,
         alignItems:'center',
         flexDirection:'row',
  
         height:32 * tmpWidth,
     },
     textInput: {
+        
         marginLeft:8*tmpWidth,
-        width: '80%',
-        marginTop: 4 * tmpWidth
+        width: '75%',
+       
     },
     curationpostuser4:{
         width:42 * tmpWidth,
