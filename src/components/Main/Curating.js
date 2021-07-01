@@ -52,6 +52,7 @@ const Curating = ({ curationPosts, navigation }) => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
                     return (
+                    
                         <TouchableOpacity style ={styles.curation} onPress={async ()=>{
                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
                             navigation.push('SelectedCuration', {id: item.songoralbumid, postid:item._id})
@@ -74,7 +75,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                             <Text numberOfLines ={3}  style={{color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={styles.postuserl}>
-                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth }}>By {item.anonymous ? '익명' :item.postUserId.name}</Text>
+                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth }}>By {item.postUserId.name}</Text>
                                         </View>
                                     </View>
                                 </View> : 
@@ -93,7 +94,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                             <Text numberOfLines ={3} style={{ color: 'rgb(93,93,93)', fontSize: tmpWidth*12, lineHeight:16*tmpWidth, marginTop: 9 * tmpWidth, marginRight:20 * tmpWidth}}>{item.textcontent}</Text>
                                         </View>
                                         <View style={styles.postuserlalbum}>
-                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth}}>By {item.anonymous ? '익명' :item.postUserId.name}</Text>
+                                            <Text style={{color: 'rgb(128,128,128)',marginRight:20 * tmpWidth, fontSize: 12 * tmpWidth}}>By {item.postUserId.name}</Text>
                                         </View>
                                     </View>
                                 </View> }   

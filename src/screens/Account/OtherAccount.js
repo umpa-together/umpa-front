@@ -22,6 +22,7 @@ const OtherAccountScreen = ({navigation}) => {
     const {state: djState, getSongs } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
     const [isFollow, setIsFollow] = useState(false);
+
     const [representModal, setRepresentModal] = useState(false);
     const [storyModal, setStoryModal] = useState(false);
     const [story, setStory] = useState(null);
@@ -34,6 +35,7 @@ const OtherAccountScreen = ({navigation}) => {
     const [followerNum , setFollowerNum] = useState(0);
     const [calendarModal, setCalendarModal] = useState(false);
     const id = navigation.getParam('otherUserId');
+    
     const onClose = async () => {
         setRepresentModal(false);
         setStoryModal(false);
@@ -51,6 +53,8 @@ const OtherAccountScreen = ({navigation}) => {
             addtracksong({ data: story['song'], setIsPlayingid, setHarmfulModal });
         }
     }
+
+   
 
     const followCheck = ({id}) => {
         if(user != null) {

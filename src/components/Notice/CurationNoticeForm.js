@@ -22,9 +22,9 @@ const CurationNoticeForm = ({ notice }) => {
                         <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                                {notice.noticetype =='culike'?
-                                <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                                <Text style={styles.innerText}> 님이 큐레이션을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
                                 :
-                                <Text style={styles.innerText}> 님이 댓글을 달았습니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                                <Text style={styles.innerText}> 님이 큐레이션에 댓글을 달았습니다. <Text style={styles.name}>{notice.time}</Text></Text>
                                 }
                             </Text>
                         </View>
@@ -39,9 +39,9 @@ const CurationNoticeForm = ({ notice }) => {
                         <View style={{flexDirection: 'row', width: 200 * tmpWidth}}>
                             <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
                             {notice.noticetype =='culike'?
-                                <Text style={styles.innerText}> 님이 큐레이팅을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                                <Text style={styles.innerText}> 님이 큐레이션을 좋아합니다. <Text style={styles.name}>{notice.time}</Text></Text>
                                 :
-                                <Text style={styles.innerText}> 님이 댓글을 달았습니다. <Text style={styles.name}>{notice.time}</Text></Text>
+                                <Text style={styles.innerText}> 님이 큐레이션에 댓글을 달았습니다. <Text style={styles.name}>{notice.time}</Text></Text>
                                 }                            
                             </Text>
                         </View>
