@@ -58,7 +58,7 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
                                     getCuration({isSong: true, object: item, id:item.id})
                                     SearchSongOrArtist({ id: item.id})    
                                 }else{
-                                    searchDJ({songName: item.attributes.name})
+                                    searchDJ({id: item.id})
                                 }
                                 navigate('SelectedSong', {song: item, category: searchOption})}}>
                                 <SongImage url={item.attributes.artwork.url} size={56} border={56} />

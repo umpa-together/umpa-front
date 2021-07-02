@@ -122,9 +122,9 @@ const searchinit = (dispatch) => async () => {
     }
 };
 
-const searchDJ = (dispatch) => async ({ songName }) => {
+const searchDJ = (dispatch) => async ({ id }) => {
     try {
-        const response = await serverApi.get('/searchDJ/'+songName );
+        const response = await serverApi.get('/searchDJ/'+id );
         dispatch({ type: 'searchDJ', payload: response.data });
     } catch (err){
         dispatch({ type: 'error', payload: 'Something went wrong with searchDJ' });
