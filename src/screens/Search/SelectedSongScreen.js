@@ -262,7 +262,8 @@ const styles=StyleSheet.create({
     headersongname:{
         justifyContent:'center',
         alignItems:'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        width: 250 * tmpWidth,
     },
     middletextdj:{
         width:375 * tmpWidth,
