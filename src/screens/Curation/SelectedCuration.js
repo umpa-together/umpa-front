@@ -314,12 +314,14 @@ const SelectedCuration = ({navigation}) => {
                                             </TouchableOpacity>     
                                         </View>
                                     </View>
-                                    <View style={{width:250 * tmpWidth, marginLeft:62 * tmpWidth, marginBottom: 20 * tmpWidth}}>
-                                    <ScrollView>  
+                                    <View style={{width:250 * tmpWidth, marginLeft:62 * tmpWidth,maxHeight:420*tmpWidth, marginBottom: 20 * tmpWidth}}>
                                     {selectedCuration.hidden ? 
                                     <Text style={{fontSize:13 * tmpWidth, color:'rgb(93,93,93)'}}>비밀글 입니다.</Text> :
-                                    <Text style={{lineHeight:17*tmpWidth, fontSize:13 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>}
+                                    <ScrollView>  
+                                    <Text style={{lineHeight:17*tmpWidth, fontSize:13 * tmpWidth, color:'rgb(93,93,93)'}}>{selectedCuration.textcontent}</Text>
                                     </ScrollView>  
+
+                                    }
                                     </View>
                                 
                             </View>
