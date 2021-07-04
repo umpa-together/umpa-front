@@ -27,9 +27,9 @@ const MainSongForm = ({navigation}) => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 * tmpWidth, marginBottom: 18 * tmpWidth, alignItems: 'center'}}>
                     <Text style={styles.headertext}>위클리 플레이리스트</Text>
                     <TouchableOpacity onPress={async () => {
-                        navigate('AllContents', {type: '플레이리스트'})
                         await getAllPlaylists()
-                        }}>
+                        navigate('AllContents', {type: '플레이리스트'})
+                    }}>
                         <Text style={styles.subheaderText}>플레이리스트 둘러보기 {'>'}</Text>
                     </TouchableOpacity>
                 </View>
@@ -50,8 +50,8 @@ const MainSongForm = ({navigation}) => {
                         renderItem={({item})=> {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
-                                    navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
+                                    navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
                                         <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{url:item.image}}/>
@@ -82,8 +82,8 @@ const MainSongForm = ({navigation}) => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 26 * tmpWidth, marginBottom: 14 * tmpWidth,}}> 
                     <Text style={styles.curationtext}>위클리 큐레이션</Text>
                     <TouchableOpacity onPress={async () => {
-                        navigate('AllContents', {type: '큐레이션'})
                         await getAllCurationPost()
+                        navigate('AllContents', {type: '큐레이션'})
                     }}>
                         <Text style={styles.subCurationText}>큐레이션 둘러보기 {'>'}</Text>
                     </TouchableOpacity>
@@ -102,8 +102,8 @@ const MainSongForm = ({navigation}) => {
                                     { item.isSong ?
                                     <View>
                                         <TouchableOpacity onPress={async ()=>{
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <SongImage  url={item.object.attributes.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
@@ -112,8 +112,8 @@ const MainSongForm = ({navigation}) => {
                                     </View> :
                                     <View>
                                         <TouchableOpacity onPress={async ()=>{
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <SongImage url={item.object.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
