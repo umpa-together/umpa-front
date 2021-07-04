@@ -21,7 +21,7 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                 contentContainerStyle={{paddingTop: 15 * tmpWidth}}
                 renderItem={({item})=> {
                     return (
-                        !myAccount && item.anonymous ? null :
+                        
                         <TouchableOpacity 
                             style={styles.curationBox}
                             onPress={async ()=>{

@@ -259,7 +259,7 @@ const SongEditPage = ({navigation}) => {
                         </Text> : null }
                     </View>
                     <TouchableOpacity onPress={() => okPress()}>
-                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>순서</Text>
+                        <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>수정</Text>
                     </TouchableOpacity>
                 </View>
                 <FlatList

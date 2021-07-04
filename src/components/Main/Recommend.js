@@ -101,13 +101,13 @@ const Recommend = ({navigation}) => {
                             height: 340 * tmpWidth,
                             backgroundColor: 'rgba(255,255,255,1)',
                             borderRadius: 16 * tmpWidth,
-                            shadowColor: "rgba(0, 0, 0, 0.07)",
+                            shadowColor: "rgb(0, 0, 0)",
                             shadowOffset: {
                                 height: 4 * tmpWidth,
                                 width: 0,
                             },
                             shadowRadius: 20 * tmpWidth,
-                            shadowOpacity: 0,
+                            shadowOpacity: 0.07,
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginLeft: 15 * tmpWidth,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     representText: {
         fontSize: 12 * tmpWidth, 
-        color: 'rgb(79,79,79)'
+        color: 'rgb(169,193,255)'
     },
     followingText: {
         fontSize: 14 * tmpWidth, 
