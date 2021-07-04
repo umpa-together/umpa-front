@@ -48,7 +48,7 @@ const Playlist = ({ playList, navigation }) => {
     return (
         <View>
             <Guide type={'playlist'}/>
-            {state.otherStory != null ? 
+            {state.otherStory && 
             <View style={state.otherStory.length == 0 ? styles.noStoryContainer : styles.hasStoryContainer}>
                 { playList.length !=0 ?
                 <FlatList
@@ -62,8 +62,8 @@ const Playlist = ({ playList, navigation }) => {
                     renderItem = {({item}) => {
                         return (
                             <View style={styles.playlist}>
-                                <View style={{width: 335 * tmpWidth, height: 226 * tmpWidth}}>
-                                <TouchableOpacity style={{width: 335 * tmpWidth, height: 212 * tmpWidth }} onPress={async () => {
+                                <View style={{width: 335 * tmpWidth}}>
+                                <TouchableOpacity style={{width: 335 * tmpWidth }} onPress={async () => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                     navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
                                 }}>
@@ -71,47 +71,43 @@ const Playlist = ({ playList, navigation }) => {
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />
                                         </View>
                                         <View style={styles.playlisthead}>
-                                        <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)']} style={{width:tmpWidth*335, marginLeft:0*tmpWidth, height:tmpHeight*80,flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}} source={require('../../assets/icons/backgrad.png')}>
-
-                                        <View style={{width:tmpWidth*335, height:tmpHeight*80, flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}}>
-
-                                            <View style={styles.profile}>
-                                            {item.postUserId.profileImage == null ?
-                                            <View style={styles.profileno}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                            </View> : <Image style={styles.profileimg} source={{uri: item.postUserId.profileImage}} />}
-                                            </View>
-                                            <View style={{marginLeft:8*tmpWidth}}>
-                                                <View>
-                                                    <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUserId.name}</Text>
+                                            <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)']} style={{width:tmpWidth*335, marginLeft:0*tmpWidth, height:tmpHeight*80,flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}} source={require('../../assets/icons/backgrad.png')}>
+                                                <View style={{width:tmpWidth*335, height:tmpHeight*80, flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}}>
+                                                    <View style={styles.profile}>
+                                                        {item.postUserId.profileImage == null ?
+                                                        <View style={styles.profileno}>
+                                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                        </View> : <Image style={styles.profileimg} source={{uri: item.postUserId.profileImage}} />}
+                                                    </View>
+                                                    <View style={{marginLeft:8*tmpWidth}}>
+                                                        <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUserId.name}</Text>
+                                                        <View style={styles.viewicon}>
+                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/likeslength.svg')} style={{}}/>
+                                                            <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.likes.length}</Text>
+                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
+                                                            <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.views}</Text>
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                                <View style={styles.viewicon}>
-                                                    <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/likeslength.svg')} style={{}}/>
-                                                    <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.likes.length}</Text>
-                                                    <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
-                                                    <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.views}</Text>
-                                                </View>
-                                            </View>
-                                            </View>
-                                        </LinearGradient>  
+                                            </LinearGradient>  
                                         </View>
                                         <View style={styles.playlistinfo}>
                                             <View style={{width: 335/5*4 * tmpWidth}}>
-                                               <View style={{width:335/5*4*tmpWidth, }}>
-                                                <Text numberOfLines= {1} style={styles.title}>{item.title}</Text>
-                                               </View>
-                                               <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row',}}>
-                                                {item.hashtag != null && item.hashtag.map(el => {
-                                                    return (
-                                                    <View style={styles.hashtagbox}>
-                                                        <Text style={styles.hashtag}>#{el}</Text>
-                                                     </View>
-                                                    )
-                                                })}
-                                               </View>
+                                                <View style={{width:335/5*4*tmpWidth, }}>
+                                                    <Text numberOfLines= {1} style={styles.title}>{item.title}</Text>
+                                                </View>
+                                                <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row', marginBottom: 13 * tmpWidth}}>
+                                                    {item.hashtag != null && item.hashtag.map(el => {
+                                                        return (
+                                                            <View style={styles.hashtagbox}>
+                                                                <Text style={styles.hashtag}>#{el}</Text>
+                                                             </View>
+                                                        )
+                                                    })}
+                                                </View>
                                             </View>
                                             <View style={styles.likeicon}>
-                                            { item.likes.includes(state.myInfo._id) ?
+                                                { item.likes.includes(state.myInfo._id) ?
                                                 <TouchableOpacity onPress={()=>{unlikesPlaylist({id: item._id});         item.likes = item.likes.filter(id => id.toString() != state.myInfo._id.toString()); }}>
                                                     <SvgUri width='40' height='40' source={require('../../assets/icons/postplaylistfilled.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth}}/>
                                                 </TouchableOpacity> :
@@ -129,16 +125,14 @@ const Playlist = ({ playList, navigation }) => {
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{color: 'rgb(93,93,93)'}}>팔로우한 사람이 올린 플레이리스트가 없습니다.</Text>
                     <Text style={{color: 'rgb(93,93,93)', marginTop: 10 * tmpWidth}}>다른 사람들을 팔로우 해보세요!</Text>
-
                     <TouchableOpacity 
                         style={{justiftyContent:'center', alignItems:'center',backgroundColor:'rgb(169,193,255)', borderRadius:20,width:80*tmpWidth,height: 30*tmpWidth,marginTop: 20*tmpWidth,}}
-                        onPress={()=>{fetchData();}}
-                        >
-                            
+                        onPress={()=> fetchData()}
+                    >   
                         <Text style={{color:'white',marginTop:8*tmpWidth}}>새로고침</Text>
                     </TouchableOpacity>
                 </View> }
-            </View> : null }
+            </View> }
         </View>
     );
 };
@@ -164,7 +158,6 @@ const styles=StyleSheet.create({
         shadowRadius: 3 * tmpWidth,
         shadowOffset:{height:0,},
         shadowOpacity : 1,
-        height: 226 * tmpWidth,
     },
     backpic:{
         position: 'absolute',
@@ -209,7 +202,6 @@ const styles=StyleSheet.create({
     playlistinfo:{
         flexDirection:'row',
         width: 335 * tmpWidth,
-        //height: 66 * tmpWidth ,
         flexDirection:'row',
         backgroundColor:'#fff',
         borderBottomLeftRadius:16 * tmpWidth,
@@ -231,7 +223,6 @@ const styles=StyleSheet.create({
         fontSize:12*tmpWidth,
     },
     hashtagbox:{
-        marginBottom:13*tmpWidth,
         borderRadius:100,
         height:20*tmpWidth,
         paddingLeft:5*tmpWidth,
