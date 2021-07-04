@@ -14,7 +14,7 @@ const curationReducer = (state, action) => {
         case 'getAllCurationPost':
             return { ...state, allCurationPost: action.payload, currentAllCurationPage: 1, notAllCurationNext: false}
         case 'nextAllCurationPost':
-            return { ...state, allCurationPost: state.allCurationPost.concat(action.payload), currentAllCurationPage: state.currentCurationPage + 1 }
+            return { ...state, allCurationPost: state.allCurationPost.concat(action.payload), currentAllCurationPage: state.currentAllCurationPage + 1 }
         case 'notAllCurationNext':
             return { ...state, notAllCurationNext: true };
         case 'init_curationposts':
