@@ -257,12 +257,12 @@ const styles=StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         flexDirection:'row',
-
     },
     headersongname:{
         justifyContent:'center',
         alignItems:'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        width: 250 * tmpWidth,
     },
     middletextdj:{
         width:375 * tmpWidth,
