@@ -15,10 +15,10 @@ const WeeklyReducer = (state, action) => {
             return state;
     }
 };
-const WeekCuration = dispatch => {
+const postWeeklyCuration = dispatch => {
     return async () => {
         try {
-            await serverApi.post('/WeekCuration');
+            await serverApi.post('/WeeklyCuration');
         }
         catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with WeekCuration' });
@@ -26,10 +26,10 @@ const WeekCuration = dispatch => {
     }
 };
 
-const getWeekCuration = dispatch => {
+const getWeeklyCuration = dispatch => {
     return async () => {
         try {
-            const response = await serverApi.get('/WeekCuration');
+            const response = await serverApi.get('/WeeklyCuration');
             dispatch({ type: 'get_weekcuration', payload: response.data });
         }
         catch(err){
@@ -38,17 +38,17 @@ const getWeekCuration = dispatch => {
     }
 };
 
-const postWeekPlaylist = (dispatch) => async () => {
+const postWeeklyPlaylist = (dispatch) => async () => {
     try {
-        await serverApi.post('/WeekPlaylist');
+        await serverApi.post('/WeeklyPlaylist');
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with postWeekPlaylist' });
     }
 };
 
-const getWeekPlaylist = (dispatch) => async () => {
+const getWeeklyPlaylist = (dispatch) => async () => {
     try {
-        const response = await serverApi.get('/WeekPlaylist');
+        const response = await serverApi.get('/WeeklyPlaylist');
         dispatch({ type: 'playlist', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getWeekPlaylist' });
@@ -57,7 +57,7 @@ const getWeekPlaylist = (dispatch) => async () => {
 
 const postWeeklyDJ = (dispatch) => async () => {
     try {
-        await serverApi.post('/WeekDJ');
+        await serverApi.post('/WeeklyDJ');
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with postWeeklyDJ' });
     }
@@ -65,15 +65,23 @@ const postWeeklyDJ = (dispatch) => async () => {
 
 const getWeeklyDJ = (dispatch) => async () => {
     try {
-        const response = await serverApi.get('/WeekDJ');
+        const response = await serverApi.get('/WeeklyDJ');
         dispatch({ type: 'getWeeklyDJ', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getWeeklyDJ' });
     }
 };
 
+const postWeekly = (dispatch) => async () => {
+    try {
+        await serverApi.post('/Weekly');
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with postWeekly' });
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     WeeklyReducer,
-    { getWeeklyDJ,postWeeklyDJ , WeekCuration , getWeekCuration ,postWeekPlaylist, getWeekPlaylist },
+    { getWeeklyDJ, postWeeklyDJ , postWeeklyCuration , getWeeklyCuration, postWeeklyPlaylist, getWeeklyPlaylist, postWeekly },
     { weeklyDJ: [], weekcuration: {}, weeklyPlaylist: null, errorMessage: '' }
 )
