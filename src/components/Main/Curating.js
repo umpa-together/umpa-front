@@ -67,7 +67,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                     <View style={styles.contentl}>
                                         <View style={styles.songinfol}>
                                             <Text numberOfLines ={1} style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.attributes.name.substr(0,15)}{item.object.attributes.name.length>=15? '...' : null}</Text>
-                                            <View style={{width:90*tmpWidth}}>
+                                            <View style={{width:80*tmpWidth}}>
                                             <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth, }}>{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
                                             </View>                                       
                                         </View>
@@ -86,7 +86,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                     <View style={styles.albumcontentl}>
                                         <View style={styles.albuminfol}>
                                             <Text numberOfLines ={1}  style={{marginLeft: 113 * tmpWidth, fontSize:14 * tmpWidth}}>{item.object.albumName.substr(0, 15)}{item.object.albumName.length>=15 ? '...' : null}</Text>
-                                            <View style={{width:90*tmpWidth}}>
+                                            <View style={{width:80*tmpWidth}}>
                                             <Text numberOfLines ={1}  style={{fontSize:12 * tmpWidth,marginLeft: 16 * tmpWidth}}>{item.object.artistName.substr(0, 15)}{item.object.artistName.length>=15 ? '...' : null}</Text>
                                             </View>
                                         </View>
