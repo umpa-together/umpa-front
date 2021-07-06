@@ -88,7 +88,7 @@ const Signupopt = () => {
                             <SvgUri width= '145' height='40' source={require('../assets/icons/email.svg')}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{width:375 * tmpWidth, height:14 * tmpWidth, justifyContent:'center', alignItems:'center', flexDirection: 'row',marginTop: 25 * tmpWidth,}}>
+                    <View style={{width:375 * tmpWidth, justifyContent:'center', alignItems:'center', flexDirection: 'row',marginTop: 25 * tmpWidth,}}>
                         <Text style={{fontSize:14 * tmpWidth, color: 'rgb(153,153,153)'}}>SNS 계정으로 가입하기</Text>
                     </View>
                     <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:11 * tmpWidth, flexDirection:'row'}}>
