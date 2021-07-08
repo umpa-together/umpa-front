@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Keyboard, Platform, StatusBar } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
@@ -53,7 +53,7 @@ const CreateBoardPage = () => {
                                         onChangeText={text => titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth}}
+                                        style={{fontSize: 14 * tmpWidth, padding: 0}}
                                     />
                                 </View>
                                 {titleValidity ? null :
@@ -112,12 +112,13 @@ CreateBoardPage.navigationOptions = ({navigation})=>{
         title: '게시판 만들기',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0 ,
                 width: 0,
@@ -130,6 +131,11 @@ CreateBoardPage.navigationOptions = ({navigation})=>{
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -150,7 +156,7 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(196,196,196)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     comment: {
         marginTop: 10 * tmpWidth,
@@ -213,7 +219,7 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(238,98,92)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     validityComment: {
         width: 327 * tmpWidth,
@@ -245,7 +251,8 @@ const styles=StyleSheet.create({
         marginLeft: 12 * tmpWidth, 
         marginRight: 12 * tmpWidth, 
         marginTop: 12 * tmpWidth, 
-        flex: 1
+        flex: 1,
+        textAlignVertical: 'top'
     },
     genreContainer: {
         flexDirection: 'row', 

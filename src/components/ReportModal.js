@@ -105,6 +105,7 @@ const styles=StyleSheet.create({
         paddingLeft: 10 * tmpWidth,
         paddingRight: 10 * tmpWidth,
         paddingTop: 10 * tmpWidth,
+        textAlignVertical: 'top'
     }
 });
 

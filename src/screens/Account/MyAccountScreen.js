@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput, Platform, StatusBar } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -184,13 +184,13 @@ const MyAccountScreen = ({navigation}) => {
                                             navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})
                                         }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로잉 </Text>
-                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.following.length}</Text>
+                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: Platform.OS === 'ios' ? '600' : '700'}}>{userState.myInfo.following.length}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center',marginRight: 12 * tmpWidth }} onPress={() => {
                                             navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})
                                         }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
-                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.follower.length}</Text>
+                                            <Text style={{fontSize: 14 * tmpWidth, fontWeight: Platform.OS === 'ios' ? '600' : '700'}}>{userState.myInfo.follower.length}</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{ width:155 * tmpWidth, alignItems:'flex-end'}}>
@@ -209,10 +209,10 @@ const MyAccountScreen = ({navigation}) => {
                         </View>
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
+                                <Text style={result=='playlist' ? {fontWeight:Platform.OS === 'ios' ? '500' : '700',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
+                                <Text style={result=='curating' ? {fontWeight:Platform.OS === 'ios' ? '500' : '700',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255))'}}>
@@ -607,8 +607,8 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     header:{
-        height:40  * tmpWidth,
-        marginTop:40 * tmpWidth,
+        height:48  * tmpWidth,
+        marginTop: Platform.OS === 'ios' ? 40 * tmpWidth : StatusBar.currentHeight * tmpWidth,
         width:375 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',

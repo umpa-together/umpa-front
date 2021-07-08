@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback, TouchableOpacity, ActivityIndicator, TextInput, Platform, StatusBar } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as UserContext } from '../../context/UserContext'
 import { Context as DJContext } from '../../context/DJContext'
@@ -114,11 +114,11 @@ const SongEditPage = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.searchBox}>
-                <View style ={{flexDirection:'row'}}>
+                <View style ={{flexDirection:'row', alignItems: 'center', paddingTop: 20 * tmpWidth}}>
                     <View style={styles.searchIcon}>
                         <SvgUri width={18 * tmpWidth} height={19 * tmpWidth} source={require('../../assets/icons/songeditsearch.svg')}/>
                     </View>
-                    <View style={{marginLeft: 14 * tmpWidth  , marginTop: 20 * tmpWidth  }}>
+                    <View style={{marginLeft: 14 * tmpWidth }}>
                         <TextInput style={{backgroundColor: "rgb(255,255,255)", width:272 * tmpWidth, height:60 * tmpWidth}}
                             value = {text}
                             onChangeText={(text)=>{
@@ -133,12 +133,12 @@ const SongEditPage = ({navigation}) => {
                                 searchsong({songname: text})
                                 setTok(true)}}
                             placeholderTextColor= 'rgb(196,196,196)'
-                            style={{fontSize: 16 * tmpWidth, width:tmpWidth*270, }}
+                            style={{fontSize: 16 * tmpWidth, width:tmpWidth*270, padding: 0}}
                         />
                     </View>
                     <TouchableOpacity 
-                    style={{width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
-                    onPress={()=>{Keyboard.dismiss(); setText(''); setTok(false)}}
+                        style={{width:28*tmpWidth, height:tmpWidth*28}}
+                        onPress={()=>{Keyboard.dismiss(); setText(''); setTok(false)}}
                     >
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
                     </TouchableOpacity>                    
@@ -178,7 +178,7 @@ const SongEditPage = ({navigation}) => {
                         )
                     }}
                 />
-            </View> : tok && state.songData.length == 0 ? <View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator /></View> :
+            </View> : tok && state.songData.length == 0 ? <View style={{flex: 1, justifyContent: 'center', backgroundColor:'rgb(250,250,250)', width: '100%'}}><ActivityIndicator /></View> :
             <View style={{flex:1, backgroundColor:'rgb(250,250,250)'}}>
             <FlatList
                 data={state.songData}
@@ -359,12 +359,13 @@ SongEditPage.navigationOptions = ({navigation})=>{
     return {
         title: '대표곡',
         headerTitleStyle: {
-            fontSize: 18 * tmpWidth
+            fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
         }, 
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -377,6 +378,11 @@ SongEditPage.navigationOptions = ({navigation})=>{
                 <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth, marginLeft: 20 * tmpWidth  }} onPress={() => navigation.goBack()}>
                     <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -401,7 +407,6 @@ const styles=StyleSheet.create({
     searchIcon: {
         height:19  * tmpWidth ,
         width:18   * tmpWidth,
-        marginTop:19 * tmpWidth  ,
         marginLeft:25  * tmpWidth
     },
     musicIcon: {
@@ -434,6 +439,7 @@ const styles=StyleSheet.create({
         },
         shadowRadius: 8 * tmpWidth,
         shadowOpacity: 0.1,
+        elevation: 5,
     },
     selecetedSongBox: {
         width: 308  * tmpWidth ,

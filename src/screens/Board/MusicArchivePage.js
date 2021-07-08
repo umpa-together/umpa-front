@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator, Platform, StatusBar } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -252,12 +252,13 @@ MusicArchivePage.navigationOptions = ({navigation})=>{
         title: '음악 아카이브',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
         }, 
         headerStyle: {
             backgroundColor: 'rgb(251,251,251)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: "transparent",
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -270,6 +271,11 @@ MusicArchivePage.navigationOptions = ({navigation})=>{
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -301,6 +307,7 @@ const styles=StyleSheet.create({
         height: 162 * tmpWidth,
         backgroundColor: 'rgb(255,255,255)',
         borderRadius: 16 * tmpWidth,
+
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
             height: 3 * tmpWidth,
@@ -308,6 +315,7 @@ const styles=StyleSheet.create({
         },
         shadowRadius: 3 * tmpWidth,
         shadowOpacity: 0.05,
+        elevation: 3,
         alignItems: 'center',
     },
     songCover: {

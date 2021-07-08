@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, TextInput, Keyboard, Platform, StatusBar } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
@@ -101,8 +101,8 @@ const SearchPage = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.searchBox}>
-                <View style ={{ flexDirection:'row', justifyContent: 'space-between'}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 14     * tmpWidth}}>
+                <View style ={{ flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 14 * tmpWidth}}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistSearch.svg')}/>
                         <View style={styles.inputBox}>
                             <TextInput 
@@ -122,16 +122,14 @@ const SearchPage = ({ navigation }) => {
                             />
                         </View>
                     </View>
-                    
-                    <TouchableOpacity style={{marginRight: 16     * tmpWidth, marginTop:3*tmpWidth}}onPress={() => {
-                        if (tok) {
-                        setTok(false);
-                        }
+                    <TouchableOpacity style={{marginRight: 16 * tmpWidth}} onPress={() => {
+                        if (tok)    setTok(false);
                         Keyboard.dismiss();
                         setState('')
                         searchinit()
-                        initHint()}}>
-                        <SvgUri width='28' height='28' source={require('../../assets/icons/resultDelete.svg')}/>
+                        initHint()}}
+                    >
+                        <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/resultDelete.svg')}/>
                     </TouchableOpacity> 
                 </View>
             </View>
@@ -287,7 +285,7 @@ const styles = StyleSheet.create({
     header:{
         width: '100%',
         height: 48 * tmpWidth,
-        marginTop: 44 * tmpWidth,
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
         flexDirection: 'row',
     },
     headerIcon:{

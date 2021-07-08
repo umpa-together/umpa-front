@@ -51,6 +51,7 @@ const Curating = ({ curationPosts, navigation }) => {
                 refreshing={refreshing}
                 ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
+                    console.log(item.anonymous)
                     return (
                     
                         <TouchableOpacity style ={styles.curation} onPress={async ()=>{
@@ -61,7 +62,7 @@ const Curating = ({ curationPosts, navigation }) => {
                             <View>
                                 {item.isSong ? 
                                 <View style={{flexDirection: 'row',}}>
-                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth, width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13}}>
+                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth, width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13, elevation: 5}}>
                                         <SongImage url={item.object.attributes.artwork.url} size={190} border={190}/>
                                     </View> 
                                     <View style={styles.contentl}>
@@ -80,7 +81,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                     </View>
                                 </View> : 
                                 <View  style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth,  width: 190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute", zIndex:1,left:-89 * tmpWidth, top:3 * tmpWidth,  width: 190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13, elevation: 5}}>
                                         <SongImage url={item.object.artwork.url} size={190} border={190}/>
                                     </View> 
                                     <View style={styles.albumcontentl}>
@@ -102,7 +103,7 @@ const Curating = ({ curationPosts, navigation }) => {
                             <View>
                                 {item.isSong ?
                                 <View style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13, elevation: 5}}>
                                         <SongImage url={item.object.attributes.artwork.url} size={190} border={190}/>
                                     </View>
                                     <View style={styles.contentr}>
@@ -121,7 +122,7 @@ const Curating = ({ curationPosts, navigation }) => {
                                     </View>
                                 </View> :
                                 <View  style={{flexDirection: 'row'}}>
-                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13,}}>
+                                    <View style={{position :"absolute",zIndex:1, left:289 * tmpWidth, top:3 * tmpWidth,  width:190 * tmpWidth, height:190 * tmpWidth,shadowColor : "rgb(0,0,0)",   shadowRadius: 6*tmpWidth, shadowOffset:{height:1*tmpWidth, }, shadowOpacity : 0.13, elevation: 5}}>
                                         <SongImage url={item.object.artwork.url} size={190} border={190}/>
                                     </View>
                                     <View style={styles.albuminfor}>
@@ -178,6 +179,7 @@ const styles=StyleSheet.create({
         marginRight: 21 * tmpWidth,
         marginLeft:20 * tmpWidth ,
         marginTop:25 * tmpWidth,
+        elevation: 5
     },
     songinfol:{
         width : 250* tmpWidth,
@@ -204,6 +206,7 @@ const styles=StyleSheet.create({
         marginRight: 21 * tmpWidth,
         marginLeft:20 * tmpWidth ,
         marginTop:25 * tmpWidth,
+        elevation: 5
     },
     albuminfol:{
         width : 250* tmpWidth,
@@ -231,6 +234,7 @@ const styles=StyleSheet.create({
         marginRight: 21 * tmpWidth,
         marginLeft:20 * tmpWidth ,
         marginTop:25 * tmpWidth,
+        elevation: 5
     },
     songinfor:{
         width : 250* tmpWidth,
@@ -251,6 +255,7 @@ const styles=StyleSheet.create({
         marginRight: 21 * tmpWidth,
         marginLeft:20 * tmpWidth ,
         marginTop:25 * tmpWidth,
+        elevation: 5
     },
 
 });

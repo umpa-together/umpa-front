@@ -54,7 +54,7 @@ const MainSongForm = ({navigation}) => {
                                     navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
-                                        <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{url:item.image}}/>
+                                        <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{uri:item.image}}/>
                                     </View>
                                     <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)','rgba(0,0,0,0.1)' ]} style={styles.playlistitem2}>
                                     <View style={{flexDirection:'row' ,width:331 * tmpWidth, height:40 * tmpWidth}}>
@@ -174,6 +174,7 @@ const styles=StyleSheet.create({
         },
         shadowRadius: 2 * tmpWidth,
         shadowOpacity: 0.3,
+        elevation: 5
     },
     playlistitem2:{
         width:331* tmpWidth,

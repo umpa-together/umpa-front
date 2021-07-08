@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as BoardContext } from '../../context/BoardContext'
@@ -201,24 +201,32 @@ SearchMusicPage.navigationOptions = ({navigation})=>{
         title: '음악 아카이브',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: "transparent",
             shadowOffset: {
                 height: 0,
                 width: 0,
             },
             shadowRadius: 0,
             shadowOpacity: 0,
+            elevation: 3,
         },
         headerLeft: () => {
             return (
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };

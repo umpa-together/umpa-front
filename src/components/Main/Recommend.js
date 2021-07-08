@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Text, Image, StyleSheet, View, TouchableOpacity,  ScrollView, RefreshControl, Animated } from 'react-native';
+import { Text, Image, StyleSheet, View, TouchableOpacity,  ScrollView, RefreshControl, Animated, Platform, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SvgUri from 'react-native-svg-uri';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
@@ -43,15 +43,16 @@ const Recommend = ({navigation}) => {
             fetchData();
         }
     }
+    console.log(result)
     return (
         <LinearGradient colors={['rgb(219,229,255)', 'rgba(209,218,255,0)']} style={{flex: 1}}>
             <View style={styles.opt}>
                 <View style={styles.optleft}>
                     <TouchableOpacity style={styles.opt1} onPress={() => setResult('playlist')}>
-                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>플레이리스트</Text>}
+                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth, color: 'black'}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>플레이리스트</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.opt2} onPress={() => setResult('curating')}>
-                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>큐레이션</Text> }
+                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth, color: 'black'}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>큐레이션</Text> }
                     </TouchableOpacity>
                 </View>
                 <View style={styles.optright}>
@@ -69,7 +70,7 @@ const Recommend = ({navigation}) => {
             >
             <View style={styles.openingContainer}>
                 <Text style={{fontSize: 18 * tmpWidth, marginBottom: 13 * tmpWidth}}>환영합니다!</Text>
-                <Text style={styles.openingText}>취향이 비슷한 사람을 팔로우하고</Text>
+                <Text style={styles.openingText}>취향이 비슷한 사람을 팔로우하고</Text>
                 <Text style={styles.openingText}>피드에서 감상할 수 있어요.</Text>
             </View>
             <Animated.FlatList
@@ -78,7 +79,7 @@ const Recommend = ({navigation}) => {
                 keyExtractor={dj => dj._id}
                 horizontal={true}
                 snapToInterval={266*tmpWidth}
-                contentContainerStyle={{marginTop: 60 * tmpWidth, paddingLeft: 54.5 * tmpWidth, paddingRight: 54.5 * tmpWidth}}
+                contentContainerStyle={{paddingTop: 60 * tmpWidth, paddingLeft: 54.5 * tmpWidth, paddingRight: 54.5 * tmpWidth}}
                 decelerationRate={0}
                 bounces={false}
                 scrollEventThrottle={16}
@@ -112,7 +113,8 @@ const Recommend = ({navigation}) => {
                             justifyContent: 'center',
                             marginLeft: 15 * tmpWidth,
                             marginRight: 15 *tmpWidth,
-                            transform: [{translateY}]
+                            transform: [{translateY}],
+                            elevation: 1,
                         }}>
                             <TouchableOpacity onPress={async () => {
                                 await Promise.all([getOtheruser({id:item._id}),
@@ -364,10 +366,10 @@ const styles = StyleSheet.create({
         marginRight: 37 * tmpWidth
     },
     opt:{
-        marginTop: 60*tmpWidth,
         width:375 * tmpWidth,
         height:48 * tmpWidth,
         flexDirection: 'row',
+        marginTop: Platform.OS === 'ios' ? 60 * tmpWidth : (12 + StatusBar.currentHeight) * tmpWidth,
     },
     optleft:{
         alignItems:'center',

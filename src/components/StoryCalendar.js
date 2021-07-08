@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Platform } from 'react-native';
 import { tmpWidth } from './FontNormalize';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -7,6 +7,8 @@ import { Context as UserContext } from '../context/UserContext';
 import { SongImage } from './SongImage'
 import HarmfulModal from './HarmfulModal'
 import { addtracksong, stoptracksong } from './TrackPlayer'
+import 'intl'
+import 'intl/locale-data/jsonp/en'
 
 const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const { state } = useContext(UserContext);

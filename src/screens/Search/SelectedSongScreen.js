@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, ScrollView, Platform, StatusBar } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { navigate } from '../../navigationRef';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
@@ -27,7 +27,7 @@ const SelectedSongScreen = ({navigation}) => {
             <View>
             {category == 'Song' ?
             <ScrollView showsVerticalScrollIndicator={false}>
-                <SafeAreaView style={{backgroundColor:"rgba(250,250,250,1)"}}>
+                <View style={styles.container}>
                     <View style={{position :"absolute", zIndex:-3, width:375 * tmpWidth, height:354 * tmpWidth}}>
                         <SongImageBack url={song.attributes.artwork.url} opac={0.4} width={375} height={354} border={0} />
                     </View>
@@ -100,7 +100,7 @@ const SelectedSongScreen = ({navigation}) => {
                                                 navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                                             }}>
                                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
+                                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{uri :item.image}}/>
                                                 </View>
                                                 <View style={{width:161 * tmpWidth}}>
                                                     <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
@@ -122,9 +122,9 @@ const SelectedSongScreen = ({navigation}) => {
                             /> 
                         </View> }
                     </View>
-                </SafeAreaView>
+                </View>
             </ScrollView> :
-            <SafeAreaView style={{backgroundColor:"rgba(250,250,250,1)", height:814 * tmpWidth}}>
+            <View style={styles.container}>
                <View style={styles.headerdj}>
                     <View style={{height:40 * tmpWidth, width:40 * tmpWidth}}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 20 * tmpWidth}} onPress={()=>navigation.pop()}>
@@ -189,7 +189,7 @@ const SelectedSongScreen = ({navigation}) => {
                         }}
                     />
                 </View> }
-            </SafeAreaView> }
+            </View> }
         </View> }
     </View>
     )
@@ -202,6 +202,10 @@ SelectedSongScreen.navigationOptions = () =>{
 };
 
 const styles=StyleSheet.create({
+    container: {
+        backgroundColor:"rgba(250,250,250,1)",         
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth  
+    },
     profileImage: {
         width: 70 * tmpWidth,
         height: 70 * tmpWidth,

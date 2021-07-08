@@ -59,14 +59,15 @@ const Playlist = ({ playList, navigation }) => {
                     onRefresh={onRefresh}
                     refreshing={refreshing}
                     ListFooterComponent={loading && <ActivityIndicator />}
+                    contentContainerStyle={{paddingBottom: 20 * tmpWidth}}
                     renderItem = {({item}) => {
                         return (
                             <View style={styles.playlist}>
-                                <View style={{width: 335 * tmpWidth}}>
-                                <TouchableOpacity style={{width: 335 * tmpWidth }} onPress={async () => {
-                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                    navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
-                                }}>
+                                <View style={{width: 335 * tmpWidth, shadowColor : "#E0E0E0", shadowRadius: 3 * tmpWidth, shadowOffset:{height:0,}, shadowOpacity : 1, elevation: 5}}>
+                                    <TouchableOpacity style={{width: 335 * tmpWidth }} onPress={async () => {
+                                        await getPlaylist({id:item._id, postUserId:item.postUserId._id})
+                                        navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
+                                    }}>
                                         <View style={styles.backpic}>
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />
                                         </View>
@@ -154,21 +155,16 @@ const styles=StyleSheet.create({
         width:375 * tmpWidth,
         alignItems: 'center',
         marginBottom: 20 * tmpWidth,
-        shadowColor : "#E0E0E0",
-        shadowRadius: 3 * tmpWidth,
-        shadowOffset:{height:0,},
-        shadowOpacity : 1,
     },
     backpic:{
         position: 'absolute',
         width: '100%',
-        height: '100%',
     },
     backpicimg:{
         width:'100%',
-        height:'99%',
-
-        borderRadius:16 * tmpWidth,
+        height: 160 * tmpWidth,
+        borderTopLeftRadius: 16 * tmpWidth,
+        borderTopRightRadius: 16 * tmpWidth
     },
     playlisthead:{
         flexDirection: 'row',

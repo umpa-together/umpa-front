@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
@@ -10,9 +10,9 @@ const SelectedHashtagScreen = ({navigation}) => {
     const data = navigation.getParam('data');
     const hashtag = navigation.getParam('text')
     return (
-        <SafeAreaView style={{height:812 * tmpHeight, backgroundColor:"#fff"}}>
+        <View style={styles.container}>
         {searchOption =='Hashtag' ?
-            <View>
+            <View style={{flex: 1}}>
                 <View style={styles.header}>
                     <View style={{ height:40 * tmpWidth, width:375/4 * tmpWidth,}}>
                         <TouchableOpacity style={styles.backicon} onPress={()=>navigation.pop()}>
@@ -42,7 +42,7 @@ const SelectedHashtagScreen = ({navigation}) => {
                                         navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId})
                                     }}>
                                         <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                            <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
+                                            <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{uri :item.image}}/>
                                         </View>
                                         <View style={{width:161 * tmpWidth}}>
                                             <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
@@ -62,7 +62,7 @@ const SelectedHashtagScreen = ({navigation}) => {
                     />
                 </View>
             </View> : null }
-        </SafeAreaView>
+        </View>
     )
 };
 SelectedHashtagScreen.navigationOptions = () =>{
@@ -74,6 +74,11 @@ SelectedHashtagScreen.navigationOptions = () =>{
 
 
 const styles=StyleSheet.create({
+    container: {
+        backgroundColor:"#fff", 
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
+    },
     header:{
         alignItems:'center',
         width : 375 * tmpWidth,
@@ -91,6 +96,7 @@ const styles=StyleSheet.create({
         height:700 * tmpHeight,
         marginTop:18 * tmpWidth,
         marginLeft:20 * tmpWidth,
+        flex: 1
     }
 });
 

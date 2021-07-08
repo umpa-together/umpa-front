@@ -27,7 +27,7 @@ const AccountPlaylist = ({ playList, myAccount, navigation }) => {
                             }}>
                                 <View style={{alignItems: 'center'}}>
                                     <View style={styles.thumbnail}>
-                                    <Image  style={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source={{url:item.image}} />
+                                    <Image  style={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source={{uri:item.image}} />
                                     </View>
                                     <View style={styles.titleBox}>
                                         <Text numberOfLines={2} style={{fontSize: 14 * tmpWidth, color: 'rgb(79,79,79)'}}>{item.title}</Text>

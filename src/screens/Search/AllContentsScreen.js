@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform, StatusBar } from 'react-native';
 import { tmpWidth } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import AllPlaylistForm from '../../components/Search/AllPlaylistForm';
@@ -38,9 +38,9 @@ const styles=StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: 'rgb(255,255,255)',
-        height: 92 * tmpWidth,
+        height: 48 * tmpWidth,
         flexDirection: 'row',
-        paddingTop: 44 * tmpWidth,
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
         justifyContent: 'space-between'
     },
 })

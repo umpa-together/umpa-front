@@ -4,7 +4,7 @@ import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { tmpWidth } from '../FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 
 const MainDJForm = ({navigation}) => {
@@ -13,9 +13,9 @@ const MainDJForm = ({navigation}) => {
     const { getSongs } = useContext(DJContext);
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Text style={styles.headertext}>위클리 DJ</Text>
-            <View style={{width: 375 * tmpWidth, height:525 * tmpHeight}}>
+            <View style={{width: 375 * tmpWidth, flex: 1}}>
                 <FlatList
                     keyboardShouldPersistTaps="handled"
                     data={state.weeklyDJ}

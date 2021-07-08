@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as BoardContext } from '../../context/BoardContext';
@@ -15,7 +15,6 @@ const FreeBoardPage = ({ navigation }) => {
     const [genre, setGenre] = useState(['전체']);
     const [selectedBoard, setSelectedBoard] = useState(state.genreBoard);
     const genreList = ['전체', '일렉트로니카', '발라드', '댄스', '록/메탈', '클래식', '재즈', '랩/힙합', '인디', '포크/블루스'];
-
     useEffect(() =>{
         const listener =navigation.addListener('didFocus', ()=>{
             initUser();
@@ -127,11 +126,13 @@ FreeBoardPage.navigationOptions = ()=>{
         title: '게시판',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
             shadowColor: "rgb(0, 0, 0)",
             shadowOffset: {
                 height: 3 * tmpWidth,

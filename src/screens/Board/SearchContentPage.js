@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, Keyboard, Platform, StatusBar } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
@@ -64,8 +64,8 @@ const styles=StyleSheet.create({
         flex: 1,
     },
     header: {
-        height: 98 * tmpWidth,
-        paddingTop: 34 * tmpWidth,
+        height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+        paddingTop: Platform.OS === 'ios' ? 34 * tmpWidth : (StatusBar.currentHeight - 10) * tmpWidth,
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: 'rgb(255,255,255)',

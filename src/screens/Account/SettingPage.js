@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Platform, StatusBar } from 'react-native';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as NoticeContext } from '../../context/NoticeContext';
 
@@ -70,17 +70,20 @@ SettingPage.navigationOptions = ({navigation})=>{
         title: '설정',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         }, 
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48+StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
             },
             shadowRadius: 0,
             shadowOpacity: 0,
+            borderBottomWidth: 0,
         },
         headerLeft: () => {
             return (
@@ -89,6 +92,11 @@ SettingPage.navigationOptions = ({navigation})=>{
                 </TouchableOpacity>
             )
         },
+        headerRight: () => {
+            return (
+                <View />
+            )
+        }
     };
 };
 

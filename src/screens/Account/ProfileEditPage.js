@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Keyboard, Platform, StatusBar } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
@@ -84,7 +84,7 @@ const ProfileEditPage = ({navigation}) => {
                                         placeholderTextColor='rgb(196,196,196)'
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth, paddingBottom: 9 * tmpWidth }}
+                                        style={{fontSize: 14 * tmpWidth, paddingBottom: Platform.OS === 'ios' ? 9 * tmpWidth : 4 * tmpWidth, padding: 0 }}
                                     />
                                 </View>
                                 {doubleCheck && !authState.doubleCheck ? 
@@ -131,11 +131,13 @@ ProfileEditPage.navigationOptions = ({navigation})=>{
         title: '프로필 편집',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         }, 
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92  * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -150,6 +152,11 @@ ProfileEditPage.navigationOptions = ({navigation})=>{
                 </TouchableOpacity>
             )
         },
+        headerRight: () => {
+            return (
+                <View />
+            )
+        }
     };
 };
 
@@ -240,6 +247,7 @@ const styles=StyleSheet.create({
         marginLeft: 12  * tmpWidth,
         marginTop: 12  * tmpWidth,
         marginRight: 12  * tmpWidth,
+        textAlignVertical: 'top'
     },
     backgroundopt:{
         marginTop: 19  * tmpWidth,

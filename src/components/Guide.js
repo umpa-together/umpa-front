@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { tmpWidth } from './FontNormalize';
 import Modal from 'react-native-modal';
 import { Context as UserContext } from '../context/UserContext';

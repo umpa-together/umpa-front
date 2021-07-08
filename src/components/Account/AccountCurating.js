@@ -89,7 +89,8 @@ const styles=StyleSheet.create({
         paddingLeft: 14 * tmpWidth,
         justifyContent: 'center',
         marginBottom: 14 * tmpWidth,
-        backgroundColor: 'rgb(255,255,255)'
+        backgroundColor: 'rgb(255,255,255)',
+        elevation: 5
     },
     contentText: {
         width: 200 * tmpWidth, 

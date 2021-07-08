@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Platform, View, StatusBar } from 'react-native';
 import { tmpWidth } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import TosForm from '../../components/Setting/TosForm';
@@ -27,11 +27,13 @@ InformationUsePage.navigationOptions = ({navigation})=>{
         title: type,
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         }, 
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -46,6 +48,11 @@ InformationUsePage.navigationOptions = ({navigation})=>{
                 </TouchableOpacity>
             )
         },
+        headerRight: () => {
+            return (
+                <View />
+            )
+        }
     };
 };
 

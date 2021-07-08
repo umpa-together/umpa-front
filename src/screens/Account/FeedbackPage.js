@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
 import { Context as ReportContext } from '../../context/ReportContext';
@@ -42,11 +42,13 @@ FeedBackPage.navigationOptions = ({navigation})=>{
         title: '피드백 및 건의사항',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         }, 
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -56,11 +58,16 @@ FeedBackPage.navigationOptions = ({navigation})=>{
         },
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{position: 'absolute', left: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
                     <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
             )
         },
+        headerRight: () => {
+            return (
+                <View />
+            )
+        }
     };
 };
 
@@ -79,6 +86,7 @@ const styles=StyleSheet.create({
         paddingLeft: 12 * tmpWidth, 
         paddingRight: 12 * tmpWidth, 
         flex: 1,
+        textAlignVertical: 'top'
     },
     uploadBox: {
         width: 327 * tmpWidth,

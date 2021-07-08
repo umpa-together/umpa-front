@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Image,StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { View, Image,StyleSheet, TouchableOpacity, Text, Platform, StatusBar } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigate } from '../navigationRef';
 import { tmpWidth } from '../components/FontNormalize';
@@ -120,12 +120,14 @@ Signupopt.navigationOptions = ({navigation}) =>{
     return {
         title: '회원가입',
         headerTitleStyle: {
-            fontSize: 18 * tmpWidth
+            fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         },
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -138,6 +140,11 @@ Signupopt.navigationOptions = ({navigation}) =>{
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
                     <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };

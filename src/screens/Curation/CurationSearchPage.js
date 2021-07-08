@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { Text, TextInput,View,Keyboard, Image,FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator  } from 'react-native';
+import { Text, TextInput,View,Keyboard, FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator, Platform, StatusBar  } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as CurationContext } from '../../context/CurationContext'
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
@@ -38,10 +38,8 @@ const CurationSearchPage = ({navigation}) => {
     }, [text]);
 
     return (
-    <SafeAreaView style={{backgroundColor:'#fff'}}>
+    <View style={styles.container}>
         <View style={{backgroundColor:"rgb(250,250,250)"}}>
-            <View style={styles.emptyheader}>
-            </View>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.back} onPress={()=>{navigation.pop()}}>
                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
@@ -68,8 +66,8 @@ const CurationSearchPage = ({navigation}) => {
                         />
                     </View>
                     <TouchableOpacity 
-                    style={{marginLeft:tmpWidth*10, width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
-                    onPress={()=>{Keyboard.dismiss(); setState('');}}
+                        style={{marginLeft:tmpWidth*10, width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
+                        onPress={()=>{Keyboard.dismiss(); setState('');}}
                     >
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
                     </TouchableOpacity>
@@ -77,7 +75,7 @@ const CurationSearchPage = ({navigation}) => {
             </View>
             <View style={styles.output}>
                {key ?
-                <View>
+                <View style={{flex: 1}}>
                     <View style={ styles.keyheader}>
                         <Text style={{fontSize:14 * tmpWidth,color:'rgb(148,153,163)'}}>관련 검색어</Text>
                     </View>
@@ -99,33 +97,32 @@ const CurationSearchPage = ({navigation}) => {
                             }}
                         />
                     </View>
-                </View>
-                :
-                <View>
+                </View> :
+                <View style={{flex: 1}}>
                     <View style={styles.resultopt}>
-                            <TouchableOpacity  onPress={()=>setIsSong(true)} style={{justifyContent:'center', alignItems:'center', width:375/6 * tmpWidth}}>
-                                <Text style={isSong ? styles.clicked : styles.unclicked}>곡</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>setIsSong(false)} style={{justifyContent:'center', alignItems:'center', width:375/6 * tmpWidth}}>
-                                <Text style={!isSong ? styles.clicked : styles.unclicked}>앨범</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity  onPress={()=>setIsSong(true)} style={{justifyContent:'center', alignItems:'center', width:375/6 * tmpWidth}}>
+                            <Text style={isSong ? styles.clicked : styles.unclicked}>곡</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>setIsSong(false)} style={{justifyContent:'center', alignItems:'center', width:375/6 * tmpWidth}}>
+                            <Text style={!isSong ? styles.clicked : styles.unclicked}>앨범</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style ={styles.result}>
                         {isSong ?
                             <FlatList
                                 contentContainerStyle={{paddingTop: 14 * tmpWidth}}
-                                  data={state.songData}
-                                  keyExtractor={posts => posts.id}
-                                  onEndReached={onEndReached}
-                                  onEndReachedThreshold={0.8}
-                                  ListFooterComponent={loading && <ActivityIndicator />}
-                                  renderItem={({item}) =>{
-                                  return (
+                                data={state.songData}
+                                keyExtractor={posts => posts.id}
+                                onEndReached={onEndReached}
+                                onEndReachedThreshold={0.8}
+                                ListFooterComponent={loading && <ActivityIndicator />}
+                                renderItem={({item}) =>{
+                                    return (
                                         <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth}} onPress={async ()=>{
                                             await getCuration({isSong : true,object:item,id:item.id})
                                             navigation.push('SelectedCuration', {id: item.id, object: item})
                                         }}>
-                                          <View style={{flexDirection:'row'}}>
+                                            <View style={{flexDirection:'row'}}>
                                                 <SongImage url={item.attributes.artwork.url} size={56} border={56} />
                                                 <View>
                                                     <View style={{marginLeft: 24 * tmpWidth, width: 220 * tmpWidth,}}>
@@ -142,53 +139,51 @@ const CurationSearchPage = ({navigation}) => {
                                                             : null}
                                                         </View>
                                                     </View>
-                                              </View>
-                                           </View>
-                                      </TouchableOpacity>
-                                   )
-                                   }}
-                             />
-                        :
-                         <FlatList
-                         contentContainerStyle={{paddingTop: 14 * tmpWidth}}
-                               data={state.albumData}
-                               keyExtractor={posts => posts.id}
-                               onEndReached={onEndReached}
-                               onEndReachedThreshold={0.8}
-                               ListFooterComponent={loading && <ActivityIndicator />}
-                               renderItem={({item}) =>{
-                               return (
-                                    <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={async ()=>{
-                                        await getCuration({isSong : false,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating},id:item.id})
-                                        navigation.push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
-                                    }}>
-                                       <View style={{flexDirection:'row'}}>
-                                            <SongImage url={item.attributes.artwork.url} size={56} border={4}/>
-                                            <View>
-                                                <View style={{marginLeft: 24 * tmpWidth}}>
-                                                    <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
-                                                        {item.attributes.contentRating == "explicit" ? 
-                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
-                                                        : null }
-                                                    <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
-                                                    </View>
-                                                    <View>
-                                                       <Text style={{fontSize:14 * tmpWidth, color:"#9499A3", marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                </View>
+                                            </View>
+                                        </TouchableOpacity>
+                                       )
+                                }}
+                            /> :
+                            <FlatList
+                                contentContainerStyle={{paddingTop: 14 * tmpWidth}}
+                                data={state.albumData}
+                                keyExtractor={posts => posts.id}
+                                onEndReached={onEndReached}
+                                onEndReachedThreshold={0.8}
+                                ListFooterComponent={loading && <ActivityIndicator />}
+                                renderItem={({item}) =>{
+                                    return (
+                                        <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={async ()=>{
+                                            await getCuration({isSong : false,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating},id:item.id})
+                                            navigation.push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
+                                        }}>
+                                            <View style={{flexDirection:'row'}}>
+                                                <SongImage url={item.attributes.artwork.url} size={56} border={4}/>
+                                                <View>
+                                                    <View style={{marginLeft: 24 * tmpWidth}}>
+                                                        <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
+                                                            {item.attributes.contentRating == "explicit" &&
+                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
+                                                            <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
+                                                        </View>
+                                                        <View>
+                                                           <Text style={{fontSize:14 * tmpWidth, color:"#9499A3", marginTop: 8 * tmpWidth}} numberOfLines={1}>{item.attributes.artistName}</Text>
+                                                        </View>
                                                     </View>
                                                 </View>
                                             </View>
-                                        </View>
-                                   </TouchableOpacity>
-                                )
+                                        </TouchableOpacity>
+                                    )
                                 }}
-                          />
+                            />
                         }
                     </View>
                 </View>
                 }
             </View>
         </View>
-     </SafeAreaView>
+     </View>
     );
 };
 
@@ -199,6 +194,10 @@ CurationSearchPage.navigationOptions = ({navigation}) =>{
 };
 
 const styles=StyleSheet.create({
+    container: {
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
+        backgroundColor:'#fff'
+    },
     header:{
         backgroundColor:'#fff',
         width:375 * tmpWidth,
@@ -236,7 +235,7 @@ const styles=StyleSheet.create({
     output:{
         width:375 * tmpWidth,
         height:660 * tmpWidth,
-        backgroundColor:"rgb(250,250,250)"
+        backgroundColor:"rgb(250,250,250)",
     },
     keyheader:{
         width:68 * tmpWidth,
@@ -247,9 +246,9 @@ const styles=StyleSheet.create({
     },
     keyoutput:{
         width:375 * tmpWidth,
-        height:597 * tmpHeight,
         backgroundColor:"rgb(250,250,250)",
-        marginTop:14 * tmpWidth
+        marginTop:14 * tmpWidth,
+        flex: 1
     },
     keyoutputitem:{
         flexDirection: 'row' ,
@@ -265,7 +264,8 @@ const styles=StyleSheet.create({
         backgroundColor:'#fff'
     },
     clicked:{
-        fontSize:16 * tmpWidth
+        fontSize:16 * tmpWidth,
+        color: 'black'
     },
     unclicked:{
         fontSize:16 * tmpWidth,
@@ -273,8 +273,8 @@ const styles=StyleSheet.create({
     },
     result:{
         width:375 * tmpWidth,
-        height:621 * tmpHeight,
         backgroundColor:"rgb(250,250,250)",
+        flex: 1
     },
 });
 

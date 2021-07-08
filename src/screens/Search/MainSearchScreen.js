@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,SafeAreaView, Platform, StatusBar } from 'react-native';
 import { navigate } from '../../navigationRef';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -10,10 +10,9 @@ import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 
 const MainSearchScreen = ({navigation}) => {
     const [category, setCategory] = useState('Song');
-
     return (
-    <SafeAreaView style={{backgroundColor:"#fff"}}>
-        <View >
+    <View style={styles.container}>
+        <View style={{flex: 1}}>
             <View style={styles.searchopt}>
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setCategory('Song')}>
@@ -28,18 +27,18 @@ const MainSearchScreen = ({navigation}) => {
             </View>
             <View style={{alignItems: 'center',width: 375 * tmpWidth, height: 64 * tmpWidth, }}>
                 <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: category})}>
-                    <View style={{flexDirection: 'row', alignItems:'center',}}>
-                        <FontAwesome style={{fontSize: 18 * tmpWidth, color:'#c6c6c6',marginTop:14 * tmpWidth,marginLeft:12 * tmpWidth, marginRight:12 * tmpWidth}} name="search"/>
-                        {category == 'Song' ? <Text style={{color:'#c6c6c6', fontSize: 16 * tmpWidth, marginTop:14 * tmpWidth,}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
-                        : <Text style={{color:'#c6c6c6', fontSize: 16 * tmpWidth,marginTop:14 * tmpWidth, }}>곡, 아티스트 또는 DJ를 검색해주세요</Text>}
+                    <View style={{flexDirection: 'row', alignItems:'center'}}>
+                        <FontAwesome style={{fontSize: 18 * tmpWidth, color:'#c6c6c6',marginLeft:12 * tmpWidth, marginRight:12 * tmpWidth}} name="search"/>
+                        {category == 'Song' ? <Text style={{color:'#c6c6c6', fontSize: 15 * tmpWidth}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
+                        : <Text style={{color:'#c6c6c6', fontSize: 15 * tmpWidth,}}>곡, 아티스트 또는 DJ를 검색해주세요</Text>}
                     </View>
                 </TouchableOpacity>
             </View>
-            <View style={{height:590 * tmpHeight}}>
+            <View style={{flex: 1}}>
             {category == 'Song' ? <MainSongForm navigation={navigation}/> : <MainDJForm navigation={navigation}/> }
             </View>
         </View>
-    </SafeAreaView>
+    </View>
     )
 }
 
@@ -50,11 +49,16 @@ MainSearchScreen.navigationOptions = () =>{
 };
 
 const styles=StyleSheet.create({
+    container: {
+        backgroundColor:"#fff", 
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
+        height: '100%'
+    },
     searchopt:{
         marginTop : tmpWidth*20,
         flexDirection: 'row',
         width:100* tmpWidth,
-        height:22 * tmpWidth,
+        //height:22 * tmpWidth,
         marginBottom:13 * tmpWidth,
         marginLeft:24 * tmpWidth
     },
@@ -62,7 +66,8 @@ const styles=StyleSheet.create({
         width: 325 * tmpWidth,
         height: 44 * tmpWidth,
         backgroundColor: '#F5F5F5',
-        borderRadius: 10 * tmpWidth
+        borderRadius: 10 * tmpWidth,
+        flexDirection: 'row'
     },
 });
 

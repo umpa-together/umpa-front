@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { Text, TextInput,View, Image, FlatList,StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Keyboard  } from 'react-native';
+import { Text, TextInput,View, Image, FlatList,StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, StatusBar } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext'
 import { Context as DJContext } from '../../context/DJContext'
 import { navigate } from '../../navigationRef';
@@ -71,7 +71,7 @@ const FollowPage = ({navigation}) => {
                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/search.svg')}/>
                             </View>
                             <TextInput
-                                style={{marginLeft: 10 * tmpWidth }}
+                                style={{marginLeft: 10 * tmpWidth, padding: 0 }}
                                 value = {text}
                                 onChangeText={(text)=>{setText(text); filterItem({data:text});}}
                                 placeholder= {type=='following' ? "팔로잉 검색" : "팔로워 검색"}
@@ -179,12 +179,13 @@ FollowPage.navigationOptions = ({navigation})=>{
         title: name,
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: 'bold'
+            fontWeight: Platform.OS === 'ios' ? '500' : '700',
+            alignSelf: 'center',
         },
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -197,6 +198,11 @@ FollowPage.navigationOptions = ({navigation})=>{
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.pop()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -233,6 +239,7 @@ const styles=StyleSheet.create({
     },
     selectedType: {
         fontSize: 14 * tmpWidth,
+        color: 'black'
     },
     notSelectedType: {
         fontSize: 14 * tmpWidth,

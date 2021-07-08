@@ -54,7 +54,7 @@ const AllPlaylistForm = ({navigation}) => {
                                 navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
                             }}>
                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
+                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{uri :item.image}}/>
                                 </View>
                                 <View style={{width:161 * tmpWidth}}>
                                     <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>

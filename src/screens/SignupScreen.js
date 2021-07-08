@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, ActivityIndicator, Platform, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as SearchContext } from '../context/SearchContext';
 import { Context as DJContext } from '../context/DJContext';
@@ -558,12 +558,14 @@ SignupPage.navigationOptions = ({navigation}) =>{
     return {
         title: '회원가입',
         headerTitleStyle: {
-            fontSize: 18 * tmpWidth
+            fontSize: 18 * tmpWidth,
+            alignSelf: 'center',
+            fontWeight: Platform.OS === 'ios' ? '500' : '700'
         },
         headerStyle: {
             backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth ,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: 'transparent',
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -576,6 +578,11 @@ SignupPage.navigationOptions = ({navigation}) =>{
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
                     <SvgUri width={40 * tmpWidth} height={40* tmpWidth} source={require('../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -601,7 +608,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.6)",
         width: "100%",
         height: "100%",
-        alignItems: 'center'
+        alignItems: 'center',
     },
     textStyle: {
         marginLeft: 20 * tmpWidth
@@ -684,7 +691,7 @@ const styles = StyleSheet.create({
         width:335 * tmpWidth,
         height:564 * tmpWidth,
         borderRadius:18 * tmpWidth,
-        backgroundColor:'rgb(255,255,255)'
+        backgroundColor:'rgb(255,255,255)',
     },
     modalexiticon:{
         width:32 * tmpWidth,

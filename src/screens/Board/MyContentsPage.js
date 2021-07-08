@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from '../../context/UserContext';
 import MyContentForm from '../../components/Board/MyContentForm'
@@ -21,11 +21,13 @@ MyContentsPage.navigationOptions = ({navigation})=>{
         title: title,
         headerTitleStyle: {
             fontSize: 16 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
             backgroundColor: 'rgb(255,255,255)',
             shadowColor: "rgb(0, 0, 0)",
             shadowOffset: {
@@ -37,9 +39,14 @@ MyContentsPage.navigationOptions = ({navigation})=>{
         },
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth, marginTop: (StatusBar.currentHeight + 6) * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };

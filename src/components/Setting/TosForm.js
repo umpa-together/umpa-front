@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 import { tmpWidth } from '../FontNormalize';
 
 const TosForm = () => {
@@ -174,7 +174,7 @@ const styles=StyleSheet.create({
         marginTop: 6 * tmpWidth
     },
     title: {
-        fontWeight: '600', 
+        fontWeight: Platform.OS === 'ios' ? '600' : '700', 
         marginTop: 20 * tmpWidth
     },
     site: { 

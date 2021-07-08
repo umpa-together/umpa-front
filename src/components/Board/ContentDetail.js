@@ -15,6 +15,7 @@ import DeleteModal from '../DeleteModal';
 import DeletedModal from '../DeletedModal';
 import { SongImage } from '../SongImage'
 import { addtracksong, stoptracksong } from '../TrackPlayer'
+import HarmfulModal from '../HarmfulModal';
 
 const ContentDetail = ({navigation}) => {
     const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
@@ -36,6 +37,7 @@ const ContentDetail = ({navigation}) => {
 
     const img = [];
     const inputRef = useRef();
+    console.log(keyboardHeight)
     const getData = async () => {
         setLoading(true);
         await getCurrentContent({id: state.currentContent._id});
@@ -188,6 +190,7 @@ const ContentDetail = ({navigation}) => {
                                             { isPlayingid != state.currentContent.song.id ?
                                             <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicPlay.svg')}/> :
                                             <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicStop.svg')}/> }
+                                            { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal} /> }
                                         </TouchableOpacity>
                                     </View>}
                                     {state.currentContent != null && state.currentContent.image.length == 0 ? null:
@@ -244,7 +247,7 @@ const ContentDetail = ({navigation}) => {
                                         placeholder="댓글을 입력해주세요."
                                         placeholderTextColor='rgb(196,196,196)'
                                         onChangeText={text => inputRef.current.value = text}
-                                        style={{fontSize: 14 * tmpWidth, marginLeft: 16.5 * tmpWidth}}
+                                        style={{fontSize: 14 * tmpWidth, marginLeft: 16.5 * tmpWidth, padding: 0}}
                                         ref={inputRef}
                                         multiline={true}
                                     />
@@ -350,6 +353,7 @@ const styles=StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingRight: 12 * tmpWidth,
+        elevation: 5,
     },
     commentProfile: {
         width: 32 * tmpWidth,

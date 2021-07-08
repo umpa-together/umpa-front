@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import ContentDetail from '../../components/Board/ContentDetail';
 import { tmpWidth } from '../../components/FontNormalize';
@@ -19,10 +19,12 @@ SelectedContentPage.navigationOptions = ({ navigation }) => {
         headerTitleStyle: {
             fontSize: 16 * tmpWidth,
             fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 91 * tmpWidth,
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
             shadowColor: "rgb(0, 0, 0)",
             shadowOffset: {
                 height: 3 * tmpWidth,
@@ -33,11 +35,16 @@ SelectedContentPage.navigationOptions = ({ navigation }) => {
         },
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth, marginTop: (StatusBar.currentHeight + 6) * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
             )
         },
+        headerRight: () => {
+            return (
+                <View />
+            )
+        }
     });
 };
 

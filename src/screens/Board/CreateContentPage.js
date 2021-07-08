@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, Keyboard, ScrollView, Platform, StatusBar } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import SvgUri from 'react-native-svg-uri';
@@ -68,7 +68,7 @@ const CreateContent = () => {
                                         onChangeText={text=>titleRef.current.value = text}
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth}}
+                                        style={{fontSize: 14 * tmpWidth, padding: 0}}
                                     />
                                 </View>
                                 {titleValidity ? null :
@@ -171,12 +171,14 @@ CreateContent.navigationOptions = ({navigation})=>{
         title: '글쓰기',
         headerTitleStyle: {
             fontSize: 18 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
+            shadowColor: "transparent",
             shadowOffset: {
                 height: 0,
                 width: 0,
@@ -186,9 +188,14 @@ CreateContent.navigationOptions = ({navigation})=>{
         },
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth, marginTop: (StatusBar.currentHeight + 6) * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };
@@ -211,14 +218,15 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(196,196,196)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     textInput: {
         fontSize: 14 * tmpWidth, 
         marginTop: 12 * tmpWidth, 
         marginLeft: 12 * tmpWidth, 
         flex: 1, 
-        marginRight: 12 * tmpWidth
+        marginRight: 12 * tmpWidth,
+        textAlignVertical: 'top'
     },
     menuText: {
         fontSize: 16 * tmpWidth
@@ -284,7 +292,7 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(238,98,92)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     validityCommentBox: {
         width: 327 * tmpWidth,

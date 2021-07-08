@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Text, View, StyleSheet,TextInput, Keyboard, SafeAreaView, FlatList, Image ,} from 'react-native';
+import {Text, View, StyleSheet,TextInput, Keyboard, SafeAreaView, FlatList, Image, Platform, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { tmpWidth } from '../../components/FontNormalize';
 
 import { navigate } from '../../navigationRef';
 
@@ -46,10 +46,10 @@ const SearchScreen = ({navigation}) => {
     }, [text]);
 
     return (
-    <SafeAreaView style={{backgroundColor:"#fff"}}>
+        <View style={styles.container}>
             <View style={styles.input}>
                 <TouchableOpacity onPress={()=>{navigation.pop();}} style={ styles.backbutton}>
-                       <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
+                    <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
                 </TouchableOpacity>
                 <View style={styles.inputbox}>
                     <View style={styles.inputboxicon}>
@@ -79,31 +79,235 @@ const SearchScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View>
             { searchOption=='Song' || searchOption=='Hashtag' ?
-            <View>
+            <View style ={styles.searchopt}>
+                <TouchableOpacity onPress ={()=>{setSearachOption('Song'); setText(''); }} style={{justifyContent:'center' ,alignItems:'center' ,width:46, marginLeft:12}}>
+                    {searchOption =='Song' ?
+                    <View style={styles.pickedopt}>
+                        <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>곡</Text>
+                    </View> :
+                    <View style={{height:46 * tmpWidth, width:40 * tmpWidth, alignItems:'center'}}>
+                        <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>곡</Text>
+                    </View> }
+                </TouchableOpacity>
+                <TouchableOpacity onPress ={()=>{setSearachOption('Hashtag'); setText(''); }} style={{width:60 * tmpWidth,alignItems:'center', marginLeft:14 * tmpWidth}}>
+                    {searchOption =='Hashtag' ?
+                        <View style={styles.pickedopt2}>
+                            <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>해시태그</Text>
+                        </View> :
+                        <View style={{height:46 * tmpWidth, width:60 * tmpWidth, alignItems:'center'}}>
+                            <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>해시태그</Text>
+                        </View> }
+                </TouchableOpacity>
+            </View> : 
+            <View style ={styles.searchoptdj}>
+                <TouchableOpacity onPress ={()=>{setSearachOption('DJSong'); setText(''); }} style={{justifyContent:'center' ,alignItems:'center' ,width:110 * tmpWidth, marginLeft:8 * tmpWidth}}>
+                    {searchOption =='DJSong' ?
+                    <View style={styles.pickedoptdj}>
+                       <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>대표곡으로 찾기</Text>
+                    </View> :
+                    <View style={{height:46 * tmpWidth, width:110 * tmpWidth, alignItems:'center'}}>
+                       <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>대표곡으로 찾기</Text>
+                    </View> }
+                </TouchableOpacity>
+                <TouchableOpacity onPress ={()=>{setSearachOption('DJ'); setText(''); }} style={{width:110 * tmpWidth,alignItems:'center'}}>
+                    {searchOption =='DJ' ?
+                    <View style={styles.pickedoptdj}>
+                        <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>이름으로 찾기</Text>
+                    </View> :
+                    <View style={{height:46 * tmpWidth, width:110 * tmpWidth, alignItems:'center'}}>
+                        <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>이름으로 찾기</Text>
+                    </View> }
+                </TouchableOpacity>
+            </View> }
+            { searchOption=='Song' || searchOption=='Hashtag' ?
+            <View style={styles.result}>
+            {key == true ?
+                (searchOption =='Song' ?
+                <FlatList
+                    keyboardShouldPersistTaps="handled"
+                    data={searchState.hint}
+                    keyExtractor={term=>term}
+                    renderItem={({item})=> {
+                        return (
+                            <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center'}}>
+                                <TouchableOpacity onPress={() => {
+                                    searchsong({songname: item})
+                                    setText(item);
+                                    setKey(false);
+                                }}
+                                    style={{flexDirection:'row'}}
+                                >
+                                    <View style={{width:304 * tmpWidth}}>
+                                        <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
+                                    </View>
+                                    <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
+                                        <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }}
+                /> :
+                <FlatList
+                    keyboardShouldPersistTaps="handled"
+                    data={searchState.hashtagHint}
+                    keyExtractor={hashtag=>hashtag._id}
+                    renderItem={({item})=> {
+                        return (
+                            <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center'}}>
+                                <TouchableOpacity onPress={() => {
+                                    setText(item.hashtag);
+                                    setKey(false);
+                                    navigate('SelectedHashtag', {data: item, text: item.hashtag , searchOption : searchOption });
+                                }}
+                                    style={{flexDirection:'row'}}
+                                >
+                                    <View style={{width:304 * tmpWidth}}>
+                                        <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
+                                    </View>
+                                    <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
+                                        <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }}
+                />
+                ) :
+                (searchOption =='Song' ?
+                <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} /> :
+                <FlatList
+                    keyboardShouldPersistTaps="handled"
+                    data={searchState.hashtagHint}
+                    keyExtractor={hashtag=>hashtag._id}
+                    renderItem={({item})=> {
+                        return (
+                            <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center'}}>
+                                <TouchableOpacity onPress={() => {
+                                    setText(item.hashtag);
+                                    setKey(false);
+                                    navigate('SelectedHashtag', {data: item, text: text , searchOption : searchOption });
+                                }}
+                                    style={{flexDirection:'row'}}
+                                >
+                                    <View style={{width:200 * tmpWidth}}>
+                                        <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
+                                    </View>
+                                    <View style={{width:150 * tmpWidth, marginRight:24 * tmpWidth, height:32 * tmpWidth,alignItems:'flex-end'}}>
+                                        <Text style={{marginRight:24 * tmpWidth, fontSize:14 * tmpWidth, color:'rgb(148,153,163)'}}>{'플레이리스트 ' +item.playlistId.length+'개'}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }}
+                />
+                )
+            }
+            </View> : 
+            <View style={styles.searchressultdj}>
+            {searchOption == "DJSong" ?
+                (key == true ?
+                <FlatList
+                    keyboardShouldPersistTaps="handled"
+                    data={searchState.hint}
+                    keyExtractor={term=>term}
+                    renderItem={({item})=> {
+                        return (
+                            <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center'}}>
+                                <TouchableOpacity onPress={() => {
+                                    searchsong({songname: item})
+                                    setText(item);
+                                    setKey(false);
+                                }}
+                                    style={{flexDirection:'row'}}
+                                >
+                                    <View style={{width:304 * tmpWidth}}>
+                                        <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
+                                    </View>
+                                    <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
+                                        <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }}
+                /> :
+                <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} /> ) : 
+                <View style={{flex: 1}}>
+                    <FlatList
+                        keyboardShouldPersistTaps="handled"        
+                        data={searchState.djHint}
+                        keyExtractor={dj=>dj._id}
+                        renderItem={({item})=> {
+                            return (
+                                <View style={{marginLeft: 30 * tmpWidth, marginTop: 20 * tmpWidth, height:tmpWidth*70, width:tmpWidth*375}}>
+                                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
+                                        if(item._id == userState.myInfo._id){
+                                            navigate('Account');
+                                        }else{
+                                            await Promise.all([getOtheruser({id:item._id}),
+                                            getSongs({id:item._id})]);
+                                            navigation.push('OtherAccount', {otherUserId:item._id});
+                                        }
+                                    }}>
+                                        {item.profileImage == undefined ?
+                                        <View style={styles.profileImage}>
+                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                        </View>:
+                                        <Image source={{uri: item.profileImage}} style={styles.profileImage}/> }
+                                        <View style={{marginLeft: 24 * tmpWidth}}>
+                                            <View style={{height:tmpWidth*35, justifyContent:'center'}}>
+                                                <Text style={{fontSize:16,marginTop:10*tmpWidth}}>{item.name}</Text>
+                                            </View>
+                                            <View style={{height:tmpWidth*35, alignItems:'center', flexDirection:'row'}}>
+                                                <View style={styles.representbox}>
+                                                     <Text style={{color:'rgb(148,153,163)',fontSize:11*tmpWidth}}>대표곡</Text>
+                                                </View>
+                                                <View style={{width: tmpWidth*140, marginRight:tmpWidth*10,}}>
+                                                    <Text numberOfLines ={1} style={{marginLeft:6*tmpWidth, fontSize:tmpWidth*14,color:'rgb(148,153,163)'}}>{item.songs[0].attributes.name}  </Text>
+                                                </View>
+                                                <View style={{width: tmpWidth*60}}>
+                                                    <Text numberOfLines ={1} style={{fontSize:tmpWidth*11, color:'rgb(148,153,163)'}}>{item.songs[0].attributes.artistName}</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }}
+                    />
+                </View> } 
+            </View> }
+        </View>
+    );
+};
+SearchScreen.navigationOptions = () =>{
+    return {
+        headerShown: false,
+    };
+};
+/* 
+{ searchOption=='Song' || searchOption=='Hashtag' ?
+            <View style={{flex: 1}}>
                 <View style ={styles.searchopt}>
                     <TouchableOpacity onPress ={()=>{setSearachOption('Song'); setText(''); }} style={{justifyContent:'center' ,alignItems:'center' ,width:46, marginLeft:12}}>
                         {searchOption =='Song' ?
                         <View style={styles.pickedopt}>
-                            <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth,}}>곡</Text>
-                        </View>
-                        :
+                            <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>곡</Text>
+                        </View> :
                         <View style={{height:46 * tmpWidth, width:40 * tmpWidth, alignItems:'center'}}>
                             <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>곡</Text>
-                        </View>
-                       }
+                        </View> }
                     </TouchableOpacity>
-                    <TouchableOpacity onPress ={()=>{setSearachOption('Hashtag'); setText(''); }} style={{width:46 * tmpWidth,alignItems:'center', marginLeft:14 * tmpWidth}}>
+                    <TouchableOpacity onPress ={()=>{setSearachOption('Hashtag'); setText(''); }} style={{width:60 * tmpWidth,alignItems:'center', marginLeft:14 * tmpWidth}}>
                         {searchOption =='Hashtag' ?
                             <View style={styles.pickedopt2}>
-                                <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth}}>해시태그</Text>
-                            </View>
-                            :
+                                <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth, color: 'black'}}>해시태그</Text>
+                            </View> :
                             <View style={{height:46 * tmpWidth, width:60 * tmpWidth, alignItems:'center'}}>
                                 <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>해시태그</Text>
-                            </View>
-                        }
+                            </View> }
                     </TouchableOpacity>
                 </View>
                 <View style={styles.result}>
@@ -115,31 +319,27 @@ const SearchScreen = ({navigation}) => {
                         keyExtractor={term=>term}
                         renderItem={({item})=> {
                             return (
-                                <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center'}}>
+                                <View style={{height:32 * tmpWidth, marginLeft: 24 * tmpWidth, marginTop: 21.5 * tmpWidth, justifyContent:'center', borderWidth: 1}}>
                                     <TouchableOpacity onPress={() => {
                                         searchsong({songname: item})
                                         setText(item);
                                         setKey(false);
-                                        }}
+                                    }}
                                         style={{flexDirection:'row'}}
-
-                                        >
-                                            <View style={{width:304 * tmpWidth}}>
-                                        <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
-                                            </View>
-                                            <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                                 <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
-
-                                            </View>
+                                    >
+                                        <View style={{width:304 * tmpWidth}}>
+                                            <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
+                                        </View>
+                                        <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
+                                            <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                        </View>
                                     </TouchableOpacity>
                                 </View>
                             )
                         }}
-                    />
-                    :
+                    /> :
                     <FlatList
                         keyboardShouldPersistTaps="handled"
-
                         data={searchState.hashtagHint}
                         keyExtractor={hashtag=>hashtag._id}
                         renderItem={({item})=> {
@@ -149,32 +349,25 @@ const SearchScreen = ({navigation}) => {
                                         setText(item.hashtag);
                                         setKey(false);
                                         navigate('SelectedHashtag', {data: item, text: item.hashtag , searchOption : searchOption });
-                                        }}
+                                    }}
                                         style={{flexDirection:'row'}}
-
-                                        >
+                                    >
                                         <View style={{width:304 * tmpWidth}}>
-                                        <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
+                                            <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
                                         </View>
                                         <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
-
+                                            <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
                                         </View>
                                     </TouchableOpacity>
                                 </View>
                             )
                         }}
                     />
-                    )
-                  :
-                   (searchOption =='Song' ?
-
-                    <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} />
-                    :
-
+                    ) :
+                    (searchOption =='Song' ?
+                    <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} /> :
                     <FlatList
                         keyboardShouldPersistTaps="handled"
-
                         data={searchState.hashtagHint}
                         keyExtractor={hashtag=>hashtag._id}
                         renderItem={({item})=> {
@@ -184,13 +377,11 @@ const SearchScreen = ({navigation}) => {
                                         setText(item.hashtag);
                                         setKey(false);
                                         navigate('SelectedHashtag', {data: item, text: text , searchOption : searchOption });
-
-                                        }}
+                                    }}
                                         style={{flexDirection:'row'}}
-
-                                        >
+                                    >
                                         <View style={{width:200 * tmpWidth}}>
-                                        <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
+                                            <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
                                         </View>
                                         <View style={{width:150 * tmpWidth, marginRight:24 * tmpWidth, height:32 * tmpWidth,alignItems:'flex-end'}}>
                                             <Text style={{marginRight:24 * tmpWidth, fontSize:14 * tmpWidth, color:'rgb(148,153,163)'}}>{'플레이리스트 ' +item.playlistId.length+'개'}</Text>
@@ -201,22 +392,19 @@ const SearchScreen = ({navigation}) => {
                         }}
                     />
                     )
-                 }
+                }
                 </View>
-            </View>
-            :
-         <View >
+            </View> :
+            <View >
                 <View style ={styles.searchoptdj}>
                     <TouchableOpacity onPress ={()=>{setSearachOption('DJSong'); setText(''); }} style={{justifyContent:'center' ,alignItems:'center' ,width:110 * tmpWidth, marginLeft:8 * tmpWidth}}>
                         {searchOption =='DJSong' ?
-                            <View style={styles.pickedoptdj}>
-                                <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth}}>대표곡으로 찾기</Text>
-                             </View>
-                             :
-                             <View style={{height:46 * tmpWidth, width:110 * tmpWidth, alignItems:'center'}}>
-                                <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>대표곡으로 찾기</Text>
-                             </View>
-                        }
+                        <View style={styles.pickedoptdj}>
+                           <Text style={{marginTop:20 * tmpWidth, fontSize:14 * tmpWidth}}>대표곡으로 찾기</Text>
+                        </View> :
+                        <View style={{height:46 * tmpWidth, width:110 * tmpWidth, alignItems:'center'}}>
+                           <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>대표곡으로 찾기</Text>
+                        </View> }
                     </TouchableOpacity>
                     <TouchableOpacity onPress ={()=>{setSearachOption('DJ'); setText(''); }} style={{width:110 * tmpWidth,alignItems:'center'}}>
                         {searchOption =='DJ' ?
@@ -225,14 +413,12 @@ const SearchScreen = ({navigation}) => {
                         </View> :
                         <View style={{height:46 * tmpWidth, width:110 * tmpWidth, alignItems:'center'}}>
                             <Text style={{marginTop:20 * tmpWidth, color:'#999999', fontSize:14 * tmpWidth}}>이름으로 찾기</Text>
-                        </View>
-                        }
+                        </View> }
                     </TouchableOpacity>
                 </View>
-          <View style={styles.searchressultdj}>
-
-          {searchOption == "DJSong" ? (
-          key == true ?
+            <View style={styles.searchressultdj}>
+            {searchOption == "DJSong" ? 
+                (key == true ?
                     <FlatList
                         keyboardShouldPersistTaps="handled"
                         data={searchState.hint}
@@ -244,93 +430,74 @@ const SearchScreen = ({navigation}) => {
                                         searchsong({songname: item})
                                         setText(item);
                                         setKey(false);
-                                        }}
+                                    }}
                                         style={{flexDirection:'row'}}
-                                        >
+                                    >
                                         <View style={{width:304 * tmpWidth}}>
-                                        <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
+                                            <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
                                         </View>
                                         <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
-
+                                            <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }}
+                    /> :
+                    <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} />
+                ) :
+                <View style={{height:664 * tmpHeight}}>
+                    <FlatList
+                        keyboardShouldPersistTaps="handled"        
+                        data={searchState.djHint}
+                        keyExtractor={dj=>dj._id}
+                        renderItem={({item})=> {
+                            return (
+                                <View style={{marginLeft: 30 * tmpWidth, marginTop: 20 * tmpWidth, height:tmpWidth*70, width:tmpWidth*375}}>
+                                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
+                                        if(item._id == userState.myInfo._id){
+                                            navigate('Account');
+                                        }else{
+                                            await Promise.all([getOtheruser({id:item._id}),
+                                            getSongs({id:item._id})]);
+                                            navigation.push('OtherAccount', {otherUserId:item._id});
+                                        }
+                                    }}>
+                                        {item.profileImage == undefined ?
+                                        <View style={styles.profileImage}>
+                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                        </View>:
+                                        <Image source={{uri: item.profileImage}} style={styles.profileImage}/> }
+                                        <View style={{marginLeft: 24 * tmpWidth}}>
+                                            <View style={{height:tmpWidth*35, justifyContent:'center'}}>
+                                                <Text style={{fontSize:16,marginTop:10*tmpWidth}}>{item.name}</Text>
+                                            </View>
+                                            <View style={{height:tmpWidth*35, alignItems:'center', flexDirection:'row'}}>
+                                                <View style={styles.representbox}>
+                                                     <Text style={{color:'rgb(148,153,163)',fontSize:11*tmpWidth}}>대표곡</Text>
+                                                </View>
+                                                <View style={{width: tmpWidth*140, marginRight:tmpWidth*10,}}>
+                                                    <Text numberOfLines ={1} style={{marginLeft:6*tmpWidth, fontSize:tmpWidth*14,color:'rgb(148,153,163)'}}>{item.songs[0].attributes.name}  </Text>
+                                                </View>
+                                                <View style={{width: tmpWidth*60}}>
+                                                    <Text numberOfLines ={1} style={{fontSize:tmpWidth*11, color:'rgb(148,153,163)'}}>{item.songs[0].attributes.artistName}</Text>
+                                                </View>
+                                            </View>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
                             )
                         }}
                     />
-          :
-                     <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} />
-
-          )
-
-            :
-            <View style={{height:664 * tmpHeight}}>
-            <FlatList
-                keyboardShouldPersistTaps="handled"
-
-                data={searchState.djHint}
-                keyExtractor={dj=>dj._id}
-                renderItem={({item})=> {
-                    return (
-                        <View style={{marginLeft: 30 * tmpWidth, marginTop: 20 * tmpWidth, height:tmpWidth*70, width:tmpWidth*375}}>
-                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
-                                if(item._id == userState.myInfo._id){
-                                    navigate('Account');
-                                }else{
-                                    await Promise.all([getOtheruser({id:item._id}),
-                                    getSongs({id:item._id})]);
-                                    navigation.push('OtherAccount', {otherUserId:item._id});
-                                }
-                            }}>
-                                {item.profileImage == undefined ?
-                                <View style={styles.profileImage}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                                </View>:
-                                    <Image source={{uri: item.profileImage}} style={styles.profileImage}/>
-                                }
-                                <View style={{marginLeft: 24 * tmpWidth}}>
-                                   <View style={{height:tmpWidth*35, justifyContent:'center'}}>
-                                    <Text style={{fontSize:16,marginTop:10*tmpWidth}}>{item.name}</Text>
-                                   </View>
-                                   <View style={{height:tmpWidth*35, alignItems:'center', flexDirection:'row'}}>
-                                        <View style={styles.representbox}>
-                                             <Text style={{color:'rgb(148,153,163)',fontSize:11*tmpWidth}}>대표곡</Text>
-                                        </View>
-                                        <View style={{width: tmpWidth*140, marginRight:tmpWidth*10,}}>
-                                            <Text numberOfLines ={1} style={{marginLeft:6*tmpWidth, fontSize:tmpWidth*14,color:'rgb(148,153,163)'}}>{item.songs[0].attributes.name}  </Text>
-                                        </View>
-                                        <View style={{width: tmpWidth*60}}>
-                                            <Text numberOfLines ={1} style={{fontSize:tmpWidth*11, color:'rgb(148,153,163)'}}>{item.songs[0].attributes.artistName}</Text>
-                                        </View>
-                                   </View>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    )
-                }}
-            />
-            </View>
-            }
-            </View>
-            </View>
-            }
-            </View>
-
-
-
-
-    </SafeAreaView>
-    );
-};
-SearchScreen.navigationOptions = () =>{
-    return {
-            headerShown: false,
-
-    };
-};
+                </View> }
+            </View>*/
 
 const styles=StyleSheet.create({
+    container: {
+        backgroundColor:"#fff",
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
+        flex: 1
+    },
     profileImage: {
         width: 56 * tmpWidth,
         height: 56 * tmpWidth,
@@ -405,10 +572,10 @@ const styles=StyleSheet.create({
         alignItems:'center'
     },
     result:{
-        height:664 * tmpHeight,
         backgroundColor:"#FAFAFA",
         borderTopWidth:1 * tmpWidth,
         borderColor:'rgba(153,153,153,0.2)',
+        flex: 1,
     },
     searchoptdj:{
         flexDirection:'row',
@@ -425,10 +592,10 @@ const styles=StyleSheet.create({
         alignItems:'center'
    },
    searchressultdj:{
-        height:664 * tmpHeight,
         backgroundColor:"#FAFAFA",
         borderTopWidth:1 * tmpWidth,
-        borderColor:'rgba(153,153,153,0.2)'
+        borderColor:'rgba(153,153,153,0.2)',
+        flex: 1
    },
    representbox:{
         height:tmpWidth*16,

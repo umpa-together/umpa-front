@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
 import { Context as UserContext } from '../../context/UserContext';
@@ -70,11 +70,13 @@ MySharedSongsPage.navigationOptions = ({navigation})=>{
         title: '공유한 음악',
         headerTitleStyle: {
             fontSize: 16 * tmpWidth,
-            fontWeight: "400"
+            fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
             backgroundColor: 'rgb(255,255,255)',
             shadowColor: "rgb(0, 0, 0)",
             shadowOffset: {
@@ -86,9 +88,14 @@ MySharedSongsPage.navigationOptions = ({navigation})=>{
         },
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth, marginTop: (StatusBar.currentHeight + 6) * tmpWidth}} onPress={() => navigation.goBack()}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
+            )
+        },
+        headerRight: () => {
+            return (
+                <View />
             )
         }
     };

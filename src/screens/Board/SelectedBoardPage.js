@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Platform, StatusBar } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
 import { Context as BoardContext } from '../../context/BoardContext';
@@ -86,7 +86,7 @@ const styles=StyleSheet.create({
     },
     headerContainer: {
         backgroundColor: 'rgb(255,255,255)',
-        height: 92 * tmpWidth,
+        height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
         shadowColor: "rgb(0, 0, 0)",
         shadowOffset: {
             height: 3 * tmpWidth,
@@ -95,8 +95,9 @@ const styles=StyleSheet.create({
         shadowRadius: 8 * tmpWidth,
         shadowOpacity: 0.07,
         flexDirection: 'row',
-        paddingTop: 44 * tmpWidth,
-        justifyContent: 'space-between'
+        paddingTop:  Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
+        justifyContent: 'space-between',
+        elevation: 3
     },
     searchBox: {
         width: 327 * tmpWidth,

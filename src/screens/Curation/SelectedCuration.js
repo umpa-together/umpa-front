@@ -1,14 +1,11 @@
 import React, { useContext,useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList, Platform, StatusBar } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { navigate } from '../../navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { set } from 'react-native-reanimated';
-
-
 import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
 import DeleteModal from '../../components/DeleteModal';
@@ -391,7 +388,7 @@ const SelectedCuration = ({navigation}) => {
                                     <View style ={styles.posttextbox}>
                                         <TextInput
                                             style={{ width:297 * tmpWidth,marginLeft:10 * tmpWidth,
-                                                     height:217 * tmpWidth, fontSize:16 * tmpWidth, marginTop:5*tmpWidth}}
+                                                     height:217 * tmpWidth, fontSize:16 * tmpWidth, marginTop:5*tmpWidth, textAlignVertical: 'top'}}
                                             value = {text}
                                             onChangeText={text=>setText(text)}
                                             placeholder="큐레이션을 적어주세요"
@@ -633,8 +630,8 @@ const styles = StyleSheet.create({
         width : 375 * tmpWidth,
         height:0,
         backgroundColor:'white',
-        marginTop:44 * tmpWidth,
-        flexDirection:'row'
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth,
+        flexDirection:'row',
     },
     curationinfo:{
         elevation:5,
@@ -649,6 +646,7 @@ const styles = StyleSheet.create({
         height:108 * tmpWidth,
         borderRadius:16 * tmpWidth,
         backgroundColor:"#fff",
+        elevation: 3
     },
     curationpost:{
         flexDirection:'row',
@@ -667,10 +665,9 @@ const styles = StyleSheet.create({
         borderRadius:10 * tmpWidth,
         flexDirection:'row',
         width:335 * tmpWidth,
-        //height:134 * tmpWidth,
         marginLeft:20 * tmpWidth,
         backgroundColor:"#fff",
-        marginTop: 12 * tmpWidth
+        marginTop: 12 * tmpWidth,
     },
     curationpostuser:{
         width:319 * tmpWidth,
@@ -694,10 +691,9 @@ const styles = StyleSheet.create({
         height:32 * tmpWidth,
     },
     textInput: {
-        
         marginLeft:8*tmpWidth,
         width: '75%',
-       
+        padding: 0
     },
     curationpostuser4:{
         width:42 * tmpWidth,
@@ -759,7 +755,6 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start'
     },
     inputBox: {
-
         width: '100%',
         paddingTop: 18 * tmpWidth,
         paddingBottom: 18 * tmpWidth,
@@ -775,6 +770,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 20 * tmpWidth,
         paddingRight: 20 * tmpWidth,
+        elevation: 5
     },
 });
 

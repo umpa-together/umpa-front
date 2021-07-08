@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet,ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, StyleSheet, TextInput, Text,Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, StatusBar } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import TrackPlayer from 'react-native-track-player';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -78,7 +78,7 @@ const SigninScreen = () => {
         }
     }
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
+        <View style={styles.container}>
             <NavigationEvents onWillBlur={clearErrorMessage} />
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15 * tmpWidth}}>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
@@ -147,7 +147,7 @@ const SigninScreen = () => {
                 </TouchableOpacity>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -157,6 +157,11 @@ SigninScreen.navigationOptions = () =>{
     };
 };
 const styles = StyleSheet.create({
+    container: {
+        flex: 1, 
+        backgroundColor:'rgb(254,254,254)',        
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : (StatusBar.currentHeight + 6) * tmpWidth 
+    },
     logotext:{
         fontSize:52 * tmpWidth,
         color:'rgb(168,192,239)',

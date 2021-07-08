@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image, Button } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image, Platform, StatusBar } from 'react-native'
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { tmpWidth } from '../../components/FontNormalize';
@@ -69,7 +69,7 @@ const MusicBoxScreen = ({ navigation }) => {
                                     navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId})
                                 }}>
                                     <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                        <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
+                                        <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{uri :item.image}}/>
                                     </View>
                                     <View style={{width:161 * tmpWidth}}>
                                         <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
@@ -158,8 +158,8 @@ MusicBoxScreen.navigationOptions = ({navigation})=>{
 
 const styles=StyleSheet.create({
     header:{
-        height: 48  * tmpWidth,
-        marginTop:44 * tmpWidth,
+        height: 48 * tmpWidth,
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
         width:375 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',

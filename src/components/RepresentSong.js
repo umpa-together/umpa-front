@@ -186,6 +186,7 @@ const styles=StyleSheet.create({
         },
         shadowRadius: 60 * tmpWidth,
         shadowOpacity: 0.04,
+        elevation: 5,
     },
     songBox: {
         width: 215  * tmpWidth,

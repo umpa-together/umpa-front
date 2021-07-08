@@ -6,7 +6,7 @@ import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistCo
 import { Context as CurationContext } from '../../context/CurationContext'
 
 import { navigate } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { tmpWidth } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { SongImage } from '../../components/SongImage'
 
@@ -39,9 +39,9 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
         };
     }, []);
     return (
-        <View style={{height:650 * tmpHeight}}>
+        <View style={{flex: 1}}>
             {searchState.songData.length == 0 && text.length!=0 ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> : 
-                <View>
+                <View style={{flex: 1}}>
                 { searchOption == 'Song' || searchOption == 'DJSong'? 
                 <FlatList 
                     style={{paddingTop: 10 * tmpWidth}}

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList,  SafeAreaView} from 'react-native';
+import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList,  SafeAreaView, Platform, StatusBar} from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
 import {Context as CurationContext} from '../../context/CurationContext';
@@ -58,14 +58,14 @@ const Feed = ({navigation}) => {
     }, []);
 
     return (
-        <SafeAreaView style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
+        <View style={styles.container}>
             <View style={styles.opt}>
                 <View style={styles.optleft}>
                     <TouchableOpacity style={styles.opt1} onPress={() => setResult('playlist')}>
-                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>플레이리스트</Text>}
+                        {result == 'playlist' ? <Text style={{fontSize: 18 * tmpWidth, color: 'black'}}>플레이리스트</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>플레이리스트</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.opt2} onPress={() => setResult('curating')}>
-                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>큐레이션</Text> }
+                        {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth, color: 'black'}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'rgb(193,195,209)'}}>큐레이션</Text> }
                     </TouchableOpacity>
                 </View>
                 <View style={styles.optright}>
@@ -186,7 +186,7 @@ const Feed = ({navigation}) => {
                     </View>
                 </View>
             </Modal> : null }
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -198,6 +198,11 @@ Feed.navigationOptions = () =>{
 
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor:"rgb(254,254,254)", 
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
+    },
     headertext:{
         fontSize: 30 * tmpWidth,
         fontWeight: 'bold',
@@ -253,6 +258,7 @@ const styles = StyleSheet.create({
         width:56* tmpWidth,
         height:56 * tmpWidth,
         borderRadius:60 * tmpWidth,
+        margin: 4 * tmpWidth,
     },
     storynopic:{
         width:56 * tmpWidth,
@@ -264,9 +270,9 @@ const styles = StyleSheet.create({
         height:56 * tmpWidth,
         borderRadius:60 * tmpWidth,
         opacity:0.7 * tmpWidth,
+        margin: 4 * tmpWidth
     },
     storypic:{
-
         width:56 * tmpWidth,
         height:56* tmpWidth,
         borderRadius:60 * tmpWidth,

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, TouchableWithoutFeedback, Animated, Platform, StatusBar } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -241,8 +241,8 @@ const SelectedPlaylist = ({navigation}) => {
                     <ScrollView>
                         <Text style={{marginLeft: 24 * tmpWidth, fontSize: 16 * tmpWidth}}>담긴 곡</Text>
                         <FlatList
-                            contentContainerStyle={{paddingLeft: 10 * tmpWidth, paddingRight: 10 * tmpWidth}}
-                            style={{paddingTop: 8 * tmpWidth, paddingBottom: 16 * tmpWidth }}
+                            contentContainerStyle={{paddingLeft: 10 * tmpWidth, paddingRight: 10 * tmpWidth, paddingBottom: 16 * tmpWidth }}
+                            style={{paddingTop: 8 * tmpWidth}}
                             data={currentSongs}
                             keyExtractor={playlist=>playlist.id}
                             horizontal = {true}
@@ -565,12 +565,12 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row', 
-        marginTop: 44 * tmpWidth, 
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
         alignItems: 'center', 
         justifyContent: 'space-between',
         marginLeft: 18 * tmpWidth, 
         marginRight: 24 * tmpWidth,
-        zIndex: 2
+        zIndex: 2,
     },
     profileBox: {
         marginTop: 4 * tmpWidth,
@@ -619,6 +619,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.14,
         alignItems: 'center',
         justifyContent: 'center',
+        elevation: 3,
     },
     titleText: {
         fontSize: 16 * tmpWidth,
@@ -677,7 +678,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.12 ,
         alignItems: 'center',
         marginLeft: 10 * tmpWidth,
-        marginRight: 10 * tmpWidth 
+        marginRight: 10 * tmpWidth,
+        elevation: 3
     },
     songCover: {
         width: 92 * tmpWidth,
@@ -708,6 +710,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20 * tmpWidth,
         paddingRight: 20 * tmpWidth,
         justifyContent: 'space-between',
+        elevation: 5
     },
     commentHeader: {
         marginTop: 24 * tmpWidth,
@@ -763,7 +766,8 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: '80%',
-        marginTop: 4 * tmpWidth
+        marginTop: 4 * tmpWidth,
+        padding: 0,
     },
     commentBox: {
         marginLeft: 20 * tmpWidth,

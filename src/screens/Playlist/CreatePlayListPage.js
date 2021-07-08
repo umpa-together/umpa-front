@@ -1,5 +1,5 @@
 import React , { useState, useContext, useRef, useEffect }from 'react';
-import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView, Platform, StatusBar } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
@@ -31,7 +31,6 @@ const PlaylistCreatePage = ({ navigation }) => {
     const pattern_num = /[0-9]/;
     const pattern_eng = /[a-zA-Z]/;
     const pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
     const addhashtag = ({data}) => {
         if (hashtag.length < 3 && data != '') {
             setHashtag([...hashtag, data]);
@@ -124,7 +123,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                     <View style={styles.title}>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.titleSize}>제목</Text>
-                            <View style={{flex: 1}}>
+                            <View style={{flex: 1,}}>
                                 <View style={titleValidity ? styles.input : styles.validityInput}>
                                     <TextInput
                                         value={title}
@@ -133,7 +132,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                                         placeholderTextColor='rgb(196,196,196)'
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth}}
+                                        style={{fontSize: 14 * tmpWidth, padding: 0}}
                                     />
                                 </View>
                                 {titleValidity ? null :
@@ -188,7 +187,7 @@ const PlaylistCreatePage = ({ navigation }) => {
                                         }
                                     }}
                                     autoCorrect={false}
-                                    style={{fontSize: 13 * tmpWidth, width : tmpWidth*215}}
+                                    style={{fontSize: 12 * tmpWidth, width : tmpWidth*215, padding: 0}}
                                 />
                                 </View>
                             <TouchableOpacity onPress={() => {
@@ -307,7 +306,7 @@ const styles=StyleSheet.create({
     header:{
         width: '100%',
         height: 48 * tmpWidth,
-        marginTop: 44 * tmpWidth,
+        marginTop: Platform.OS === 'ios' ? 44 * tmpWidth : StatusBar.currentHeight * tmpWidth,
         flexDirection: 'row',
     },
     headerIcon:{
@@ -333,15 +332,15 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(196,196,196)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth,
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     titleSize: {
         fontSize: 16 * tmpWidth
     },
     comment: {
         width: 327 * tmpWidth,
-        height: 135 * tmpWidth,
-        marginTop: 14 * tmpWidth
+        height: 140 * tmpWidth,
+        marginTop: 14 * tmpWidth,
     },
     commentBox: {
         width: 327 * tmpWidth,
@@ -356,7 +355,8 @@ const styles=StyleSheet.create({
         paddingTop: 12 * tmpWidth,  
         paddingLeft: 12 * tmpWidth, 
         paddingRight: 12 * tmpWidth, 
-        flex: 1
+        flex: 1,
+        textAlignVertical: 'top',
     },
     hashtag: {
         width: 327 * tmpWidth,
@@ -367,7 +367,6 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(196,196,196)',
         marginLeft: 14 * tmpWidth,
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -496,7 +495,7 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(238,98,92)',
         marginLeft: 14 * tmpWidth,
-        paddingBottom: 7 * tmpWidth,
+        paddingBottom: Platform.OS === 'ios' ? 7 * tmpWidth : 3 * tmpWidth,
     },
     validityComment: {
         width: 327 * tmpWidth,

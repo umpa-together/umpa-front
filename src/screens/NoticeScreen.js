@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, FlatList ,StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions  } from 'react-native';
+import { View, FlatList ,StyleSheet, TouchableOpacity, ActivityIndicator, Platform, StatusBar  } from 'react-native';
 import { Context as NoticeContext } from '../context/NoticeContext';
 import { Context as PlaylistContext } from '../context/PlaylistContext';
 import { Context as UserContext } from '../context/UserContext';
@@ -142,16 +142,17 @@ const NoticeScreen = ({navigation}) => {
 };
 
 NoticeScreen.navigationOptions = ({navigation})=>{
-    const tmpHeight = Dimensions.get('window').height / 812;
     return {
         title: '알림',
         headerTitleStyle: {
             fontSize: 18  * tmpWidth,
             fontWeight: "400",
+            alignSelf: 'center',
+            paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight + 6) * tmpWidth
         }, 
         headerStyle: {
             backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpHeight,
+            height: Platform.OS === 'ios' ? 92 * tmpWidth : (48 + StatusBar.currentHeight) * tmpWidth,
             shadowColor: "rgb(0, 0, 0)",
             shadowOffset: {
                 height: 3  * tmpWidth,
