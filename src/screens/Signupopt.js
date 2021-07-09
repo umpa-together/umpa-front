@@ -91,6 +91,7 @@ const Signupopt = () => {
                     <View style={{width:375 * tmpWidth, justifyContent:'center', alignItems:'center', flexDirection: 'row',marginTop: 25 * tmpWidth,}}>
                         <Text style={{fontSize:14 * tmpWidth, color: 'rgb(153,153,153)'}}>SNS 계정으로 가입하기</Text>
                     </View>
+                    {Platform.OS =="ios" ?
                     <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:11 * tmpWidth, flexDirection:'row'}}>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
@@ -105,6 +106,19 @@ const Signupopt = () => {
                                 <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/apple.png')} />
                         </TouchableOpacity>  
                     </View>
+                    :
+                    <View style={{width:180 * tmpWidth, height:60 * tmpWidth, marginTop:11 * tmpWidth, flexDirection:'row'}}>
+                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
+                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
+                        </TouchableOpacity>       
+                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
+                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
+                          </TouchableOpacity>
+                        <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => kakaoLogin()}>
+                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/kakao.png')} />
+                        </TouchableOpacity>
+                    </View>                    
+                    }
                 </View>
             </View>
             <View style={styles.footer}>

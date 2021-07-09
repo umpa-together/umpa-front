@@ -282,7 +282,7 @@ const SignupPage = ({ navigation }) => {
                     </View> : null }
                 </View>
                 <View style={{paddingLeft: 24 * tmpWidth}}>
-                    <View style={{flexDirection:'row', marginTop:55 * tmpWidth}}>
+                    <View style={{flexDirection:'row', marginTop:55 * tmpWidth, alignItems:'center'}}>
                         {agreeall ? 
                          <TouchableOpacity style={agreeall ?styles.boxcheck : styles.boxempty} 
                          onPress={()=>{
@@ -339,7 +339,7 @@ const SignupPage = ({ navigation }) => {
                             isVisible={agree1Modal}
                             backdropOpacity={0.4}
                             onBackdropPress={onClose}
-                            style={{margin: 0, alignItems: 'center'}}
+                            style={{margin: 0, alignItems: 'center',}}
                         >
                             <View style={{width: '90%', height: '80%', backgroundColor: 'white', borderRadius: 8 * tmpWidth}}>
                                 <ScrollView >
@@ -688,6 +688,8 @@ const styles = StyleSheet.create({
         marginBottom: 38 * tmpWidth
     },
     modalbox:{
+        position: 'absolute',
+        top: Platform.OS =='ios' ?125*tmpWidth : 60*tmpWidth,
         width:335 * tmpWidth,
         height:564 * tmpWidth,
         borderRadius:18 * tmpWidth,

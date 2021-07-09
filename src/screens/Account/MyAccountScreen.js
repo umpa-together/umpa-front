@@ -223,12 +223,16 @@ const MyAccountScreen = ({navigation}) => {
                 </ScrollView>
             </View> }
             <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={userState.myInfo.songs} myAccount={true}/>
+            
             <Modal
                 animationIn="fadeIn"
                 animationOut="fadeOut"
                 isVisible={newStory}
                 onBackdropPress={onClose}
                 backdropOpacity={0.5}
+                avoidKeyboard={false}
+                style={ {position:'absolute',top:Platform.OS=='ios'?123*tmpWidth :71*tmpWidth}}
+
             >
                 <View style={styles.searchContainer}>
                     <View style={styles.searchheader}>

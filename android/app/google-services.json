@@ -1,42 +1,49 @@
 {
   "project_info": {
-    "project_number": "689439102750",
-    "project_id": "umpa-c47c9",
-    "storage_bucket": "umpa-c47c9.appspot.com"
+    "project_number": "217008100787",
+    "project_id": "umpa-4bdbc",
+    "storage_bucket": "umpa-4bdbc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689439102750:android:29826ce438cf9dd81d9b0f",
+        "mobilesdk_app_id": "1:217008100787:android:f1805249bfad920285a7c6",
         "android_client_info": {
           "package_name": "com.umpa8"
         }
       },
       "oauth_client": [
         {
-          "client_id": "689439102750-ldeicsr70fquunusraguo6fdlp6d6ph6.apps.googleusercontent.com",
+          "client_id": "217008100787-ckbsafdh5ssgghul6a98kq29vn8fu7d5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.umpa8",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "ee7717646305b318b14cc3b72af3899df0aa8d19"
           }
         },
         {
-          "client_id": "689439102750-r9t3jkb0b1tl4if6la5eep0mtkr5db7h.apps.googleusercontent.com",
+          "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyApm1TWcBz7jyeXZBQoAoRO0ydN52HCrR0"
+          "current_key": "AIzaSyB-akQ-sliCugDgue8UA9BTsdr0nryW-Mc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "689439102750-r9t3jkb0b1tl4if6la5eep0mtkr5db7h.apps.googleusercontent.com",
+              "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "217008100787-fe5u8u3ejdp73d73rabbqefjctdgbvto.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.umpa8"
+              }
             }
           ]
         }
