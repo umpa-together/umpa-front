@@ -16,6 +16,7 @@ const SigninScreen = () => {
     const { state, signin, getGoogleInfo, getKakaoInfo, getNaverInfo, getAppleInfo,clearErrorMessage } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const platform = Platform.OS;
     const iosKeys = {
         kConsumerKey: config.kConsumerKey,
         kConsumerSecret: config.kConsumerSecret,
@@ -80,9 +81,9 @@ const SigninScreen = () => {
     return (
         <View style={styles.container}>
             <NavigationEvents onWillBlur={clearErrorMessage} />
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15 * tmpWidth}}>
+            <View style={{ alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15 * tmpWidth}}>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
-                <View style={{flex: 1, justifyContent: 'center'}}>
+                <View style={{height:tmpWidth*300,justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
                         <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
                     </View>
@@ -121,6 +122,7 @@ const SigninScreen = () => {
                     <View style={{width:375 * tmpWidth, height:14 * tmpWidth, justifyContent:'center', alignItems:'center'}}>
                         <Text style={{fontSize:12 * tmpWidth, color:'rgb(169,193,255)'}}>아이디 / 비밀번호 찾기</Text>
                     </View>
+                    {platform=="ios" ?
                     <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:19 * tmpWidth, flexDirection:'row'}}>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
                           <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
@@ -135,6 +137,19 @@ const SigninScreen = () => {
                             <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/apple.png')} />
                         </TouchableOpacity>  
                     </View>
+                    : 
+                    <View style={{width:180 * tmpWidth, height:60 * tmpWidth, marginTop:19 * tmpWidth, flexDirection:'row'}}>
+                    <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
+                      <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
+                      <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => kakaoLogin()}>
+                      <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/kakao.png')} />
+                    </TouchableOpacity>
+                </View>                   
+                    }
                 </View>
             </View>
             <View style={styles.footer}>
