@@ -18,7 +18,7 @@ const WeeklyReducer = (state, action) => {
 const postWeeklyCuration = dispatch => {
     return async () => {
         try {
-            await serverApi.post('/WeeklyCuration');
+            await serverApi.post('/WeekCuration');
         }
         catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with WeekCuration' });
@@ -29,7 +29,7 @@ const postWeeklyCuration = dispatch => {
 const getWeeklyCuration = dispatch => {
     return async () => {
         try {
-            const response = await serverApi.get('/WeeklyCuration');
+            const response = await serverApi.get('/WeekCuration');
             dispatch({ type: 'get_weekcuration', payload: response.data });
         }
         catch(err){
@@ -40,7 +40,7 @@ const getWeeklyCuration = dispatch => {
 
 const postWeeklyPlaylist = (dispatch) => async () => {
     try {
-        await serverApi.post('/WeeklyPlaylist');
+        await serverApi.post('/WeekPlaylist');
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with postWeekPlaylist' });
     }
@@ -48,7 +48,7 @@ const postWeeklyPlaylist = (dispatch) => async () => {
 
 const getWeeklyPlaylist = (dispatch) => async () => {
     try {
-        const response = await serverApi.get('/WeeklyPlaylist');
+        const response = await serverApi.get('/WeekPlaylist');
         dispatch({ type: 'playlist', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getWeekPlaylist' });
@@ -57,7 +57,7 @@ const getWeeklyPlaylist = (dispatch) => async () => {
 
 const postWeeklyDJ = (dispatch) => async () => {
     try {
-        await serverApi.post('/WeeklyDJ');
+        await serverApi.post('/WeekDJ');
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with postWeeklyDJ' });
     }
@@ -65,7 +65,7 @@ const postWeeklyDJ = (dispatch) => async () => {
 
 const getWeeklyDJ = (dispatch) => async () => {
     try {
-        const response = await serverApi.get('/WeeklyDJ');
+        const response = await serverApi.get('/WeekDJ');
         dispatch({ type: 'getWeeklyDJ', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getWeeklyDJ' });
