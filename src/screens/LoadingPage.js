@@ -20,7 +20,7 @@ const LoadingPage = () => {
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { currentHashtag } = useContext(SearchContext);
     const { getCurationposts } = useContext(CurationContext);
-    const { getWeekPlaylist, getWeekCuration, getWeeklyDJ } = useContext(WeeklyContext);
+    const { getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly } = useContext(WeeklyContext);
 
     const opacity = useState(new Animated.Value(0))[0];
     const fadeIn = () => {
@@ -30,6 +30,7 @@ const LoadingPage = () => {
         }).start()
     }
     const mainLoading= async () => {
+        await postWeekly()
         await Promise.all([
         setnoticetoken(),
         getPlaylists(),
@@ -47,10 +48,9 @@ const LoadingPage = () => {
 
         currentHashtag(),
 
-        getWeekPlaylist(),
-        getWeekCuration(),
+        getWeeklyPlaylist(),
+        getWeeklyCuration(),
         getWeeklyDJ()]);
-
     };
     useEffect(()=>{
         TrackPlayer.setupPlayer().then(async() => {
