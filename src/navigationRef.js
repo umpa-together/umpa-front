@@ -1,16 +1,29 @@
-import { NavigationActions } from 'react-navigation';
+import { createNavigationContainerRef } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
-let navigator;
+export default navigationRef = createNavigationContainerRef()
 
-export const setNavigator = (nav) => {
-    navigator = nav;
-};
-
-export const navigate = (routeName, params) => {
-    navigator.dispatch(
-        NavigationActions.navigate({
-            routeName,
+export const navigate = (name, params) => {
+    navigationRef.dispatch(
+        CommonActions.navigate({
+            name,
             params
         })
-    );
+    )
 };
+
+export const push = (name, params) => {
+    navigationRef.dispatch(
+        StackActions.push(
+            name,
+            params
+        )
+    )
+}
+
+export const goBack = () => {
+    navigationRef.dispatch(
+        CommonActions.goBack()
+    )
+}
