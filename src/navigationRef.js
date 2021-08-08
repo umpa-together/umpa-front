@@ -27,3 +27,7 @@ export const goBack = () => {
         CommonActions.goBack()
     )
 }
+
+export const addListener = (type, callback) => {
+    navigationRef.addListener(type, callback())
+}
