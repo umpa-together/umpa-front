@@ -61,7 +61,6 @@ const NoticeScreen = () => {
             initOtherUser()
             initMusic()
             initCurrentContent()
-            TrackPlayer.reset()
         }, [])        
     )
 

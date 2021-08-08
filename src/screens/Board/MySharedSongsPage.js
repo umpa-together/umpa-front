@@ -17,7 +17,6 @@ const MySharedSongsPage = () => {
     useFocusEffect(
         useCallback(() => {
             initMusic()
-            TrackPlayer.reset()
         }, [])
     )
     return (

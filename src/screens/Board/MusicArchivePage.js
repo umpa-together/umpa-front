@@ -32,7 +32,6 @@ const MusicArchivePage = ({ route }) => {
         useCallback(() => {
             getMusicArchive({boardId: state.boards._id});
             getMusicChart({boardId:  state.boards._id});
-            TrackPlayer.reset()
         }, [])
     )
     
@@ -54,7 +53,6 @@ const MusicArchivePage = ({ route }) => {
     },[isPlayingid])
 
     const storyClick = async ({item, index}) => {
-        stoptracksong()
         likeCheck({item})
         setClickModal(true);
         setSelectedStory(item);
@@ -324,7 +322,7 @@ const styles=StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 32 * tmpWidth,
-        paddingRight: 24 * tmpWidth
+        paddingRight: 24 * tmpWidth,
     },
     eachSongBox: {
         flexDirection: 'row', 

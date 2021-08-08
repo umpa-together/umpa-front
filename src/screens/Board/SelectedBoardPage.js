@@ -22,7 +22,6 @@ const SelectedBoard = ({ route }) => {
         useCallback(() => {
             initCurrentContent();
             initMusic();
-            TrackPlayer.reset()
         }, [])
     )
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
@@ -17,7 +17,6 @@ import StoryCalendar from '../../components/StoryCalendar';
 import MusicBoxModal from '../../components/MusicBoxModal';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
-import { useFocusEffect } from '@react-navigation/native';
 
 require('date-utils');
 
@@ -124,12 +123,6 @@ const MyAccountScreen = () => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
     }, []);
-
-    useFocusEffect(
-        useCallback(() => {
-            TrackPlayer.reset()
-        }, [])
-    )
 
     return (
         <View style={{backgroundColor: 'rgb(250,250,250)', flex: 1}}>
@@ -393,7 +386,6 @@ const MyAccountScreen = () => {
                                                     await Promise.all([
                                                         getOtheruser({id:item._id}),
                                                         getSongs({id:item._id}),
-                                                        TrackPlayer.reset()
                                                     ]);
                                                     setViewerModal(false)
                                                     setStoryModal(false)

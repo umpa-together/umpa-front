@@ -116,7 +116,6 @@ const SelectedPlaylist = ({ route }) => {
     const removeEventListener = () => {
         Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
         Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-        stoptracksong({ setIsPlayingid });
     }
 
     useFocusEffect(
@@ -148,7 +147,7 @@ const SelectedPlaylist = ({ route }) => {
                 </View>
                 <Image style={styles.thumbnail} source={{uri: currentPlaylist.image}}/>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => {goBack(); stoptracksong({ setIsPlayingid });}}>
+                    <TouchableOpacity onPress={goBack}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>

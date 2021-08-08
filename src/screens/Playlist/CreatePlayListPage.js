@@ -1,15 +1,13 @@
-import React , { useState, useContext, useEffect, useCallback }from 'react';
+import React , { useState, useContext, useEffect }from 'react';
 import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
 import { Context as PlaylistContext } from '../../context/PlaylistContext'
 import { Context as UserContext } from '../../context/UserContext'
 import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage } from '../../components/SongImage'
-import { useFocusEffect } from '@react-navigation/native';
 
 const PlaylistCreatePage = ({ route }) => {
     const [hashtag, setHashtag] = useState([]);
@@ -102,12 +100,6 @@ const PlaylistCreatePage = ({ route }) => {
     useEffect(() => {
         if(playList.length >= 3)    setSongValidity(true)
     }, [playList])
-
-    useFocusEffect(
-        useCallback(() => {
-            TrackPlayer.reset()
-        }, [])
-    )
 
     return (
         <View style={styles.container}>

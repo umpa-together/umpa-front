@@ -93,14 +93,15 @@ const OtherAccountScreen = ({ route }) => {
         await Promise.all([
             getOtheruser({id: id}),
             getSongs({id: id}),
-            TrackPlayer.reset()
         ])
     }
+
     useFocusEffect(
         useCallback(() => {
             CallbackFunction()
         }, [id])
     )
+
     return (
         <View style={{flex:1,backgroundColor: 'rgb(250,250,250)'}}>
             {user == null || (djState.songs == null) ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator/></View> :
