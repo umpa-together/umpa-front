@@ -15,9 +15,9 @@ const MySharedSongsPage = () => {
     const { getCurrentBoard, getSelectedBoard, initMusic } = useContext(BoardContext);
 
     useFocusEffect(
-        useCallback(async () => {
+        useCallback(() => {
             initMusic()
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }, [])
     )
     return (

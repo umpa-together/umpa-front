@@ -215,8 +215,8 @@ const SearchPage = ({ route }) => {
             <View style={styles.selectedBox}>
                 <View style={styles.selectedBoxHeader}>
                     <Text style={{fontSize: 14 * tmpWidth}}>담은 곡들</Text>
-                    <TouchableOpacity onPress={async () => {
-                        await TrackPlayer.reset()
+                    <TouchableOpacity onPress={() => {
+                        TrackPlayer.reset()
                         navigate('Create', { data:songs, isEdit })}}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>

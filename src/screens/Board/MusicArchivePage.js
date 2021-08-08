@@ -27,11 +27,12 @@ const MusicArchivePage = ({ route }) => {
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
     const [harmfulModal, setHarmfulModal] = useState(false);
+    
     useFocusEffect(
-        useCallback(async () => {
+        useCallback(() => {
             getMusicArchive({boardId: state.boards._id});
             getMusicChart({boardId:  state.boards._id});
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }, [])
     )
     
@@ -42,10 +43,10 @@ const MusicArchivePage = ({ route }) => {
             setLike(false);
         }
     };
-    const onClose = async () => {
+    const onClose = () => {
         setClickModal(false);
         setIsPlayingid('0');
-        await TrackPlayer.reset()
+        TrackPlayer.reset()
     }
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);

@@ -38,11 +38,11 @@ const OtherAccountScreen = ({ route }) => {
     const [calendarModal, setCalendarModal] = useState(false);
     const { otherUserId: id } = route.params
     
-    const onClose = async () => {
+    const onClose = () => {
         setRepresentModal(false);
         setStoryModal(false);
         setIsPlayingid('0');
-        await TrackPlayer.reset()
+        TrackPlayer.reset()
     };
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);

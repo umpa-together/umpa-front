@@ -14,10 +14,10 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
     const [type, setType] = useState('Each');
     const scrollX = useRef(new Animated.Value(0)).current;
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const onClose = async () => {
+    const onClose = () => {
         setRepresentModal(false);
         setIsPlayingid('0');
-        await TrackPlayer.reset()
+        TrackPlayer.reset()
     }
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);

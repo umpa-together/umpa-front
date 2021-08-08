@@ -33,12 +33,12 @@ const Feed = () => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const onClose = async () => {
+    const onClose = () => {
         if(storyModal)  {
             getOtherStory()
             setStoryModal(false);
             setIsPlayingid('0');
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }
     }
 
@@ -52,8 +52,8 @@ const Feed = () => {
     }
 
     useFocusEffect(
-        useCallback(async () => {
-            await TrackPlayer.reset()
+        useCallback(() => {
+            TrackPlayer.reset()
         }, [])
     )
 

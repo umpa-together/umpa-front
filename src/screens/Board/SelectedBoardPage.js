@@ -19,10 +19,10 @@ const SelectedBoard = ({ route }) => {
     }
 
     useFocusEffect(
-        useCallback(async () => {
+        useCallback(() => {
             initCurrentContent();
             initMusic();
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }, [])
     )
 

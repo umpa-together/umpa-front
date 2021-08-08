@@ -104,8 +104,8 @@ const PlaylistCreatePage = ({ route }) => {
     }, [playList])
 
     useFocusEffect(
-        useCallback(async () => {
-            await TrackPlayer.reset()
+        useCallback(() => {
+            TrackPlayer.reset()
         }, [])
     )
 

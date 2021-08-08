@@ -57,7 +57,7 @@ const MyAccountScreen = () => {
         }
     };  
 
-    const onClose = async () => {
+    const onClose = () => {
         if(viewerModal){
             setViewerModal(false)
             return;
@@ -72,7 +72,7 @@ const MyAccountScreen = () => {
             setText('');
             setTok(false);
         }
-        await TrackPlayer.reset()
+        TrackPlayer.reset()
         setDeleteModal(false)
     }
 
@@ -89,7 +89,6 @@ const MyAccountScreen = () => {
             getMyInfo(),
             getMyStory()
         ])
-        
         setRefreshing(false);
     };
     useEffect(() => {
@@ -127,8 +126,8 @@ const MyAccountScreen = () => {
     }, []);
 
     useFocusEffect(
-        useCallback(async () => {
-            await TrackPlayer.reset()
+        useCallback(() => {
+            TrackPlayer.reset()
         }, [])
     )
 

@@ -16,9 +16,9 @@ const addtracksong= async ({ data, setIsPlayingid, setHarmfulModal }) => {
     }
 };
 
-const stoptracksong= async ({ setIsPlayingid }) => {    
+const stoptracksong= ({ setIsPlayingid }) => {    
     setIsPlayingid('0');
-    await TrackPlayer.reset()
+    TrackPlayer.reset()
 };
 
 export { addtracksong, stoptracksong }

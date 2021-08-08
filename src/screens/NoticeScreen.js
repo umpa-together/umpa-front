@@ -56,12 +56,12 @@ const NoticeScreen = () => {
     }
 
     useFocusEffect(
-        useCallback(async () => {
+        useCallback(() => {
             initPlaylist()
             initOtherUser()
             initMusic()
             initCurrentContent()
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }, [])        
     )
 
