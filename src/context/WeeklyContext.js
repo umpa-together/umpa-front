@@ -83,5 +83,5 @@ const postWeekly = (dispatch) => async () => {
 export const { Provider, Context } = createDataContext(
     WeeklyReducer,
     { getWeeklyDJ, postWeeklyDJ , postWeeklyCuration , getWeeklyCuration, postWeeklyPlaylist, getWeeklyPlaylist, postWeekly },
-    { weeklyDJ: [], weekcuration: {}, weeklyPlaylist: null, errorMessage: '' }
+    { weeklyDJ: [], weekcuration: null, weeklyPlaylist: null, errorMessage: '' }
 )
