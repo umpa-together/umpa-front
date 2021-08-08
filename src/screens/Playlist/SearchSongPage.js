@@ -3,7 +3,6 @@ import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
@@ -20,7 +19,7 @@ const SearchPage = ({ route }) => {
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const { isEdit, addedplayList } = route.params
+    const { isEdit, data: addedplayList} = route.params
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -216,7 +215,6 @@ const SearchPage = ({ route }) => {
                 <View style={styles.selectedBoxHeader}>
                     <Text style={{fontSize: 14 * tmpWidth}}>담은 곡들</Text>
                     <TouchableOpacity onPress={() => {
-                        TrackPlayer.reset()
                         navigate('Create', { data:songs, isEdit })}}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>
