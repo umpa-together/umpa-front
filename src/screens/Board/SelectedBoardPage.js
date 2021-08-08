@@ -1,38 +1,35 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
 import { Context as BoardContext } from '../../context/BoardContext';
 import ContentsForm from '../../components/Board/ContentsForm';
 import BoardHeader from '../../components/Board/BoardHeader';
-import { navigate } from '../../navigationRef';
+import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import Modal from 'react-native-modal';
+import { useFocusEffect } from '@react-navigation/native';
 
-const SelectedBoard = ({ navigation }) => {
+const SelectedBoard = ({ route }) => {
     const { state, initCurrentContent, initMusic } = useContext(BoardContext);
     const [introductionModal, setIntroductionModal] = useState(false);
-    const title = navigation.getParam('boardName');
-    const introduction = navigation.getParam('introduction');
+    const { boardName: title, introduction } = route.params
     const onClose = () => {
         setIntroductionModal(false)
     }
-    
-    useEffect(() => {
-        const listener =navigation.addListener('didFocus', async ()=>{
+
+    useFocusEffect(
+        useCallback(async () => {
             initCurrentContent();
             initMusic();
             await TrackPlayer.reset()
-        });
-        return () => {
-            listener.remove();
-        };
-    }, []);
+        }, [])
+    )
 
     return (
         <View style={styles.container}> 
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={goBack}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <View style={{flexDirection: 'row', flex: 1, paddingTop: 10 * tmpWidth}}>
@@ -53,7 +50,7 @@ const SelectedBoard = ({ navigation }) => {
                         <Text style={styles.searchText}>게시글을 검색해주세요.</Text>
                     </TouchableOpacity>
                 </View>
-                <ContentsForm navigation={navigation} Contents={state.currentBoard}/> 
+                <ContentsForm Contents={state.currentBoard}/> 
             </View> }
             <Modal 
                 animationIn="fadeIn"
@@ -71,12 +68,6 @@ const SelectedBoard = ({ navigation }) => {
             </Modal>
         </View>
     );
-};
-
-SelectedBoard.navigationOptions = ({ navigation }) => {
-    return {
-        headerShown: false
-    }
 };
 
 const styles=StyleSheet.create({

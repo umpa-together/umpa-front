@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 
-const MainDJForm = ({navigation}) => {
+const MainDJForm = () => {
     const { state} = useContext(WeeklyContext);
     const {state: userState,getOtheruser} = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -30,7 +30,7 @@ const MainDJForm = ({navigation}) => {
                                     }else{
                                         await Promise.all([getOtheruser({id:item._id}),
                                         getSongs({id:item._id})]);
-                                        navigation.push('OtherAccount', {otherUserId:item._id});
+                                        push('OtherAccount', {otherUserId:item._id});
                                     }
                                 }}>
                                 {item.profileImage == undefined ?

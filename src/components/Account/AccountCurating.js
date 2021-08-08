@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { SongImage } from '../SongImage'
-
-const AccountCurating = ({ curating, myAccount, navigation }) => {
+import { push } from '../../navigationRef';
+const AccountCurating = ({ curating, myAccount }) => {
     curating.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
@@ -26,7 +26,7 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
                             style={styles.curationBox}
                             onPress={async ()=>{
                                 await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                push('SelectedCuration', {id: item.songoralbumid})
                             }}
                         >
                             {item.isSong ?

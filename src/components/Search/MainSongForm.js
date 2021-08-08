@@ -1,28 +1,34 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Animated } from 'react-native';
+import React, { useCallback, useContext, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Animated, ActivityIndicator } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as WeeklyContext } from '../../context/WeeklyContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as CurationContext } from '../../context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
 import { SongImage } from '../SongImage'
+import { useFocusEffect } from '@react-navigation/native';
 
-const MainSongForm = ({navigation}) => {
+const MainSongForm = () => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { state: weeklyState } = useContext(WeeklyContext);
     const { getPlaylist, getAllPlaylists } = useContext(PlaylistContext);
     const { getCuration, getAllCurationPost } = useContext(CurationContext);
     const scrollX = useRef(new Animated.Value(0)).current;
-    useEffect(() => {
-        currentHashtag()
-    }, [])
+    
+    useFocusEffect(
+        useCallback(() => {
+            currentHashtag()
+        }, [])
+    )
+        
     return (
         <ScrollView>
+            {!weeklyState.weeklyPlaylist && !weeklyState.weekcuration ? <View style={{justifyContent: 'center', alignItems: 'center', height: 590 * tmpWidth}}><ActivityIndicator /></View> :
             <View style={{height: '100%'}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 * tmpWidth, marginBottom: 18 * tmpWidth, alignItems: 'center'}}>
                     <Text style={styles.headertext}>위클리 플레이리스트</Text>
@@ -51,7 +57,7 @@ const MainSongForm = ({navigation}) => {
                             return (
                                 <TouchableOpacity style={styles.playlistitem} onPress={async () => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                    navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
+                                    push('SelectedPlaylist', {id: item._id, postUser: item.postUserId._id})
                                 }}>
                                     <View style={{position:'absolute', width:'100%', height:'100%'}} >
                                         <Image style ={{height:'100%', width:'100%', borderRadius: 8 * tmpWidth}} source ={{url:item.image}}/>
@@ -103,7 +109,7 @@ const MainSongForm = ({navigation}) => {
                                     <View>
                                         <TouchableOpacity onPress={async ()=>{
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                            push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <SongImage  url={item.object.attributes.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
@@ -113,7 +119,7 @@ const MainSongForm = ({navigation}) => {
                                     <View>
                                         <TouchableOpacity onPress={async ()=>{
                                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                            navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                            push('SelectedCuration', {id: item.songoralbumid})
                                         }}>
                                             <SongImage url={item.object.artwork.url} border={8} size={114}/>
                                         </TouchableOpacity>
@@ -145,7 +151,7 @@ const MainSongForm = ({navigation}) => {
                         )
                     })}
                 </View>
-            </View>
+            </View> }
         </ScrollView>
     )
 };

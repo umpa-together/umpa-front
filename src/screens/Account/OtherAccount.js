@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -14,10 +14,12 @@ import RepresentSong from '../../components/RepresentSong';
 import StoryCalendar from '../../components/StoryCalendar';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { goBack, push } from '../../navigationRef';
+import { useFocusEffect } from '@react-navigation/native';
 
 require('date-utils');
 
-const OtherAccountScreen = ({navigation}) => {
+const OtherAccountScreen = ({ route }) => {
     const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar, getOtheruser, } = useContext(UserContext);
     const {state: djState, getSongs } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
@@ -34,7 +36,7 @@ const OtherAccountScreen = ({navigation}) => {
     const [harmfulModal, setHarmfulModal] = useState(false);
     const [followerNum , setFollowerNum] = useState(0);
     const [calendarModal, setCalendarModal] = useState(false);
-    const id = navigation.getParam('otherUserId');
+    const { otherUserId: id } = route.params
     
     const onClose = async () => {
         setRepresentModal(false);
@@ -53,8 +55,6 @@ const OtherAccountScreen = ({navigation}) => {
             addtracksong({ data: story['song'], setIsPlayingid, setHarmfulModal });
         }
     }
-
-   
 
     const followCheck = ({id}) => {
         if(user != null) {
@@ -88,22 +88,23 @@ const OtherAccountScreen = ({navigation}) => {
     useEffect(() => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
-        const listener = navigation.addListener('didFocus', async () => {
+    }, []);
+
+    useFocusEffect(
+        useCallback(async () => {
             await Promise.all([
                 getOtheruser({id: id}),
                 getSongs({id: id}),
                 TrackPlayer.reset()
-            ]);
-        });
-        return () => listener.remove()
-    }, []);
-
+            ])
+        }, [id])
+    )
     return (
         <View style={{flex:1,backgroundColor: 'rgb(250,250,250)'}}>
             {user == null || (djState.songs == null) ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
                 <View style={styles.header}>
-                    <TouchableOpacity  style={{position :"absolute", left:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity  style={{position :"absolute", left:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={goBack}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 16 * tmpWidth, fontWeight: 'bold'}}>{user.name}</Text>
@@ -145,13 +146,13 @@ const OtherAccountScreen = ({navigation}) => {
                             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
                                 <View style={{width:200 * tmpWidth,  flexDirection:'row'}}>
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth, alignItems:'center', }} onPress={() => {
-                                        navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'following'})
+                                        push('Follow', {option: 'OtherAccount', name:user.name, type:'following'})
                                     }}>
                                         <Text style={{fontSize: 12 * tmpWidth, }}>팔로잉 </Text>
                                         <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{user.following.length}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{flexDirection: 'row', marginRight: 12 * tmpWidth,alignItems:'center', }} onPress={() => {
-                                        navigation.push('Follow', {option: 'OtherAccount', name:user.name, type:'follower'})
+                                        push('Follow', {option: 'OtherAccount', name:user.name, type:'follower'})
                                     }}>
                                         <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
                                         <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{followerNum}</Text>
@@ -191,8 +192,8 @@ const OtherAccountScreen = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255)'}}>
-                            {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false} navigation={navigation}/> :
-                            <AccountCurating curating={user.curationposts} myAccount={false} navigation={navigation}/>}
+                            {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false} /> :
+                            <AccountCurating curating={user.curationposts} myAccount={false} />}
                         </View>
                     </View>
                 </ScrollView>
@@ -247,12 +248,6 @@ const OtherAccountScreen = ({navigation}) => {
             </Modal>
         </View>
     )
-};
-
-OtherAccountScreen.navigationOptions = ({navigation})=>{
-    return {
-        headerShown: false
-    };
 };
 
 const styles = StyleSheet.create({

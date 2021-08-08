@@ -7,19 +7,20 @@ import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '.././../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import Header from '../../components/Header';
+import { goBack } from '../../navigationRef';
 
-const SearchMusicPage = ({ navigation }) => {
+const SearchMusicPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { state:boardState, addSong } = useContext(BoardContext);
     const [text, setText] = useState('');
     const [musicArchiveSong, setMusicArchiveSong] = useState({});
-    const setSong = navigation.getParam('setSong')
+    const { setSong, isMusicArchive } = route.params
     const [loading, setLoading] = useState(false);
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const isMusicArchive = navigation.getParam('isMusicArchive')
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -27,7 +28,6 @@ const SearchMusicPage = ({ navigation }) => {
             setLoading(false);
         }
     };
-
     const onEndReached = () => {
         if (loading) {
             return;
@@ -37,7 +37,7 @@ const SearchMusicPage = ({ navigation }) => {
     };
 
     const okPress = async () => {
-        navigation.goBack();
+        goBack();
         if(isMusicArchive)  await addSong({boardId: boardState.boards._id, song: musicArchiveSong});
     }
 
@@ -67,6 +67,7 @@ const SearchMusicPage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Header title="음악 아카이브" />
             <View style={styles.searchBox}>
                 <View style ={styles.header}>
                     <View style={{flexDirection: 'row',  alignItems: 'center'}}>
@@ -194,34 +195,6 @@ const SearchMusicPage = ({ navigation }) => {
             </View>
         </View>
     );
-};
-
-SearchMusicPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '음악 아카이브',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-            fontWeight: "400"
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({

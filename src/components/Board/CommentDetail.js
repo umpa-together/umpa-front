@@ -5,12 +5,12 @@ import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import RecommentDetail from './RecommentDetail';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import ReportModal from '../ReportModal';
 import DeleteModal from '../DeleteModal';
 
-const CommentDetail = ({navigation, inputRef, setRecomment, setCommentId}) => {
+const CommentDetail = ({inputRef, setRecomment, setCommentId}) => {
     const { state, likeComment, unlikeComment, nextComments } = useContext(BoardContext);
     const { getSongs } = useContext(DJContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
@@ -51,7 +51,7 @@ const CommentDetail = ({navigation, inputRef, setRecomment, setCommentId}) => {
                                         }else{
                                             await Promise.all([getOtheruser({id:item.postUserId._id}),
                                             getSongs({id:item.postUserId._id})]);
-                                            navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                            push('OtherAccount', {otherUserId:item.postUserId._id})
                                         }
                                     }}>
                                     { item.postUserId.profileImage == undefined ?
@@ -97,7 +97,7 @@ const CommentDetail = ({navigation, inputRef, setRecomment, setCommentId}) => {
                                         </View>
                                     </View>
                                 </View>
-                                {item.comments.length != 0 ? <RecommentDetail navigation={navigation} currentComment={item.comments}/> : null }
+                                {item.comments.length != 0 ? <RecommentDetail currentComment={item.comments}/> : null }
                             </View>
                         )
                     }else if(item.isDeleted && item.comments.length != 0){
@@ -112,7 +112,7 @@ const CommentDetail = ({navigation, inputRef, setRecomment, setCommentId}) => {
                                         <Text style={{fontSize: 14 * tmpWidth, marginTop: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>삭제된 댓글입니다.</Text>
                                     </View>
                                 </View>
-                                {item.comments.length != 0 ? <RecommentDetail navigation={navigation} currentComment={item.comments}/> : null }
+                                {item.comments.length != 0 ? <RecommentDetail currentComment={item.comments}/> : null }
                             </View>
                         )
                     }

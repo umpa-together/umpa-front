@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
 import { tmpWidth } from '../FontNormalize';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
+import { push } from '../../navigationRef';
 
-const AllPlaylistForm = ({navigation}) => {
+const AllPlaylistForm = () => {
     const { state, getPlaylist, nextAllPlaylists, getAllPlaylists} = useContext(PlaylistContext)
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -51,7 +52,7 @@ const AllPlaylistForm = ({navigation}) => {
                         <View style={{width: 161 * tmpWidth, marginRight: 14 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                             <TouchableOpacity onPress={async () => {
                                 await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
+                                push('SelectedPlaylist', {id: item._id, postUser: item.postUserId._id})
                             }}>
                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                     <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>

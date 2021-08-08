@@ -10,8 +10,10 @@ import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { goBack } from '../../navigationRef';
+import Header from '../../components/Header';
 
-const SongEditPage = ({navigation}) => {
+const SongEditPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { state: userState, getMyInfo} = useContext(UserContext);
     const { editSongs } = useContext(DJContext);
@@ -26,7 +28,7 @@ const SongEditPage = ({navigation}) => {
     const [orderLists, setOrderLists] = useState([]);
     const [harmfulModal, setHarmfulModal] = useState(false);
     let uploadSongs = [];
-    const currentplayList = navigation.getParam('data');
+    const { data: currentplayList } = route.params
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -78,7 +80,7 @@ const SongEditPage = ({navigation}) => {
         setOrderModal(false)
         await editSongs({ songs: uploadSongs });
         getMyInfo();
-        navigation.goBack();
+        goBack();
     }
     
     const onClose = () => {
@@ -96,12 +98,6 @@ const SongEditPage = ({navigation}) => {
         if(currentplayList != undefined) {
            setSong(currentplayList);
         }
-        const listener =navigation.addListener('didFocus', ()=>{
-            searchinit();
-        });
-        return () => {
-            listener.remove();
-        };
     }, []);
     useEffect(() => {
         if(text == ''){
@@ -113,6 +109,7 @@ const SongEditPage = ({navigation}) => {
     
     return (
         <View style={styles.container}>
+            <Header title="대표곡"/>
             <View style={styles.searchBox}>
                 <View style ={{flexDirection:'row'}}>
                     <View style={styles.searchIcon}>
@@ -353,33 +350,6 @@ const SongEditPage = ({navigation}) => {
             </Modal>
         </View>
     )
-};
-
-SongEditPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '대표곡',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{width:40 * tmpWidth, height:40 * tmpWidth, marginLeft: 20 * tmpWidth  }} onPress={() => navigation.goBack()}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({

@@ -5,8 +5,9 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import ContentsForm from '../../components/Board/ContentsForm';
 import { tmpWidth } from '../../components/FontNormalize';
+import { goBack } from '../../navigationRef';
 
-const SearchContentPage = ({ navigation }) => {
+const SearchContentPage = () => {
     const { state, getSearchContent, initSearchContent } = useContext(BoardContext);
     const [text, setText] = useState('');
     const [search, setSearch] = useState(false);
@@ -38,24 +39,18 @@ const SearchContentPage = ({ navigation }) => {
                         style={styles.textInput}
                     />
                 </View>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={goBack}>
                     <Text style={styles.cancelText}>취소</Text>
                 </TouchableOpacity>
             </View>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{height: '100%', backgroundColor: 'rgb(250,250,250)'}}>
                     {search && state.searchContent == null ? <View style={{flex: 1, justifyContent: 'center'}}><ActivityIndicator /></View> : 
-                    <ContentsForm navigation={navigation} Contents={state.searchContent} />}
+                    <ContentsForm Contents={state.searchContent} />}
                 </View>
             </TouchableWithoutFeedback>
         </View>
     );
-};
-
-SearchContentPage.navigationOptions = ()=>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles=StyleSheet.create({

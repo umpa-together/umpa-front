@@ -7,11 +7,11 @@ import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as UserContext} from '../../context/UserContext';
 import {Context as DJContext} from '../../context/DJContext';
 import {Context as CurationContext} from '../../context/CurationContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import RepresentSong from '../RepresentSong';
 
-const Recommend = ({navigation}) => {
+const Recommend = () => {
     const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
@@ -24,7 +24,6 @@ const Recommend = ({navigation}) => {
     const scrollX = useRef(new Animated.Value(0)).current;
     useEffect(()=>{
         recommendDJ();
-
     }, []);
 
     const fetchData = async () => {
@@ -117,7 +116,7 @@ const Recommend = ({navigation}) => {
                             <TouchableOpacity onPress={async () => {
                                 await Promise.all([getOtheruser({id:item._id}),
                                 getSongs({id:item._id})]);
-                                navigation.push('OtherAccount', {otherUserId:item._id})
+                                push('OtherAccount', {otherUserId:item._id})
                             }}>
                                 { item.profileImage == undefined ?
                                 <View style={styles.djProfile}>
@@ -138,7 +137,7 @@ const Recommend = ({navigation}) => {
                                     return (
                                         <TouchableOpacity key={playlist['image']} onPress={async () => {
                                             await getPlaylist({id:playlist['_id'], postUserId:item._id})
-                                            navigation.push('SelectedPlaylist', {id: playlist['_id'], navigation: navigation, postUser: item._id})
+                                            push('SelectedPlaylist', {id: playlist['_id'], postUser: item._id})
                                         }}>
                                             <Image style={styles.playlistBox} source={{uri: playlist['image']}}/>
                                         </TouchableOpacity>
@@ -166,12 +165,6 @@ const Recommend = ({navigation}) => {
             </ScrollView>
         </LinearGradient>
     );
-};
-
-Recommend.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles = StyleSheet.create({

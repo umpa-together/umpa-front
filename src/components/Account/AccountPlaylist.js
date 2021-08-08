@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
-
-const AccountPlaylist = ({ playList, myAccount, navigation }) => {
+import { push } from '../../navigationRef';
+const AccountPlaylist = ({ playList, myAccount }) => {
     playList.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
@@ -23,7 +23,7 @@ const AccountPlaylist = ({ playList, myAccount, navigation }) => {
                         <View style={{ height:223*tmpWidth, width:161*tmpWidth, marginRight: 14* tmpWidth , marginTop: 14 * tmpWidth }}>
                             <TouchableOpacity onPress={async ()=>{ 
                                 await getPlaylist({id:item._id, postUserId:item.postUserId})
-                                navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
+                                push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
                             }}>
                                 <View style={{alignItems: 'center'}}>
                                     <View style={styles.thumbnail}>

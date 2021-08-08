@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image, Button } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { tmpWidth } from '../../components/FontNormalize';
@@ -8,11 +8,12 @@ import { SongImage } from '../../components/SongImage'
 import { DeletePlaylistModal } from '../../components/PlaylistModal';
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 import HarmfulModal from '../../components/HarmfulModal';
+import { goBack, push } from '../../navigationRef';
 
-const MusicBoxScreen = ({ navigation }) => {
+const MusicBoxScreen = ({ route }) => {
     const { state, getLikePlaylists, getMyInfo } = useContext(UserContext);
     const { getPlaylist } = useContext(PlaylistContext)
-    const title = navigation.getParam('title')
+    const { title } = route.params
     const [refreshing, setRefreshing] = useState(false);
     const [deletePlaylistModal, setDeletePlaylistModal] = useState(false)
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -46,7 +47,7 @@ const MusicBoxScreen = ({ navigation }) => {
     return (
         <View style={{flex: 1, backgroundColor: 'rgb(255,255,255)'}}>
             <View style={styles.header}>
-                <TouchableOpacity  style={styles.backIcon} onPress={() => navigation.goBack()}>
+                <TouchableOpacity  style={styles.backIcon} onPress={goBack}>
                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <Text style={{fontSize: 18 * tmpWidth}}>{title}</Text>
@@ -66,7 +67,7 @@ const MusicBoxScreen = ({ navigation }) => {
                             <View style={{width: 161 * tmpWidth, marginRight: 14 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                 <TouchableOpacity onPress={async () => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId})
-                                    navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId})
+                                    push('SelectedPlaylist', {id: item._id, postUser: item.postUserId})
                                 }}>
                                     <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                         <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
@@ -148,13 +149,6 @@ const MusicBoxScreen = ({ navigation }) => {
         </View>
     )
 }
-
-
-MusicBoxScreen.navigationOptions = ({navigation})=>{
-    return {
-        headerShown: false
-    };
-};
 
 const styles=StyleSheet.create({
     header:{

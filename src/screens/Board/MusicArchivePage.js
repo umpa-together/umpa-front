@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
@@ -6,13 +6,15 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import Header from '../../components/Header';
+import { useFocusEffect } from '@react-navigation/native';
 
-const MusicArchivePage = ({navigation}) => {
+const MusicArchivePage = ({ route }) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -25,16 +27,14 @@ const MusicArchivePage = ({navigation}) => {
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
     const [harmfulModal, setHarmfulModal] = useState(false);
-    useEffect(() => {
-        const listener =navigation.addListener('didFocus', async ()=>{
+    useFocusEffect(
+        useCallback(async () => {
             getMusicArchive({boardId: state.boards._id});
             getMusicChart({boardId:  state.boards._id});
             await TrackPlayer.reset()
-        });
-        return () => {
-            listener.remove();
-        };
-    }, [])
+        }, [])
+    )
+    
     const likeCheck = ({item}) => {
         if(item.likes.includes(userState.myInfo._id) != true){
             setLike(true);
@@ -64,12 +64,13 @@ const MusicArchivePage = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <Header title="음악 아카이브" />
             {state.musicArchive == null || state.musicArchive == null ? <View style={{justifyContent: 'center', alignItems: 'center' ,flex: 1}}><ActivityIndicator /></View> :
             <View style={{flex: 1, width: '100%'}}>
                 <View style={styles.shareBox}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.shareText}>공유된 음악</Text>
-                        <TouchableOpacity onPress={() => navigate('SearchMusic', {navigation: navigation, isMusicArchive: true})}>
+                        <TouchableOpacity onPress={() => navigate('SearchMusic', {isMusicArchive: true})}>
                             <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>    
                         </TouchableOpacity>
                     </View>
@@ -167,7 +168,7 @@ const MusicArchivePage = ({navigation}) => {
                             }else{
                                 await Promise.all([getOtheruser({id: selectedStory.postUserId._id}),
                                 getSongs({id:selectedStory.postUserId._id})]);
-                                navigation.push('OtherAccount',{checkid:selectedStory.postUserId._id})
+                                push('OtherAccount',{checkid:selectedStory.postUserId._id})
                             }
                         }}>
                             {selectedStory.postUserId.profileImage == undefined ? 
@@ -230,7 +231,7 @@ const MusicArchivePage = ({navigation}) => {
                             <TouchableOpacity style={styles.likeIcon}
                             onPress={async () => {
                                 setLike(false)
-                                await likeSong({id: selectedStory._id, boardName: navigation.getParam('name'), boardId: state.boards._id})}}>
+                                await likeSong({id: selectedStory._id, boardName: route.params.name, boardId: state.boards._id})}}>
                                 <SvgUri width='100%' height='100%' source={require('../../assets/icons/heart.svg')}/>     
                             </TouchableOpacity> : 
                             <TouchableOpacity style={styles.likeIcon}
@@ -245,34 +246,6 @@ const MusicArchivePage = ({navigation}) => {
             </Modal> : null}
         </View>
     )
-};
-
-MusicArchivePage.navigationOptions = ({navigation})=>{
-    return {
-        title: '음악 아카이브',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-            fontWeight: "400"
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(251,251,251)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({
