@@ -46,9 +46,9 @@ const Playlist = ({ playList }) => {
         }
     }
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             {state.otherStory && 
-            <View style={state.otherStory.length == 0 ? styles.noStoryContainer : styles.hasStoryContainer}>
+            <View style={{flex: 1, paddingTop:10*tmpWidth }}>
                 { playList.length !=0 ?
                 <FlatList
                     data ={playList}
@@ -137,18 +137,6 @@ const Playlist = ({ playList }) => {
 };
 
 const styles=StyleSheet.create({
-    hasStoryContainer: {
-        backgroundColor:"rgb(254,254,254)",
-        height:525 * tmpHeight,
-        width:375 * tmpWidth,
-        paddingTop:10*tmpWidth,
-    },
-    noStoryContainer: {
-        backgroundColor:"rgb(254,254,254)",
-        height: 625 * tmpHeight, 
-        width:375 * tmpWidth,
-        paddingTop:10*tmpWidth,
-    },
     playlist:{
         width:375 * tmpWidth,
         alignItems: 'center',
