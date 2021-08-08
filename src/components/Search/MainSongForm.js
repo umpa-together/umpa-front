@@ -51,7 +51,8 @@ const MainSongForm = () => {
                         scrollEventThrottle={16}
                         contentContainerStyle={{paddingLeft: 18 * tmpWidth, paddingRight: 6 * tmpWidth}}
                         onScroll = {Animated.event(
-                            [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                            [{ nativeEvent: {contentOffset: {x: scrollX } } }],
+                            {useNativeDriver: false}
                         )}
                         renderItem={({item})=> {
                             return (
