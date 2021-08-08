@@ -89,14 +89,16 @@ const OtherAccountScreen = ({ route }) => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
     }, []);
-
+    const CallbackFunction = async () => {
+        await Promise.all([
+            getOtheruser({id: id}),
+            getSongs({id: id}),
+            TrackPlayer.reset()
+        ])
+    }
     useFocusEffect(
-        useCallback(async () => {
-            await Promise.all([
-                getOtheruser({id: id}),
-                getSongs({id: id}),
-                TrackPlayer.reset()
-            ])
+        useCallback(() => {
+            CallbackFunction()
         }, [id])
     )
     return (
