@@ -63,7 +63,8 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                         bounces={false}
                         scrollEventThrottle={16}
                         onScroll = {Animated.event(
-                            [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                            [{ nativeEvent: {contentOffset: {x: scrollX } } }],
+                            {useNativeDriver: false}
                         )}
                         contentContainerStyle={{paddingLeft: 60 * tmpWidth, paddingRight: 60 * tmpWidth, paddingTop: 20 * tmpWidth}}
                         renderItem={({item, index})=>{

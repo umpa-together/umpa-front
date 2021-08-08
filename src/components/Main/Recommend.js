@@ -82,7 +82,8 @@ const Recommend = () => {
                 bounces={false}
                 scrollEventThrottle={16}
                 onScroll = {Animated.event(
-                    [{ nativeEvent: {contentOffset: {x: scrollX } } }]
+                    [{ nativeEvent: {contentOffset: {x: scrollX } } }],
+                    {useNativeDriver: false}
                 )}
                 renderItem={({item, index})=>{
                     const inputRange = [
