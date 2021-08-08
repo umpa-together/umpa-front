@@ -14,14 +14,12 @@ import {Context as NoticeContext} from '../../context/NoticeContext';
 import {Context as SearchContext} from '../../context/SearchContext';
 import {Context as CurationContext} from '../../context/CurationContext';
 import {Context as WeeklyContext} from '../../context/WeeklyContext';
-import {Context as AuthContext} from '../../context/AuthContext';
 import {Context as UserContext} from '../../context/UserContext';
 
 const MainSearchScreen = () => {
     const [category, setCategory] = useState('Song');
-    const { state: authState, tryLocalSignin } = useContext(AuthContext);
     const { getPlaylists } = useContext(PlaylistContext);
-    const { state: userState, initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
+    const { initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { currentHashtag } = useContext(SearchContext);
@@ -47,7 +45,6 @@ const MainSearchScreen = () => {
         currentHashtag()]);
     }
     useEffect(() => {
-        console.log('here')
         loadingDataFetch()
     }, [])
     return (
