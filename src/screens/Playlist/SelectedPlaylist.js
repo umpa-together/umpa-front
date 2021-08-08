@@ -230,7 +230,7 @@ const SelectedPlaylist = ({ route }) => {
                             <View style={{flexDirection: 'row'}}>
                                 {currentPlaylist.hashtag.map(item => {
                                     return (
-                                        <TouchableOpacity style={styles.hashtagView} key={item._id} onPress={async() => {
+                                        <TouchableOpacity style={styles.hashtagView} key={item} onPress={async() => {
                                             setHashtag(item)
                                             SearchHashtag({ object: item })
                                         }}>
