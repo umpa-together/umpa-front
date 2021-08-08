@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import AccountPlaylist from  '../../components/Account/AccountPlaylist';
 import AccountCurating from  '../../components/Account/AccountCurating';
 import Modal from 'react-native-modal';
@@ -17,10 +17,11 @@ import StoryCalendar from '../../components/StoryCalendar';
 import MusicBoxModal from '../../components/MusicBoxModal';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { useFocusEffect } from '@react-navigation/native';
 
 require('date-utils');
 
-const MyAccountScreen = ({navigation}) => {
+const MyAccountScreen = () => {
     const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser, storyCalendar, getOtherStory } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { getSongs } = useContext(DJContext);
@@ -123,11 +124,13 @@ const MyAccountScreen = ({navigation}) => {
     useEffect(() => {
         var newDate = new Date();
         setToday(newDate.toFormat('YYYY.MM.DD'))
-        const listener = navigation.addListener('didFocus', async () => {
-            await TrackPlayer.reset()
-        });
-        return () => listener.remove()
     }, []);
+
+    useFocusEffect(
+        useCallback(async () => {
+            await TrackPlayer.reset()
+        }, [])
+    )
 
     return (
         <View style={{backgroundColor: 'rgb(250,250,250)', flex: 1}}>
@@ -181,13 +184,13 @@ const MyAccountScreen = ({navigation}) => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1}}>
                                     <View style={{flexDirection: 'row', width:200 * tmpWidth}}>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center', marginRight: 12 * tmpWidth }} onPress={() => {
-                                            navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})
+                                            push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'following'})
                                         }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로잉 </Text>
                                             <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.following.length}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{flexDirection: 'row',alignItems:'center',marginRight: 12 * tmpWidth }} onPress={() => {
-                                            navigation.push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})
+                                            push('Follow', {option: 'MyAccount', name: userState.myInfo.name, type: 'follower'})
                                         }}>
                                             <Text style={{fontSize: 12 * tmpWidth}}>팔로워 </Text>
                                             <Text style={{fontSize: 14 * tmpWidth, fontWeight: '600'}}>{userState.myInfo.follower.length}</Text>
@@ -216,8 +219,8 @@ const MyAccountScreen = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255))'}}>
-                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true} navigation={navigation}/> :
-                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true} navigation={navigation}/> }
+                            { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true} /> :
+                            <AccountCurating curating={userState.myInfo.curationposts} myAccount={true} /> }
                         </View>
                     </View>
                 </ScrollView>
@@ -395,7 +398,7 @@ const MyAccountScreen = ({navigation}) => {
                                                     ]);
                                                     setViewerModal(false)
                                                     setStoryModal(false)
-                                                    navigation.push('OtherAccount', {otherUserId:item._id})
+                                                    push('OtherAccount', {otherUserId:item._id})
                                                 }}
                                             >
                                                 { item.profileImage == undefined ?
@@ -483,12 +486,6 @@ const MyAccountScreen = ({navigation}) => {
             { musicBoxModal && <MusicBoxModal musicBoxModal={musicBoxModal} setMusicBoxModal={setMusicBoxModal} />}
         </View>
     );
-};
-
-MyAccountScreen.navigationOptions = ({navigation})=>{
-    return {
-        headerShown: false
-    };
 };
 
 const styles = StyleSheet.create({
