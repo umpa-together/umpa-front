@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput } from 'react-native';
+import { Text, Image, StyleSheet, RefreshControl, ActivityIndicator,Keyboard, View, TouchableOpacity, FlatList, ScrollView, TextInput, Button } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as DJContext } from '../../context/DJContext';
@@ -23,7 +23,7 @@ require('date-utils');
 const MyAccountScreen = ({navigation}) => {
     const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser, storyCalendar, getOtherStory } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
-    const { getSongs } = useContext(DJContext);
+    const { getSongs, tmp } = useContext(DJContext);
     const [result, setResult] = useState('playlist');
     const [representModal, setRepresentModal] = useState(false);
     const [storyModal, setStoryModal] = useState(false);
@@ -134,6 +134,7 @@ const MyAccountScreen = ({navigation}) => {
             { userState.myInfo == null ? <View style={{ justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
             <View style={{flex: 1}}>
                 <View style={styles.header}>
+                    <Button title="button" onPress={() => tmp()}/>
                     <TouchableOpacity  style={{position :"absolute", left:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => setMusicBoxModal(true)}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/musicBox.svg')}/>
                     </TouchableOpacity>

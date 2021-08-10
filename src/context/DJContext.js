@@ -69,9 +69,19 @@ const recommendDJ = (dispatch) => async() => {
     }
 };
 
+const tmp = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/tmp');
+        console.log(response.data)
+        //dispatch({ type: 'recommendDJ', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with recommendDJ' });
+    }
+}
+
 
 export const { Provider, Context } = createDataContext(
     DJReducer,
-    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ },
+    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ, tmp },
     { weeklyDJ: [], tasteDJ: [], songs: null, errorMessage: '', recommendDJ: null }
 )
