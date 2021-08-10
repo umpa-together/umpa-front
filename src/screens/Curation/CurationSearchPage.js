@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { Text, TextInput,View,Keyboard, Image,FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator  } from 'react-native';
+import { Text, TextInput,View,Keyboard, FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator  } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
 import { Context as CurationContext } from '../../context/CurationContext'
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
