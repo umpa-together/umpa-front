@@ -22,7 +22,7 @@ export default StoryViewer = ({ viewerModal, setViewerModal, setStoryModal }) =>
             getOtheruser({id:item._id}),
             getSongs({id:item._id}),
         ]);
-        push('OtherAccount', {otherUserId:item._id})
+        if(item._id !== userState.myInfo._id)   push('OtherAccount', {otherUserId:item._id})
     }
 
     return (
