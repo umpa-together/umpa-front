@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { SongImage } from '../SongImage'
 import { push } from '../../navigationRef';
-const AccountCurating = ({ curating, myAccount }) => {
+const AccountCurating = ({ curating }) => {
     curating.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;

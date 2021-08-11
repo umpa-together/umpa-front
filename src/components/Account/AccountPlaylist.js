@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { tmpWidth } from '../FontNormalize';
 import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { push } from '../../navigationRef';
-const AccountPlaylist = ({ playList, myAccount }) => {
+const AccountPlaylist = ({ playList }) => {
     playList.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
@@ -20,7 +20,7 @@ const AccountPlaylist = ({ playList, myAccount }) => {
                         style={styles.postBox}
                         onPress={async ()=>{ 
                             await getPlaylist({id:item._id, postUserId:item.postUserId})
-                            navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
+                            push('SelectedPlaylist', {id: item._id , postUser: item.postUserId})
                         }}
                         key={item._id}
                     >
