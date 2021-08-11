@@ -116,8 +116,11 @@ const OtherAccountScreen = ({ route }) => {
                     </TouchableOpacity>
                     {reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'account'} subjectId={user._id}/> : null }
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{height: '100%'}}>
+                <ScrollView 
+                    showsVerticalScrollIndicator={false}
+                    stickyHeaderIndices={[1]}
+                >
+                    <View>
                         <View style={{flexDirection: 'row',  justifyContent: 'center', marginTop: 10 * tmpWidth}}>
                             <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
                                 <TouchableOpacity onPress={() => {
@@ -186,6 +189,8 @@ const OtherAccountScreen = ({ route }) => {
                                 <Text>{user.introduction}</Text>
                             </View>
                         </View> : null }
+                    </View>
+                    <View>
                         <View style={styles.opt}>
                             <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
                                 <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {user.playlists.length}</Text>
@@ -194,11 +199,11 @@ const OtherAccountScreen = ({ route }) => {
                                 <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {user.curationposts.length}</Text>
                             </TouchableOpacity>
                         </View>
+                    </View>
                         <View style={{backgroundColor: 'rgb(255,255,255)'}}>
                             {result == 'playlist' ?  <AccountPlaylist playList={user.playlists} myAccount={false} /> :
                             <AccountCurating curating={user.curationposts} myAccount={false} />}
                         </View>
-                    </View>
                 </ScrollView>
             </View> }
             {user != null ? <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={user.songs} /> : null }
@@ -351,11 +356,10 @@ const styles = StyleSheet.create({
         alignItems:'flex-end',
         paddingLeft: 20 * tmpWidth,
         paddingRight: 20  * tmpWidth,
-        height:52 * tmpWidth,
+        height:44 * tmpWidth,
         backgroundColor:'rgb(250,250,250)',
         borderBottomWidth : 1*tmpWidth,
         borderColor:'rgba(153,153,153,0.2)',
-        marginTop: 5 * tmpWidth
    },
    line:{
     borderBottomWidth: 0.7 * tmpWidth,

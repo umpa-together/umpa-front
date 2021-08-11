@@ -143,8 +143,8 @@ const MyAccountScreen = () => {
                         onRefresh={onRefresh}
                     />}       
                     showsVerticalScrollIndicator={false}
+                    stickyHeaderIndices={[1]}
                 >
-                    <View style={{height: '100%'}}>
                         <View>
                             <View style={{flexDirection: 'row', width:375 * tmpWidth, height:128 * tmpWidth, justifyContent: 'center', marginTop:10 * tmpWidth}}>
                                 <View style={{alignItems: 'center', marginTop: 37 * tmpWidth }}>
@@ -202,19 +202,20 @@ const MyAccountScreen = () => {
                                 </View>
                             </View> : null }
                         </View>
-                        <View style={styles.opt}>
-                            <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
-                                <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
-                                <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
-                            </TouchableOpacity>
+                        <View>
+                            <View style={styles.opt}>
+                                <TouchableOpacity style={result=='playlist' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('playlist')}>
+                                    <Text style={result=='playlist' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>플레이리스트 {userState.myInfo.playlists.length}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={result=='curating' ? styles.selectedOption : styles.notselectedOption} onPress={() => setResult('curating')}>
+                                    <Text style={result=='curating' ? {fontWeight:'500',fontSize:14*tmpWidth,color:'#000', textAlign: 'center'} : {fontSize:14*tmpWidth,color:'rgba(25,25,25,0.5)', textAlign: 'center'}}>큐레이션 {userState.myInfo.curationposts.length}</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={{backgroundColor: 'rgb(255,255,255))'}}>
                             { result == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} myAccount={true} /> :
                             <AccountCurating curating={userState.myInfo.curationposts} myAccount={true} /> }
                         </View>
-                    </View>
                 </ScrollView>
             </View> }
             <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={userState.myInfo.songs} myAccount={true}/>
@@ -650,11 +651,10 @@ const styles = StyleSheet.create({
         alignItems:'flex-end',
         paddingLeft: 20 * tmpWidth,
         paddingRight: 20  * tmpWidth,
-        height:52 * tmpWidth,
+        height:44 * tmpWidth,
         backgroundColor:'rgb(250,250,250)',
         borderBottomWidth : 1*tmpWidth,
         borderColor:'rgba(153,153,153,0.2)',
-        marginTop: 5 * tmpWidth
     },
     deleteBox: {
         alignItems:'center', 
