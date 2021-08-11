@@ -43,13 +43,13 @@ export default FollowBox = ({ user, isMyAccount }) => {
             <View style={styles.flexBox}>
                 <View style={styles.followContainer}>
                     <TouchableOpacity style={styles.rowBox} onPress={() => {
-                        push('Follow', {option: isMyAccount ? 'MyAccount' : 'OtherAccount', name: user.name, type: 'following'})
+                        push('Follow', {name: user.name, type: 'following'})
                     }}>
                         <Text style={styles.title}>팔로잉 </Text>
                         <Text style={styles.number}>{user.following.length}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.rowBox} onPress={() => {
-                        push('Follow', {option: isMyAccount ? 'MyAccount' : 'OtherAccount', name: user.name, type: 'follower'})
+                        push('Follow', {name: user.name, type: 'follower'})
                     }}>
                         <Text style={styles.title}>팔로워 </Text>
                         <Text style={styles.number}>{isMyAccount ? user.follower.length : followerNum}</Text>
