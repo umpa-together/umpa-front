@@ -78,7 +78,7 @@ const TabScreen = () => {
         <Tab.Navigator
         screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
-                if (route.name === 'HomeTab') {
+                if (route.name === 'Home') {
                     return (
                         <View>
                             { focused ? 
@@ -86,7 +86,7 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('./assets/icons/tabHome.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'FeedTab') {
+                } else if (route.name === 'Feed') {
                     return (
                         <View>
                             { focused ? 
@@ -94,13 +94,13 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('./assets/icons/tabSearch.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'BoardTab') {
+                } else if (route.name === 'Board') {
                     return (
                         <Text>
                             +
                         </Text>
                     )
-                } else if (route.name === 'NoticeTab') {
+                } else if (route.name === 'Notice') {
                     return (
                         <View>
                             { focused ? 
@@ -108,7 +108,7 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('./assets/icons/tabNotice.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'AccountTab') {
+                } else if (route.name === 'Account') {
                     return ( 
                         <View>
                             { focused ? 
@@ -131,10 +131,10 @@ const TabScreen = () => {
             },
             headerShown: false,
         })}>
-            <Tab.Screen name="HomeTab" component={MainSearchScreen}/>
-            <Tab.Screen name="FeedTab" component={MainPage}/>
+            <Tab.Screen name="Home" component={MainSearchScreen}/>
+            <Tab.Screen name="Feed" component={MainPage}/>
             <Tab.Screen 
-                name="BoardTab" 
+                name="Board" 
                 component={MyModalBackgroundScreen}
                 listeners={({ navigation }) => ({
                     tabPress: (e) => {
@@ -143,8 +143,8 @@ const TabScreen = () => {
                     }
                 })}
             />
-            <Tab.Screen name="NoticeTab" component={NoticeScreen}/>
-            <Tab.Screen name="AccountTab" component={AccountScreen}/>
+            <Tab.Screen name="Notice" component={NoticeScreen}/>
+            <Tab.Screen name="Account" component={AccountScreen}/>
         </Tab.Navigator>
     )
 }
