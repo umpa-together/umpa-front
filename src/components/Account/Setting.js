@@ -44,7 +44,7 @@ export default Setting = () => {
         >
             {SettingLists.map(({ title, Lists }) => {
                 return (
-                    <View style={styles.section}>
+                    <View style={styles.section} key={title}>
                         <Text style={styles.title}>{title}</Text>
                         {Lists.map((item) => {
                             return (
