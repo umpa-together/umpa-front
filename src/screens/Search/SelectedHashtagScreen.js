@@ -7,7 +7,7 @@ import { goBack, push } from '../../navigationRef';
 
 const SelectedHashtagScreen = ({ route }) => {
     const { getPlaylist } = useContext(PlaylistContext);
-    const { data, hashtag, searchOption } = route.params
+    const { data, text: hashtag, searchOption } = route.params
     return (
         <SafeAreaView style={{height:812 * tmpHeight, backgroundColor:"#fff"}}>
         {searchOption =='Hashtag' ?
