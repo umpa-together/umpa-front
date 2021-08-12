@@ -10,11 +10,20 @@ import {localNotificationService} from './src/LocalNotificationService';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import Signupopt from './src/screens/Signupopt';
-import NoticeScreen from './src/screens/NoticeScreen';
 
 import CurationSearchPage from './src/screens/Curation/CurationSearchPage';
 import SelectedCuration from './src/screens/Curation/SelectedCuration';
 import SelectedComment from './src/screens/Curation/SelectedCuration';
+
+import DailyPage from './src/screens/Daily/Daily';
+import DailySearchPage from './src/screens/Daily/DailySearchSongPage';
+import SelectedDaily from './src/screens/Daily/SelectedDaily';
+
+import Chat from './src/screens/Chat/Chat';
+import SelectedChat from './src/screens/Chat/SelectedChat';
+
+
+
 
 
 import AccountScreen from './src/screens/Account/MyAccountScreen';
@@ -53,6 +62,8 @@ import SelectedSongScreen from './src/screens/Search/SelectedSongScreen';
 import SelectedHashtagScreen from './src/screens/Search/SelectedHashtagScreen';
 import AllContentsScreen from './src/screens/Search/AllContentsScreen';
 
+
+
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as SearchProvider } from './src/context/SearchContext';
 import { Provider as BoardProvider } from './src/context/BoardContext';
@@ -64,6 +75,9 @@ import { Provider as CurationProvider } from './src/context/CurationContext';
 import { Provider as NoticeProvider } from './src/context/NoticeContext';
 import { Provider as WeeklyProvider } from './src/context/WeeklyContext';
 import { Provider as ReportProvider } from './src/context/ReportContext';
+import { Provider as DailyProvider } from './src/context/DailyContext';
+import { Provider as ChatProvider } from './src/context/ChatContext';
+
 
 
 import { navigate, setNavigator } from './src/navigationRef';
@@ -117,16 +131,10 @@ const Board = createStackNavigator({
     SelectedHashtag: SelectedHashtagScreen,
 });
 
-const Notice = createStackNavigator({
-    Notice: NoticeScreen,
-    SelectedContent: SelectedContentPage,
-    MusicArchive: MusicArchivePage,
-
-    OtherAccount : OtherAccount,
-    Follow : FollowPage,
-    SelectedPlaylist :SelectedPlaylist,
-    SelectedCuration:SelectedCuration,
-    SelectedHashtag: SelectedHashtagScreen,
+const Daily = createStackNavigator({
+    Daily: DailyPage,
+    DailySearch : DailySearchPage,
+    SelectedDaily:SelectedDaily,
 });
 
 const Account = createStackNavigator({
@@ -144,6 +152,8 @@ const Account = createStackNavigator({
     SearchSong : SearchSongPage,
     InformationUse: InformationUsePage,
     MusicBox: MusicBoxScreen,
+    Chat : Chat,
+    SelectedChat : SelectedChat,
 });
 
 main.navigationOptions = ({ navigation }) => {
@@ -176,9 +186,9 @@ Board.navigationOptions = ({ navigation }) => {
         tabBarVisible,
     };
 };
-Notice.navigationOptions = ({ navigation }) => {
+Daily.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
-    if(navigation.state.routes[navigation.state.index].routeName != 'Notice' 
+    if(navigation.state.routes[navigation.state.index].routeName != 'Daily' 
     && navigation.state.routes[navigation.state.index].routeName != 'Account'){
         tabBarVisible = false;
     }
@@ -206,7 +216,7 @@ const mainFlow =  createBottomTabNavigator(
     main,
     Search,
     Board,
-    Notice,
+    Daily,
     Account
 },
 {
@@ -225,7 +235,7 @@ const mainFlow =  createBottomTabNavigator(
             return  <View>{ focused ? 
                 <SvgUri width='40' height='40' source={require('./src/assets/icons/tabFocusedBoard.svg')} /> : 
                 <SvgUri width='40' height='40' source={require('./src/assets/icons/tabBoard.svg')} />}</View>
-        } else if (routeName === 'Notice') {
+        } else if (routeName === 'Daily') {
             return  <View>{ focused ? 
                 <SvgUri width='40' height='40' source={require('./src/assets/icons/tabFocusedNotice.svg')} /> : 
                 <SvgUri width='40' height='40' source={require('./src/assets/icons/tabNotice.svg')} />}</View>
@@ -310,11 +320,15 @@ export default () => {
                                 <SearchPlaylistProvider>
                                     <PlaylistProvider>
                                         <BoardProvider>
-                                            <SearchProvider>
-                                                <AuthProvider>
-                                                    <App ref={(navigator) => setNavigator(navigator) }/>
-                                                </AuthProvider>
-                                            </SearchProvider>
+                                            <ChatProvider>
+                                                <DailyProvider>
+                                                    <SearchProvider>
+                                                        <AuthProvider>
+                                                            <App ref={(navigator) => setNavigator(navigator) }/>
+                                                        </AuthProvider>
+                                                    </SearchProvider>
+                                                </DailyProvider>
+                                            </ChatProvider>
                                         </BoardProvider>
                                     </PlaylistProvider>
                                 </SearchPlaylistProvider>

@@ -106,6 +106,7 @@ const SignupPage = ({ navigation }) => {
     useEffect(() => {
         setNameerr(false);
     }, [name]);
+    console.log(email);
 
     const singupfun = async () => {
         if(email == undefined || email.length == 0){

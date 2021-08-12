@@ -9,6 +9,8 @@ const DJReducer = (state, action) => {
             return { ...state, weeklyDJ: action.payload };
         case 'recommendDJ':
             return { ...state, recommendDJ: action.payload };
+        case 'suggestDJ':
+            return { ...state, suggestDJ: action.payload };           
         case 'getSongs':
             return { ...state, songs: action.payload };
         case 'error':
@@ -69,9 +71,18 @@ const recommendDJ = (dispatch) => async() => {
     }
 };
 
+const suggestDJ = (dispatch) => async() => {
+    try {
+        const response = await serverApi.get('/suggestDJ');
+        dispatch({ type: 'suggestDJ', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with recommendDJ' });
+    }
+};
+
 
 export const { Provider, Context } = createDataContext(
     DJReducer,
-    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ },
-    { weeklyDJ: [], tasteDJ: [], songs: null, errorMessage: '', recommendDJ: null }
+    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ,suggestDJ },
+    { weeklyDJ: [], tasteDJ: [], songs: null, errorMessage: '', recommendDJ: null, suggestDJ:null }
 )

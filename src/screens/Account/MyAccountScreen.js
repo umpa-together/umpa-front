@@ -141,6 +141,9 @@ const MyAccountScreen = ({navigation}) => {
                     <TouchableOpacity  style={{position :"absolute",right:12 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => navigate('Setting')}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/setting.svg')}/>
                     </TouchableOpacity>
+                    <TouchableOpacity  style={{position :"absolute",right:52 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}} onPress={() => {navigate('Chat')}}>
+                        <Text>디엠</Text>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView refreshControl={
                     <RefreshControl
@@ -359,7 +362,7 @@ const MyAccountScreen = ({navigation}) => {
                                         setTok(true)}}>
                                         <Text style={{fontSize: 16 * tmpWidth, marginBottom: 24 * tmpWidth }}>{item}</Text>
                                     </TouchableOpacity>
-                                )
+                                )``
                             }}
                         /> }
                     </View>

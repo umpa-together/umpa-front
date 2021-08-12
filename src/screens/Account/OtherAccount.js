@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Text, StyleSheet, ActivityIndicator, View, TouchableOpacity, Image, ScrollView, Platform, StatusBar } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
+import { Context as ChatContext } from '../../context/ChatContext';
+
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import AccountPlaylist from  '../../components/Account/AccountPlaylist';
@@ -20,6 +22,8 @@ require('date-utils');
 const OtherAccountScreen = ({navigation}) => {
     const {state: userState, follow, unfollow, getMyInfo, storyView, storyCalendar, getOtheruser, } = useContext(UserContext);
     const {state: djState, getSongs } = useContext(DJContext);
+    const {state: chatState, postChat } = useContext(ChatContext);
+
     const [result, setResult] = useState('playlist');
     const [isFollow, setIsFollow] = useState(false);
 
@@ -107,6 +111,9 @@ const OtherAccountScreen = ({navigation}) => {
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={{fontSize: 16 * tmpWidth, fontWeight: 'bold'}}>{user.name}</Text>
+                    <TouchableOpacity style={{position :"absolute",right:50 * tmpWidth}} onPress={async() => {await postChat({participate:user._id}); navigation.navigate('SelectedChat') ; }}>
+                        <Text style={{color: 'rgb(80,80,80)'}}>디엠</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={{position :"absolute",right:20 * tmpWidth}} onPress={() => setReportModal(true)}>
                         <Text style={{color: 'rgb(80,80,80)'}}>신고</Text>
                     </TouchableOpacity>

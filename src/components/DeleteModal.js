@@ -3,13 +3,17 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { tmpWidth } from './FontNormalize';
 import { Context as PlaylistContext } from '../context/PlaylistContext';
+import { Context as DailyContext } from '../context/DailyContext';
+
 import { Context as UserContext } from '../context/UserContext';
 import { Context as BoardContext } from '../context/BoardContext';
 import { Context as CurationContext } from '../context/CurationContext';
 
-const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
+const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId, setComments, playlistId,dailyId }) => {
     const [title, setTitle] = useState('');
-    const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
+    const { state, deletePlaylist, deleteComment, deletereComment} = useContext(PlaylistContext);
+    const { state:daily, deletePlaylist:dailydeletePlaylist, deleteComment:dailydeleteComment, deletereComment:dailydeletereComment, getPlaylists } = useContext(DailyContext);
+
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state: curationState, deleteCuration, getCurationposts } = useContext(CurationContext);
@@ -28,7 +32,12 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
             await deleteComment({id:playlistId, commentid : subjectId})
         } else if (type == 'playlistReComment') {
             deletereComment({commentid:subjectId})
-        } else if (type == 'boardContent') {
+        } else if (type == 'dailyComment') {
+            await dailydeleteComment({id:dailyId, commentid : subjectId})
+        } else if (type == 'dailyReComment') {
+            dailydeletereComment({commentid:subjectId})
+        }
+         else if (type == 'boardContent') {
             await deleteContent({ contentId: boardState.currentContent._id, boardId: boardState.currentContent.boardId })
             getMyInfo()
             navigation.goBack()
@@ -48,7 +57,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
     useEffect(() => {
         if (type == 'boardContent') {
             setTitle('게시글을')
-        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment') {
+        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment'|| type == 'dailyComment' || type == 'dailyReComment') {
             setTitle('댓글을')
         } else if (type == 'playlist'){
             setTitle('플레이리스트를')
