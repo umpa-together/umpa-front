@@ -107,14 +107,6 @@ const editProfileImage = (dispatch) => async ({fd}) => {
     }
 };
 
-const addView = (dispatch) => async ({ id }) => {
-    try {
-        await serverApi.post('/addView', { id });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with addView' });
-    }
-};
-
 const follow = dispatch => {
     return async ({ id }) => {
         try{
@@ -286,7 +278,7 @@ const storyCalendar = (dispatch) => async ({id}) => {
 
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { initUser, initOtherUser, postGuide, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
+    { initUser, initOtherUser, postGuide, getMyInfo, getOtheruser, editProfile, editProfileImage, 
         follow, unfollow, getFollower ,getFollowing,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, getLikePlaylists,
         addSonginPlaylists, deleteSonginPlaylists, postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
