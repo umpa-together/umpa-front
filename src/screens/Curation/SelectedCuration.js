@@ -1,13 +1,11 @@
-import React, { useContext,useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { navigate } from '../../navigationRef';
+import { navigate, goBack, push } from '../../navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { set } from 'react-native-reanimated';
-
 
 import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
@@ -15,8 +13,9 @@ import DeleteModal from '../../components/DeleteModal';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage, SongImageBack } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { useFocusEffect } from '@react-navigation/native';
 
-const SelectedCuration = ({navigation}) => {
+const SelectedCuration = ({ route }) => {
     const { state, postCuration, getmyCuration,addComment, deleteComment,getComment, likecurationpost,unlikecurationpost,editCuration, getCurationposts } = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -36,8 +35,7 @@ const SelectedCuration = ({navigation}) => {
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [showpost, setShowpost] = useState(false);
     const [selectedCuration, setSelectedCuration] = useState('');
-    const curationid= navigation.getParam('id');
-    const postid= navigation.getParam('postid');
+    const { id: curationid, postid } = route.params
     const [reportModal, setReportModal] = useState(false);
     const [reportModal2, setReportModal2] = useState(false);
 
@@ -60,18 +58,18 @@ const SelectedCuration = ({navigation}) => {
     const onKeyboardDidHide=()=>{
         setKeyboardHeight(0);
     }
-    useEffect(()=>{
-        const listener =navigation.addListener('didFocus', ()=>{
+
+    useFocusEffect(
+        useCallback(() => {
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-        })
-        return () => {
-            Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
-            Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-            stoptracksong({ setIsPlayingid })
-            listener.remove();
-        };
-    }, []);
+            return () => {
+                Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
+                Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+                stoptracksong({ setIsPlayingid })
+            }
+        }, [])
+    )
 
     useEffect(()=>{
         if(ref !=null && state.currentCurationpost!=null && state.currentCurationpost!=undefined&&postid!=null){
@@ -100,7 +98,7 @@ const SelectedCuration = ({navigation}) => {
                         <SongImageBack url={currentCuration.object.artwork.url} width={375} height={299} opac={0.4} border={0} />}
                     </View>
                     <View style={styles.back}>
-                        <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={()=>navigation.pop()}>
+                        <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={goBack}>
                             <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                         </TouchableOpacity>
                     </View>
@@ -204,7 +202,7 @@ const SelectedCuration = ({navigation}) => {
                                                     }else{
                                                         await Promise.all([getOtheruser({id:item.postUserId._id}),
                                                         getSongs({id:item.postUserId._id})])
-                                                        navigation.push('OtherAccount', {otherUserId: item.postUserId._id});
+                                                        push('OtherAccount', {otherUserId: item.postUserId._id});
                                                     }
                                                 }}
                                             >
@@ -272,7 +270,7 @@ const SelectedCuration = ({navigation}) => {
                                                     getOtheruser({id:selectedCuration.postUserId._id}),
                                                     getSongs({id: selectedCuration.postUserId._id})
                                                 ]);
-                                                navigation.push('OtherAccount', {otherUserId:selectedCuration.postUserId._id});
+                                                push('OtherAccount', {otherUserId:selectedCuration.postUserId._id});
                                             }
                                         }}
                                     >
@@ -464,7 +462,7 @@ const SelectedCuration = ({navigation}) => {
                                                 }else{
                                                     await Promise.all([getOtheruser({id:commentitem.postUserId._id}),
                                                     getSongs({id: commentitem.postUserId._id})]);
-                                                    navigation.push('OtherAccount', {otherUserId:commentitem.postUserId._id});
+                                                    push('OtherAccount', {otherUserId:commentitem.postUserId._id});
                                                 }
                                             }}
                                         >
@@ -532,7 +530,7 @@ const SelectedCuration = ({navigation}) => {
                                                             }else{
                                                                 await Promise.all([getOtheruser({id:item.postUserId._id}),
                                                                 getSongs({id: item.postUserId._id})]);
-                                                                navigation.push('OtherAccount', {otherUserId:item.postUserId._id});
+                                                                push('OtherAccount', {otherUserId:item.postUserId._id});
                                                             }}}
                                                             style={{width:32 * tmpWidth, height:32 * tmpWidth}}
                                                         >
@@ -606,12 +604,6 @@ const SelectedCuration = ({navigation}) => {
             </ScrollView> }
         </View>
     );
-};
-
-SelectedCuration.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles = StyleSheet.create({

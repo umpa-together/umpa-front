@@ -5,9 +5,9 @@ import { Context as UserContext } from '../../context/UserContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-import Guide from '../Guide';
+import { push } from '../../navigationRef';
 
-const Playlist = ({ playList, navigation }) => {
+const Playlist = ({ playList }) => {
     const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
@@ -46,10 +46,9 @@ const Playlist = ({ playList, navigation }) => {
         }
     }
     return (
-        <View>
-            <Guide type={'playlist'}/>
+        <View style={{ flex: 1 }}>
             {state.otherStory && 
-            <View style={state.otherStory.length == 0 ? styles.noStoryContainer : styles.hasStoryContainer}>
+            <View style={{flex: 1, paddingTop:10*tmpWidth }}>
                 { playList.length !=0 ?
                 <FlatList
                     data ={playList}
@@ -65,7 +64,7 @@ const Playlist = ({ playList, navigation }) => {
                                 <View style={{width: 335 * tmpWidth}}>
                                 <TouchableOpacity style={{width: 335 * tmpWidth }} onPress={async () => {
                                     await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                    navigation.push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id, navigation: navigation})
+                                    push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id })
                                 }}>
                                         <View style={styles.backpic}>
                                             <Image style={styles.backpicimg} source={{uri: item.image}} />
@@ -99,7 +98,7 @@ const Playlist = ({ playList, navigation }) => {
                                                 <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row', marginBottom: 13 * tmpWidth}}>
                                                     {item.hashtag != null && item.hashtag.map(el => {
                                                         return (
-                                                            <View style={styles.hashtagbox}>
+                                                            <View style={styles.hashtagbox} key={el}>
                                                                 <Text style={styles.hashtag}>#{el}</Text>
                                                              </View>
                                                         )
@@ -138,18 +137,6 @@ const Playlist = ({ playList, navigation }) => {
 };
 
 const styles=StyleSheet.create({
-    hasStoryContainer: {
-        backgroundColor:"rgb(254,254,254)",
-        height:525 * tmpHeight,
-        width:375 * tmpWidth,
-        paddingTop:10*tmpWidth,
-    },
-    noStoryContainer: {
-        backgroundColor:"rgb(254,254,254)",
-        height: 625 * tmpHeight, 
-        width:375 * tmpWidth,
-        paddingTop:10*tmpWidth,
-    },
     playlist:{
         width:375 * tmpWidth,
         alignItems: 'center',

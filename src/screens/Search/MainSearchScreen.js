@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,SafeAreaView } from 'react-native';
 import { navigate } from '../../navigationRef';
 
@@ -8,9 +8,45 @@ import MainSongForm from '../../components/Search/MainSongForm';
 import MainDJForm from '../../components/Search/MainDJForm';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 
-const MainSearchScreen = ({navigation}) => {
-    const [category, setCategory] = useState('Song');
+import {Context as PlaylistContext} from '../../context/PlaylistContext';
+import {Context as BoardContext} from '../../context/BoardContext';
+import {Context as NoticeContext} from '../../context/NoticeContext';
+import {Context as SearchContext} from '../../context/SearchContext';
+import {Context as CurationContext} from '../../context/CurationContext';
+import {Context as WeeklyContext} from '../../context/WeeklyContext';
+import {Context as UserContext} from '../../context/UserContext';
 
+const MainSearchScreen = () => {
+    const [category, setCategory] = useState('Song');
+    const { getPlaylists } = useContext(PlaylistContext);
+    const { initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
+    const { getGenreBoard } = useContext(BoardContext);
+    const { getnotice, setnoticetoken } = useContext(NoticeContext);
+    const { currentHashtag } = useContext(SearchContext);
+    const { getCurationposts } = useContext(CurationContext);
+    const { getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly } = useContext(WeeklyContext);
+    const loadingDataFetch = async () => {
+        await postWeekly()
+        await Promise.all([
+        getWeeklyPlaylist(),
+        getWeeklyCuration(),
+        getWeeklyDJ(),
+        setnoticetoken(),
+        getPlaylists(),
+        getCurationposts(),
+        getGenreBoard(),
+        initUser(),
+        getMyInfo(),
+        getMyScrab(),
+        getMyStory(),
+        getOtherStory(),
+        getMyBookmark(),
+        getnotice(),
+        currentHashtag()]);
+    }
+    useEffect(() => {
+        loadingDataFetch()
+    }, [])
     return (
     <SafeAreaView style={{backgroundColor:"#fff"}}>
         <View >
@@ -27,7 +63,7 @@ const MainSearchScreen = ({navigation}) => {
                 </View>
             </View>
             <View style={{alignItems: 'center',width: 375 * tmpWidth, height: 64 * tmpWidth, }}>
-                <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: category})}>
+                <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: category })}>
                     <View style={{flexDirection: 'row', alignItems:'center',}}>
                         <FontAwesome style={{fontSize: 18 * tmpWidth, color:'#c6c6c6',marginTop:14 * tmpWidth,marginLeft:12 * tmpWidth, marginRight:12 * tmpWidth}} name="search"/>
                         {category == 'Song' ? <Text style={{color:'#c6c6c6', fontSize: 16 * tmpWidth, marginTop:14 * tmpWidth,}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
@@ -36,18 +72,12 @@ const MainSearchScreen = ({navigation}) => {
                 </TouchableOpacity>
             </View>
             <View style={{height:590 * tmpHeight}}>
-            {category == 'Song' ? <MainSongForm navigation={navigation}/> : <MainDJForm navigation={navigation}/> }
+            {category == 'Song' ? <MainSongForm /> : <MainDJForm /> }
             </View>
         </View>
     </SafeAreaView>
     )
 }
-
-MainSearchScreen.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
-};
 
 const styles=StyleSheet.create({
     searchopt:{

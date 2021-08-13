@@ -133,8 +133,6 @@ const TabScreen = () => {
         })}>
             <Tab.Screen name="HomeTab" component={MainSearchScreen}/>
             <Tab.Screen name="FeedTab" component={MainPage}/>
-            <Tab.Screen name="BoardTab" component={FreeBoardPage} />
-            {/*
             <Tab.Screen 
                 name="BoardTab" 
                 component={MyModalBackgroundScreen}
@@ -145,7 +143,6 @@ const TabScreen = () => {
                     }
                 })}
             />
-            */}
             <Tab.Screen name="NoticeTab" component={NoticeScreen}/>
             <Tab.Screen name="AccountTab" component={AccountScreen}/>
         </Tab.Navigator>

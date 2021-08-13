@@ -1,25 +1,26 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useCallback, useState, useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, TextInput, FlatList, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
-import { navigate } from '../../navigationRef';
+import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
+import { useFocusEffect } from '@react-navigation/native';
 
-const SearchBoardPage = ({ navigation }) => {
+const SearchBoardPage = () => {
     const [text, setText] = useState('');
     const { state, getBoard, initBoard, initCurrentBoard, getCurrentBoard, getSelectedBoard, } = useContext(BoardContext);
     const [search, setSearch] = useState(false);
 
     useEffect(() => {
         initBoard();
-        const listener =navigation.addListener('didFocus', ()=>{
-            initCurrentBoard();
-        });
-        return () => {
-            listener.remove();
-        };
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            initCurrentBoard();
+        }, [])
+    )
 
     useEffect(() => {
         setSearch(false);
@@ -44,7 +45,7 @@ const SearchBoardPage = ({ navigation }) => {
                         style={styles.textInput}
                     />
                 </View>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={goBack}>
                     <Text style={styles.cancelText}>취소</Text>
                 </TouchableOpacity>
             </View>
@@ -79,12 +80,6 @@ const SearchBoardPage = ({ navigation }) => {
             </TouchableWithoutFeedback>
         </View>
     );
-};
-
-SearchBoardPage.navigationOptions = ({navigation})=>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles=StyleSheet.create({

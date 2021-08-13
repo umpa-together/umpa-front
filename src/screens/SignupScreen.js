@@ -11,19 +11,20 @@ import TosForm from '../components/Setting/TosForm';
 import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
 import { SongImage } from '../components/SongImage'
 import { addtracksong, stoptracksong } from '../components/TrackPlayer'
+import Header from '../components/Header';
 
-const SignupPage = ({ navigation }) => {
+const SignupPage = ({ route }) => {
     const { state, checkName, signup, signin } = useContext(AuthContext);
     const { setSongs } = useContext(DJContext);
-    const [email, setEmail] = useState(navigation.getParam('email'));
+    const [email, setEmail] = useState(route.params.email);
     const [emailerr, setEmailerr] = useState(false);
     const [key, setKey]= useState(false);
-    const [password, setPassword] = useState(navigation.getParam('password'));
+    const [password, setPassword] = useState(route.params.password);
     const [passworderr, setPassworderr] = useState(false);
     const [idc, setIdc] = useState('');
-    const isSNS = navigation.getParam('isSNS');
+    const { isSNS } = route.params
 
-    const [passwordcheck,    setPasswordcheck] = useState(navigation.getParam('password'));
+    const [passwordcheck,    setPasswordcheck] = useState(route.params.password);
     const [passwordcheckerr, setPasswordcheckerr] = useState(false);
 
     const [name, setName] = useState('');
@@ -181,6 +182,7 @@ const SignupPage = ({ navigation }) => {
     }
     return (
         <View style={{flex: 1, backgroundColor:'rgb(255,255,255)'}}>
+            <Header title="회원가입" />
             <ScrollView>
                 {!isSNS ? 
                 <View>
@@ -552,33 +554,6 @@ const SignupPage = ({ navigation }) => {
         </Modal>
     </View>
     );
-};
-
-SignupPage.navigationOptions = ({navigation}) =>{
-    return {
-        title: '회원가입',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth
-        },
-        headerStyle: {
-            backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth ,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
-                    <SvgUri width={40 * tmpWidth} height={40* tmpWidth} source={require('../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles = StyleSheet.create({

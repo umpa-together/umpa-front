@@ -5,7 +5,7 @@ import {Context as UserContext} from '../../context/UserContext';
 import {Context as CurationContext} from '../../context/CurationContext';
 import {Context as DJContext} from '../../context/DJContext';
 
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
@@ -16,7 +16,7 @@ import HarmfulModal from '../HarmfulModal';
 import { SongImage } from '../SongImage'
 import { addtracksong, stoptracksong } from '../TrackPlayer'
 
-const Feed = ({navigation}) => {
+const Feed = () => {
     const { state } = useContext(PlaylistContext);
     const { state: userState, getOtherStory, storyView, getOtheruser } = useContext(UserContext);
     const { state: curation } = useContext(CurationContext);
@@ -32,12 +32,12 @@ const Feed = ({navigation}) => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
     },[isPlayingid])
-    const onClose = async () => {
+    const onClose = () => {
         if(storyModal)  {
             getOtherStory()
             setStoryModal(false);
             setIsPlayingid('0');
-            await TrackPlayer.reset()
+            TrackPlayer.reset()
         }
     }
 
@@ -49,13 +49,6 @@ const Feed = ({navigation}) => {
         storyView({id: item.id});
         if(item.song['song'].attributes.contentRating != 'explicit')    addtracksong({data: item.song["song"], setIsPlayingid, setHarmfulModal});
     }
-
-    useEffect(() => {
-        const listener = navigation.addListener('didFocus', async () => {
-            await TrackPlayer.reset()
-        });
-        return () => listener.remove()
-    }, []);
 
     return (
         <SafeAreaView style={{backgroundColor:"rgb(254,254,254)", flex: 1}}>
@@ -120,8 +113,8 @@ const Feed = ({navigation}) => {
                         }}
                     />
                 </View> : null }
-                <Playlist playList={state.playlists} navigation={navigation}/>
-            </View> : <View style={{flex:1}}><Curating curationPosts={curation.maincurationposts} navigation={navigation}/></View> }
+                <Playlist playList={state.playlists} />
+            </View> : <View style={{flex:1}}><Curating curationPosts={curation.maincurationposts} /></View> }
             {selectedStory != undefined ?
             <Modal
                 animationIn='fadeInLeft'
@@ -137,8 +130,8 @@ const Feed = ({navigation}) => {
                             setStoryModal(false);
                             await Promise.all([getOtheruser({id: selectedStory.id}),
                             getSongs({id:selectedStory.id}), 
-                            TrackPlayer.reset()])
-                            navigation.push('OtherAccount',{otherUserId:selectedStory.id})
+                            ])
+                            push('OtherAccount',{otherUserId:selectedStory.id})
                         }}>
                             { selectedStory.profileImage == undefined ?
                             <View style={styles.profile}>
@@ -189,13 +182,6 @@ const Feed = ({navigation}) => {
         </SafeAreaView>
     );
 };
-
-Feed.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
-};
-
 
 const styles = StyleSheet.create({
     headertext:{

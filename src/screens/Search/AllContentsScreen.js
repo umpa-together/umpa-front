@@ -4,13 +4,13 @@ import { tmpWidth } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import AllPlaylistForm from '../../components/Search/AllPlaylistForm';
 import AllCurationForm from '../../components/Search/AllCurationForm';
-
-const AllContentsScreen = ({navigation}) => {
-    const type = navigation.getParam('type')
+import { goBack } from '../../navigationRef';
+const AllContentsScreen = ({ route }) => {
+    const { type } = route.params
     return (
         <View style={styles.container}> 
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={goBack}>
                     <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <View style={{paddingTop: 10 * tmpWidth}}>
@@ -19,17 +19,11 @@ const AllContentsScreen = ({navigation}) => {
                 <View style={{width: 40 * tmpWidth, height: 40 * tmpWidth, marginRight: 5 * tmpWidth}}/>
             </View>
             <View style={{backgroundColor: 'rgb(255,255,255)', flex: 1 }}>
-                {type == '플레이리스트' ? <AllPlaylistForm navigation={navigation}/> : <AllCurationForm navigation={navigation}/>}
+                {type == '플레이리스트' ? <AllPlaylistForm /> : <AllCurationForm />}
             </View>
         </View>
     )
 }
-
-AllContentsScreen.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
-};
 
 const styles=StyleSheet.create({
     container: {

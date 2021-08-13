@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { navigate } from '../../navigationRef';
+import { navigate, goBack, push } from '../../navigationRef';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import { Context as UserContext } from '../../context/UserContext';
@@ -12,9 +12,8 @@ import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage, SongImageBack } from '../../components/SongImage'
 
-const SelectedSongScreen = ({navigation}) => {
-    const song = navigation.getParam('song');
-    const category = navigation.getParam('category');
+const SelectedSongScreen = ({ route }) => {
+    const { song, category } = route.params
     const { state } = useContext(SearchPlaylistContext);
     const { state: searchState } = useContext(SearchContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
@@ -33,7 +32,7 @@ const SelectedSongScreen = ({navigation}) => {
                     </View>
                     <View style={styles.header}>
                         <View style={{ height:40 * tmpWidth, width: 40 * tmpWidth}}>
-                            <TouchableOpacity style={styles.backicon} onPress={()=>navigation.pop()}>
+                            <TouchableOpacity style={styles.backicon} onPress={goBack}>
                                 <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                             </TouchableOpacity>
                         </View>
@@ -58,7 +57,7 @@ const SelectedSongScreen = ({navigation}) => {
                                     <TouchableOpacity
                                     onPress={async () => {
                                         await getCuration({isSong : true,object:song,id:song.id})
-                                        navigation.push('SelectedCuration', {id: song.id})
+                                        push('SelectedCuration', {id: song.id})
                                     }}
                                     style={styles.curationbox}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>곡 큐레이션</Text>
@@ -68,7 +67,7 @@ const SelectedSongScreen = ({navigation}) => {
                                     <TouchableOpacity
                                     onPress={async () => {
                                         await getCuration({isSong : false,object:{albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating},id:song.attributes.url.split('?')[0].split('/')[6]})
-                                        navigation.push('SelectedCuration', {id: song.attributes.url.split('?')[0].split('/')[6], object: {albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating },})
+                                        push('SelectedCuration', {id: song.attributes.url.split('?')[0].split('/')[6], object: {albumName :song.attributes.albumName, artistName:song.attributes.artistName, artwork:song.attributes.artwork, contentRating: song.attributes.contentRating },})
                                     }}
                                     style={styles.albumbox}>
                                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(25,25,25)'}}>앨범 큐레이션</Text>
@@ -97,7 +96,7 @@ const SelectedSongScreen = ({navigation}) => {
                                         <View style={{width:161 * tmpWidth,marginRight:14 * tmpWidth, marginBottom:23 * tmpWidth}}>
                                             <TouchableOpacity onPress={async () => {
                                                 await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                                navigation.push('SelectedPlaylist', {id: item._id, navigation: navigation, postUser: item.postUserId._id})
+                                                push('SelectedPlaylist', {id: item._id, postUser: item.postUserId._id})
                                             }}>
                                                 <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                                     <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth, backgroundColor: 'rgb(175,179,211)'}} source={{url :item.image}}/>
@@ -127,7 +126,7 @@ const SelectedSongScreen = ({navigation}) => {
             <SafeAreaView style={{backgroundColor:"rgba(250,250,250,1)", height:814 * tmpWidth}}>
                <View style={styles.headerdj}>
                     <View style={{height:40 * tmpWidth, width:40 * tmpWidth}}>
-                        <TouchableOpacity style={{ zIndex:2, marginLeft: 20 * tmpWidth}} onPress={()=>navigation.pop()}>
+                        <TouchableOpacity style={{ zIndex:2, marginLeft: 20 * tmpWidth}} onPress={goBack}>
                             <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
                         </TouchableOpacity>
                     </View>
@@ -161,7 +160,7 @@ const SelectedSongScreen = ({navigation}) => {
                                     }else{
                                         await Promise.all([getOtheruser({id:item._id}),
                                         getSongs({id:item._id})]);
-                                        navigation.push('OtherAccount',{otherUserId:item._id});
+                                        push('OtherAccount',{otherUserId:item._id});
                                     }}}>
                                     <View style={{alignItems:'center'}}>
                                         {item.profileImage == undefined ?
@@ -193,12 +192,6 @@ const SelectedSongScreen = ({navigation}) => {
         </View> }
     </View>
     )
-};
-
-SelectedSongScreen.navigationOptions = () =>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles=StyleSheet.create({

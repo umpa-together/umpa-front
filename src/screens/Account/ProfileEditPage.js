@@ -6,8 +6,9 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
-
-const ProfileEditPage = ({navigation}) => {
+import Header from '../../components/Header';
+import { goBack } from '../../navigationRef';
+const ProfileEditPage = () => {
     const { state: authState, checkName } = useContext(AuthContext);
     const { state, editProfileImage, editProfile } = useContext(UserContext);
     const [image, setImage] = useState(state.myInfo.profileImage);
@@ -39,7 +40,7 @@ const ProfileEditPage = ({navigation}) => {
         })
         await editProfile({name: username, introduction: introduction});
         if(name != '')  await editProfileImage({fd})
-        navigation.goBack();
+        goBack();
     }
     const handleUpload = () => {
         launchImageLibrary({maxWidth: 500, maxHeight: 500}, (response) => {
@@ -57,6 +58,7 @@ const ProfileEditPage = ({navigation}) => {
 
     return (
         <View style={{backgroundColor: 'rgb(254,254,254)', flex: 1, }}>
+            <Header title="프로필 편집"/>
             <View style={styles.header}>
                 <Text style={{fontSize: 16 * tmpWidth}}>프로필 사진</Text>
                 <TouchableOpacity onPress={() => handleUpload()}>
@@ -125,34 +127,6 @@ const ProfileEditPage = ({navigation}) => {
         </View>
     );
 }
-
-ProfileEditPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '프로필 편집',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(254,254,254)',
-            height: 92  * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        },
-    };
-};
-
 
 const styles=StyleSheet.create({
     profileImage: {

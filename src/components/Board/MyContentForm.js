@@ -1,19 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
+import { useFocusEffect } from '@react-navigation/native';
 
-const MyContentForm = ({ navigation, Contents }) => {
+const MyContentForm = ({ Contents }) => {
     const { getCurrentContent, initCurrentContent } = useContext(BoardContext);
-    useEffect(() =>{
-        const listener =navigation.addListener('didFocus', ()=>{
-            initCurrentContent();
-        });
-        return () => {
-            listener.remove();
-        };
-    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            initCurrentContent()
+        }, [])
+    )
+
     return (
         <View style={{marginTop: 12 * tmpWidth}}>
              <FlatList 
@@ -27,7 +27,9 @@ const MyContentForm = ({ navigation, Contents }) => {
                                 navigate('SelectedContent', { boardName: item.boardId.name })
                             }}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <Text style={styles.titleText}>{item.title}</Text>
+                                    <View style={{width: 280 * tmpWidth}}>
+                                        <Text style={styles.titleText}>{item.title}</Text>
+                                    </View>
                                     <Text style={{color: 'rgb(148,153,163)'}}>{item.time.substr(5,6)}</Text>
                                 </View>
                                 <Text style={styles.contentText}>{item.content}</Text>

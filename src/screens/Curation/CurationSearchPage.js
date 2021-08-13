@@ -5,8 +5,8 @@ import { Context as CurationContext } from '../../context/CurationContext'
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { SongImage } from '../../components/SongImage'
-
-const CurationSearchPage = ({navigation}) => {
+import { push, goBack } from '../../navigationRef';
+const CurationSearchPage = () => {
     const [text, setState] = useState('');
     const [isSong, setIsSong]= useState(true);
     const [key, setKey]= useState(true);
@@ -43,7 +43,7 @@ const CurationSearchPage = ({navigation}) => {
             <View style={styles.emptyheader}>
             </View>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.back} onPress={()=>{navigation.pop()}}>
+                <TouchableOpacity style={styles.back} onPress={goBack}>
                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <Text style={styles.headertext}>큐레이션 검색</Text>
@@ -123,7 +123,7 @@ const CurationSearchPage = ({navigation}) => {
                                   return (
                                         <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth}} onPress={async ()=>{
                                             await getCuration({isSong : true,object:item,id:item.id})
-                                            navigation.push('SelectedCuration', {id: item.id, object: item})
+                                            push('SelectedCuration', {id: item.id, object: item})
                                         }}>
                                           <View style={{flexDirection:'row'}}>
                                                 <SongImage url={item.attributes.artwork.url} size={56} border={56} />
@@ -160,7 +160,7 @@ const CurationSearchPage = ({navigation}) => {
                                return (
                                     <TouchableOpacity style ={{height:76 * tmpWidth , marginLeft:25 * tmpWidth,}} onPress={async ()=>{
                                         await getCuration({isSong : false,object:{albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating},id:item.id})
-                                        navigation.push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
+                                        push('SelectedCuration', {id: item.id, object: {albumName :item.attributes.name, artistName:item.attributes.artistName, artwork:item.attributes.artwork, contentRating: item.attributes.contentRating}})
                                     }}>
                                        <View style={{flexDirection:'row'}}>
                                             <SongImage url={item.attributes.artwork.url} size={56} border={4}/>
@@ -190,12 +190,6 @@ const CurationSearchPage = ({navigation}) => {
         </View>
      </SafeAreaView>
     );
-};
-
-CurationSearchPage.navigationOptions = ({navigation}) =>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles=StyleSheet.create({

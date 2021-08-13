@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { tmpWidth } from './FontNormalize';
 import { Context as PlaylistContext } from '../context/PlaylistContext';
+import { goBack } from '../navigationRef';
 
-const DeletedModal = ({ navigation, deletedModal, setDeletedModal, type }) => {
+const DeletedModal = ({ deletedModal, setDeletedModal, type }) => {
     const { getPlaylists } = useContext(PlaylistContext);
     const [title, setTitle] = useState('');
     useEffect(() => {
@@ -26,7 +27,7 @@ const DeletedModal = ({ navigation, deletedModal, setDeletedModal, type }) => {
                 <Text style={styles.deleteText}>존재하지 않는 {title}입니다.</Text>
                 <TouchableOpacity onPress={async () => {
                     setDeletedModal(false)
-                    navigation.goBack()
+                    goBack()
                     if(type == 'playlist')  await getPlaylists()
                     }}>
                     <Text style={{marginTop: 16 * tmpWidth, fontSize: 16 * tmpWidth}}>확인</Text>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
@@ -7,7 +7,7 @@ import { Context as PlaylistContext } from '../../context/PlaylistContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import ReportModal from '../../components/ReportModal';
 import DeleteModal from '../../components/DeleteModal';
@@ -15,15 +15,16 @@ import HarmfulModal from '../../components/HarmfulModal';
 import DeletedModal from '../../components/DeletedModal';
 import { SongImage } from '../../components/SongImage'
 import { stoptracksong } from '../../components/TrackPlayer'
+import { useFocusEffect } from '@react-navigation/native';
 
-const SelectedPlaylist = ({navigation}) => {
+const SelectedPlaylist = ({ route }) => {
     const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
         unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
     const { state: userState, getOtheruser, addSonginPlaylists } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
 
     const { state: searchState, SearchHashtag } = useContext(SearchPlaylistContext);
-    const playlistid= navigation.getParam('id');
+    const { playlistid } = route.params;
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
     const [currentcommentid, setCurrentcommentid] = useState('');
@@ -106,20 +107,23 @@ const SelectedPlaylist = ({navigation}) => {
     const onKeyboardDidHide=()=>{
         setKeyboardHeight(0);
     }
+    const addEventListener = () => {
+        Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
+        Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
+        setCurrentSongs(state.current_songs)
+    }
 
-    useEffect(()=>{
-        const listener =navigation.addListener('didFocus', ()=>{
-            Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
-            Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-            setCurrentSongs(state.current_songs)
-        });
-        return () => {
-            Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
-            Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-            stoptracksong({ setIsPlayingid });
-            listener.remove();
-        };
-    }, []);
+    const removeEventListener = () => {
+        Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
+        Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            addEventListener()
+            return removeEventListener()
+        }, [])
+    )
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist._id == playlistid)    setComments(state.current_comments)
     }, [playlistid, state.current_comments])
@@ -143,7 +147,7 @@ const SelectedPlaylist = ({navigation}) => {
                 </View>
                 <Image style={styles.thumbnail} source={{uri: currentPlaylist.image}}/>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => {navigation.goBack(); stoptracksong({ setIsPlayingid });}}>
+                    <TouchableOpacity onPress={goBack}>
                         <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -169,7 +173,7 @@ const SelectedPlaylist = ({navigation}) => {
                             <Text style={{color: 'white'}}>신고</Text>
                         </TouchableOpacity>
                     </View>
-                    { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'playlist'} /> : null }
+                    { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'playlist'} /> : null }
                     { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'playlist'} subjectId={currentPlaylist._id} /> : null }
                     <Modal
                         animationIn="fadeIn"
@@ -191,7 +195,7 @@ const SelectedPlaylist = ({navigation}) => {
                             }else{
                                 await Promise.all([getOtheruser({id:currentPlaylist.postUserId._id}),
                                 getSongs({id:currentPlaylist.postUserId._id})])
-                                navigation.push('OtherAccount', {otherUserId:currentPlaylist.postUserId._id}); }}}>
+                                push('OtherAccount', {otherUserId:currentPlaylist.postUserId._id}); }}}>
                             {currentPlaylist.postUserId.profileImage == undefined ? 
                             <View style={styles.profile}>
                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
@@ -225,7 +229,7 @@ const SelectedPlaylist = ({navigation}) => {
                             <View style={{flexDirection: 'row'}}>
                                 {currentPlaylist.hashtag.map(item => {
                                     return (
-                                        <TouchableOpacity style={styles.hashtagView} key={item._id} onPress={async() => {
+                                        <TouchableOpacity style={styles.hashtagView} key={item} onPress={async() => {
                                             setHashtag(item)
                                             SearchHashtag({ object: item })
                                         }}>
@@ -309,7 +313,7 @@ const SelectedPlaylist = ({navigation}) => {
                                         }else{
                                             await Promise.all([getOtheruser({id:item.postUserId._id}),
                                             getSongs({id:item.postUserId._id})]);
-                                            navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                            push('OtherAccount', {otherUserId:item.postUserId._id})
                                         }
                                     }}>
                                         {item.postUserId.profileImage == undefined ? 
@@ -355,7 +359,7 @@ const SelectedPlaylist = ({navigation}) => {
                                             }}>
                                                 <Text style={styles.deleteText}>지우기</Text>
                                             </TouchableOpacity> : null }
-                                            { commentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={commentDeleteModal} setDeleteModal={setCommentDeleteModal} type={'playlistComment'} subjectId={deleteId} setComments={setComments} playlistId={playlistid}/> : null }
+                                            { commentDeleteModal ? <DeleteModal deleteModal={commentDeleteModal} setDeleteModal={setCommentDeleteModal} type={'playlistComment'} subjectId={deleteId} setComments={setComments} playlistId={playlistid}/> : null }
                                         </View>
                                     </View>
                                     {showModal == item._id ?
@@ -373,7 +377,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                     }else{
                                                         await Promise.all([getOtheruser({id:item.postUserId._id}),
                                                         getSongs({id:item.postUserId._id})]);
-                                                        navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                                        push('OtherAccount', {otherUserId:item.postUserId._id})
                                                     }
                                                     setShowModal(false)
                                                 }}>
@@ -444,7 +448,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                                 }else{
                                                                     await Promise.all([getOtheruser({id:item.postUserId._id}),
                                                                     getSongs({id:item.postUserId._id})]);
-                                                                    navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                                                    push('OtherAccount', {otherUserId:item.postUserId._id})
                                                                 }
                                                                 setShowModal(false)
                                                             }}>
@@ -483,7 +487,7 @@ const SelectedPlaylist = ({navigation}) => {
                                                                     }}>
                                                                         <Text style={styles.deleteText}>지우기</Text>
                                                                     </TouchableOpacity> : null }
-                                                                    { reCommentDeleteModal ? <DeleteModal navigation={navigation} deleteModal={reCommentDeleteModal} setDeleteModal={setReCommentDeleteModal} type={'playlistReComment'} subjectId={deleteId}/> : null }
+                                                                    { reCommentDeleteModal ? <DeleteModal deleteModal={reCommentDeleteModal} setDeleteModal={setReCommentDeleteModal} type={'playlistReComment'} subjectId={deleteId}/> : null }
                                                                 </View>
                                                             </View>
                                                         </View>
@@ -536,15 +540,9 @@ const SelectedPlaylist = ({navigation}) => {
                     </View>
                 </View>
             </View>}
-            { deletedModal ? <DeletedModal navigation={navigation} deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"playlist"}/> : null}
+            { deletedModal ? <DeletedModal deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"playlist"}/> : null}
         </View>
     );
-};
-
-SelectedPlaylist.navigationOptions = ()=>{
-    return {
-        headerShown: false,
-    };
 };
 
 const styles = StyleSheet.create({

@@ -4,12 +4,12 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import ReportModal from '../ReportModal';
 import DeleteModal from '../DeleteModal';
 
-const RecommentDetail = ({ navigation, currentComment }) => {
+const RecommentDetail = ({ currentComment }) => {
     const { state, likeRecomment, unlikeRecomment } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -36,7 +36,7 @@ const RecommentDetail = ({ navigation, currentComment }) => {
                                     }else{
                                         await Promise.all([getOtheruser({id:item.postUserId._id}),
                                         getSongs({id:item.postUserId._id})]);
-                                        navigation.push('OtherAccount', {otherUserId:item.postUserId._id})
+                                        push('OtherAccount', {otherUserId:item.postUserId._id})
                                     }
                                 }}>
                                 { item.postUserId.profileImage == undefined ?

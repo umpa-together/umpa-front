@@ -10,9 +10,9 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import SvgUri from 'react-native-svg-uri';
 import jwtDecode from 'jwt-decode';
 import * as config from '../config'
+import Header from '../components/Header';
 
 const Signupopt = () => {
-    
     const { getGoogleInfo, getKakaoInfo, getNaverInfo,getAppleInfo } = useContext(AuthContext);
     const iosKeys = {
         kConsumerKey: config.kConsumerKey,
@@ -77,6 +77,7 @@ const Signupopt = () => {
     return (
         <View style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 106 * tmpWidth}}>
+                <Header title="회원가입"/>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
                         <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
@@ -114,33 +115,6 @@ const Signupopt = () => {
             </View>
         </View>
     );
-};
-
-Signupopt.navigationOptions = ({navigation}) =>{
-    return {
-        title: '회원가입',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth
-        },
-        headerStyle: {
-            backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth ,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles = StyleSheet.create({
