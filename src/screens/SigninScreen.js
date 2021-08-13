@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet,ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
+import { View, StyleSheet, ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigate } from '../navigationRef';
@@ -79,7 +78,6 @@ const SigninScreen = () => {
     }
     return (
         <SafeAreaView style={{flex: 1, backgroundColor:'rgb(254,254,254)'}}>
-            <NavigationEvents onWillBlur={clearErrorMessage} />
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15 * tmpWidth}}>
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -151,11 +149,6 @@ const SigninScreen = () => {
     );
 };
 
-SigninScreen.navigationOptions = () =>{
-    return {
-        headerShown: false
-    };
-};
 const styles = StyleSheet.create({
     logotext:{
         fontSize:52 * tmpWidth,

@@ -5,6 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 import { navigate } from '../../navigationRef';
 import {Context as BoardContext} from '../../context/BoardContext'
 import { tmpWidth } from '../../components/FontNormalize';
+import Header from '../../components/Header';
 
 const CreateBoardPage = () => {
     const { createBoard, getGenreBoard } = useContext(BoardContext);
@@ -40,99 +41,72 @@ const CreateBoardPage = () => {
 
     return (
         <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={styles.title}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.titleText}>제목</Text>
-                            <View style={{flex: 1}}>
-                                <View style={titleValidity ? styles.titleInput : styles.validityInput}>
-                                    <TextInput
-                                        ref={titleRef}
-                                        placeholder="게시판 제목을 적어주세요."
-                                        placeholderTextColor='rgb(196,196,196)'
-                                        onChangeText={text => titleRef.current.value = text}
-                                        autoCapitalize='none'
-                                        autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth}}
-                                    />
-                                </View>
-                                {titleValidity ? null :
-                                <View style={styles.warningTitleContainer}>
-                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                                    <Text style={styles.warningText}>제목을 입력해주세요.</Text>
-                                </View>}
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.comment}>
-                        <Text style={styles.titleText}>소개</Text>
-                        <View style={contentValidity ? styles.commentBox : styles.validityComment}>
-                            <TextInput
-                                ref={introductionRef}
-                                onChangeText={(text) => introductionRef.current.value = text}
-                                placeholder="게시판 소개글을 적어주세요."
-                                placeholderTextColor='rgb(196,196,196)'
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                                multiline={true}
-                                style={styles.textInput}
-                            />
-                        </View>
-                        {contentValidity ? null :
-                        <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                            <Text style={styles.warningText}>코멘트를 작성해주세요.</Text>
-                        </View>}
-                    </View>
-                </TouchableWithoutFeedback>
-                <View style={styles.genre}>
+            <Header title="게시판 만들기" />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.title}>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.titleText}>게시판 장르</Text>
-                        <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(79,79,79)', marginLeft: 12 * tmpWidth}}>(최대 3개)</Text>
-                    </View>
-                    <View style={styles.genreContainer}>
-                        {genreList.map((item) => {
-                            return (
-                                <TouchableOpacity style={genre.includes(item) ? styles.selectedGenreView : styles.genreView} key={item} onPress={() => genreClick(item)}>
-                                    <Text style={genre.includes(item) ? styles.selectedGenreBox : styles.genreBox}>{item}</Text>
-                                </TouchableOpacity>
-                            )
-                        })}
+                        <Text style={styles.titleText}>제목</Text>
+                        <View style={{flex: 1}}>
+                            <View style={titleValidity ? styles.titleInput : styles.validityInput}>
+                                <TextInput
+                                    ref={titleRef}
+                                    placeholder="게시판 제목을 적어주세요."
+                                    placeholderTextColor='rgb(196,196,196)'
+                                    onChangeText={text => titleRef.current.value = text}
+                                    autoCapitalize='none'
+                                    autoCorrect={false}
+                                    style={{fontSize: 14 * tmpWidth}}
+                                />
+                            </View>
+                            {titleValidity ? null :
+                            <View style={styles.warningTitleContainer}>
+                                <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                <Text style={styles.warningText}>제목을 입력해주세요.</Text>
+                            </View>}
+                        </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.uploadBox} onPress={() => create()}>
-                    <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>만들기</Text>
-                </TouchableOpacity> 
+                <View style={styles.comment}>
+                    <Text style={styles.titleText}>소개</Text>
+                    <View style={contentValidity ? styles.commentBox : styles.validityComment}>
+                        <TextInput
+                            ref={introductionRef}
+                            onChangeText={(text) => introductionRef.current.value = text}
+                            placeholder="게시판 소개글을 적어주세요."
+                            placeholderTextColor='rgb(196,196,196)'
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            multiline={true}
+                            style={styles.textInput}
+                        />
+                    </View>
+                    {contentValidity ? null :
+                    <View style={styles.warningContainer}>
+                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                        <Text style={styles.warningText}>코멘트를 작성해주세요.</Text>
+                    </View>}
+                </View>
+            </TouchableWithoutFeedback>
+            <View style={styles.genre}>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.titleText}>게시판 장르</Text>
+                    <Text style={{fontSize: 14 * tmpWidth, color: 'rgb(79,79,79)', marginLeft: 12 * tmpWidth}}>(최대 3개)</Text>
+                </View>
+                <View style={styles.genreContainer}>
+                    {genreList.map((item) => {
+                        return (
+                            <TouchableOpacity style={genre.includes(item) ? styles.selectedGenreView : styles.genreView} key={item} onPress={() => genreClick(item)}>
+                                <Text style={genre.includes(item) ? styles.selectedGenreBox : styles.genreBox}>{item}</Text>
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+            </View>
+            <TouchableOpacity style={styles.uploadBox} onPress={() => create()}>
+                <Text style={{fontSize: 18 * tmpWidth, color: '#fff'}}>만들기</Text>
+            </TouchableOpacity> 
         </View>
     )
-};
-
-CreateBoardPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '게시판 만들기',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-            fontWeight: "400"
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0 ,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({

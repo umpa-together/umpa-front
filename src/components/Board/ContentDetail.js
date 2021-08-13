@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Image, FlatList, ScrollView, RefreshControl, Keyboard, KeyboardEvent } from 'react-native';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -8,15 +8,17 @@ import { Context as UserContext } from '../../context/UserContext';
 import { Context as DJContext } from '../../context/DJContext';
 import CommentDetail from './CommentDetail';
 import ScrabForm from './ScrabForm';
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../FontNormalize';
 import ReportModal from '../ReportModal';
 import DeleteModal from '../DeleteModal';
 import DeletedModal from '../DeletedModal';
 import { SongImage } from '../SongImage'
 import { addtracksong, stoptracksong } from '../TrackPlayer'
+import { NavHeader } from '../../components/Header';
+import { useFocusEffect } from '@react-navigation/native';
 
-const ContentDetail = ({navigation}) => {
+const ContentDetail = ({ title }) => {
     const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -87,18 +89,17 @@ const ContentDetail = ({navigation}) => {
         }
     },[state.currentContent]);
 
-    useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+    useFocusEffect(
+        useCallback(()=> {
             Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
             Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
-        });
-        return () => {
-            Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
-            Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-            listener.remove();
-        };
-    }, []);
-    
+            return () => {
+                Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
+                Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+            }
+        }, [])
+    )
+
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
@@ -117,6 +118,7 @@ const ContentDetail = ({navigation}) => {
             {state.currentContent == null || state.currentComment == null ? <View style={{height: '100%', width: '100%', justifyContent: 'center'}}><ActivityIndicator /></View> :
             <View>{state.currentContent.length != 0 ? 
                 <View style={styles.container}>
+                    <NavHeader title={title} isBack={true} />
                     <ScrollView refreshControl={
                         <RefreshControl refreshing={loading} onRefresh={onRefresh} />}
                     >
@@ -130,7 +132,7 @@ const ContentDetail = ({navigation}) => {
                                             }else{
                                                 await Promise.all([getOtheruser({id:state.currentContent.postUserId._id}),
                                                 getSongs({id:state.currentContent.postUserId._id})]);
-                                                navigation.push('OtherAccount',{otherUserId:state.currentContent.postUserId._id})
+                                                push('OtherAccount',{otherUserId:state.currentContent.postUserId._id})
                                             }
                                         }}>
                                             { state.currentContent.postUserId.profileImage == undefined ?
@@ -159,7 +161,7 @@ const ContentDetail = ({navigation}) => {
                                                     <Text style={{fontSize: 14 * tmpWidth}}>신고</Text>
                                                 </TouchableOpacity>
                                             </View>
-                                            { deleteModal ? <DeleteModal navigation={navigation} deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'boardContent'} /> : null }
+                                            { deleteModal ? <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} type={'boardContent'} /> : null }
                                             { reportModal ? <ReportModal reportModal={reportModal} setReportModal={setReportModal} type={'boardContent'} subjectId={state.currentContent._id} /> : null }
                                         </View>
                                     </View>
@@ -188,6 +190,7 @@ const ContentDetail = ({navigation}) => {
                                             { isPlayingid != state.currentContent.song.id ?
                                             <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicPlay.svg')}/> :
                                             <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicStop.svg')}/> }
+                                            {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
                                         </TouchableOpacity>
                                     </View>}
                                     {state.currentContent != null && state.currentContent.image.length == 0 ? null:
@@ -226,7 +229,7 @@ const ContentDetail = ({navigation}) => {
                                     </View>
                                 </View>
                             </View>
-                            <CommentDetail navigation={navigation} inputRef={inputRef} setRecomment={setRecomment} setCommentId={setCommentId}/>
+                            <CommentDetail inputRef={inputRef} setRecomment={setRecomment} setCommentId={setCommentId}/>
                         </View>
                     </ScrollView>
                     <View style={{marginBottom: keyboardHeight}}>
@@ -267,7 +270,7 @@ const ContentDetail = ({navigation}) => {
             >
                 <ImageViewer imageUrls={image} index={imageIdx} enableSwipeDown={true} onCancel={() => setImageModal(false)}/>
             </Modal>: null}
-            {deletedModal ? <DeletedModal navigation={navigation} deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"board"}/> : null} 
+            {deletedModal ? <DeletedModal deletedModal={deletedModal} setDeletedModal={setDeletedModal} type={"board"}/> : null} 
         </View>
     )
 };

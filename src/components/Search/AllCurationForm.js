@@ -3,8 +3,9 @@ import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity }
 import { tmpWidth } from '../FontNormalize';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { SongImage } from '../SongImage'
+import { push } from '../../navigationRef';
 
-const AllCurationForm = ({navigation}) => {
+const AllCurationForm = () => {
     const { state, getAllCurationPost, nextAllCurationPost, getCuration } = useContext(CurationContext)
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -70,7 +71,7 @@ const AllCurationForm = ({navigation}) => {
                             <View>
                                 <TouchableOpacity style={{width:161 * tmpWidth, height:157 * tmpWidth, borderRadius: 8 * tmpWidth}} onPress={async ()=>{
                                     await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                    navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                    push('SelectedCuration', {id: item.songoralbumid})
                                 }}>
                                     <SongImage url={item.object.attributes.artwork.url} border={8} size={161}/>
                                 </TouchableOpacity>
@@ -80,7 +81,7 @@ const AllCurationForm = ({navigation}) => {
                             <View>
                                 <TouchableOpacity style={{width:161 * tmpWidth, height:157 * tmpWidth, borderRadius: 8 * tmpWidth}} onPress={async ()=>{
                                     await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                    navigation.push('SelectedCuration', {id: item.songoralbumid})
+                                    push('SelectedCuration', {id: item.songoralbumid})
                                 }}>
                                     <SongImage url={item.object.artwork.url} border={8} size={161}/>
                                 </TouchableOpacity>

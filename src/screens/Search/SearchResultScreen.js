@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
 import { Context as SearchContext } from '../../context/SearchContext';
@@ -9,8 +9,9 @@ import { navigate } from '../../navigationRef';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { SongImage } from '../../components/SongImage'
+import { useFocusEffect } from '@react-navigation/native';
 
-const SearchResultScreen = ({navigation, searchOption, text}) => {
+const SearchResultScreen = ({ searchOption, text }) => {
     const { state: searchState, songNext, searchDJ } = useContext(SearchContext);
     const { SearchSongOrArtist, initPlaylist } = useContext(SearchPlaylistContext);
     const { getCuration } = useContext(CurationContext);
@@ -30,14 +31,12 @@ const SearchResultScreen = ({navigation, searchOption, text}) => {
             getData();
         }
     };
-    useEffect(() => {
-        const listener =navigation.addListener('didFocus', ()=>{
+    useFocusEffect(
+        useCallback(() => {
             initPlaylist()
-        });
-        return () => {
-            listener.remove();
-        };
-    }, []);
+        }, [])
+    )
+
     return (
         <View style={{height:650 * tmpHeight}}>
             {searchState.songData.length == 0 && text.length!=0 ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> : 

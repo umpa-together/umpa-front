@@ -54,9 +54,8 @@ const signin = (dispatch) => async ({ email, password }) => {
 
 const signout = (dispatch) =>async()=> {
     try{
-    await AsyncStorage.removeItem('token');
-    dispatch({type:'signout'});
-    navigate('Signin');
+        await AsyncStorage.removeItem('token');
+        dispatch({type:'signout'});
     } catch(err){
     }
 };

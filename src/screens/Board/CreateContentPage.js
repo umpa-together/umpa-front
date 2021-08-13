@@ -7,6 +7,7 @@ import {Context as BoardContext} from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage } from '../../components/SongImage'
+import Header from '../../components/Header';
 
 const CreateContent = () => {
     const { state, createContent, addSong } = useContext(BoardContext);
@@ -53,6 +54,7 @@ const CreateContent = () => {
 
     return (
         <View style={styles.container}>
+            <Header title="글쓰기" />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <Text style={styles.boardText}>{state.boards.name}</Text>
@@ -166,33 +168,7 @@ const CreateContent = () => {
         
     );
 };
-CreateContent.navigationOptions = ({navigation})=>{
-    return {
-        title: '글쓰기',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-            fontWeight: "400"
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
-};
+
 const styles=StyleSheet.create({
     container: {
         backgroundColor: 'rgb(255,255,255)', 
@@ -201,6 +177,7 @@ const styles=StyleSheet.create({
     },
     boardText: {
         fontSize: 14 * tmpWidth,
+        marginTop: 12 * tmpWidth
     },
     title: {
         width: 327 * tmpWidth,

@@ -3,27 +3,23 @@ import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
 import { Context as SearchContext } from '../../context/SearchContext'
-import { navigate } from '../../navigationRef';
+import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
-import Guide from '../../components/Guide';
 import { SongImage } from '../../components/SongImage'
 import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 
-const SearchPage = ({ navigation }) => {
+const SearchPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const [text, setState] = useState('');
     const [songs, setSong] = useState([]);
     const [loading, setLoading] = useState(false);
-    const addedplayList = navigation.getParam('data');
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-    const isEdit = navigation.getParam('isEdit');
-
+    const { isEdit, data: addedplayList} = route.params
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -73,12 +69,6 @@ const SearchPage = ({ navigation }) => {
         if(addedplayList != undefined) {
            setSong(addedplayList);
         }
-        const listener =navigation.addListener('didFocus', ()=>{
-            searchinit();
-        });
-        return () => {
-            listener.remove();
-        };
     }, []);
     
     useEffect(() => {
@@ -91,10 +81,9 @@ const SearchPage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Guide type={'create'}/>
              <View style={{width: '100%'}}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={styles.headerIcon} onPress={goBack}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>플레이리스트 만들기</Text>
@@ -225,8 +214,7 @@ const SearchPage = ({ navigation }) => {
             <View style={styles.selectedBox}>
                 <View style={styles.selectedBoxHeader}>
                     <Text style={{fontSize: 14 * tmpWidth}}>담은 곡들</Text>
-                    <TouchableOpacity onPress={async () => {
-                        await TrackPlayer.reset()
+                    <TouchableOpacity onPress={() => {
                         navigate('Create', { data:songs, isEdit })}}>
                         <Text style={{fontSize: 16 * tmpWidth, color: 'rgb(169,193,255)'}}>완료</Text>
                     </TouchableOpacity>
@@ -270,12 +258,6 @@ const SearchPage = ({ navigation }) => {
             </View>
         </View>
     );
-};
-
-SearchPage.navigationOptions = ()=>{
-    return {
-        headerShown: false    
-    };
 };
 
 const styles = StyleSheet.create({

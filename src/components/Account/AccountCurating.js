@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth, tmpHeight } from '../FontNormalize';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { SongImage } from '../SongImage'
-
-const AccountCurating = ({ curating, myAccount, navigation }) => {
+import { push } from '../../navigationRef';
+const AccountCurating = ({ curating }) => {
     curating.sort(function(a,b){
         if(a.time > b.time)  return -1;
         if(a.time  < b.time) return 1;
@@ -14,50 +14,45 @@ const AccountCurating = ({ curating, myAccount, navigation }) => {
     const { getCuration } = useContext(CurationContext);
 
     return (
-        <View style={myAccount ? styles.myAccount : styles.otherAccount}>
-            <FlatList
-                data={curating}
-                keyExtractor={(song)=>song._id}
-                contentContainerStyle={{paddingTop: 15 * tmpWidth}}
-                renderItem={({item})=> {
-                    return (
-                        
-                        <TouchableOpacity 
-                            style={styles.curationBox}
-                            onPress={async ()=>{
-                                await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                                navigation.push('SelectedCuration', {id: item.songoralbumid})
-                            }}
-                        >
-                            {item.isSong ?
-                            <View style={{flexDirection: 'row'}}>                                
-                                <SongImage url={item.object.attributes.artwork.url} size={79} border={79}/>
-                                <View style={{marginLeft: 14 * tmpWidth}}>
-                                    <View style={styles.infoBox}>
-                                        <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,12)}{item.object.attributes.name.length>=12? '...' : null}</Text>
-                                        <View style={{width:80*tmpWidth}}>
-                                        <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}} >{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
-                                        </View>
+        <View style={{paddingTop: 15 * tmpWidth, paddingLeft: 20 * tmpWidth}}>
+            {curating.map((item) => {
+                return (
+                    <TouchableOpacity 
+                        style={styles.curationBox}
+                        onPress={async ()=>{
+                            await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
+                            push('SelectedCuration', {id: item.songoralbumid})
+                        }}
+                        key={item._id}
+                    >
+                        {item.isSong ?
+                        <View style={{flexDirection: 'row'}}>                                
+                            <SongImage url={item.object.attributes.artwork.url} size={79} border={79}/>
+                            <View style={{marginLeft: 14 * tmpWidth}}>
+                                <View style={styles.infoBox}>
+                                    <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.attributes.name.substr(0,12)}{item.object.attributes.name.length>=12? '...' : null}</Text>
+                                    <View style={{width:80*tmpWidth}}>
+                                    <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}} >{item.object.attributes.artistName.substr(0, 15)}{item.object.attributes.artistName.length>=15? '...' : null }</Text>
                                     </View>
-                                    <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
                                 </View>
-                            </View> : 
-                            <View style={{flexDirection: 'row'}}>
-                                <SongImage url={item.object.artwork.url} size={79} border={79}/>
-                                <View style={{marginLeft: 14 * tmpWidth}}>
-                                    <View style={styles.infoBox}>
-                                        <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,12)}{item.object.albumName.length>=12? '...' : null }</Text>
-                                        <View style={{width:80*tmpWidth}}>
-                                        <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...' : null }</Text>
-                                        </View>
+                                <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
+                            </View>
+                        </View> : 
+                        <View style={{flexDirection: 'row'}}>
+                            <SongImage url={item.object.artwork.url} size={79} border={79}/>
+                            <View style={{marginLeft: 14 * tmpWidth}}>
+                                <View style={styles.infoBox}>
+                                    <Text numberOfLines={1} style={{fontSize: 14 * tmpWidth, textAlign: 'center'}}>{item.object.albumName.substr(0,12)}{item.object.albumName.length>=12? '...' : null }</Text>
+                                    <View style={{width:80*tmpWidth}}>
+                                    <Text numberOfLines={1} style={{fontSize: 12 * tmpWidth , color: 'rgb(79,79,79)', marginLeft: 6 * tmpWidth}}>{item.object.artistName.substr(0,15)}{item.object.artistName.length>=15 ? '...' : null }</Text>
                                     </View>
-                                    <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
                                 </View>
-                            </View> }
-                        </TouchableOpacity>
-                    )
-                }}
-            />
+                                <Text style={styles.contentText} numberOfLines={4}>{item.textcontent}</Text>
+                            </View>
+                        </View> }
+                    </TouchableOpacity>
+                )
+            })}
         </View>
     );
 };

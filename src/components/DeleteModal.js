@@ -6,8 +6,8 @@ import { Context as PlaylistContext } from '../context/PlaylistContext';
 import { Context as UserContext } from '../context/UserContext';
 import { Context as BoardContext } from '../context/BoardContext';
 import { Context as CurationContext } from '../context/CurationContext';
-
-const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
+import { goBack } from '../navigationRef';
+const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
@@ -23,7 +23,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
             await deletePlaylist({id:state.current_playlist._id});
             getMyInfo()
             getPlaylists()
-            navigation.goBack()
+            goBack()
         } else if (type == 'playlistComment') {
             await deleteComment({id:playlistId, commentid : subjectId})
         } else if (type == 'playlistReComment') {
@@ -31,7 +31,7 @@ const DeleteModal = ({ navigation, deleteModal, setDeleteModal, type, subjectId,
         } else if (type == 'boardContent') {
             await deleteContent({ contentId: boardState.currentContent._id, boardId: boardState.currentContent.boardId })
             getMyInfo()
-            navigation.goBack()
+            goBack()
         } else if (type == 'boardComment') {
             deleteBoardComment({ contentId: boardState.currentContent._id, commentId: subjectId })
         } else if (type == 'boardReComment') {

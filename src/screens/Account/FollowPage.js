@@ -2,19 +2,17 @@ import React, {useState, useContext, useEffect} from 'react';
 import { Text, TextInput,View, Image, FlatList,StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext'
 import { Context as DJContext } from '../../context/DJContext'
-import { navigate } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 import { ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
+import Header from '../../components/Header';
 
-const FollowPage = ({navigation}) => {
+const FollowPage = ({ route }) => {
     const { state, getOtheruser, follow, unfollow, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [text, setText] = useState('');
-
-    const option = navigation.getParam('option');
-    const typefix = navigation.getParam('type');
-    const name = navigation.getParam('name');
+    const { option, name, type: typefix } = route.params
     const [type, setType] = useState();
     const [result, setResult] = useState();
     const [user, setUser] = useState(null);
@@ -64,6 +62,7 @@ const FollowPage = ({navigation}) => {
         <View style={{backgroundColor: 'rgb(254,254,254)', flex: 1}}>
             {user == null && state.myInfo == null ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
             <View style={{flex: 1}}>
+                <Header title={name}/>
                 <View style={{alignItems: 'center'}}>
                     <View style={styles.searchBox}>
                         <View style={{flexDirection: 'row'}}>
@@ -111,7 +110,7 @@ const FollowPage = ({navigation}) => {
                                     }else{
                                         await Promise.all([getOtheruser({id:item._id}),
                                         getSongs({id:item._id})]);
-                                        navigation.push('OtherAccount', {otherUserId:item._id})
+                                        push('OtherAccount', {otherUserId:item._id})
                                     }
                                 }}>
                                     { item.profileImage == undefined ?
@@ -171,35 +170,6 @@ const FollowPage = ({navigation}) => {
             </View>}
         </View>
     );
-};
-
-FollowPage.navigationOptions = ({navigation})=>{
-    const name = navigation.getParam('name');
-    return {
-        title: name,
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-            fontWeight: 'bold'
-        },
-        headerStyle: {
-            backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.pop()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({

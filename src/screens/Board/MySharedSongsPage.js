@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
@@ -7,21 +7,21 @@ import { Context as BoardContext } from '../../context/BoardContext';
 import { navigate } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage } from '../../components/SongImage'
+import { NavHeader } from '../../components/Header';
+import { useFocusEffect } from '@react-navigation/native';
 
-const MySharedSongsPage = ({navigation}) => {
+const MySharedSongsPage = () => {
     const { state } = useContext(UserContext);
     const { getCurrentBoard, getSelectedBoard, initMusic } = useContext(BoardContext);
 
-    useEffect(() => {
-        const listener =navigation.addListener('didFocus', async ()=>{
+    useFocusEffect(
+        useCallback(() => {
             initMusic()
-            await TrackPlayer.reset()
-        });
-        return () => listener.remove();
-    }, []);
-
+        }, [])
+    )
     return (
         <View style={styles.container}>
+            <NavHeader title="공유한 음악" isBack={true} />
             {state.myBoardSongs == null ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
             <FlatList 
                 data={state.myBoardSongs}
@@ -63,35 +63,6 @@ const MySharedSongsPage = ({navigation}) => {
             /> }
         </View>
     );
-};
-
-MySharedSongsPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '공유한 음악',
-        headerTitleStyle: {
-            fontSize: 16 * tmpWidth,
-            fontWeight: "400"
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(255,255,255)',
-            height: 92 * tmpWidth,
-            backgroundColor: 'rgb(255,255,255)',
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 3 * tmpWidth,
-                width: 0,
-            },
-            shadowRadius: 8 * tmpWidth,
-            shadowOpacity: 0.07,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={() => navigation.goBack()}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        }
-    };
 };
 
 const styles=StyleSheet.create({

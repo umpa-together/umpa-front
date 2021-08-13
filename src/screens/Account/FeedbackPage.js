@@ -1,21 +1,24 @@
 import React, { useContext, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../../components/FontNormalize';
 import { Context as ReportContext } from '../../context/ReportContext';
 import { Context as UserContext } from '../../context/UserContext';
+import { goBack } from '../../navigationRef';
+import Header from '../../components/Header';
 
-const FeedBackPage = ({navigation}) => {
+const FeedBackPage = () => {
     const feedbackRef = useRef()
     const { postReport } = useContext(ReportContext);
     const { state } = useContext(UserContext);
     const upload = () => {
         postReport({type: 'Feedback', reason: feedbackRef.current.value, subjectId: state.myInfo._id })
-        navigation.goBack();
+        goBack();
     }
     return (
+        <>
+        <Header title="피드백 및 건의사항"/>
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
-            <View style={{flex: 1, backgroundColor: 'rgb(254,254,254)', alignItems: 'center'}}>
+            <View style={{flex: 1, alignItems: 'center', backgroundColor: 'rgb(254, 254, 254)'}}>
                 <View style={styles.commentBox}>
                     <TextInput 
                         ref={feedbackRef}
@@ -33,35 +36,9 @@ const FeedBackPage = ({navigation}) => {
                 </TouchableOpacity>
             </View>
         </TouchableWithoutFeedback>
+        </>
     )
 
-};
-
-FeedBackPage.navigationOptions = ({navigation})=>{
-    return {
-        title: '피드백 및 건의사항',
-        headerTitleStyle: {
-            fontSize: 18 * tmpWidth,
-        }, 
-        headerStyle: {
-            backgroundColor: 'rgb(254,254,254)',
-            height: 92 * tmpWidth  ,
-            shadowColor: "rgb(0, 0, 0)",
-            shadowOffset: {
-                height: 0,
-                width: 0,
-            },
-            shadowRadius: 0,
-            shadowOpacity: 0,
-        },
-        headerLeft: () => {
-            return (
-                <TouchableOpacity style={{marginLeft: 5 * tmpWidth }} onPress={() => navigation.goBack()}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/back.svg')}/>
-                </TouchableOpacity>
-            )
-        },
-    };
 };
 
 const styles=StyleSheet.create({

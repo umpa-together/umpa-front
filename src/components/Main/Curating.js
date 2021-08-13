@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as CurationContext } from '../../context/CurationContext';
 import { tmpWidth } from '../FontNormalize';
-import Guide from '../Guide';
 import { SongImage } from '../SongImage'
+import { push } from '../../navigationRef';
 
-const Curating = ({ curationPosts, navigation }) => {
+const Curating = ({ curationPosts }) => {
     const { state, getCurationposts, nextCurationposts, getCuration } = useContext(CurationContext);
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,7 +40,6 @@ const Curating = ({ curationPosts, navigation }) => {
     }
     return (
         <View style={{ flex: 1, backgroundColor:"rgb(254,254,254)"}}>
-            <Guide type={'curation'}/>
             { curationPosts != undefined && curationPosts.length !=0 ?
             <FlatList
                 data={curationPosts}
@@ -52,10 +51,9 @@ const Curating = ({ curationPosts, navigation }) => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({item, index})=> {
                     return (
-                    
                         <TouchableOpacity style ={styles.curation} onPress={async ()=>{
                             await getCuration({isSong : item.isSong,object:item.object,id:item.songoralbumid})
-                            navigation.push('SelectedCuration', {id: item.songoralbumid, postid:item._id})
+                            push('SelectedCuration', {id: item.songoralbumid, postid:item._id})
                         }}>
                         {(index+1) % 2 == 0 ?
                             <View>

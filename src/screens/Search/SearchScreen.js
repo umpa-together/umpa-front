@@ -8,15 +8,14 @@ import { Context as DJContext } from '../../context/DJContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
 
-import { navigate } from '../../navigationRef';
+import { navigate, goBack, push } from '../../navigationRef';
 
 import SearchResultScreen from './SearchResultScreen';
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = ({ route }) => {
     const [text, setText] = useState('');
-    const [searchOption, setSearachOption] = useState(navigation.getParam('searchOption'));
+    const [searchOption, setSearachOption] = useState(route.params.searchOption);
     const [key, setKey]= useState(true);
-
     const { state: searchState, searchsong, searchHint, initHint, hashtagHint, djHint } = useContext(SearchContext);
     const { getSongs } = useContext(DJContext);
     const {state: userState, getOtheruser} = useContext(UserContext);
@@ -48,7 +47,7 @@ const SearchScreen = ({navigation}) => {
     return (
     <SafeAreaView style={{backgroundColor:"#fff"}}>
             <View style={styles.input}>
-                <TouchableOpacity onPress={()=>{navigation.pop();}} style={ styles.backbutton}>
+                <TouchableOpacity onPress={goBack} style={ styles.backbutton}>
                        <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
                 </TouchableOpacity>
                 <View style={styles.inputbox}>
@@ -169,7 +168,7 @@ const SearchScreen = ({navigation}) => {
                   :
                    (searchOption =='Song' ?
 
-                    <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} />
+                    <SearchResultScreen searchOption={searchOption} text={text} />
                     :
 
                     <FlatList
@@ -260,7 +259,7 @@ const SearchScreen = ({navigation}) => {
                         }}
                     />
           :
-                     <SearchResultScreen navigation={navigation} searchOption={searchOption} text={text} />
+                     <SearchResultScreen searchOption={searchOption} text={text} />
 
           )
 
@@ -280,7 +279,7 @@ const SearchScreen = ({navigation}) => {
                                 }else{
                                     await Promise.all([getOtheruser({id:item._id}),
                                     getSongs({id:item._id})]);
-                                    navigation.push('OtherAccount', {otherUserId:item._id});
+                                    push('OtherAccount', {otherUserId:item._id});
                                 }
                             }}>
                                 {item.profileImage == undefined ?
@@ -322,12 +321,6 @@ const SearchScreen = ({navigation}) => {
 
     </SafeAreaView>
     );
-};
-SearchScreen.navigationOptions = () =>{
-    return {
-            headerShown: false,
-
-    };
 };
 
 const styles=StyleSheet.create({

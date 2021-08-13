@@ -1,22 +1,21 @@
-import React , { useState, useContext, useRef, useEffect }from 'react';
+import React , { useState, useContext, useEffect }from 'react';
 import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
 import { Context as PlaylistContext } from '../../context/PlaylistContext'
 import { Context as UserContext } from '../../context/UserContext'
-import { navigate } from '../../navigationRef';
+import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage } from '../../components/SongImage'
 
-const PlaylistCreatePage = ({ navigation }) => {
+const PlaylistCreatePage = ({ route }) => {
     const [hashtag, setHashtag] = useState([]);
     const [temphash, setTemphash] = useState('')
     const [image, setImage] = useState('');
     const [name, setName] = useState('');
     const [type, setType] = useState('');
-    const playList = navigation.getParam('data');
+    const { data: playList, isEdit } = route.params
     const { state, addPlaylist, editPlaylist, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext);
     const [titleValidity, setTitleValidity] = useState(true);
@@ -26,7 +25,6 @@ const PlaylistCreatePage = ({ navigation }) => {
     const [hashtagValidity, setHashtagValidty] = useState(true);
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
-    const isEdit = navigation.getParam('isEdit');
     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
     const pattern_num = /[0-9]/;
     const pattern_eng = /[a-zA-Z]/;
@@ -102,18 +100,12 @@ const PlaylistCreatePage = ({ navigation }) => {
     useEffect(() => {
         if(playList.length >= 3)    setSongValidity(true)
     }, [playList])
-    useEffect(() => {
-        const listener = navigation.addListener('didFocus', async () => {
-            await TrackPlayer.reset()
-        });
-        return () => listener.remove()
-    }, []);
 
     return (
         <View style={styles.container}>
             <View style={{width: '100%'}}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={styles.headerIcon} onPress={goBack}>
                         <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>플레이리스트 {isEdit ? '수정' : '만들기'}</Text>
@@ -290,12 +282,6 @@ const PlaylistCreatePage = ({ navigation }) => {
             </ScrollView>
         </View>
     );
-};
-
-PlaylistCreatePage.navigationOptions = ()=>{
-    return {
-        headerShown: false    
-    };
 };
 
 const styles=StyleSheet.create({
