@@ -72,15 +72,6 @@ const searchalbum= (dispatch) => async ({ albumname }) => {
     }
 };
 
-const searchArtistSong = (dispatch) => async ({ id }) => {
-    try {
-        const response = await serverApi.get('/searchArtistSong/'+id);
-        //dispatch({ type: 'searchartist', payload: response.data });
-    } catch (err){
-        dispatch({ type: 'error', payload: 'Something went wrong with searchArtistSong' });
-    }
-};
-
 const songNext = (dispatch) => async({ next }) => {
     try {
         const response = await serverApi.get('/searchNext/'+next);
@@ -160,6 +151,6 @@ const currentHashtag = (dispatch) => async() => {
 
 export const { Provider, Context } = createDataContext(
     searchReducer,
-    { initHint, searchsong, searchalbum,searchinit, searchDJ, songNext, artistNext, searchartist, searchHint, hashtagHint, djHint, currentHashtag, searchArtistSong },
+    { initHint, searchsong, searchalbum,searchinit, searchDJ, songNext, artistNext, searchartist, searchHint, hashtagHint, djHint, currentHashtag },
     { songData: [], songNext: [], artistData: [], artistNext: [], albumData: [], albumNext: [], users: [], errorMessage: '', hint: [], hashtagHint: [], djHint: [], currentHashtag: null  }
 )

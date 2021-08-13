@@ -95,5 +95,5 @@ export const { Provider, Context } = createDataContext(
     WeeklyReducer,
     { getWeeklyDJ, postWeeklyDJ , postWeeklyCuration , getWeeklyCuration, 
         postWeeklyPlaylist, getWeeklyPlaylist, postWeekly, getRecentPlaylists },
-    { weeklyDJ: [], weekcuration: {}, weeklyPlaylist: null, recentPlaylists: null, errorMessage: '' }
+    { weeklyDJ: [], weekcuration: null, weeklyPlaylist: null, recentPlaylists: null, errorMessage: '' }
 )
