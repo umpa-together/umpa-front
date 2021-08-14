@@ -1,13 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,SafeAreaView } from 'react-native';
-import { navigate } from '../../navigationRef';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-
-import MainSongForm from '../../components/Search/MainSongForm';
-import MainDJForm from '../../components/Search/MainDJForm';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
-
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { SafeAreaView } from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as BoardContext} from '../../context/BoardContext';
 import {Context as NoticeContext} from '../../context/NoticeContext';
@@ -15,19 +7,25 @@ import {Context as SearchContext} from '../../context/SearchContext';
 import {Context as CurationContext} from '../../context/CurationContext';
 import {Context as WeeklyContext} from '../../context/WeeklyContext';
 import {Context as UserContext} from '../../context/UserContext';
+import { useFocusEffect } from '@react-navigation/native';
 
+import SearchBar from '../../components/Main/SearchBar'
+import CurrentHashtag from '../../components/Main/CurrentHashtag'
+import RecentPlaylists from '../../components/Main/RecentPlaylists'
+import WeeklyPlaylists from '../../components/Main/WeeklyPlaylists';
 const MainSearchScreen = () => {
-    const [category, setCategory] = useState('Song');
     const { getPlaylists } = useContext(PlaylistContext);
     const { initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
-    const { currentHashtag } = useContext(SearchContext);
+    const { state, currentHashtag } = useContext(SearchContext);
     const { getCurationposts } = useContext(CurationContext);
-    const { getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly } = useContext(WeeklyContext);
+    const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists } = useContext(WeeklyContext);
+
     const loadingDataFetch = async () => {
         await postWeekly()
         await Promise.all([
+        getRecentPlaylists(),
         getWeeklyPlaylist(),
         getWeeklyCuration(),
         getWeeklyDJ(),
@@ -41,59 +39,24 @@ const MainSearchScreen = () => {
         getMyStory(),
         getOtherStory(),
         getMyBookmark(),
-        getnotice(),
-        currentHashtag()]);
+        getnotice()]);
     }
     useEffect(() => {
         loadingDataFetch()
     }, [])
+    useFocusEffect(
+        useCallback(() => {
+            currentHashtag()
+        }, [])
+    )
     return (
-    <SafeAreaView style={{backgroundColor:"#fff"}}>
-        <View >
-            <View style={styles.searchopt}>
-                <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity onPress={() => setCategory('Song')}>
-                        {category == 'Song' ? <Text style={{fontSize: 22 * tmpWidth, marginRight: 18 * tmpWidth,color:'rgb(0,0,0)'}}>SONG</Text>
-                        : <Text style={{fontSize: 22 * tmpWidth, marginRight: 18 * tmpWidth, color: '#C1C3D1'}}>SONG</Text> }
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setCategory('DJSong')}>
-                        {category == 'DJSong' ? <Text style={{fontSize: 22 * tmpWidth, color:'rgb(0,0,0)'}}>DJ</Text>
-                        : <Text style={{fontSize: 22 * tmpWidth, color: '#c6c6c6'}}>DJ</Text> }
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={{alignItems: 'center',width: 375 * tmpWidth, height: 64 * tmpWidth, }}>
-                <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: category })}>
-                    <View style={{flexDirection: 'row', alignItems:'center',}}>
-                        <FontAwesome style={{fontSize: 18 * tmpWidth, color:'#c6c6c6',marginTop:14 * tmpWidth,marginLeft:12 * tmpWidth, marginRight:12 * tmpWidth}} name="search"/>
-                        {category == 'Song' ? <Text style={{color:'#c6c6c6', fontSize: 16 * tmpWidth, marginTop:14 * tmpWidth,}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
-                        : <Text style={{color:'#c6c6c6', fontSize: 16 * tmpWidth,marginTop:14 * tmpWidth, }}>곡, 아티스트 또는 DJ를 검색해주세요</Text>}
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={{height:590 * tmpHeight}}>
-            {category == 'Song' ? <MainSongForm /> : <MainDJForm /> }
-            </View>
-        </View>
-    </SafeAreaView>
+        <SafeAreaView style={{backgroundColor:"#fff", flex: 1}}>
+            <SearchBar />
+            <CurrentHashtag hashtag={state.currentHashtag}/>
+            <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
+            <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
+        </SafeAreaView>
     )
 }
-
-const styles=StyleSheet.create({
-    searchopt:{
-        marginTop : tmpWidth*20,
-        flexDirection: 'row',
-        width:100* tmpWidth,
-        height:22 * tmpWidth,
-        marginBottom:13 * tmpWidth,
-        marginLeft:24 * tmpWidth
-    },
-    inputbox:{
-        width: 325 * tmpWidth,
-        height: 44 * tmpWidth,
-        backgroundColor: '#F5F5F5',
-        borderRadius: 10 * tmpWidth
-    },
-});
 
 export default MainSearchScreen;
