@@ -13,6 +13,8 @@ const WeeklyReducer = (state, action) => {
             return { ...state, weekcuration:action.payload };
         case 'getRecentPlaylists':
             return { ...state, recentPlaylists: action.payload }
+        case 'getMusicArchive':
+            return { ...state, musicArchive: action.payload }
         default:
             return state;
     }
@@ -91,9 +93,20 @@ const getRecentPlaylists = (dispatch) => async () => {
     }
 }
 
+const getMusicArchive = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/musicArchive');
+        dispatch({ type: 'getMusicArchive', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with getMusicArchive' });
+    }
+}
+
+
+
 export const { Provider, Context } = createDataContext(
     WeeklyReducer,
     { getWeeklyDJ, postWeeklyDJ , postWeeklyCuration , getWeeklyCuration, 
-        postWeeklyPlaylist, getWeeklyPlaylist, postWeekly, getRecentPlaylists },
-    { weeklyDJ: [], weekcuration: null, weeklyPlaylist: null, recentPlaylists: null, errorMessage: '' }
+        postWeeklyPlaylist, getWeeklyPlaylist, postWeekly, getRecentPlaylists, getMusicArchive },
+    { weeklyDJ: [], weekcuration: null, weeklyPlaylist: null, recentPlaylists: null, musicArchive: null, errorMessage: '' }
 )
