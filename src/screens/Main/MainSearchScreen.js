@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useEffect, useContext, useCallback } from 'react';
+import { View } from 'react-native';
 import {Context as PlaylistContext} from '../../context/PlaylistContext';
 import {Context as BoardContext} from '../../context/BoardContext';
 import {Context as NoticeContext} from '../../context/NoticeContext';
@@ -13,18 +13,22 @@ import SearchBar from '../../components/Main/SearchBar'
 import CurrentHashtag from '../../components/Main/CurrentHashtag'
 import RecentPlaylists from '../../components/Main/RecentPlaylists'
 import WeeklyPlaylists from '../../components/Main/WeeklyPlaylists';
+import MusicArchive from '../../components/Main/MusicArchive'
+import { tmpWidth } from '../../components/FontNormalize';
+
 const MainSearchScreen = () => {
     const { getPlaylists } = useContext(PlaylistContext);
-    const { initUser, getMyInfo, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
+    const { initUser, getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { state, currentHashtag } = useContext(SearchContext);
     const { getCurationposts } = useContext(CurationContext);
-    const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists } = useContext(WeeklyContext);
+    const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists, getMusicArchive } = useContext(WeeklyContext);
 
     const loadingDataFetch = async () => {
         await postWeekly()
         await Promise.all([
+        getMusicArchive(),
         getRecentPlaylists(),
         getWeeklyPlaylist(),
         getWeeklyCuration(),
@@ -34,7 +38,6 @@ const MainSearchScreen = () => {
         getCurationposts(),
         getGenreBoard(),
         initUser(),
-        getMyInfo(),
         getMyScrab(),
         getMyStory(),
         getOtherStory(),
@@ -50,12 +53,13 @@ const MainSearchScreen = () => {
         }, [])
     )
     return (
-        <SafeAreaView style={{backgroundColor:"#fff", flex: 1}}>
+        <View style={{backgroundColor:"#fff", flex: 1, paddingTop: 44 * tmpWidth}}>
+            <MusicArchive archive={WeeklyState.musicArchive} />
             <SearchBar />
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
             <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
-        </SafeAreaView>
+        </View>
     )
 }
 
