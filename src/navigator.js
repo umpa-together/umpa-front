@@ -47,12 +47,12 @@ import MusicArchivePage from './screens/Board/MusicArchivePage';
 import SearchMusicPage from './screens/Board/SearchMusicPage';
 import MySharedSongsPage from './screens/Board/MySharedSongsPage';
 
-import MainSearchScreen from './screens/Search/MainSearchScreen';
-import SearchScreen from './screens/Search/SearchScreen';
-import SearchResultScreen from './screens/Search/SearchResultScreen';
-import SelectedSongScreen from './screens/Search/SelectedSongScreen';
-import SelectedHashtagScreen from './screens/Search/SelectedHashtagScreen';
-import AllContentsScreen from './screens/Search/AllContentsScreen';
+import MainSearchScreen from './screens/Main/MainSearchScreen';
+import SearchScreen from './screens/Main/SearchScreen';
+import SearchResultScreen from './screens/Main/SearchResultScreen';
+import SelectedSongScreen from './screens/Main/SelectedSongScreen';
+import SelectedHashtagScreen from './screens/Main/SelectedHashtagScreen';
+import AllContentsScreen from './screens/Main/AllContentsScreen';
 
 import CreateModal from './components/CreateModal';
 
