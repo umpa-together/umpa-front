@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Context as UserContext } from '../../context/UserContext';
 import { tmpWidth } from '../FontNormalize'
-import { push } from '../../navigationRef';
+import { navigate, push } from '../../navigationRef';
 
 export default FollowBox = ({ user, isMyAccount }) => {
     const { state: userState, follow, unfollow, getMyInfo } = useContext(UserContext);
@@ -17,6 +17,10 @@ export default FollowBox = ({ user, isMyAccount }) => {
             }
         }
         return false;
+    }
+
+    const onClickEdit = () => {
+        navigate('ProfileEdit')
     }
 
     const onClickUnFollow = async () => {
@@ -43,13 +47,13 @@ export default FollowBox = ({ user, isMyAccount }) => {
             <View style={styles.flexBox}>
                 <View style={styles.followContainer}>
                     <TouchableOpacity style={styles.rowBox} onPress={() => {
-                        push('Follow', {option: isMyAccount ? 'MyAccount' : 'OtherAccount', name: user.name, type: 'following'})
+                        push('Follow', {name: user.name, type: 'following'})
                     }}>
                         <Text style={styles.title}>팔로잉 </Text>
                         <Text style={styles.number}>{user.following.length}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.rowBox} onPress={() => {
-                        push('Follow', {option: isMyAccount ? 'MyAccount' : 'OtherAccount', name: user.name, type: 'follower'})
+                        push('Follow', {name: user.name, type: 'follower'})
                     }}>
                         <Text style={styles.title}>팔로워 </Text>
                         <Text style={styles.number}>{isMyAccount ? user.follower.length : followerNum}</Text>
@@ -57,7 +61,7 @@ export default FollowBox = ({ user, isMyAccount }) => {
                 </View>
                 {isMyAccount ? 
                 <View style={styles.profileContainer}>
-                    <TouchableOpacity style={styles.profileEditBox} onPress={() => navigate('ProfileEdit')}>
+                    <TouchableOpacity style={styles.profileEditBox} onPress={onClickEdit}>
                         <Text style={styles.profileText}>프로필 편집</Text>
                     </TouchableOpacity>
                 </View> : 

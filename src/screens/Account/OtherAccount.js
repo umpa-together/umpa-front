@@ -61,10 +61,9 @@ const OtherAccountScreen = ({ route }) => {
             CallbackFunction()
         }, [id])
     )
-
     return (
         <View style={{flex:1,backgroundColor: 'rgb(250,250,250)'}}>
-            {user == null || (djState.songs == null) ? <LoadingIndicator /> :
+            {user === null ? <LoadingIndicator /> :
             <View style={{flex: 1}}>
                 <Header user={user} isMyAccount={false} />
                 <ScrollView 
