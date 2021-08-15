@@ -1,4 +1,4 @@
-import React , { useState, useContext, useEffect }from 'react';
+import React , { useState, useContext, useEffect, useRef, useCallback }from 'react';
 import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView  } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -8,277 +8,158 @@ import { Context as UserContext } from '../../context/UserContext'
 import { navigate, goBack } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import { SongImage } from '../../components/SongImage'
+import CreateTitle from '../../components/Playlist/CreateTitle';
+import CreateHashtag from '../../components/Playlist/CreateHashtag';
+import CreateSongsLists from '../../components/Playlist/CreateSongsLists';
+import CreateFooter from '../../components/Playlist/CreateFooter';
+import { useFocusEffect } from '@react-navigation/native';
 
 const PlaylistCreatePage = ({ route }) => {
-    const [hashtag, setHashtag] = useState([]);
-    const [temphash, setTemphash] = useState('')
-    const [image, setImage] = useState('');
-    const [name, setName] = useState('');
-    const [type, setType] = useState('');
     const { data: playList, isEdit } = route.params
     const { state, addPlaylist, editPlaylist, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext);
-    const [titleValidity, setTitleValidity] = useState(true);
-    const [contentValidity, setContentValidity] = useState(true);
+    const [image, setImage] = useState(isEdit ? state.current_playlist.image : '');
     const [thumbnailValidity, setThumbnailValidity] = useState(true);
-    const [songValidity, setSongValidity] = useState(true);
-    const [hashtagValidity, setHashtagValidty] = useState(true);
-    const [title, setTitle] = useState('');
-    const [comment, setComment] = useState('');
-    const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
-    const pattern_num = /[0-9]/;
-    const pattern_eng = /[a-zA-Z]/;
-    const pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const [validity, setValidity] = useState({
+        title: true, 
+        song: true,
+        hashtag: true,
+        thumbnail: true,
+    })
+    const informationRef = useRef({
+        hashtagLists: isEdit ? state.current_playlist.hashtag : [], 
+        title: isEdit ? state.current_playlist.title : '',
+        imgUrl: isEdit ? state.current_playlist.image : '',
+        imgName: '',
+        imgType: '',
+        songs: playList,
+        isEdit: isEdit,
+    })
 
-    const addhashtag = ({data}) => {
-        if (hashtag.length < 3 && data != '') {
-            setHashtag([...hashtag, data]);
-        }
-    };
-    const deletehashtag= ({data}) => {
-        setHashtag(hashtag.filter(item=> item != data));
-    };
-    const upload = async () => {
-        if(title.length == 0){
-            setTitleValidity(false);
+    const onClickUpload = async () => {
+        if(informationRef.current.title.length == 0){
+            setValidity((prev) => ({
+                ...prev,
+                title: false
+            }))
             return;
-        }else{
-            setTitleValidity(true);
-        }
-        if(comment.length == 0){
-            setContentValidity(false);
-            return;
-        }else{
-            setContentValidity(true);
+        } else {
+            setValidity((prev) => ({
+                ...prev,
+                title: true
+            }))        
         }
         if(image == ''){
-            setThumbnailValidity(false);
+            setValidity((prev) => ({
+                ...prev,
+                thumbnail: false
+            }))            
             return;
-        }else{
-            setThumbnailValidity(true);
+        } else {
+            setValidity((prev) => ({
+                ...prev,
+                thumbnail: true
+            }))        
         }
         if(playList.length < 3){
-            setSongValidity(false);
+            setValidity((prev) => ({
+                ...prev,
+                song: false
+            })) 
             return;
-        }else{
-            setSongValidity(true);
+        } else {
+            setValidity((prev) => ({
+                ...prev,
+                song: true
+            })) 
         }
 
         if(isEdit){
-            await editPlaylist({ title, textcontent: comment, songs: playList, hashtag, playlistId: state.current_playlist._id });
+            // comment 처리하기
+            //await editPlaylist({ title: informationRef.current.title, textcontent: comment, songs: playList, hashtag, playlistId: state.current_playlist._id });
         }else{
             const fd = new FormData();
             fd.append('img', {
-                name: name,
-                type: type,
-                uri: 'file://' + image
+                name: informationRef.current.imgName,
+                type: informationRef.current.imgType,
+                uri: 'file://' + informationRef.current.imgUrl
             })
-            await addPlaylist({ title, textcontent: comment, songs: playList, hashtag, fd });            
+            // comment 처리하기
+            //await addPlaylist({ title: informationRef.current.title, textcontent: comment, songs: playList, hashtag, fd });            
         }
-        getMyInfo();
-        getPlaylists();
+        //getMyInfo();
+        //getPlaylists();
     }
+
     const handleUpload = () => {
         launchImageLibrary({maxWidth: 500, maxHeight: 500}, (response) => {
             if(response.didCancel) {
                 return;
             }
-            setImage(response.uri);
-            setName(response.fileName);
-            setType(response.type);
+            informationRef.current.imgUrl = response.uri
+            informationRef.current.imgName = response.fileName
+            informationRef.current.imgType = response.type
+            setImage(response.uri)
         });
     };
 
+    const onKeyboardDidShow =(e) =>{
+        setKeyboardHeight(e.endCoordinates.height);
+    }
+
+    const onKeyboardDidHide=()=>{
+        setKeyboardHeight(0);
+    }
+
     useEffect(() => {
-        if(isEdit){
-            setTitle(state.current_playlist.title)
-            setComment(state.current_playlist.textcontent)
-            setHashtag(state.current_playlist.hashtag)
-            setImage(state.current_playlist.image)
+        if(playList.length >= 3) {
+            setValidity((prev) => ({
+            ...prev,
+            song: true
+            })) 
         }
-    }, [isEdit]);
-    useEffect(() => {
-        if(playList.length >= 3)    setSongValidity(true)
     }, [playList])
+
+    useFocusEffect(
+        useCallback(() => {
+            Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
+            Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
+            return () => {
+                Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
+                Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
+            }
+        }, [])
+    )
 
     return (
         <View style={styles.container}>
-            <View style={{width: '100%'}}>
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.headerIcon} onPress={goBack}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
-                    </TouchableOpacity>
-                    <Text style={styles.headerTitle}>플레이리스트 {isEdit ? '수정' : '만들기'}</Text>
-                </View>
-            </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={styles.title}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.titleSize}>제목</Text>
-                            <View style={{flex: 1}}>
-                                <View style={titleValidity ? styles.input : styles.validityInput}>
-                                    <TextInput
-                                        value={title}
-                                        onChangeText={text => setTitle(text)}
-                                        placeholder="플레이리스트 제목을 적어주세요."
-                                        placeholderTextColor='rgb(196,196,196)'
-                                        autoCapitalize='none'
-                                        autoCorrect={false}
-                                        style={{fontSize: 14 * tmpWidth}}
-                                    />
-                                </View>
-                                {titleValidity ? null :
-                                <View style={styles.warningTitleContainer}>
-                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                                    <Text style={styles.warningText}>제목을 입력해주세요.</Text>
-                                </View>}
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.comment}>
-                        <Text style={styles.titleSize}>코멘트</Text>
-                        <View style={contentValidity ? styles.commentBox : styles.validityComment}>
-                            <TextInput
-                                value={comment}
-                                onChangeText={text => setComment(text)}
-                                placeholder="코멘트를 적어주세요."
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                                multiline={true}
-                                style={styles.commentBoxText}
-                                placeholderTextColor='rgb(196,196,196)'
-                            />
-                        </View>
-                        {contentValidity ? null :
-                        <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                            <Text style={styles.warningText}>코멘트를 작성해주세요.</Text>
-                        </View>}
-                    </View>
-                </TouchableWithoutFeedback>
-                <View style={styles.hashtag}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.titleSize}>해시태그</Text>
-                        <View style={styles.hashtagInput}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={{color: 'rgb(169,193,255)', marginRight: 4 * tmpWidth}}>#</Text>
-                                <TextInput
-                                    value={temphash}
-                                    onChangeText={(text)=>{
-                                        if(text.length <= 9 && hashtag.length < 3) setTemphash(text)}}
-                                    placeholder="해시태그를 적어주세요.(최대 3개, 9글자)"
-                                    placeholderTextColor='rgb(196,196,196)'
-                                    autoCapitalize='none'
-                                    onSubmitEditing={() => {
-                                        if(!pattern_spc.test(temphash) && (pattern_eng.test(temphash) || pattern_kor.test(temphash) || pattern_num.test(temphash))){
-                                            addhashtag({data:temphash})
-                                            setTemphash('')
-                                            setHashtagValidty(true)
-                                        }else{
-                                            setHashtagValidty(false)
-                                        }
-                                    }}
-                                    autoCorrect={false}
-                                    style={{fontSize: 13 * tmpWidth, width : tmpWidth*215}}
-                                />
-                                </View>
-                            <TouchableOpacity onPress={() => {
-                                if(!pattern_spc.test(temphash) && (pattern_eng.test(temphash) || pattern_kor.test(temphash) || pattern_num.test(temphash))){
-                                    addhashtag({data:temphash})
-                                    setTemphash('')
-                                    setHashtagValidty(true)
-                                }else{
-                                    setHashtagValidty(false)
-                                }}}
-                            >
-                                <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.tmpHashContainer}>
-                        <FlatList
-                            data={hashtag}
-                            keyExtractor={posts => posts}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            renderItem={({item}) =>{
-                                return (
-                                    <View style={styles.tmpHash}>
-                                        <View style={styles.hashtagView}>
-                                            <Text style={styles.hashtagBox}>{'#'+item}</Text>
-                                        </View>
-                                        <TouchableOpacity style={styles.hashtagplus} onPress={() => deletehashtag({data:item})}>
-                                            <Text style={{fontSize: 15 * tmpWidth, color: 'rgb(182,201,250)'}}>X</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                )
-                            }}
-                        />
-                    </View>
-                    {hashtagValidity ? null :
-                    <View style={{flexDirection:'row', marginTop: 4 * tmpWidth, marginLeft: 65 * tmpWidth,}}>
-                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                        <Text style={styles.warningText}>특수문자는 불가능합니다.</Text>
-                    </View>}
-                </View>
-                <View style={styles.thumbnail}>
+            <TouchableOpacity onPress={onClickUpload}>
+                <Text style={styles.uploadText}>{isEdit ? '수정하기' : '업로드하기'}</Text>
+            </TouchableOpacity>
+            <ScrollView 
+                showsVerticalScrollIndicator={false} 
+                style={{borderWidth: 1}}
+                contentContainerStyle={{flex:1, justifyContent: 'space-between'}}
+            >
+                <View>
+                    <CreateTitle informationRef={informationRef} validity={validity} />
+                    <CreateHashtag informationRef={informationRef} validity={validity} />
+                    {playList.length !== 0 && <CreateSongsLists songs={playList} validity={validity} /> }
                     <View>
-                        <Text style={styles.titleSize}>썸네일 이미지 선택하기</Text>
-                        {thumbnailValidity ? null :
-                        <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                            <Text style={styles.warningText}>이미지를 선택해주세요.</Text>
-                        </View>}
+                        { isEdit ? 
+                        <Image style={{width: 320, height: 200, borderRadius: 8 * tmpWidth}}source={{uri:image}}/>
+                         :
+                        <TouchableOpacity style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail} onPress={() => handleUpload()}>
+                            {image == '' ?
+                            <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
+                            : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
+                        </TouchableOpacity> }
                     </View>
-                    { isEdit ? 
-                    <View style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail}>
-                        {image == '' ?
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
-                        : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
-                    </View> :
-                    <TouchableOpacity style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail} onPress={() => handleUpload()}>
-                        {image == '' ?
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
-                        : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
-                    </TouchableOpacity> }
                 </View>
-                <View style={styles.song}>
-                    <View style={{flexDirection: 'row', alignItems:'center'}}>
-                        <Text style={styles.titleSize}>곡 담기</Text>
-                        <Text style={styles.songText}> (최소 3개, 최대 5개)</Text>
-                        <TouchableOpacity onPress={() => navigate('SearchSong', { data:playList, isEdit })}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={songValidity ? styles.songBox : styles.validitySongBox}>
-                        <FlatList
-                            data={playList}
-                            keyExtractor={posts => posts.id}
-                            renderItem={({item}) => {
-                                return (
-                                    <View style={styles.eachSong}>
-                                        <SongImage url={item.attributes.artwork.url} size={48} border={48} />
-                                        <View style={styles.songTextContainer}>
-                                            <View style={styles.songTextWidth}>
-                                                <Text style ={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
-                                                <Text style={styles.artistText} numberOfLines={1}>{item.attributes.artistName}</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                )
-                            }}
-                        />
-                    </View>
-                    {songValidity ? null :
-                    <View style={styles.warningContainer}>
-                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                        <Text style={styles.warningText}>곡을 담아주세요.</Text>
-                    </View>}
+                <View style={{marginBottom: keyboardHeight}}>
+                    <CreateFooter informationRef={informationRef} setImage={setImage} />
                 </View>
-                <TouchableOpacity style={styles.uploadBox} onPress={() => upload()}>
-                    <Text style={styles.uploadText}>{isEdit ? '수정하기' : '업로드하기'}</Text>
-                </TouchableOpacity>
             </ScrollView>
         </View>
     );
@@ -289,6 +170,7 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(254,254,254)',
         alignItems: 'center',
         height: '100%',
+        paddingTop: 44
     },
     header:{
         width: '100%',
@@ -353,9 +235,6 @@ const styles=StyleSheet.create({
         borderBottomWidth: 1 * tmpWidth,
         borderBottomColor: 'rgb(196,196,196)',
         marginLeft: 14 * tmpWidth,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
     },
     hashtagplus: {
         width: 20.4 * tmpWidth,
@@ -457,7 +336,6 @@ const styles=StyleSheet.create({
     },
     uploadText: {
         fontSize: 18 * tmpWidth, 
-        color: '#fff'
     },
     warningTitleContainer: {
         flexDirection: 'row', 
