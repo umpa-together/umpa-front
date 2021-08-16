@@ -15,7 +15,6 @@ require('date-utils');
 const MyAccountScreen = () => {
     const { state: userState, getMyInfo, getMyStory } = useContext(UserContext);
     const [menu, setMenu] = useState('playlist');
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [refreshing, setRefreshing] = useState(false);
 
@@ -35,11 +34,6 @@ const MyAccountScreen = () => {
         ])
         setRefreshing(false);
     };
-
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     useEffect(() => {
         if(userState.myStory != null){
