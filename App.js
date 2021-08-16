@@ -16,6 +16,9 @@ import { Provider as NoticeProvider } from './src/context/NoticeContext';
 import { Provider as WeeklyProvider } from './src/context/WeeklyContext';
 import { Provider as ReportProvider } from './src/context/ReportContext';
 
+import TrackPlayerProvider from './src/providers/trackPlayer'
+import ModalProvider from './src/providers/modal'
+
 import MainNavigator from './src/navigator.js';
 
 export default () => {
@@ -56,28 +59,32 @@ export default () => {
     }, []);
 
     return (
-        <ReportProvider>
-            <WeeklyProvider>
-                <NoticeProvider>
-                    <CurationProvider>
-                        <DJProvider>
-                            <UserProvider>
-                                <SearchPlaylistProvider>
-                                    <PlaylistProvider>
-                                        <BoardProvider>
-                                            <SearchProvider>
-                                                <AuthProvider>
-                                                    <MainNavigator/>
-                                                </AuthProvider>
-                                            </SearchProvider>
-                                        </BoardProvider>
-                                    </PlaylistProvider>
-                                </SearchPlaylistProvider>
-                            </UserProvider>
-                        </DJProvider>
-                    </CurationProvider>
-                </NoticeProvider>
-            </WeeklyProvider>
-        </ReportProvider>
+        <ModalProvider>
+        <TrackPlayerProvider>
+            <ReportProvider>
+                <WeeklyProvider>
+                    <NoticeProvider>
+                        <CurationProvider>
+                            <DJProvider>
+                                <UserProvider>
+                                    <SearchPlaylistProvider>
+                                        <PlaylistProvider>
+                                            <BoardProvider>
+                                                <SearchProvider>
+                                                    <AuthProvider>
+                                                        <MainNavigator/>
+                                                    </AuthProvider>
+                                                </SearchProvider>
+                                            </BoardProvider>
+                                        </PlaylistProvider>
+                                    </SearchPlaylistProvider>
+                                </UserProvider>
+                            </DJProvider>
+                        </CurationProvider>
+                    </NoticeProvider>
+                </WeeklyProvider>
+            </ReportProvider>
+        </TrackPlayerProvider>
+        </ModalProvider>
     )
 }

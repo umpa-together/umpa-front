@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
 import AccountPlaylist from  '../../components/Account/AccountPlaylist';
 import AccountCurating from  '../../components/Account/AccountCurating';
-import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../components/Account/Header'
 import SongProfile from '../../components/Account/SongProfile'
 import FollowBox from '../../components/Account/FollowBox';
@@ -15,8 +13,7 @@ import LoadingIndicator from '../../components/LoadingIndicator'
 require('date-utils');
 
 const OtherAccountScreen = ({ route }) => {
-    const {state: userState, getOtheruser, } = useContext(UserContext);
-    const {state: djState, getSongs } = useContext(DJContext);
+    const {state: userState } = useContext(UserContext);
     const [menu, setMenu] = useState('playlist');
     const [story, setStory] = useState(null);
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -24,13 +21,6 @@ const OtherAccountScreen = ({ route }) => {
     const [user, setUser] = useState(null);   
     const { otherUserId: id } = route.params
     
-    const CallbackFunction = async () => {
-        await Promise.all([
-            getOtheruser({id: id}),
-            getSongs({id: id}),
-        ])
-    }
-
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
@@ -56,11 +46,6 @@ const OtherAccountScreen = ({ route }) => {
         }
     }, [id]);
 
-    useFocusEffect(
-        useCallback(() => {
-            CallbackFunction()
-        }, [id])
-    )
     return (
         <View style={{flex:1,backgroundColor: 'rgb(250,250,250)'}}>
             {user === null ? <LoadingIndicator /> :
