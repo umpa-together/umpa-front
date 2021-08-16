@@ -1,18 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as SearchContext } from '../../context/SearchContext'
 import HarmfulModal from '../HarmfulModal';
-import { addtracksong, stoptracksong } from '../TrackPlayer'
 import { SongImage } from '../SongImage'
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../FontNormalize'
+import { useTrackPlayer } from '../../providers/trackPlayer';
 
 export default SongResult = ({ songs, setSong }) => {
     const { state, songNext } = useContext(SearchContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [loading, setLoading] = useState(false);
     const [selectedId, setSelectedId] = useState('');
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
 
     const getData = async () => {
         if(state.songData.length >= 20){
@@ -21,6 +20,7 @@ export default SongResult = ({ songs, setSong }) => {
             setLoading(false);
         }
     };
+
     const onEndReached = () => {
         if (loading) {
             return;
@@ -57,10 +57,10 @@ export default SongResult = ({ songs, setSong }) => {
     }
 
     const onClickCover = (item) => {
-        if(isPlayingid == item.id){
-            stoptracksong({ setIsPlayingid })
+        if(isPlayingId == item.id){
+            stoptracksong()
         }else{
-            addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+            addtracksong({ data: item })
         }
     }
 
@@ -80,10 +80,10 @@ export default SongResult = ({ songs, setSong }) => {
                     >
                         <TouchableOpacity onPress={() => onClickCover(item)}>
                             <SongImage url={imgUrl} size={56} border={56}/>
-                            { isPlayingid != item.id ? 
+                            { isPlayingId != item.id ? 
                             <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
                             <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
-                            {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                            <HarmfulModal />
                         </TouchableOpacity>
                         <View style={styles.infoContainer}>
                             <View style={styles.flexRow}>

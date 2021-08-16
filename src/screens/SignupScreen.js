@@ -10,12 +10,13 @@ import Modal from 'react-native-modal';
 import TosForm from '../components/Setting/TosForm';
 import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
 import { SongImage } from '../components/SongImage'
-import { addtracksong, stoptracksong } from '../components/TrackPlayer'
+import { useTrackPlayer } from '../providers/trackPlayer';
 import Header from '../components/Header';
 
 const SignupPage = ({ route }) => {
     const { state, checkName, signup, signin } = useContext(AuthContext);
     const { setSongs } = useContext(DJContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [email, setEmail] = useState(route.params.email);
     const [emailerr, setEmailerr] = useState(false);
     const [key, setKey]= useState(false);
@@ -40,12 +41,10 @@ const SignupPage = ({ route }) => {
     const [agree2Modal, setAgree2Modal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [songs, setSong] = useState([]);
     const [loading, setLoading] = useState(false);
     const [tok, setTok] = useState(false);
     const [double, setDouble] = useState(false);
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const { state: searchState, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const nextCheck = () => {
         if(email != '' && password != '' && name != '') setModalVisible(true);
@@ -62,10 +61,7 @@ const SignupPage = ({ route }) => {
             getData();
         }
     };
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
+
     const doubleCheck = async (name) => {
         await checkName({name})
         setDouble(true)
@@ -412,7 +408,7 @@ const SignupPage = ({ route }) => {
                   <View style={styles.modalbox}>
                     <View style={{width:335 * tmpWidth, height:56 * tmpWidth,flexDirection:'row'}}>
                         <TouchableOpacity style={styles.modalexiticon} onPress={()=>{
-                            stoptracksong({ setIsPlayingid })
+                            stoptracksong()
                             setModalVisible(false)}} >
                             <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')} />
                         </TouchableOpacity>
@@ -423,7 +419,7 @@ const SignupPage = ({ route }) => {
                                 await setSongs({ songs: songs })
                                 await signin({ email, password });
                                 setModalVisible(false)
-                                stoptracksong({ setIsPlayingid })}}
+                                stoptracksong()}}
                             >
                                     <Text style={{fontSize:16 * tmpWidth, color:'rgba(169,193,255,1)'}}>완료</Text>
                             </TouchableOpacity> : null }
@@ -479,14 +475,14 @@ const SignupPage = ({ route }) => {
                                         <View style={ item.id == idc ? styles.picked : styles.unpicked}>
                                             <TouchableOpacity style={styles.Songs} onPress={() => {
                                                 setIdc(item.id)
-                                                if(isPlayingid == item.id){
-                                                    stoptracksong({ setIsPlayingid })
+                                                if(isPlayingId == item.id){
+                                                    stoptracksong()
                                                 }else{
-                                                    addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+                                                    addtracksong({ data: item })
                                                 }
                                             }}>
                                                 <SongImage url={item.attributes.artwork.url} size={50} border={50} />
-                                                { isPlayingid != item.id ? 
+                                                { isPlayingId != item.id ? 
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                                 <SvgUri width='20' height='20' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                             </TouchableOpacity>
@@ -509,7 +505,7 @@ const SignupPage = ({ route }) => {
                                                     </View>
                                                 </TouchableOpacity>
                                             </View>
-                                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                            <HarmfulModal />
                                         </View>
                                     )
                                 }}

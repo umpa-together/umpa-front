@@ -3,23 +3,21 @@ import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Keyboard
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from '../FontNormalize';
-import TrackPlayer from 'react-native-track-player';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SearchContext } from '../../context/SearchContext';
 import LoadingIndicator from '../LoadingIndicator';
 import { SongImage } from '../SongImage';
 import HarmfulModal from '../../components/HarmfulModal';
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { useTrackPlayer } from '../../providers/trackPlayer';
 
 export default NewStory = ({ newStory, setNewStory }) => {
     const { postStory, getMyStory, getOtherStory } = useContext(UserContext);
     const { state: searchState, searchsong, searchinit, searchHint, initHint, songNext } = useContext(SearchContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [text, setText] = useState('');
     const [tok, setTok] = useState(false);
     const [loading, setLoading] = useState(false);
     const [selectedId, setSelectedId] = useState('');
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
 
     const getData = async () => {
         if(searchState.songData.length >= 20){
@@ -39,13 +37,12 @@ export default NewStory = ({ newStory, setNewStory }) => {
 
     const onClose = () => {
         setText('');
-        setIsPlayingid('0');
         setSelectedId('');
         setNewStory(false);
         setTok(false);
         initHint();
         searchinit();
-        TrackPlayer.reset()
+        stoptracksong()
     }
 
     const onClickCancel = () => {
@@ -73,10 +70,10 @@ export default NewStory = ({ newStory, setNewStory }) => {
     }
 
     const onClickCover = (item) => {
-        if(isPlayingid == item.id){
-            stoptracksong({ setIsPlayingid })
+        if(isPlayingId == item.id){
+            stoptracksong()
         }else{
-            addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+            addtracksong({ data: item })
         }
     }
 
@@ -100,11 +97,6 @@ export default NewStory = ({ newStory, setNewStory }) => {
         }
     }, [text]);
 
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
-    
     return (
         <Modal
             animationIn="fadeIn"
@@ -159,11 +151,11 @@ export default NewStory = ({ newStory, setNewStory }) => {
                                     >
                                         <TouchableOpacity onPress={() => onClickCover(item)}>
                                             <SongImage url={item.attributes.artwork.url} size={50} border={50}/>
-                                            { isPlayingid != item.id ? 
+                                            { isPlayingId != item.id ? 
                                             <SvgUri width='24' height='24' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> :
                                             <SvgUri width='24' height='24' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> }
                                         </TouchableOpacity>
-                                        { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }  
+                                        <HarmfulModal />
                                         <View style={styles.songBox}>
                                             <View>
                                                 <View style={selectedId !== item.id ? styles.notSelectedName : styles.selectedName}>

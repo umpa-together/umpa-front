@@ -6,21 +6,21 @@ import { Context as BoardContext } from '../../context/BoardContext'
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '.././../components/SongImage'
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+
 import Header from '../../components/Header';
 import { goBack } from '../../navigationRef';
+import { useTrackPlayer } from '../../providers/trackPlayer';
 
 const SearchMusicPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
     const { state:boardState, addSong } = useContext(BoardContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [text, setText] = useState('');
     const [musicArchiveSong, setMusicArchiveSong] = useState({});
     const { setSong, isMusicArchive } = route.params
     const [loading, setLoading] = useState(false);
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const getData = async () => {
         if(state.songData.length >= 20){
             setLoading(true);
@@ -48,10 +48,6 @@ const SearchMusicPage = ({ route }) => {
             setSong(item)
         }
     };
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     useEffect(() => {
         searchinit()
@@ -117,18 +113,18 @@ const SearchMusicPage = ({ route }) => {
                             {selectedId == item.id ? 
                             <TouchableOpacity onPress={() => setSelectedId('')} style={styles.selectedSong}>
                                 <TouchableOpacity onPress={() => {
-                                    if(isPlayingid == item.id){
-                                        stoptracksong({ setIsPlayingid })
+                                    if(isPlayingId == item.id){
+                                        stoptracksong()
                                     }else{
-                                        addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+                                        addtracksong({ data: item })
                                     }
                                 }}
                             >
                                     <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
-                                    { isPlayingid != item.id ? 
+                                    { isPlayingId != item.id ? 
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
-                                    {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                    <HarmfulModal />
                                 </TouchableOpacity>
                                 <View style={{flex: 1, flexDirection: 'row', marginRight: 26 * tmpWidth}}>
                                     <View style={styles.infoBox}>
@@ -152,17 +148,17 @@ const SearchMusicPage = ({ route }) => {
                                 selectSong({item})}}
                                 style={styles.eachSong}>
                                 <TouchableOpacity onPress={() => {
-                                    if(isPlayingid == item.id){
-                                        stoptracksong({ setIsPlayingid })
+                                    if(isPlayingId == item.id){
+                                        stoptracksong()
                                     }else{
-                                        addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+                                        addtracksong({ data: item })
                                     }}}
                                 >
                                     <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
-                                    { isPlayingid != item.id ? 
+                                    { isPlayingId != item.id ? 
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                     <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
-                                    {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                    <HarmfulModal />
                                 </TouchableOpacity>
                                 <View style={styles.infoBox}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>

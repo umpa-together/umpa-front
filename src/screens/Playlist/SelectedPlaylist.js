@@ -14,16 +14,18 @@ import DeleteModal from '../../components/DeleteModal';
 import HarmfulModal from '../../components/HarmfulModal';
 import DeletedModal from '../../components/DeletedModal';
 import { SongImage } from '../../components/SongImage'
-import { stoptracksong } from '../../components/TrackPlayer'
 import { useFocusEffect } from '@react-navigation/native';
+import { useTrackPlayer } from '../../providers/trackPlayer';
+import { useModal } from '../../providers/modal'
 
 const SelectedPlaylist = ({ route }) => {
     const { state, addComment, getreComment, addreComment, likesPlaylist, unlikesPlaylist, likescomment, 
         unlikescomment, likesrecomment, unlikesrecomment, initRecomment } = useContext(PlaylistContext);
     const { state: userState, getOtheruser, addSonginPlaylists } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-
     const { state: searchState, SearchHashtag } = useContext(SearchPlaylistContext);
+    const { stoptracksong } = useTrackPlayer()
+    const { setHarmfulModal } = useModal()
     const { playlistid } = route.params;
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [showModal, setShowModal] = useState('0');
@@ -38,7 +40,6 @@ const SelectedPlaylist = ({ route }) => {
     const [reportId, setReportId] = useState('');
     const [deleteId, setDeleteId] = useState('');
     const [hashtag, setHashtag] = useState('');
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
     const [weeklyModal, setWeeklyModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState(null);
@@ -256,7 +257,7 @@ const SelectedPlaylist = ({ route }) => {
                                     <View style={styles.songBox}>
                                         <TouchableOpacity style={styles.songCover} onPress={() => {
                                             if(isPlayingid == item.id){
-                                                stoptracksong({ setIsPlayingid })
+                                                stoptracksong()
                                             }else{
                                                 addtracksong({ data: item })
                                             }
@@ -266,7 +267,7 @@ const SelectedPlaylist = ({ route }) => {
                                             <SvgUri width='34' height='34' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
                                             <SvgUri width='34' height='34' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
                                         </TouchableOpacity>
-                                        { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        <HarmfulModal />
                                         {isPlayingid == item.id ?
                                         <TouchableOpacity style={{width: 79 * tmpWidth, height: 28 * tmpWidth, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 14 * tmpWidth, marginLeft: 9 * tmpWidth}}
                                             onPress={() => onClickMusicPlus({song: selectedSong})}

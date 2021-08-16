@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
-import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from '../../context/BoardContext';
@@ -10,23 +9,22 @@ import { navigate, push } from '../../navigationRef';
 import { tmpWidth } from '../../components/FontNormalize';
 import HarmfulModal from '../../components/HarmfulModal';
 import { SongImage } from '../../components/SongImage'
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
 import Header from '../../components/Header';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTrackPlayer } from '../../providers/trackPlayer';
 
 const MusicArchivePage = ({ route }) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    
-    const [isPlayingid, setIsPlayingid] = useState('0');
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+
     const [clickModal, setClickModal] = useState(false);
     const [like, setLike] = useState(false);
 
     const [selectedStory, setSelectedStory] = useState(undefined);
     const [selectedIdx, setSelectedIdx] =  useState(0);
     const [option, setOption] = useState('archive');
-    const [harmfulModal, setHarmfulModal] = useState(false);
     
     useFocusEffect(
         useCallback(() => {
@@ -44,20 +42,15 @@ const MusicArchivePage = ({ route }) => {
     };
     const onClose = () => {
         setClickModal(false);
-        setIsPlayingid('0');
-        TrackPlayer.reset()
+        stoptracksong()
     }
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     const storyClick = async ({item, index}) => {
         likeCheck({item})
         setClickModal(true);
         setSelectedStory(item);
         setSelectedIdx(index);
-        if(item.song.attributes.contentRating != 'explicit')    addtracksong({ data:item.song, setIsPlayingid, setHarmfulModal });
+        if(item.song.attributes.contentRating != 'explicit')    addtracksong({ data:item.song });
         await addSongView({id: item._id, boardId: state.boards._id, postUserId: item.postUserId._id});
     };
 
@@ -161,7 +154,7 @@ const MusicArchivePage = ({ route }) => {
                     <View style={{flex: 1, margin: 16 * tmpWidth}}>
                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={async () => {
                             setClickModal(false)
-                            stoptracksong({ setIsPlayingid })
+                            stoptracksong()
                             if(selectedStory.postUserId._id == userState.myInfo._id){
                                 navigate('Account');
                             }else{
@@ -190,20 +183,20 @@ const MusicArchivePage = ({ route }) => {
                                     <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                             <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
-                                if(isPlayingid == selectedStory.song.id){
-                                    stoptracksong({setIsPlayingid})
+                                if(isPlayingId == selectedStory.song.id){
+                                    stoptracksong()
                                 }else{
-                                    addtracksong({ data: selectedStory.song, setIsPlayingid, setHarmfulModal })
+                                    addtracksong({ data: selectedStory.song })
                                 }
                             }}>
                                 <View style={styles.songscover}>
                                     <SongImage play={false} url={selectedStory.song.attributes.artwork.url} size={152} border={152}/>
-                                    { isPlayingid != selectedStory.song.id ? 
+                                    { isPlayingId != selectedStory.song.id ? 
                                     <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> :
                                     <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 48 * tmpWidth, top: 48 * tmpWidth}}/> }
                                 </View>
                             </TouchableOpacity>
-                            { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal} /> : null }
+                            <HarmfulModal />
                             {(option == 'archive' && selectedIdx != state.musicArchive.length-1) ||
                                  (option == 'chart' && selectedIdx != state.musicChart.length-1) ? 
                                 <TouchableOpacity style={styles.nextIcon}

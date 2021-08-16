@@ -6,15 +6,16 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from '../context/UserContext';
 import { SongImage } from './SongImage'
 import HarmfulModal from './HarmfulModal'
-import { addtracksong, stoptracksong } from './TrackPlayer'
+import { useTrackPlayer } from '../providers/trackPlayer';
 
 const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const { state } = useContext(UserContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+
     const monthFormatter = new Intl.DateTimeFormat('en', {month: 'long'});
     const [currentDate, setCurrentDate] = useState(new Date);
     const storyDate = [];
     const [selectedStory, setSelectedStory] = useState(undefined)
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [selectedIdx, setSelectedIdx] = useState(null);
     const [monthName, setMonthName] = useState(monthFormatter.format(currentDate))
     const year = currentDate.getFullYear();
@@ -23,7 +24,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const firstWeekday = new Date(year, month, 1).getDay();
     const lastWeekday = new Date(year, month, lastDate).getDay();
     const [calendarDates, setCalendarDates] = useState()
-    const [harmfulModal, setHarmfulModal] = useState(false)
     const weekdays = [];
     for (let idx = 0; idx <= 6; idx++) {
         const matchMonth = new Date(2020, 5, idx);
@@ -40,10 +40,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
         setSelectedStory(null)
         setSelectedIdx(null)
     }
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     const changeMonth = (type) => {
         let tmpDate;
@@ -167,18 +163,18 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                   {selectedStory != undefined ? 
                   <View style={{flexDirection: 'row', paddingLeft: 24 * tmpWidth, paddingTop: 12 * tmpWidth}}>
                     <TouchableOpacity onPress={() => {
-                      if(isPlayingid == selectedStory.song.id){
-                          stoptracksong({ setIsPlayingid })
+                      if(isPlayingId == selectedStory.song.id){
+                          stoptracksong()
                       }else{
-                          addtracksong({ data: selectedStory.song, setIsPlayingid, setHarmfulModal })
+                          addtracksong({ data: selectedStory.song })
                       }
                     }}>
                         <SongImage url={selectedStory.song.attributes.artwork.url} size={120} border={120}/>
-                        { isPlayingid != selectedStory.song.id ? 
+                        { isPlayingId != selectedStory.song.id ? 
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> :
                         <SvgUri width='43' height='43' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 38.5 * tmpWidth, top: 38.5 * tmpWidth}}/> }
                     </TouchableOpacity>
-                    { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                    <HarmfulModal />
                     <View style={{justifyContent: 'center', width: 160 * tmpWidth, marginLeft: 24 * tmpWidth}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {selectedStory.song.attributes.contentRating == "explicit" ? 
