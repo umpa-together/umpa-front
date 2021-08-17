@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import serverApi from '../api/serverApi';
+import serverApi from 'api/serverApi';
 
 const reportReducer = (state, action) => {
     switch(action.type) {

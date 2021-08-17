@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { Context as NoticeContext } from '../../context/NoticeContext';
+import { Context as AuthContext } from 'context/AuthContext';
+import { Context as NoticeContext } from 'context/NoticeContext';
 import { NaverLogin } from "@react-native-seoul/naver-login";
-import { tmpWidth } from '../../components/FontNormalize';
-import { navigate } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { navigate } from 'navigationRef';
 
 export default Setting = () => {
     const { signout } = useContext(AuthContext);

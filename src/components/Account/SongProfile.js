@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
+import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
-import RepresentSong from '../RepresentSong';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage';
+import RepresentSong from 'components/RepresentSong';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage';
 import NewStory from './NewStory';
 import Story from './Story';
-import ProfileImage from '../ProfileImage';
+import ProfileImage from 'components/ProfileImage';
 
 export default SongProfile = ({ user, url, story, isMyAccount }) => {
     const { storyCalendar, storyView } = useContext(UserContext);
@@ -43,8 +43,8 @@ export default SongProfile = ({ user, url, story, isMyAccount }) => {
                 { url == '' ?
                 <TouchableOpacity onPress={onClickNewStory} style={styles.story}>
                     {isMyAccount ?
-                    <SvgUri width={68} height={68} source={require('../../assets/icons/story.svg')} /> :
-                    <SvgUri width={14*tmpWidth} height={14*tmpWidth} source={require('../../assets/icons/musicnote.svg')} /> }
+                    <SvgUri width={68} height={68} source={require('assets/icons/story.svg')} /> :
+                    <SvgUri width={14*tmpWidth} height={14*tmpWidth} source={require('assets/icons/musicnote.svg')} /> }
                 </TouchableOpacity> :
                 <TouchableOpacity onPress={onClickStory}>
                     <SongImage url={url} size={68} border={68}/>

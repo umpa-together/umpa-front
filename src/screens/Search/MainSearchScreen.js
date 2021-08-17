@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,SafeAreaView } from 'react-native';
-import { navigate } from '../../navigationRef';
+import { navigate } from 'navigationRef';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-import MainSongForm from '../../components/Search/MainSongForm';
-import MainDJForm from '../../components/Search/MainDJForm';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import MainSongForm from 'components/Search/MainSongForm';
+import MainDJForm from 'components/Search/MainDJForm';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 
-import {Context as PlaylistContext} from '../../context/PlaylistContext';
-import {Context as BoardContext} from '../../context/BoardContext';
-import {Context as NoticeContext} from '../../context/NoticeContext';
-import {Context as SearchContext} from '../../context/SearchContext';
-import {Context as CurationContext} from '../../context/CurationContext';
-import {Context as WeeklyContext} from '../../context/WeeklyContext';
-import {Context as UserContext} from '../../context/UserContext';
+import {Context as PlaylistContext} from 'context/PlaylistContext';
+import {Context as BoardContext} from 'context/BoardContext';
+import {Context as NoticeContext} from 'context/NoticeContext';
+import {Context as SearchContext} from 'context/SearchContext';
+import {Context as CurationContext} from 'context/CurationContext';
+import {Context as WeeklyContext} from 'context/WeeklyContext';
+import {Context as UserContext} from 'context/UserContext';
 
 const MainSearchScreen = () => {
     const [category, setCategory] = useState('Song');

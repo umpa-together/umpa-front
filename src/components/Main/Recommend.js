@@ -3,13 +3,13 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Text, Image, StyleSheet, View, TouchableOpacity,  ScrollView, RefreshControl, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SvgUri from 'react-native-svg-uri';
-import {Context as PlaylistContext} from '../../context/PlaylistContext';
-import {Context as UserContext} from '../../context/UserContext';
-import {Context as DJContext} from '../../context/DJContext';
-import {Context as CurationContext} from '../../context/CurationContext';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
-import RepresentSong from '../RepresentSong';
+import {Context as PlaylistContext} from 'context/PlaylistContext';
+import {Context as UserContext} from 'context/UserContext';
+import {Context as DJContext} from 'context/DJContext';
+import {Context as CurationContext} from 'context/CurationContext';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import RepresentSong from 'components/RepresentSong';
 
 const Recommend = () => {
     const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
@@ -56,10 +56,10 @@ const Recommend = () => {
                 <View style={styles.optright}>
                     {result == 'playlist' ?
                     <TouchableOpacity style={{marginRight:21.3 * tmpWidth, width:40 * tmpWidth, height:40 * tmpWidth}} onPress = {()=>navigate('Create', {'data': []})}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/postplaylist.svg')} style={{ }}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/postplaylist.svg')} style={{ }}/>
                     </TouchableOpacity> :
                     <TouchableOpacity style={{marginRight:21.3 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}}  onPress = {()=>navigate('CurationSearch')}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/curationsearch.svg')} style={{}}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/curationsearch.svg')} style={{}}/>
                     </TouchableOpacity>}
                 </View>
             </View>
@@ -121,7 +121,7 @@ const Recommend = () => {
                             }}>
                                 { item.profileImage == undefined ?
                                 <View style={styles.djProfile}>
-                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                 </View> :
                                 <Image style={styles.djProfile} source={{uri: item.profileImage}}/> }
                             </TouchableOpacity>

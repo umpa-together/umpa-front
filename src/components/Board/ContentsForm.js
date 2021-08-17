@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
+import { Context as BoardContext } from 'context/BoardContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 
 const ContentsForm = ({ Contents }) => {
     const { state, getCurrentBoard, getCurrentContent, nextContents } = useContext(BoardContext);
@@ -62,7 +62,7 @@ const ContentsForm = ({ Contents }) => {
                                     <View style={{flexDirection: 'row'}}>
                                         { item.postUserId.profileImage == undefined ?
                                         <View style={styles.profile}>
-                                           <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                           <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                         </View> :
                                         <Image style={styles.profile} source={{uri: item.postUserId.profileImage}}/> }
                                         <View style={styles.nameBox}>
@@ -77,7 +77,7 @@ const ContentsForm = ({ Contents }) => {
                                                 <View style={{width: 240 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
                                                     <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
                                                     { (item.song != null || item.song != undefined) && 
-                                                    <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/boardMusicIcon.svg')} /> }
+                                                    <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/boardMusicIcon.svg')} /> }
                                                 </View>
                                                 <View style={{width: 240 * tmpWidth}}>
                                                     <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>
@@ -94,7 +94,7 @@ const ContentsForm = ({ Contents }) => {
                                             <View style={{flexDirection: 'row', alignItems: 'center', width: item.song != null || item.song != undefined ? 300 * tmpWidth : null}}>
                                                 <Text style={styles.titleText} numberOfLines={1}>{item.title}</Text>
                                                 { item.song != null || item.song != undefined ? 
-                                                <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/boardMusicIcon.svg')} />
+                                                <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/boardMusicIcon.svg')} />
                                                 : null }
                                             </View>
                                             <Text style={styles.contentText} numberOfLines={3}>{item.content}</Text>

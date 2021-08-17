@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { tmpWidth } from '../FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { tmpWidth } from 'components/FontNormalize';
 import Modal from 'react-native-modal';
-import { push } from '../../navigationRef';
-import ProfileImage from '../ProfileImage';
+import { push } from 'navigationRef';
+import ProfileImage from 'components/ProfileImage';
 
 export default StoryViewer = ({ viewerModal, setViewerModal, setStoryModal }) => {
     const { state: userState, getOtheruser } = useContext(UserContext);

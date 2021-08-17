@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
+import { Context as UserContext } from 'context/UserContext';
 import { launchImageLibrary } from 'react-native-image-picker';
-import ProfileImage from '../ProfileImage';
-import { tmpWidth } from '../FontNormalize';
+import ProfileImage from 'components/ProfileImage';
+import { tmpWidth } from 'components/FontNormalize';
 
 export default ProfilePreview = ({ img }) => {
     const { state } = useContext(UserContext);

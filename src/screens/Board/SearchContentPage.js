@@ -2,10 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import ContentsForm from '../../components/Board/ContentsForm';
-import { tmpWidth } from '../../components/FontNormalize';
-import { goBack } from '../../navigationRef';
+import { Context as BoardContext } from 'context/BoardContext';
+import ContentsForm from 'components/Board/ContentsForm';
+import { tmpWidth } from 'components/FontNormalize';
+import { goBack } from 'navigationRef';
 
 const SearchContentPage = () => {
     const { state, getSearchContent, initSearchContent } = useContext(BoardContext);
@@ -24,7 +24,7 @@ const SearchContentPage = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.searchBox}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/boardSearch.svg')} style={{marginLeft: 8 * tmpWidth}}/>    
+                    <SvgUri width='40' height='40' source={require('assets/icons/boardSearch.svg')} style={{marginLeft: 8 * tmpWidth}}/>    
                     <TextInput
                         placeholder="게시글을 검색해주세요."
                         placeholderTextColor='rgb(196,196,196)'

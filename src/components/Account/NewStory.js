@@ -2,14 +2,14 @@ import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Keyboard, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 import TrackPlayer from 'react-native-track-player';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as SearchContext } from '../../context/SearchContext';
-import LoadingIndicator from '../LoadingIndicator';
-import { SongImage } from '../SongImage';
-import HarmfulModal from '../../components/HarmfulModal';
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { Context as UserContext } from 'context/UserContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { SongImage } from 'components/SongImage';
+import HarmfulModal from 'components/HarmfulModal';
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 
 export default NewStory = ({ newStory, setNewStory }) => {
     const { postStory, getMyStory, getOtherStory } = useContext(UserContext);
@@ -117,11 +117,11 @@ export default NewStory = ({ newStory, setNewStory }) => {
                 <View style={styles.header}>
                     <Text style={styles.title}>오늘의 곡</Text>
                     <TouchableOpacity style={styles.exit} onPress={() => onClose()}>
-                        <SvgUri source={require('../../assets/icons/modalexit.svg')} />
+                        <SvgUri source={require('assets/icons/modalexit.svg')} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.searchBox}>
-                    <SvgUri source={require('../../assets/icons/storySearch.svg')} style={styles.searchIcon} />
+                    <SvgUri source={require('assets/icons/storySearch.svg')} style={styles.searchIcon} />
                     <TextInput
                         value={text}
                         onChangeText={(text)=> onChange(text)}
@@ -136,7 +136,7 @@ export default NewStory = ({ newStory, setNewStory }) => {
                             style={styles.searchRemove}
                             onPress={onClickCancel}
                         >
-                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/cancel.svg')} />
+                            <SvgUri width='100%' height='100%' source={require('assets/icons/cancel.svg')} />
                         </TouchableOpacity>  
                 </View>
                 <View style={styles.result}>
@@ -160,14 +160,14 @@ export default NewStory = ({ newStory, setNewStory }) => {
                                         <TouchableOpacity onPress={() => onClickCover(item)}>
                                             <SongImage url={item.attributes.artwork.url} size={50} border={50}/>
                                             { isPlayingid != item.id ? 
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> :
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> }
+                                            <SvgUri width='24' height='24' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> :
+                                            <SvgUri width='24' height='24' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 13 * tmpWidth, top: 13 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }  
                                         <View style={styles.songBox}>
                                             <View>
                                                 <View style={selectedId !== item.id ? styles.notSelectedName : styles.selectedName}>
-                                                    { isExplicit && <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
+                                                    { isExplicit && <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
                                                     <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
                                                 </View>
                                                 <View style={selectedId !== item.id ? styles.notSelectedArtist : styles.selectedArtist}>

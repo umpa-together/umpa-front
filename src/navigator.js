@@ -4,57 +4,57 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import navigationRef from './navigationRef';
+import navigationRef from 'navigationRef';
 import SvgUri from 'react-native-svg-uri';
 
-import { Context as AuthContext } from './context/AuthContext';
-import { Context as UserContext } from './context/UserContext';
+import { Context as AuthContext } from 'context/AuthContext';
+import { Context as UserContext } from 'context/UserContext';
 
-import LoadingPage from './screens/LoadingPage';
+import LoadingPage from 'screens/LoadingPage';
 
-import SigninScreen from './screens/SigninScreen';
-import SignupScreen from './screens/SignupScreen';
-import Signupopt from './screens/Signupopt';
-import NoticeScreen from './screens/NoticeScreen';
+import SigninScreen from 'screens/SigninScreen';
+import SignupScreen from 'screens/SignupScreen';
+import Signupopt from 'screens/Signupopt';
+import NoticeScreen from 'screens/NoticeScreen';
 
-import CurationSearchPage from './screens/Curation/CurationSearchPage';
-import SelectedCuration from './screens/Curation/SelectedCuration';
+import CurationSearchPage from 'screens/Curation/CurationSearchPage';
+import SelectedCuration from 'screens/Curation/SelectedCuration';
 
-import AccountScreen from './screens/Account/MyAccountScreen';
-import OtherAccount from './screens/Account/OtherAccount';
-import FollowPage from './screens/Account/FollowPage';
-import ProfileEditPage from './screens/Account/ProfileEditPage';
-import SettingPage from './screens/Account/SettingPage';
-import SongEditPage from './screens/Account/SongEditPage';
-import FeedBackPage from './screens/Account/FeedbackPage';
-import InformationUsePage from './screens/Account/InformationUsePage';
-import MusicBoxScreen from './screens/Account/MusicBoxScreen'
+import AccountScreen from 'screens/Account/MyAccountScreen';
+import OtherAccount from 'screens/Account/OtherAccount';
+import FollowPage from 'screens/Account/FollowPage';
+import ProfileEditPage from 'screens/Account/ProfileEditPage';
+import SettingPage from 'screens/Account/SettingPage';
+import SongEditPage from 'screens/Account/SongEditPage';
+import FeedBackPage from 'screens/Account/FeedbackPage';
+import InformationUsePage from 'screens/Account/InformationUsePage';
+import MusicBoxScreen from 'screens/Account/MusicBoxScreen'
 
-import MainPage from './screens/MainPage';
-import SearchSongPage from './screens/Playlist/SearchSongPage';
-import CreatePlayListPage from './screens/Playlist/CreatePlayListPage';
-import SelectedPlaylist from './screens/Playlist/SelectedPlaylist';
+import MainPage from 'screens/MainPage';
+import SearchSongPage from 'screens/Playlist/SearchSongPage';
+import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
+import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
 
-import FreeBoardPage from './screens/Board/FreeBoardPage';
-import SearchBoardPage from './screens/Board/SearchBoardPage';
-import CreateBoardPage from './screens/Board/CreateBoardPage';
-import SelectedBoardPage from './screens/Board/SelectedBoardPage';
-import CreateContentPage from './screens/Board/CreateContentPage';
-import SelectedContentPage from './screens/Board/SelectedContentPage';
-import MyContentsPage from './screens/Board/MyContentsPage';
-import SearchContentPage from './screens/Board/SearchContentPage';
-import MusicArchivePage from './screens/Board/MusicArchivePage';
-import SearchMusicPage from './screens/Board/SearchMusicPage';
-import MySharedSongsPage from './screens/Board/MySharedSongsPage';
+import FreeBoardPage from 'screens/Board/FreeBoardPage';
+import SearchBoardPage from 'screens/Board/SearchBoardPage';
+import CreateBoardPage from 'screens/Board/CreateBoardPage';
+import SelectedBoardPage from 'screens/Board/SelectedBoardPage';
+import CreateContentPage from 'screens/Board/CreateContentPage';
+import SelectedContentPage from 'screens/Board/SelectedContentPage';
+import MyContentsPage from 'screens/Board/MyContentsPage';
+import SearchContentPage from 'screens/Board/SearchContentPage';
+import MusicArchivePage from 'screens/Board/MusicArchivePage';
+import SearchMusicPage from 'screens/Board/SearchMusicPage';
+import MySharedSongsPage from 'screens/Board/MySharedSongsPage';
 
-import MainSearchScreen from './screens/Search/MainSearchScreen';
-import SearchScreen from './screens/Search/SearchScreen';
-import SearchResultScreen from './screens/Search/SearchResultScreen';
-import SelectedSongScreen from './screens/Search/SelectedSongScreen';
-import SelectedHashtagScreen from './screens/Search/SelectedHashtagScreen';
-import AllContentsScreen from './screens/Search/AllContentsScreen';
+import MainSearchScreen from 'screens/Search/MainSearchScreen';
+import SearchScreen from 'screens/Search/SearchScreen';
+import SearchResultScreen from 'screens/Search/SearchResultScreen';
+import SelectedSongScreen from 'screens/Search/SelectedSongScreen';
+import SelectedHashtagScreen from 'screens/Search/SelectedHashtagScreen';
+import AllContentsScreen from 'screens/Search/AllContentsScreen';
 
-import CreateModal from './components/CreateModal';
+import CreateModal from 'components/CreateModal';
 
 const LoginStack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -82,16 +82,16 @@ const TabScreen = () => {
                     return (
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabFocusedHome.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabHome.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedHome.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabHome.svg')} /> }
                         </View>
                     )
                 } else if (route.name === 'FeedTab') {
                     return (
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabFocusedSearch.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabSearch.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedSearch.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabSearch.svg')} /> }
                         </View>
                     )
                 } else if (route.name === 'BoardTab') {
@@ -104,16 +104,16 @@ const TabScreen = () => {
                     return (
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabFocusedNotice.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabNotice.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedNotice.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabNotice.svg')} /> }
                         </View>
                     )
                 } else if (route.name === 'AccountTab') {
                     return ( 
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabFocusedAccount.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('./assets/icons/tabAccount.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedAccount.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabAccount.svg')} /> }
                         </View>
                     )
                 }

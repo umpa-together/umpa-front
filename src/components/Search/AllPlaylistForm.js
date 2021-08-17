@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
-import { tmpWidth } from '../FontNormalize';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { push } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { push } from 'navigationRef';
 
 const AllPlaylistForm = () => {
     const { state, getPlaylist, nextAllPlaylists, getAllPlaylists} = useContext(PlaylistContext)

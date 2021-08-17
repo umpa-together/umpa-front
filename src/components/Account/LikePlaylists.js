@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { tmpWidth } from '../../components/FontNormalize';
-import LoadingIndicator from '../LoadingIndicator';
-import { push } from '../../navigationRef';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { tmpWidth } from 'components/FontNormalize';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { push } from 'navigationRef';
 
 export default LikePlaylists = () => {
     const { state, getLikePlaylists } = useContext(UserContext);

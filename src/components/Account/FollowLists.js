@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext'
-import { Context as DJContext } from '../../context/DJContext'
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import ProfileImage from '../ProfileImage';
+import { Context as UserContext } from 'context/UserContext'
+import { Context as DJContext } from 'context/DJContext'
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import ProfileImage from 'components/ProfileImage';
 
 export default FollowLists = ({ result }) => {
     const { state, getOtheruser, follow, unfollow, getMyInfo } = useContext(UserContext);

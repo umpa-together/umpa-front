@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
 import RecommentDetail from './RecommentDetail';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
-import ReportModal from '../ReportModal';
-import DeleteModal from '../DeleteModal';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import ReportModal from 'components/ReportModal';
+import DeleteModal from 'components/DeleteModal';
 
 const CommentDetail = ({inputRef, setRecomment, setCommentId}) => {
     const { state, likeComment, unlikeComment, nextComments } = useContext(BoardContext);
@@ -56,7 +56,7 @@ const CommentDetail = ({inputRef, setRecomment, setCommentId}) => {
                                     }}>
                                     { item.postUserId.profileImage == undefined ?
                                     <View style={styles.profile}>
-                                       <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                       <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                     </View> :
                                     <Image style={styles.profile} source={{uri: item.postUserId.profileImage}} /> }
                                     </TouchableOpacity>
@@ -105,7 +105,7 @@ const CommentDetail = ({inputRef, setRecomment, setCommentId}) => {
                             <View style={styles.commentBox}>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={styles.profile}>
-                                       <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                       <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                     </View>
                                     <View style={{marginLeft: 20 * tmpWidth}}>
                                         <Text style={{fontSize: 12 * tmpWidth}}>(삭제)</Text>

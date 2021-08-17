@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 
 export default FollowOption = ({ type, setType, user }) => {
     return (

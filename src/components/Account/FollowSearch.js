@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 
 export default FollowSearch = ({ type, setResult, user }) => {
     const [text, setText] = useState('');
@@ -23,7 +23,7 @@ export default FollowSearch = ({ type, setResult, user }) => {
         <View style={styles.container}>
             <View style={styles.searchBox}>
                 <View style={styles.rowContainer}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/search.svg')} style={styles.icon}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/search.svg')} style={styles.icon}/>
                     <TextInput
                         style={styles.textArea}
                         value={text}
@@ -35,7 +35,7 @@ export default FollowSearch = ({ type, setResult, user }) => {
                     />
                 </View>
                 <TouchableOpacity style={styles.icon}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/resultDelete.svg')}/>
                 </TouchableOpacity>
             </View>
         </View>

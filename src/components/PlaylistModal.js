@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as UserContext } from '../context/UserContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
 
 const AddPlaylistModal = ({ addPlaylistModal, setAddPlaylistModal, song }) => {
     const { addSonginPlaylists } = useContext(UserContext)

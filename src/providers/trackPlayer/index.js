@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { useModal } from '../modal';
+import { useModal } from 'providers/modal';
 import TrackPlayer from 'react-native-track-player';
 
 const TrackPlayerContext = createContext(null)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import { tmpWidth } from '../FontNormalize'
+import { tmpWidth } from 'components/FontNormalize'
 
 export default Menu = ({ user, menu, setMenu }) => {
     const onClickPlaylist = () => {

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
-import MyContentForm from '../../components/Board/MyContentForm'
-import { NavHeader } from '../../components/Header';
+import { Context as UserContext } from 'context/UserContext';
+import MyContentForm from 'components/Board/MyContentForm'
+import { NavHeader } from 'components/Header';
 
 const MyContentsPage = ({ route }) => {
     const { state } = useContext(UserContext);

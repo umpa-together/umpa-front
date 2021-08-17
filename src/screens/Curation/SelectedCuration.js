@@ -1,18 +1,18 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView,Keyboard, StyleSheet,ActivityIndicator ,TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { navigate, goBack, push } from '../../navigationRef';
+import { Context as CurationContext } from 'context/CurationContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { navigate, goBack, push } from 'navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 
-import { tmpWidth } from '../../components/FontNormalize';
-import ReportModal from '../../components/ReportModal';
-import DeleteModal from '../../components/DeleteModal';
-import HarmfulModal from '../../components/HarmfulModal';
-import { SongImage, SongImageBack } from '../../components/SongImage'
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { tmpWidth } from 'components/FontNormalize';
+import ReportModal from 'components/ReportModal';
+import DeleteModal from 'components/DeleteModal';
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage, SongImageBack } from 'components/SongImage'
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 import { useFocusEffect } from '@react-navigation/native';
 
 const SelectedCuration = ({ route }) => {
@@ -99,7 +99,7 @@ const SelectedCuration = ({ route }) => {
                     </View>
                     <View style={styles.back}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 12 * tmpWidth}} onPress={goBack}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/playlistBack.svg')}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{marginTop:27 * tmpWidth, flex:1, justifyContent: 'center', alignItems: 'center'}}>
@@ -113,8 +113,8 @@ const SelectedCuration = ({ route }) => {
                         }}>
                             <SongImage url={currentCuration.object.attributes.artwork.url} size={160} border={160} />
                             { isPlayingid != currentCuration.object.id ? 
-                            <SvgUri width='60' height='60' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> :
-                            <SvgUri width='60' height='60' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> }
+                            <SvgUri width='60' height='60' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> :
+                            <SvgUri width='60' height='60' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> }
                         </TouchableOpacity> :
                         <SongImage url={currentCuration.object.artwork.url} size={160} border={160} /> }
                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
@@ -124,7 +124,7 @@ const SelectedCuration = ({ route }) => {
                         <View style={{alignItems:'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
                                 {currentCuration.object.attributes.contentRating == "explicit" ? 
-                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
+                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
                                 : null }
                                 <Text style={{color : 'black' , fontSize : 18 * tmpWidth, marginTop:16 * tmpWidth }} numberOfLines={1}>{currentCuration.object.attributes.name}</Text>
                             </View>
@@ -135,7 +135,7 @@ const SelectedCuration = ({ route }) => {
                         <View style={{alignItems:'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', width: 280 * tmpWidth, justifyContent: 'center'}}>
                                 {currentCuration.object.contentRating == "explicit" ? 
-                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
+                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginTop:16 * tmpWidth}}/> 
                                 : null }
                                 <Text style={{color : 'black' , fontSize : 18 * tmpWidth ,marginTop:16 * tmpWidth}} numberOfLines={1}>{currentCuration.object.albumName}</Text>
                             </View>
@@ -164,7 +164,7 @@ const SelectedCuration = ({ route }) => {
                                     setPostModal(true)
                             }}
                                 style={{alignItems:'flex-end', justifyContent:'flex-end',width:40 * tmpWidth, height:40 * tmpWidth,}}>
-                                <SvgUri width='40' height='40' source={require('../../assets/icons/curationwrite.svg')}/>
+                                <SvgUri width='40' height='40' source={require('assets/icons/curationwrite.svg')}/>
                             </TouchableOpacity> }
                         </View>
                     </View>
@@ -208,14 +208,14 @@ const SelectedCuration = ({ route }) => {
                                             >
                                                 {item.postUserId.profileImage == null || item.postUserId.profileImage == undefined ?
                                                 <View style={styles.profileImage}>
-                                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                 </View> : <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }}source={{uri: item.postUserId.profileImage}} /> }
                                             </TouchableOpacity>
                                             <View>
                                                 <View style={{ flexDirection:'row', marginTop:12 * tmpWidth }}>
                                                     <View style={{flexDirection:'row',alignItems:'center', width: 200 * tmpWidth}}>
                                                         <Text numberOfLines={1} style={{fontSize:13 * tmpWidth,marginLeft:11 * tmpWidth, fontWeight: '500'}}>{item.postUserId.name}</Text>
-                                                        {item.hidden && <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/> }
+                                                        {item.hidden && <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/locked.svg')}/> }
                                                     </View>
                                                     <View style={{ alignItems:'center', marginLeft:18*tmpWidth, flexDirection:'row'}}>
                                                         { item.hidden ? null :
@@ -230,8 +230,8 @@ const SelectedCuration = ({ route }) => {
                                                             }}
                                                         >
                                                             { item.likes.includes(userState.myInfo._id) ?
-                                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/curationheartfilled.svg')}/> : 
-                                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/curationheart.svg')}/> }
+                                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/curationheartfilled.svg')}/> : 
+                                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/curationheart.svg')}/> }
                                                         </TouchableOpacity> }
                                                         {item.likes.length != 0 && <Text style={{fontSize:13 * tmpWidth, color:'rgb(115,115,115)'}}>{item.likes.length}</Text> }
                                                     </View>
@@ -276,7 +276,7 @@ const SelectedCuration = ({ route }) => {
                                     >
                                         { selectedCuration.postUserId.profileImage == null || selectedCuration.postUserId.profileImage == undefined ?
                                         <View style={styles.profileImage}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                            <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                         </View> :
                                         <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: selectedCuration.postUserId.profileImage}} ></Image> }
                                     </TouchableOpacity>
@@ -326,13 +326,13 @@ const SelectedCuration = ({ route }) => {
                                         <TouchableOpacity style={{width:32 * tmpWidth, height:32 * tmpWidth}}>
                                             {state.mycurationpost.postUserId.profileImage == null || state.mycurationpost.postUserId.profileImage==undefined ?
                                             <View style={styles.profileImage}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                             </View> : <Image style={{width:'100%', height:'100%', borderRadius:32 }}source={{uri: state.mycurationpost.postUserId.profileImage}}/> }
                                         </TouchableOpacity>
                                         <View style={{width:150 * tmpWidth, alignItems:'center', flexDirection:'row'}}>
                                             <Text numberOfLines ={1} style={{marginLeft:12 * tmpWidth}}>{state.mycurationpost.postUserId.name}</Text>
                                             { state.mycurationpost.hidden &&
-                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/locked.svg')}/> }
+                                            <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/locked.svg')}/> }
                                         </View>
                                         <View style={{marginLeft:10, width:70 * tmpWidth,height:20 * tmpWidth, flexDirection:'row', alignItems: 'center'}}>
                                             <TouchableOpacity onPress={()=> {
@@ -383,7 +383,7 @@ const SelectedCuration = ({ route }) => {
                                     <View style={styles.postheader}>
                                         <Text style={{marginBottom:10 * tmpWidth, fontSize:16 * tmpWidth}}>큐레이션 쓰기</Text>
                                         <TouchableOpacity onPress={()=>{setPostModal(false); setText('');}} style={styles.modalexit2}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/invalidName.svg')}/>
+                                            <SvgUri width='100%' height='100%' source={require('assets/icons/invalidName.svg')}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style ={styles.posttextbox}>
@@ -404,7 +404,7 @@ const SelectedCuration = ({ route }) => {
                                             <Text style={{marginTop:8 * tmpWidth, fontSize:14 * tmpWidth, color:'rgb(79,79,79)'}}>비밀글</Text>
                                             {hidden ?
                                             <TouchableOpacity onPress={()=>setHidden(false)} style={{width:14 * tmpWidth, height:14 * tmpWidth,backgroundColor:'rgb(168,192,239)', marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, }}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/invalidName.svg')}/>
+                                                <SvgUri width='100%' height='100%' source={require('assets/icons/invalidName.svg')}/>
                                             </TouchableOpacity> :
                                             <TouchableOpacity onPress={()=>{setHidden(true); }}  style={{width:14 * tmpWidth, height:14 * tmpWidth,marginTop:9 * tmpWidth, marginLeft:7 * tmpWidth, borderWidth:0.5 * tmpWidth}}>
                                             </TouchableOpacity> }                       
@@ -468,7 +468,7 @@ const SelectedCuration = ({ route }) => {
                                         >
                                             { commentitem.postUserId.profileImage == null || commentitem.postUserId.profileImage == undefined ?                            
                                             <View style={styles.profileImage}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                             </View> :
                                             <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: commentitem.postUserId.profileImage}} ></Image> }
                                         </TouchableOpacity>
@@ -536,7 +536,7 @@ const SelectedCuration = ({ route }) => {
                                                         >
                                                             { item.postUserId.profileImage == null || item.postUserId.profileImage == undefined ?                                 
                                                             <View style={styles.profileImage}>
-                                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                             </View> :
                                                             <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: item.postUserId.profileImage}} ></Image> }
                                                         </TouchableOpacity>
@@ -571,7 +571,7 @@ const SelectedCuration = ({ route }) => {
                                         <View style={styles.curationpostuser3}> 
                                             { userState.myInfo.profileImage == null || userState.myInfo.profileImage == undefined ?                                              
                                             <View style={styles.profileImage}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                             </View> :
                                             <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }} source={{uri: userState.myInfo.profileImage}} ></Image> }
                                         </View>        

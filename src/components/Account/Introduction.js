@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { tmpWidth } from '../FontNormalize'
+import { tmpWidth } from 'components/FontNormalize'
 
 export default Introduction = ({ user }) => {
     return (

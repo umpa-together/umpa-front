@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage';
+import { Context as UserContext } from 'context/UserContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage';
 import SvgUri from 'react-native-svg-uri';
-import LoadingIndicator from '../LoadingIndicator';
-import { addtracksong, stoptracksong } from '../TrackPlayer';
-import { DeletePlaylistModal } from '../PlaylistModal';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { addtracksong, stoptracksong } from 'components/TrackPlayer';
+import { DeletePlaylistModal } from 'components/PlaylistModal';
 
 export default AddedSongLists = () => {
     const { state, getMyInfo } = useContext(UserContext);
@@ -79,15 +79,15 @@ export default AddedSongLists = () => {
                             <TouchableOpacity onPress={() => onClickSongCover(item)}>
                                 <SongImage url={item.attributes.artwork.url} size={56} border={56} />
                                 { isPlayingid != item.id ? 
-                                <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
-                                <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
+                                <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
+                                <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
                                 {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
                             </TouchableOpacity>
                             <View style={styles.textBox}>
                                 <View style={styles.flexRowContainer}>
                                     <View style={styles.song}>
                                         {item.attributes.contentRating == "explicit" && 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit}/> }
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
                                         <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
                                     </View>
                                 </View>

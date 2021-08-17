@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../../components/Header';
-import FeedBack from '../../components/Account/FeedBack';
+import FeedBack from 'components/Account/FeedBack';
+import Header from 'components/Header';
 
 const FeedBackPage = () => {
     return (

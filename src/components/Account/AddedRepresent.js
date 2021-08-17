@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
+import { Context as SearchContext } from 'context/SearchContext'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage'
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
 export default AddedRepresent = ({ isEdit, songs, setSong, setIsEdit, setOrderModal }) => {
     const { state } = useContext(SearchContext);
@@ -69,7 +69,7 @@ export default AddedRepresent = ({ isEdit, songs, setSong, setIsEdit, setOrderMo
                                 <View style={styles.infoContainer}>
                                     <View style={styles.flexRow}>
                                         {item.attributes.contentRating == "explicit" &&
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit}/> }
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
                                         <Text style={styles.song} numberOfLines={1}>{song}</Text>
                                     </View>
                                     <Text style={styles.artist} numberOfLines={1}>{artist}</Text>
@@ -78,7 +78,7 @@ export default AddedRepresent = ({ isEdit, songs, setSong, setIsEdit, setOrderMo
                                     style={styles.delete}
                                     onPress={() => onClickDelete(item)}
                                 >
-                                    <SvgUri width={11*tmpWidth} height={11*tmpWidth} source={require('../../assets/icons/songdelete.svg')} /> 
+                                    <SvgUri width={11*tmpWidth} height={11*tmpWidth} source={require('assets/icons/songdelete.svg')} /> 
                                 </TouchableOpacity>
                             </View>
                         </Swipeable>

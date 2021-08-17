@@ -1,10 +1,10 @@
 import React,{useContext} from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import { Context as WeeklyContext } from '../../context/WeeklyContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { Context as WeeklyContext } from 'context/WeeklyContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 
 const MainDJForm = () => {
@@ -35,7 +35,7 @@ const MainDJForm = () => {
                                 }}>
                                 {item.profileImage == undefined ?
                                 <View style={styles.noprofile}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                 </View>
                                 :
                                 <Image source={{uri: item.profileImage}} style={styles.profile}/> }

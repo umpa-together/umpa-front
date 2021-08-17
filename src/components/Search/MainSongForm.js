@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Animated, ActivityIndicator } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext';
-import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { Context as WeeklyContext } from '../../context/WeeklyContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as CurationContext } from '../../context/CurationContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
+import { Context as WeeklyContext } from 'context/WeeklyContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as CurationContext } from 'context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-import { SongImage } from '../SongImage'
+import { SongImage } from 'components/SongImage'
 import { useFocusEffect } from '@react-navigation/native';
 
 const MainSongForm = () => {
@@ -68,7 +68,7 @@ const MainSongForm = () => {
                                         <View style={styles.playlistprofile}>
                                             {item.postUserId.profileImage == null ?
                                             <View style={{width:20 * tmpWidth, height:20 * tmpWidth, borderRadius:12 * tmpWidth, backgroundColor:'#fff'}}>
-                                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
 
                                             </View>
                                              :
@@ -135,7 +135,7 @@ const MainSongForm = () => {
                 <View style={styles.hashtag}>
                     <Text style={{fontSize: 16 * tmpWidth, color:'rgb(80,80,80)'}}>지금 뜨는 해시태그</Text>
                     <TouchableOpacity onPress={() => currentHashtag()}>
-                        <SvgUri width={25 * tmpWidth} height={25 * tmpWidth} source={require('../../assets/icons/refresh.svg')} style={{marginLeft:4 * tmpWidth}} />
+                        <SvgUri width={25 * tmpWidth} height={25 * tmpWidth} source={require('assets/icons/refresh.svg')} style={{marginLeft:4 * tmpWidth}} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.hashtagitem}>

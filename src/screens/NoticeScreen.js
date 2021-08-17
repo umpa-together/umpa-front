@@ -1,20 +1,19 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Context as NoticeContext } from '../context/NoticeContext';
-import { Context as PlaylistContext } from '../context/PlaylistContext';
-import { Context as UserContext } from '../context/UserContext';
-import { Context as DJContext } from '../context/DJContext';
-import { Context as CurationContext } from '../context/CurationContext';
-import { Context as BoardContext } from '../context/BoardContext';
-import TrackPlayer from 'react-native-track-player';
-import PlaylistNoticeForm from '../components/Notice/PlaylistNoticeForm';
-import BoardNoticeForm from '../components/Notice/BoardNoticeForm';
-import CurationNoticeForm from '../components/Notice/CurationNoticeForm';
-import UserNoticeForm from '../components/Notice/UserNoticeForm';
-import { navigate, push } from '../navigationRef';
-import { tmpWidth } from '../components/FontNormalize';
+import { Context as NoticeContext } from 'context/NoticeContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { Context as CurationContext } from 'context/CurationContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import PlaylistNoticeForm from 'components/Notice/PlaylistNoticeForm';
+import BoardNoticeForm from 'components/Notice/BoardNoticeForm';
+import CurationNoticeForm from 'components/Notice/CurationNoticeForm';
+import UserNoticeForm from 'components/Notice/UserNoticeForm';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import { useFocusEffect } from '@react-navigation/native';
-import { NavHeader } from '../components/Header';
+import { NavHeader } from 'components/Header';
 
 const NoticeScreen = () => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);

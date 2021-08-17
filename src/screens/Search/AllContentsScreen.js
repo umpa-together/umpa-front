@@ -1,17 +1,17 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { tmpWidth } from '../../components/FontNormalize';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import AllPlaylistForm from '../../components/Search/AllPlaylistForm';
-import AllCurationForm from '../../components/Search/AllCurationForm';
-import { goBack } from '../../navigationRef';
+import AllPlaylistForm from 'components/Search/AllPlaylistForm';
+import AllCurationForm from 'components/Search/AllCurationForm';
+import { goBack } from 'navigationRef';
 const AllContentsScreen = ({ route }) => {
     const { type } = route.params
     return (
         <View style={styles.container}> 
             <View style={styles.headerContainer}>
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={goBack}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
+                    <SvgUri width='40' height='40' source={require('assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <View style={{paddingTop: 10 * tmpWidth}}>
                     <Text style={{fontSize: 16 * tmpWidth, fontWeight: '400'}} numberOfLines={1}>{type} 둘러보기</Text>

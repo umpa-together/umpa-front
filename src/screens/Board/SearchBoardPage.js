@@ -2,9 +2,9 @@ import React, { useCallback, useState, useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, TextInput, FlatList, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { navigate, goBack } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
+import { Context as BoardContext } from 'context/BoardContext';
+import { navigate, goBack } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import { useFocusEffect } from '@react-navigation/native';
 
 const SearchBoardPage = () => {
@@ -30,7 +30,7 @@ const SearchBoardPage = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.searchBox}>
-                <SvgUri width='40' height='40' source={require('../../assets/icons/boardSearch.svg')} style={{marginLeft: 8}}/> 
+                <SvgUri width='40' height='40' source={require('assets/icons/boardSearch.svg')} style={{marginLeft: 8}}/> 
                     <TextInput
                         placeholder="게시판을 검색해주세요."
                         placeholderTextColor='rgb(196,196,196)'

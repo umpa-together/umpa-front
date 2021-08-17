@@ -1,16 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Image,StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
-import { Context as AuthContext } from '../context/AuthContext';
-import { navigate } from '../navigationRef';
-import { tmpWidth } from '../components/FontNormalize';
+import { View, Image,StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { Context as AuthContext } from 'context/AuthContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, {KAKAO_AUTH_TYPES} from '@react-native-seoul/kakao-login';
 import { NaverLogin } from "@react-native-seoul/naver-login";
 import appleAuth from '@invertase/react-native-apple-authentication';
 import SvgUri from 'react-native-svg-uri';
 import jwtDecode from 'jwt-decode';
-import * as config from '../config'
-import Header from '../components/Header';
+import * as config from 'config'
+import Header from 'components/Header';
 
 const Signupopt = () => {
     const { getGoogleInfo, getKakaoInfo, getNaverInfo,getAppleInfo } = useContext(AuthContext);
@@ -80,13 +80,13 @@ const Signupopt = () => {
                 <Header title="회원가입"/>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/logo.png')} />
                     </View>
                 </View>
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity style={styles.signupbutton} onPress={() => navigate('Signup', { email: '', isSNS: false })}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <SvgUri width= '145' height='40' source={require('../assets/icons/email.svg')}/>
+                            <SvgUri width= '145' height='40' source={require('assets/icons/email.svg')}/>
                         </View>
                     </TouchableOpacity>
                     <View style={{width:375 * tmpWidth, height:14 * tmpWidth, justifyContent:'center', alignItems:'center', flexDirection: 'row',marginTop: 25 * tmpWidth,}}>
@@ -94,16 +94,16 @@ const Signupopt = () => {
                     </View>
                     <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:11 * tmpWidth, flexDirection:'row'}}>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/google.png')} />
                         </TouchableOpacity>       
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/naver.png')} />
                           </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => kakaoLogin()}>
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/kakao.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/kakao.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
-                                <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/apple.png')} />
+                                <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/apple.png')} />
                         </TouchableOpacity>  
                     </View>
                 </View>

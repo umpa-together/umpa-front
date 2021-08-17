@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import Header from '../../components/Header';
-import LikePlaylists from '../../components/Account/LikePlaylists';
-import AddedSongLists from '../../components/Account/AddedSongLists';
+import Header from 'components/Header';
+import LikePlaylists from 'components/Account/LikePlaylists';
+import AddedSongLists from 'components/Account/AddedSongLists';
 
 const MusicBoxScreen = ({ route }) => {
     const { title } = route.params

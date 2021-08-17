@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import {Text, View, StyleSheet,TextInput, Keyboard, SafeAreaView, FlatList, Image ,} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Context as SearchContext } from '../../context/SearchContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 
-import { navigate, goBack, push } from '../../navigationRef';
+import { navigate, goBack, push } from 'navigationRef';
 
 import SearchResultScreen from './SearchResultScreen';
 
@@ -48,11 +48,11 @@ const SearchScreen = ({ route }) => {
     <SafeAreaView style={{backgroundColor:"#fff"}}>
             <View style={styles.input}>
                 <TouchableOpacity onPress={goBack} style={ styles.backbutton}>
-                       <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
+                       <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('assets/icons/back.svg')} />
                 </TouchableOpacity>
                 <View style={styles.inputbox}>
                     <View style={styles.inputboxicon}>
-                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../../assets/icons/search.svg')} />
+                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('assets/icons/search.svg')} />
                     </View>
                     <TextInput style={styles.inputboxtextinput}
                         value = {text}
@@ -74,7 +74,7 @@ const SearchScreen = ({ route }) => {
                         placeholderTextColor ="#999"
                     />
                     <TouchableOpacity onPress={() => {setKey(false); setText(''); Keyboard.dismiss();}} style={styles.inputboxcancel}>
-                       <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/cancel.svg')} />
+                       <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/cancel.svg')} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -127,7 +127,7 @@ const SearchScreen = ({ route }) => {
                                         <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
                                             </View>
                                             <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                                 <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                                 <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('assets/icons/leftup.svg')} />
 
                                             </View>
                                     </TouchableOpacity>
@@ -156,7 +156,7 @@ const SearchScreen = ({ route }) => {
                                         <Text style={{fontSize:16 * tmpWidth}}>{'# ' + item.hashtag}</Text>
                                         </View>
                                         <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('assets/icons/leftup.svg')} />
 
                                         </View>
                                     </TouchableOpacity>
@@ -250,7 +250,7 @@ const SearchScreen = ({ route }) => {
                                         <Text style={{fontSize:16 * tmpWidth}}>{item}</Text>
                                         </View>
                                         <View style={{width:32 * tmpWidth, height:32 * tmpWidth,}}>
-                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('../../assets/icons/leftup.svg')} />
+                                             <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('assets/icons/leftup.svg')} />
 
                                         </View>
                                     </TouchableOpacity>
@@ -284,7 +284,7 @@ const SearchScreen = ({ route }) => {
                             }}>
                                 {item.profileImage == undefined ?
                                 <View style={styles.profileImage}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                 </View>:
                                     <Image source={{uri: item.profileImage}} style={styles.profileImage}/>
                                 }

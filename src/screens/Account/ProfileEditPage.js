@@ -1,12 +1,12 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { tmpWidth } from '../../components/FontNormalize';
-import Header from '../../components/Header';
-import { goBack } from '../../navigationRef';
-import ProfilePreview from '../../components/Account/ProfilePreview';
-import ProfileEdit from '../../components/Account/ProfileEdit';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as AuthContext } from 'context/AuthContext';
+import { tmpWidth } from 'components/FontNormalize';
+import Header from 'components/Header';
+import { goBack } from 'navigationRef';
+import ProfilePreview from 'components/Account/ProfilePreview';
+import ProfileEdit from 'components/Account/ProfileEdit';
 
 const ProfileEditPage = () => {
     const { state: authState, checkName } = useContext(AuthContext);

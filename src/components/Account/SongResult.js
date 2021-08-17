@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
-import HarmfulModal from '../HarmfulModal';
-import { addtracksong, stoptracksong } from '../TrackPlayer'
-import { SongImage } from '../SongImage'
+import { Context as SearchContext } from 'context/SearchContext'
+import HarmfulModal from 'components/HarmfulModal';
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize'
+import { tmpWidth } from 'components/FontNormalize'
 
 export default SongResult = ({ songs, setSong }) => {
     const { state, songNext } = useContext(SearchContext);
@@ -81,14 +81,14 @@ export default SongResult = ({ songs, setSong }) => {
                         <TouchableOpacity onPress={() => onClickCover(item)}>
                             <SongImage url={imgUrl} size={56} border={56}/>
                             { isPlayingid != item.id ? 
-                            <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
-                            <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
+                            <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
+                            <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
                             {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
                         </TouchableOpacity>
                         <View style={styles.infoContainer}>
                             <View style={styles.flexRow}>
                                 { item.attributes.contentRating == "explicit" &&
-                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit}/> }
+                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
                                 <Text style={styles.song} numberOfLines={1}>{item.attributes.name}</Text>
                             </View>
                             <Text style={styles.artist} numberOfLines={1}>{item.attributes.artistName}</Text>

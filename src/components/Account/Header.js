@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { tmpWidth } from '../FontNormalize'
+import { tmpWidth } from 'components/FontNormalize'
 import SvgUri from 'react-native-svg-uri';
-import { navigate, goBack } from '../../navigationRef';
-import ReportModal from '../../components/ReportModal';
-import MusicBoxModal from '../../components/MusicBoxModal';
+import { navigate, goBack } from 'navigationRef';
+import ReportModal from 'components/ReportModal';
+import MusicBoxModal from 'components/MusicBoxModal';
 
 export default Header = ({ user, isMyAccount }) => {
     const [reportModal, setReportModal] = useState(false);
@@ -15,17 +15,17 @@ export default Header = ({ user, isMyAccount }) => {
             {isMyAccount ? 
             <>
                 <TouchableOpacity style={styles.leftOption} onPress={() => setMusicBoxModal(true)}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/musicBox.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/musicBox.svg')}/>
                 </TouchableOpacity>
                 <Text style={styles.name}>{user.name}</Text>
                 <TouchableOpacity style={styles.rightOption} onPress={() => navigate('Setting')}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/setting.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/setting.svg')}/>
                 </TouchableOpacity>
                 { musicBoxModal && <MusicBoxModal musicBoxModal={musicBoxModal} setMusicBoxModal={setMusicBoxModal} /> }
             </> : 
             <>
                 <TouchableOpacity style={styles.leftOption} onPress={goBack}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <Text style={styles.name}>{user.name}</Text>
                 <TouchableOpacity style={styles.reportOption} onPress={() => setReportModal(true)}>

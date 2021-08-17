@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as UserContext } from '../context/UserContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from '../navigationRef';
+import { navigate } from 'navigationRef';
 
 const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
     const { getLikePlaylists } = useContext(UserContext);
@@ -32,20 +32,20 @@ const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
                     <Text style={styles.titleText}>보관함</Text>
                 </View>
                 <TouchableOpacity  style={styles.exitIcon} onPress={onClose}>
-                    <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/modalexit.svg')}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.itemContainer} onPress={onClickSong}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/musicBoxSong.svg')}/>
+                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/musicBoxSong.svg')}/>
                     <Text style={styles.itemText}>담은 곡</Text>
                     <View style={styles.nextIcon}>
-                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/musicBoxNext.svg')}/>
+                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('assets/icons/musicBoxNext.svg')}/>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.itemContainer} onPress={onClickPlaylist}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/musicBoxPlaylist.svg')}/>
+                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/musicBoxPlaylist.svg')}/>
                     <Text style={styles.itemText}>좋아요한 플레이리스트</Text>
                     <View style={styles.nextIcon}>
-                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/musicBoxNext.svg')}/>
+                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('assets/icons/musicBoxNext.svg')}/>
                     </View>
                 </TouchableOpacity>
             </View>

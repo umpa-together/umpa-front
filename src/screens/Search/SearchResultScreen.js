@@ -1,14 +1,14 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 
-import { Context as SearchContext } from '../../context/SearchContext';
-import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { Context as CurationContext } from '../../context/CurationContext'
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
+import { Context as CurationContext } from 'context/CurationContext'
 
-import { navigate } from '../../navigationRef';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { navigate } from 'navigationRef';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { SongImage } from '../../components/SongImage'
+import { SongImage } from 'components/SongImage'
 import { useFocusEffect } from '@react-navigation/native';
 
 const SearchResultScreen = ({ searchOption, text }) => {
@@ -64,7 +64,7 @@ const SearchResultScreen = ({ searchOption, text }) => {
                                 <View style={{marginLeft: 24 * tmpWidth, width:tmpWidth*220, }}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         {item.attributes.contentRating == "explicit" ? 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                         : null }
                                         <Text numberOfLines ={1} style={{fontSize:16 * tmpWidth}}>{item.attributes.name}</Text>
                                     </View>

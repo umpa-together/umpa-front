@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, K
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import SvgUri from 'react-native-svg-uri';
-import {Context as BoardContext} from '../../context/BoardContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import { SongImage } from '../../components/SongImage'
-import Header from '../../components/Header';
+import {Context as BoardContext} from 'context/BoardContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
+import Header from 'components/Header';
 
 const CreateContent = () => {
     const { state, createContent, addSong } = useContext(BoardContext);
@@ -75,7 +75,7 @@ const CreateContent = () => {
                                 </View>
                                 {titleValidity ? null :
                                 <View style={styles.warningTitleContainer}>
-                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                    <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                                     <Text style={styles.warningText}>제목을 입력해주세요.</Text>
                                 </View>}
                             </View>
@@ -97,7 +97,7 @@ const CreateContent = () => {
                         </View>
                         {contentValidity ? null :
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>내용을 입력해주세요.</Text>
                         </View>}
                     </View>
@@ -106,7 +106,7 @@ const CreateContent = () => {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.menuText}>음악 공유하기</Text>
                         <TouchableOpacity onPress={() => navigate('SearchMusic', {isMusicArchive: false, setSong: setSong})}>
-                            <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
+                            <SvgUri width='32' height='32' source={require('assets/icons/songPlus.svg')}/>
                         </TouchableOpacity>
                     </View>
                     {song != null ?
@@ -117,14 +117,14 @@ const CreateContent = () => {
                                 <View style={styles.infoBox}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', width: song.attributes.contentRating == "explicit" ? 160 * tmpWidth : null}}>
                                         {song.attributes.contentRating == "explicit" ? 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                         : null }
                                         <Text style={styles.titleText} numberOfLines={1}>{song.attributes.name}</Text>
                                     </View>
                                     <Text style={styles.artistText} numberOfLines={1}>{song.attributes.artistName}</Text>
                                 </View>
                                 <TouchableOpacity onPress={() => setSong(null)}>
-                                    <SvgUri width={16*tmpWidth} height={16*tmpWidth} source={require('../../assets/icons/songdelete.svg')}/> 
+                                    <SvgUri width={16*tmpWidth} height={16*tmpWidth} source={require('assets/icons/songdelete.svg')}/> 
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -134,7 +134,7 @@ const CreateContent = () => {
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={styles.menuText}>사진 업로드하기</Text>
                         <TouchableOpacity onPress={() => handleUpload()}>
-                            <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
+                            <SvgUri width='32' height='32' source={require('assets/icons/songPlus.svg')}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{height: 110 * tmpWidth}}>

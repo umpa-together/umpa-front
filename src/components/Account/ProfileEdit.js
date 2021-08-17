@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react'
 import { Text, View, StyleSheet, TextInput, Keyboard } from 'react-native';
-import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as AuthContext } from 'context/AuthContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 
 export default ProfileEdit = ({ nameValidity, doubleCheck, information }) => {
     const { state: authState } = useContext(AuthContext);
@@ -39,12 +39,12 @@ export default ProfileEdit = ({ nameValidity, doubleCheck, information }) => {
                         </View>
                         { doubleCheck && !authState.doubleCheck && 
                         <View style={styles.warningBox}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>현재 사용중인 아이디입니다.</Text>
                         </View> }
                         { !nameValidity  &&
                         <View style={styles.warningBox}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>사용자 이름을 입력해주세요.</Text>
                         </View> }
                     </View>

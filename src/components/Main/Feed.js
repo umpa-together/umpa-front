@@ -1,20 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, Image, StyleSheet, View,ImageBackground, TouchableOpacity, FlatList,  SafeAreaView} from 'react-native';
-import {Context as PlaylistContext} from '../../context/PlaylistContext';
-import {Context as UserContext} from '../../context/UserContext';
-import {Context as CurationContext} from '../../context/CurationContext';
-import {Context as DJContext} from '../../context/DJContext';
+import {Context as PlaylistContext} from 'context/PlaylistContext';
+import {Context as UserContext} from 'context/UserContext';
+import {Context as CurationContext} from 'context/CurationContext';
+import {Context as DJContext} from 'context/DJContext';
 
-import { navigate, push } from '../../navigationRef';
+import { navigate, push } from 'navigationRef';
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import Curating from  './Curating';
 import Playlist from  './Playlist';
-import { tmpWidth } from '../FontNormalize';
-import HarmfulModal from '../HarmfulModal';
-import { SongImage } from '../SongImage'
-import { addtracksong, stoptracksong } from '../TrackPlayer'
+import { tmpWidth } from 'components/FontNormalize';
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'components/SongImage'
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 
 const Feed = () => {
     const { state } = useContext(PlaylistContext);
@@ -64,10 +64,10 @@ const Feed = () => {
                 <View style={styles.optright}>
                     {result == 'playlist' ?
                     <TouchableOpacity style={{marginRight:21.3 * tmpWidth, width:40 * tmpWidth, height:40 * tmpWidth}} onPress = {()=>navigate('Create', {'data': []})}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/postplaylist.svg')} style={{ }}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/postplaylist.svg')} style={{ }}/>
                     </TouchableOpacity> :
                     <TouchableOpacity style={{marginRight:21.3 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}}  onPress = {()=>navigate('CurationSearch')}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/curationsearch.svg')} style={{}}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/curationsearch.svg')} style={{}}/>
                     </TouchableOpacity>}
                 </View>
             </View>
@@ -89,17 +89,17 @@ const Feed = () => {
                                         <TouchableOpacity onPress={() => storyClick({item, index})}>
                                             {item.song.view.includes(userState.myInfo._id) ?
                                             <View style={styles.storynopicread}>
-                                               <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                               <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                             </View>  :
-                                            <ImageBackground style={{justifyContent:'center',alignItems:'center',width:tmpWidth*64, height:tmpWidth*64}} source={require('../../assets/icons/storylive.png')}>
+                                            <ImageBackground style={{justifyContent:'center',alignItems:'center',width:tmpWidth*64, height:tmpWidth*64}} source={require('assets/icons/storylive.png')}>
                                                 <View style={styles.storynopicread}>
-                                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                 </View> 
                                             </ImageBackground> }
                                         </TouchableOpacity> :
                                         <TouchableOpacity onPress={() => storyClick({item, index})}>
                                             {item.song.view.includes(userState.myInfo._id) ? <Image source={{uri: item.profileImage}} style={styles.storypicread}/> :
-                                            <ImageBackground style={{justifyContent:'center',alignItems:'center',width:tmpWidth*64, height:tmpWidth*64}} source={require('../../assets/icons/storylive.png')}>
+                                            <ImageBackground style={{justifyContent:'center',alignItems:'center',width:tmpWidth*64, height:tmpWidth*64}} source={require('assets/icons/storylive.png')}>
                                                 <Image source={{uri: item.profileImage}} style={styles.storypic} />
                                             </ImageBackground>
                                             }
@@ -135,7 +135,7 @@ const Feed = () => {
                         }}>
                             { selectedStory.profileImage == undefined ?
                             <View style={styles.profile}>
-                               <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                               <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                             </View> :
                             <Image style={styles.profile} source={{uri: selectedStory.profileImage}}/> }
                             <Text style={{marginLeft: 12 * tmpWidth}}>{selectedStory.name}</Text>
@@ -144,7 +144,7 @@ const Feed = () => {
                             <View style={styles.nextContainer}>
                                 {selectedIdx != 0 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx-1], index: selectedIdx-1})}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                                 <TouchableOpacity onPress={() => {
                                     if(isPlayingid == selectedStory.song["song"].id){
@@ -155,13 +155,13 @@ const Feed = () => {
                                 }}>
                                     <SongImage url={selectedStory.song["song"].attributes.artwork.url} size={152} border={152}/>
                                     { isPlayingid != selectedStory.song["song"].id ? 
-                                    <SvgUri width='48' height='48' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> :
-                                    <SvgUri width='48' height='48' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> }
+                                    <SvgUri width='48' height='48' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> :
+                                    <SvgUri width='48' height='48' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 52 * tmpWidth, top: 52 * tmpWidth}}/> }
                                 </TouchableOpacity>
                                 { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                 {selectedIdx != userState.otherStory.length-1 ?
                                 <TouchableOpacity style={styles.nextIcon} onPress={() => storyClick({item: userState.otherStory[selectedIdx+1], index: selectedIdx+1})}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalRight.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/modalRight.svg')}/>
                                 </TouchableOpacity>: <View style={styles.nextIcon}/>}
                             </View>
                         </View>
@@ -169,7 +169,7 @@ const Feed = () => {
                             <View style={styles.textContainer}>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     {selectedStory.song["song"].attributes.contentRating == "explicit" ? 
-                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                    <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                     : null }
                                     <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song["song"].attributes.name}</Text>
                                 </View>

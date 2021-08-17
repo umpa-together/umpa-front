@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { RefreshControl, View, ScrollView } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
-import AccountPlaylist from  '../../components/Account/AccountPlaylist';
-import AccountCurating from  '../../components/Account/AccountCurating';
-import Header from '../../components/Account/Header'
-import LoadingIndicator from '../../components/LoadingIndicator'
-import SongProfile from '../../components/Account/SongProfile'
-import FollowBox from '../../components/Account/FollowBox'
-import Introduction from '../../components/Account/Introduction'
-import Menu from '../../components/Account/Menu'
+import { Context as UserContext } from 'context/UserContext';
+import AccountPlaylist from  'components/Account/AccountPlaylist';
+import AccountCurating from  'components/Account/AccountCurating';
+import Header from 'components/Account/Header'
+import LoadingIndicator from 'components/LoadingIndicator'
+import SongProfile from 'components/Account/SongProfile'
+import FollowBox from 'components/Account/FollowBox'
+import Introduction from 'components/Account/Introduction'
+import Menu from 'components/Account/Menu'
 
 require('date-utils');
 

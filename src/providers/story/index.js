@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
-import {Context as UserContext} from '../../context/UserContext';
-import {Context as DJContext} from '../../context/DJContext';
+import {Context as UserContext} from 'context/UserContext';
+import {Context as DJContext} from 'context/DJContext';
 import TrackPlayer from 'react-native-track-player';
-import { push } from '../../navigationRef';
-import { useTrackPlayer } from '../trackPlayer';
+import { push } from 'navigationRef';
+import { useTrackPlayer } from 'trackPlayer';
 
 const StoryContext = createContext(null)
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, StyleSheet, Keyboard, TouchableOpacity, TextInput } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
+import { Context as SearchContext } from 'context/SearchContext'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 
 export default SongSearch = ({ setTok }) => {
     const { searchsong, searchHint, initHint } = useContext(SearchContext);
@@ -34,7 +34,7 @@ export default SongSearch = ({ setTok }) => {
 
     return (
         <View style={styles.container}>
-            <SvgUri style={styles.searchIcon} source={require('../../assets/icons/songeditsearch.svg')}/>
+            <SvgUri style={styles.searchIcon} source={require('assets/icons/songeditsearch.svg')}/>
             <TextInput
                 value={text}
                 onChangeText={(text) => onChangeText(text)}
@@ -49,7 +49,7 @@ export default SongSearch = ({ setTok }) => {
                 style={styles.cancelIcon}
                 onPress={onClickCancel}
             >
-                <SvgUri source={require('../../assets/icons/resultDelete.svg')}/>
+                <SvgUri source={require('assets/icons/resultDelete.svg')}/>
             </TouchableOpacity>                    
         </View>
     )

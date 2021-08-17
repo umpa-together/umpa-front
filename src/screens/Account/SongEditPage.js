@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
-import { Context as UserContext } from '../../context/UserContext'
+import { Context as SearchContext } from 'context/SearchContext'
+import { Context as UserContext } from 'context/UserContext'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../../components/FontNormalize';
-import Header from '../../components/Header';
-import SongSearch from '../../components/Account/SongSearch';
-import LoadingIndicator from '../../components/LoadingIndicator';
-import SongResult from '../../components/Account/SongResult';
-import AddedRepresent from '../../components/Account/AddedRepresent';
-import SongOrder from '../../components/Account/SongOrder'
+import { tmpWidth } from 'components/FontNormalize';
+import Header from 'components/Header';
+import SongSearch from 'components/Account/SongSearch';
+import LoadingIndicator from 'components/LoadingIndicator';
+import SongResult from 'components/Account/SongResult';
+import AddedRepresent from 'components/Account/AddedRepresent';
+import SongOrder from 'components/Account/SongOrder'
 
 const SongEditPage = ({ route }) => {
     const { state, searchsong, searchinit } = useContext(SearchContext);
@@ -46,7 +46,7 @@ const SongEditPage = ({ route }) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.searchContainer}>
                     <View style={styles.guideContainer}>
-                        <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('../../assets/icons/musicnote.svg')} style={styles.musicIcon} />
+                        <SvgUri width={24 * tmpWidth} height={24 * tmpWidth} source={require('assets/icons/musicnote.svg')} style={styles.musicIcon} />
                         <View style={styles.firstLine}>
                             <Text style={styles.first}>{userState.myInfo.name}</Text>
                             <Text style={styles.second}> 님의 취향의 곡을 등록해주세요</Text>

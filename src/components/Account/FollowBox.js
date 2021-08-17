@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { tmpWidth } from '../FontNormalize'
-import { navigate, push } from '../../navigationRef';
+import { Context as UserContext } from 'context/UserContext';
+import { tmpWidth } from 'components/FontNormalize'
+import { navigate, push } from 'navigationRef';
 
 export default FollowBox = ({ user, isMyAccount }) => {
     const { state: userState, follow, unfollow, getMyInfo } = useContext(UserContext);
