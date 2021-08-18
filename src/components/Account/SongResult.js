@@ -6,28 +6,14 @@ import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize'
+import { useSearch } from 'providers/search';
 
 export default SongResult = ({ songs, setSong }) => {
-    const { state, songNext } = useContext(SearchContext);
-    const [loading, setLoading] = useState(false);
+    const { state } = useContext(SearchContext);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-
-    const getData = async () => {
-        if(state.songData.length >= 20){
-            setLoading(true);
-            await songNext({ next: state.songNext.substr(22) });
-            setLoading(false);
-        }
-    };
-    const onEndReached = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
-    };
+    const { loading, onEndReached } = useSearch()
 
     const addItem = ({data}) => {
         let tok = false;
