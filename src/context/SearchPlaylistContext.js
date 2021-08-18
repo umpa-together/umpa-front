@@ -11,6 +11,8 @@ const SearchPlaylistReducer = (state, action) => {
             return { ...state, playList: action.payload };  
         case 'searchAll':
             return { ...state, playList: action.payload.playlists, dj: action.payload.dj }  
+        case 'searchHashtagAll':
+            return { ...state, playList: action.payload.playlists, daily: action.payload.daily }
         case 'error':
             return { ...state, errorMessage: action.payload };
         default:
@@ -54,8 +56,17 @@ const SearchAll = (dispatch) => async ({ id }) => {
     }
 }
 
+const SearchHashtagAll = (dispatch) => async ({ term }) => {
+    try {
+        const response = await serverApi.get('/searchHashtagAll/'+term);
+        dispatch({ type: 'searchHashtagAll', payload: response.data});
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtagAll' });
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     SearchPlaylistReducer,
-    { SearchSongOrArtist, initPlaylist, SearchHashtag, SearchAll },
+    { SearchSongOrArtist, initPlaylist, SearchHashtag, SearchAll, SearchHashtagAll },
     { playList: null, playListNum: 0, dj: null, daily: null, errorMessage: '' }
 )
