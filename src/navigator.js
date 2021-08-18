@@ -46,12 +46,11 @@ import MusicArchivePage from 'screens/Board/MusicArchivePage';
 import SearchMusicPage from 'screens/Board/SearchMusicPage';
 import MySharedSongsPage from 'screens/Board/MySharedSongsPage';
 
-import MainSearchScreen from 'screens/Search/MainSearchScreen';
-import SearchScreen from 'screens/Search/SearchScreen';
-import SearchResultScreen from 'screens/Search/SearchResultScreen';
-import SelectedSongScreen from 'screens/Search/SelectedSongScreen';
-import SelectedHashtagScreen from 'screens/Search/SelectedHashtagScreen';
-import AllContentsScreen from 'screens/Search/AllContentsScreen';
+import MainSearchScreen from 'screens/Main/MainSearchScreen';
+import SearchScreen from 'screens/Main/SearchScreen';
+import SelectedSongScreen from 'screens/Main/SelectedSongScreen';
+import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
+import AllContentsScreen from 'screens/Main/AllContentsScreen';
 
 import CreateModal from 'components/CreateModal';
 
@@ -157,7 +156,6 @@ const MainStackScreen = () => {
         >
             <MainStack.Screen name="Tab" component={TabScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen} />
-            <MainStack.Screen name="SearchResult" component={SearchResultScreen} />
             <MainStack.Screen name="SelectedSong" component={SelectedSongScreen} />
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="SearchSong" component={SearchSongPage} />
