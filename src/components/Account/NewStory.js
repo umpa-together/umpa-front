@@ -10,58 +10,43 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import { SongImage } from 'components/SongImage';
 import HarmfulModal from 'components/HarmfulModal';
 import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { useSearch } from 'providers/search';
 
 export default NewStory = ({ newStory, setNewStory }) => {
     const { postStory, getMyStory, getOtherStory } = useContext(UserContext);
-    const { state: searchState, searchsong, searchinit, searchHint, initHint, songNext } = useContext(SearchContext);
-    const [text, setText] = useState('');
-    const [tok, setTok] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const { state: searchState, searchsong, searchinit, initHint } = useContext(SearchContext);
     const [selectedId, setSelectedId] = useState('');
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [harmfulModal, setHarmfulModal] = useState(false);
-
-    const getData = async () => {
-        if(searchState.songData.length >= 20){
-            setLoading(true);
-            await songNext({ next: searchState.songNext.substr(22) });
-            setLoading(false);
-        }
-    };
-
-    const onEndReached = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
-    };  
+    const { loading, onEndReached, setIsHint, setText, textRef, isHint } = useSearch()
 
     const onClose = () => {
-        setText('');
+        textRef.current.clear()
         setIsPlayingid('0');
         setSelectedId('');
         setNewStory(false);
-        setTok(false);
+        setIsHint(true)
         initHint();
         searchinit();
         TrackPlayer.reset()
     }
 
     const onClickCancel = () => {
+        initHint()
+        setIsHint(true)
+        textRef.current.clear()
         Keyboard.dismiss()
-        setText('')
-        setTok(false)
     }
 
-    const onChange = (text) => {
+    const onChangeText = (text) => {
+        textRef.current.value = text
         setText(text)
-        if(text=='')  setTok(false)
+        setIsHint(true)
     }
 
     const onSubmit = () => {
-        searchsong({ songname: text})
-        setTok(true)
+        searchsong({ songname: textRef.current.value})
+        setIsHint(false)
     }
 
     const onClickSong = (id) => {
@@ -89,16 +74,12 @@ export default NewStory = ({ newStory, setNewStory }) => {
 
     const onClickHint = (item) => {
         searchsong({ songname: item })
-        setTok(true)
+        setIsHint(false)
     }
 
-    useEffect(() => {
-        if(text == ''){
-            initHint();
-        }else{
-            searchHint({term: text});
-        }
-    }, [text]);
+    const onFocus = () => {
+        setIsHint(true)
+    }
 
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
@@ -123,11 +104,13 @@ export default NewStory = ({ newStory, setNewStory }) => {
                 <View style={styles.searchBox}>
                     <SvgUri source={require('assets/icons/storySearch.svg')} style={styles.searchIcon} />
                     <TextInput
-                        value={text}
-                        onChangeText={(text)=> onChange(text)}
+                        ref={textRef}
+                        onChangeText={(text)=> onChangeText(text)}
                         placeholder="오늘의 곡을 검색해주세요."
                         autoCapitalize='none'
                         autoCorrect={false}
+                        autoFocus={true}
+                        onFocus={onFocus}
                         onSubmitEditing= {onSubmit}
                         placeholderTextColor= 'rgb(211,211,211)'
                         style={styles.searchArea}
@@ -140,7 +123,7 @@ export default NewStory = ({ newStory, setNewStory }) => {
                         </TouchableOpacity>  
                 </View>
                 <View style={styles.result}>
-                    { tok ?
+                    { !isHint ?
                     searchState.songData.length == 0 ? <LoadingIndicator /> :
                     <FlatList
                         contentContainerStyle={{paddingTop: 14 * tmpWidth}}

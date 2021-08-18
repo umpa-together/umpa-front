@@ -8,6 +8,7 @@ import { SongImage } from 'components/SongImage';
 import NewStory from './NewStory';
 import Story from './Story';
 import ProfileImage from 'components/ProfileImage';
+import SearchProvider from 'providers/search'
 
 export default SongProfile = ({ user, url, story, isMyAccount }) => {
     const { storyCalendar, storyView } = useContext(UserContext);
@@ -52,7 +53,9 @@ export default SongProfile = ({ user, url, story, isMyAccount }) => {
                 <Text style={styles.songText}>오늘의 곡</Text>
             </View>
             <RepresentSong representModal={representModal} setRepresentModal={setRepresentModal} song={user.songs} myAccount={isMyAccount}/>
-            <NewStory newStory={newStory} setNewStory={setNewStory} />
+            <SearchProvider>
+                <NewStory newStory={newStory} setNewStory={setNewStory} />
+            </SearchProvider>
             <Story story={story} storyModal={storyModal} setStoryModal={setStoryModal} isMyAccount={isMyAccount} />
         </View>
     )
