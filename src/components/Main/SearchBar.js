@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { View, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { useSearch } from 'providers/search'
 import { tmpWidth } from 'components/FontNormalize';
 import { goBack } from 'navigationRef';
@@ -8,6 +9,7 @@ import SvgUri from 'react-native-svg-uri';
 
 export default SearchBar = () => {
     const { searchsong, initHint } = useContext(SearchContext);
+    const { SearchHashtagAll } = useContext(SearchPlaylistContext);
     const { textRef, setIsHint, searchOption, setText, setIsResultClick } = useSearch()
 
     const onChangeText = (text) => {
@@ -33,14 +35,13 @@ export default SearchBar = () => {
 
     const onSubmitEditing =() => {
         setIsHint(false)
-           if(searchOption === 'Song'){
-                searchsong({songname: textRef.current.value})
-           }
-           
-           //else if (searchOption ==='Hashtag') {
-           //}else{
-           //    searchsong({songname: textRef.current.value})
-           //}
+        if(searchOption === 'Song'){
+            searchsong({ songname: textRef.current.value })
+        } else if (searchOption === 'Hashtag') {
+            SearchHashtagAll({ term: textRef.current.value })
+        } else if (searchOption === 'DJ') {
+            console.log("DJ")
+        }
     }
 
     return (

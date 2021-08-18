@@ -1,17 +1,18 @@
 import React, { useContext } from 'react'
 import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { useSearch } from '../../providers/search';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
 
 export default HashtagHint = () => {
     const { state: searchState } = useContext(SearchContext);
-    const { setIsHint, searchOption } = useSearch()
+    const { SearchHashtagAll } = useContext(SearchPlaylistContext);
+    const { setIsHint } = useSearch()
 
-    const onClickHint = (hint) => {
-        navigate('SelectedHashtag', {data: hint, text: hint.hashtag , searchOption : searchOption })
+    const onClickHint = (hashtag) => {
+        SearchHashtagAll({ term: hashtag  })
         setIsHint(false)
     }
 
@@ -23,7 +24,7 @@ export default HashtagHint = () => {
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity
-                        onPress={() => onClickHint(item)}
+                        onPress={() => onClickHint(item.hashtag)}
                         style={styles.box}
                     >
                         <View style={styles.hintArea}>

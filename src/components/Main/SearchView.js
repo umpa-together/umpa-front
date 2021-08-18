@@ -4,8 +4,8 @@ import SongHint from './SongHint';
 import HashtagHint from './HashtagHint';
 import DJHint from './DJHint';
 import SongResult from './SongResult';
-import SearchResult
- from './SearchResult';
+import SearchResult from './SearchResult';
+import HashtagResult from './HashtagResult';
 export default SearchView = () => {
     const { searchOption, isHint, isResultClick } = useSearch()
     return (
@@ -18,7 +18,9 @@ export default SearchView = () => {
                 </> }
             </> :
             searchOption === 'Hashtag' ? 
-            <HashtagHint /> : <DJHint /> }
+            <>
+                { isHint ? <HashtagHint /> : <HashtagResult /> }
+            </> : <DJHint /> }
         </>
     )
 }

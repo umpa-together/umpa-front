@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator }
 import { Context as SearchContext } from 'context/SearchContext';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { Context as CurationContext } from 'context/CurationContext'
-import { useSearch } from '../../providers/search';
+import { useSearch } from 'providers/search';
 import { useFocusEffect } from '@react-navigation/native';
 import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
