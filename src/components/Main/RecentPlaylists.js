@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback, useContext } from 'react'
 import { FlatList, Image, View, Animated, TouchableOpacity } from 'react-native'
 import { Directions, FlingGestureHandler, State } from 'react-native-gesture-handler';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { push } from '../../navigationRef';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { push } from 'navigationRef';
 
 const SPACING = 10;
 const VISIBLE_ITEMS = 3;

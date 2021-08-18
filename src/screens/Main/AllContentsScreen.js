@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import AllPlaylistForm from 'components/Search/AllPlaylistForm';
-import AllCurationForm from 'components/Search/AllCurationForm';
+import AllPlaylistForm from 'components/Main/AllPlaylistForm';
+import AllCurationForm from 'components/Main/AllCurationForm';
 import { goBack } from 'navigationRef';
 
 const AllContentsScreen = ({ route }) => {

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { tmpWidth } from '../FontNormalize';
-import { navigate } from '../../navigationRef';
-import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { navigate } from 'navigationRef';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 
 export default CurrentHashtag = ({ hashtag }) => {
     const { SearchHashtag } = useContext(SearchPlaylistContext);

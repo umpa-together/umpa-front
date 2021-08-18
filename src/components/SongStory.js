@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
 import { SongImageBack } from './SongImage'
 import { addtracksong, stoptracksong } from './TrackPlayer'
 import HarmfulModal from './HarmfulModal';

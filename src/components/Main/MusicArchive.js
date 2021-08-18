@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, FlatList, StyleSheet, Text } from 'react-native'
-import { SongImageBack } from '../SongImage'
-import { tmpWidth } from '../../components/FontNormalize'
-import SongStory from '../SongStory'
+import { SongImageBack } from 'components/SongImage'
+import { tmpWidth } from 'components/FontNormalize'
+import SongStory from 'components/SongStory'
 
 export default MusicArchive = ({ archive }) => {
     const [archiveModal, setArchiveModal] = useState(false)

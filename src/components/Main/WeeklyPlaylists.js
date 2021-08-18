@@ -1,10 +1,10 @@
 import React, { useContext, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-import ProfileImage from '../ProfileImage';
+import ProfileImage from 'components/ProfileImage';
 
 export default WeeklyPlaylists = ({ playlists }) => {
     const { getPlaylist, getAllPlaylists } = useContext(PlaylistContext);
