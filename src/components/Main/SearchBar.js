@@ -1,30 +1,115 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
+import React, { useContext } from 'react'
+import { View, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import { Context as SearchContext } from 'context/SearchContext';
+import { useSearch } from 'providers/search'
+import { tmpWidth } from 'components/FontNormalize';
+import { goBack } from 'navigationRef';
 import SvgUri from 'react-native-svg-uri';
 
 export default SearchBar = () => {
+    const { searchsong, initHint } = useContext(SearchContext);
+    const { textRef, setIsHint, searchOption, setText, setIsResultClick } = useSearch()
+
+    const onChangeText = (text) => {
+        textRef.current.value = text
+        setText(text)
+    }
+
+    const onClickCancel = () => {
+        initHint()
+        setIsResultClick(false)
+        setIsHint(true)
+        textRef.current.clear()
+        Keyboard.dismiss()
+    }
+
+    const onFocus = () => {
+        setIsHint(true)
+    }
+
+    const onChange = () => {
+        setIsHint(true)
+    }
+
+    const onSubmitEditing =() => {
+        setIsHint(false)
+           if(searchOption === 'Song'){
+                searchsong({songname: textRef.current.value})
+           }
+           
+           //else if (searchOption ==='Hashtag') {
+           //}else{
+           //    searchsong({songname: textRef.current.value})
+           //}
+    }
+
     return (
-        <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search', { searchOption: 'Song' })}>
-            <View style={{flexDirection: 'row', alignItems:'center'}}>
-                <SvgUri width='16' height='15' source={require('../../assets/icons/mainSearch.svg')} style={styles.icon}/>
-                <Text style={{color:'#c6c6c6', fontSize: 14 * tmpWidth}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
+        <View style={styles.container}>
+            <TouchableOpacity 
+                onPress={goBack} 
+                style={styles.backIcon}
+            >
+                <SvgUri source={require('assets/icons/back.svg')} />
+            </TouchableOpacity>
+            <View style={styles.inputbox}>
+                <SvgUri source={require('assets/icons/search.svg')} style={styles.searchIcon}/>
+                <TextInput 
+                    style={styles.textInput}
+                    ref={textRef}
+                    onChangeText={(text) => onChangeText(text)}
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    autoFocus ={true}
+                    onFocus = {onFocus}
+                    onChange = {onChange}
+                    onSubmitEditing={onSubmitEditing}
+                    placeholderTextColor ="#999"
+                />
+                <TouchableOpacity 
+                    onPress={onClickCancel} 
+                    style={styles.cancelIcon}
+                >
+                   <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/cancel.svg')} />
+                </TouchableOpacity>
             </View>
-        </TouchableOpacity>
+        </View>
     )
 }
 
 const styles=StyleSheet.create({
-    inputbox:{
-        width: 325 * tmpWidth,
+    container:{
+        flexDirection: 'row',
         height: 44 * tmpWidth,
-        backgroundColor: '#F5F5F5',
-        borderRadius: 10 * tmpWidth,
-        paddingTop: 14 * tmpWidth
+        backgroundColor: "#fff",
+        alignItems: 'center',
+        marginTop: 10 * tmpWidth,
     },
-    icon: {
+    backIcon:{
+        width: 40 * tmpWidth,
+        height: 40 * tmpWidth,
+        marginLeft: 10 * tmpWidth,
+    },
+    inputbox:{
+        flexDirection:'row',
+        alignItems:'center',
+        width: 300 * tmpWidth,
+        height: 44 * tmpWidth,
+        borderRadius: 10 * tmpWidth,
+        backgroundColor: "#eee",
+    },
+    searchIcon:{
+        width: 30 * tmpWidth,
+        height: 30 * tmpWidth,
+        marginLeft: 5 * tmpWidth,
+        marginRight:5 * tmpWidth,
+    },
+    textInput:{
+        fontSize: 14 * tmpWidth,
+        width: 213 * tmpWidth,
+    },
+    cancelIcon: {
+        width:40 * tmpWidth,
+        height:40 * tmpWidth,
         marginRight: 12 * tmpWidth,
-        marginLeft: 12 * tmpWidth
-    }
+    },
 })
