@@ -3,18 +3,18 @@ import { View, Text, Image, StyleSheet, ActivityIndicator ,TextInput, TouchableO
 import TrackPlayer from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { navigate, push, goBack } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import ReportModal from '../../components/ReportModal';
-import DeleteModal from '../../components/DeleteModal';
-import HarmfulModal from '../../components/HarmfulModal';
-import DeletedModal from '../../components/DeletedModal';
-import { SongImage } from '../../components/SongImage'
-import { stoptracksong } from '../../components/TrackPlayer'
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
+import { navigate, push, goBack } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import ReportModal from 'components/ReportModal';
+import DeleteModal from 'components/DeleteModal';
+import HarmfulModal from 'components/HarmfulModal';
+import DeletedModal from 'components/DeletedModal';
+import { SongImage } from 'components/SongImage'
+import { stoptracksong } from 'components/TrackPlayer'
 import { useFocusEffect } from '@react-navigation/native';
 
 const SelectedPlaylist = ({ route }) => {
@@ -143,12 +143,12 @@ const SelectedPlaylist = ({ route }) => {
             <View style={styles.activityIndicatorContainer}><ActivityIndicator/></View> :
             <View style={{flex: 1}}>
                 <View style={{height: 228 * tmpWidth, width: '100%', zIndex: 1, position: 'absolute'}}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/playlistBackgrad.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/playlistBackgrad.svg')}/>
                 </View>
                 <Image style={styles.thumbnail} source={{uri: currentPlaylist.image}}/>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={goBack}>
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
+                        <SvgUri width='40' height='40' source={require('assets/icons/playlistBack.svg')}/>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         {userState.myInfo._id == currentPlaylist.postUserId._id ? 
@@ -198,24 +198,24 @@ const SelectedPlaylist = ({ route }) => {
                                 push('OtherAccount', {otherUserId:currentPlaylist.postUserId._id}); }}}>
                             {currentPlaylist.postUserId.profileImage == undefined ? 
                             <View style={styles.profile}>
-                               <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                               <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                             </View> : <Image style={styles.profile} source={{uri: currentPlaylist.postUserId.profileImage}}/> }
                         </TouchableOpacity>
                         <View style={styles.profileTextBox}>
                             <Text style={styles.nameText}>{currentPlaylist.postUserId.name}</Text>
                             <View style={styles.viewContainer}>
-                                <SvgUri width='24' height='24' source={require('../../assets/icons/view.svg')}/>
+                                <SvgUri width='24' height='24' source={require('assets/icons/view.svg')}/>
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{currentPlaylist.views}</Text>
-                                <SvgUri width='24' height='24' source={require('../../assets/icons/playlistMiniHeart.svg')} />
+                                <SvgUri width='24' height='24' source={require('assets/icons/playlistMiniHeart.svg')} />
                                 <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(255,255,255)'}}>{currentPlaylist.likes.length}</Text>
                             </View>
                         </View>
                         { currentPlaylist.likes.includes(userState.myInfo._id) ?
                         <TouchableOpacity onPress={()=>{ unlikesPlaylist({id:playlistid}) }}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/playlisthearto.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/playlisthearto.svg')}/>
                         </TouchableOpacity> :
                         <TouchableOpacity onPress={()=>{  likesPlaylist({id:playlistid}) }}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/playlistheart.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/playlistheart.svg')}/>
                         </TouchableOpacity> }
                     </View>
                 </TouchableWithoutFeedback>
@@ -263,8 +263,8 @@ const SelectedPlaylist = ({ route }) => {
                                         }}>
                                            <SongImage url={item.attributes.artwork.url} size={92} border={92}/>
                                            { isPlayingid != item.id ? 
-                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
-                                            <SvgUri width='34' height='34' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
+                                            <SvgUri width='34' height='34' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> :
+                                            <SvgUri width='34' height='34' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 29 * tmpWidth, top: 29 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         {isPlayingid == item.id ?
@@ -272,12 +272,12 @@ const SelectedPlaylist = ({ route }) => {
                                             onPress={() => onClickMusicPlus({song: selectedSong})}
                                         >
                                             <Text>곡 담기</Text>
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/musicBoxPlus.svg')} />
+                                            <SvgUri width='24' height='24' source={require('assets/icons/musicBoxPlus.svg')} />
                                         </TouchableOpacity> :
                                         <View style={styles.songWidthBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="12" height="12" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginBottom: 8 * tmpWidth}}/> 
+                                                <SvgUri width="12" height="12" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, marginBottom: 8 * tmpWidth}}/> 
                                                 : null }
                                                 <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
@@ -318,7 +318,7 @@ const SelectedPlaylist = ({ route }) => {
                                     }}>
                                         {item.postUserId.profileImage == undefined ? 
                                         <View style={styles.commentProfile}>
-                                           <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                           <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                         </View> : <Image style={styles.commentProfile} source={{uri: item.postUserId.profileImage}}/> }
                                     </TouchableOpacity>
                                     <View>
@@ -383,7 +383,7 @@ const SelectedPlaylist = ({ route }) => {
                                                 }}>
                                                     {item.postUserId.profileImage == undefined ? 
                                                     <View style={styles.commentProfile}>
-                                                       <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                       <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                     </View> : <Image style={styles.commentProfile} source={{uri: item.postUserId.profileImage}}/> }
                                                 </TouchableOpacity>
                                                 <View >
@@ -416,7 +416,7 @@ const SelectedPlaylist = ({ route }) => {
                                             <View style={styles.inputRecommentBox}>
                                                 {userState.myInfo.profileImage == undefined ? 
                                                 <View style={styles.commentProfile}>
-                                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                 </View> : <Image style={styles.commentProfile} source={{uri: userState.myInfo.profileImage}}/> }
                                                 <TextInput
                                                     style={styles.textInput}
@@ -454,7 +454,7 @@ const SelectedPlaylist = ({ route }) => {
                                                             }}>
                                                                 {item.postUserId.profileImage == undefined ?
                                                                 <View style={styles.commentProfile}>
-                                                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                                 </View> : <Image style={styles.commentProfile} source={{uri: item.postUserId.profileImage}}/> }
                                                             </TouchableOpacity>
                                                             <View >
@@ -514,7 +514,7 @@ const SelectedPlaylist = ({ route }) => {
                             <View style={{flexDirection: 'row'}}>
                                 {userState.myInfo.profileImage == undefined ? 
                                 <View style={styles.commentProfile}>
-                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                 </View> : <Image style={styles.commentProfile} source={{uri: userState.myInfo.profileImage}}/> }
                                 <TextInput
                                     style={styles.textInput}

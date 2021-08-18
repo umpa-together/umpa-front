@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import ContentDetail from '../../components/Board/ContentDetail';
+import ContentDetail from 'components/Board/ContentDetail';
 
 const SelectedContentPage = ({ route }) => {
     const { boardName: title } = route.params

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 
 const HarmfulModal = ({ harmfulModal, setHarmfulModal }) => {
     const onClose = () =>{

@@ -1,17 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Text, View, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
+import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
-import { SongImage } from '../../components/SongImage'
-import StoryCalendar from '../../components/StoryCalendar';
-import HarmfulModal from '../../components/HarmfulModal';
-import DeleteModal from '../../components/DeleteModal';
-import { tmpWidth } from '../../components/FontNormalize';
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { SongImage } from 'components/SongImage'
+import StoryCalendar from 'components/StoryCalendar';
+import HarmfulModal from 'components/HarmfulModal';
+import DeleteModal from 'components/DeleteModal';
+import { tmpWidth } from 'components/FontNormalize';
 import TrackPlayer from 'react-native-track-player';
 import StoryViewer from './StoryViewer'
-import ProfileImage from '../ProfileImage';
+import ProfileImage from 'components/ProfileImage';
 
 require('date-utils');
 
@@ -97,7 +97,7 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
                             style={styles.calendar}
                             onPress={onClickCalendar}
                         >
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/calendar.svg')} />
+                            <SvgUri width='40' height='40' source={require('assets/icons/calendar.svg')} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             if(isPlayingid == story.song.id){
@@ -108,13 +108,13 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
                         }}>
                             <SongImage url={story.song.attributes.artwork.url} size={155} border={155}/>
                             { isPlayingid != story.song.id ? 
-                            <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndplay}/> :
-                            <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndplay}/> }
+                            <SvgUri width='56' height='56' source={require('assets/icons/modalPlay.svg')} style={styles.stopAndplay}/> :
+                            <SvgUri width='56' height='56' source={require('assets/icons/modalStop.svg')} style={styles.stopAndplay}/> }
                         </TouchableOpacity>
                         { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
                         <View style={styles.songBox}>
                             { story.song.attributes.contentRating == "explicit" && 
-                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit} /> }
+                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit} /> }
                             <Text style={styles.song} numberOfLines={1}>{story.song.attributes.name}</Text>
                         </View>
                         <View style={styles.artistBox}>

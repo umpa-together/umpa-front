@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext'
-import { tmpWidth } from '../FontNormalize';
-import { push } from '../../navigationRef';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext'
+import { tmpWidth } from 'components/FontNormalize';
+import { push } from 'navigationRef';
 
 const UserNoticeForm = ({ notice }) => {
     const { state, getOtheruser } = useContext(UserContext);
@@ -18,7 +18,7 @@ const UserNoticeForm = ({ notice }) => {
                     push('OtherAccount', {otherUserId:notice.noticinguser._id})
                 }}>
                     { notice.noticinguser.profileImage == undefined ?
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                     : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
                 </TouchableOpacity>
                 <View style={styles.content}>

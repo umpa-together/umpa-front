@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { tmpWidth } from '../FontNormalize';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { SongImage } from '../SongImage'
-import { push } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as CurationContext } from 'context/CurationContext';
+import { SongImage } from 'components/SongImage'
+import { push } from 'navigationRef';
 
 const AllCurationForm = () => {
     const { state, getAllCurationPost, nextAllCurationPost, getCuration } = useContext(CurationContext)

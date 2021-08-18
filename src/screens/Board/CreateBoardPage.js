@@ -2,10 +2,10 @@ import React, { useState, useContext, useRef } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from '../../navigationRef';
-import {Context as BoardContext} from '../../context/BoardContext'
-import { tmpWidth } from '../../components/FontNormalize';
-import Header from '../../components/Header';
+import { navigate } from 'navigationRef';
+import {Context as BoardContext} from 'context/BoardContext'
+import { tmpWidth } from 'components/FontNormalize';
+import Header from 'components/Header';
 
 const CreateBoardPage = () => {
     const { createBoard, getGenreBoard } = useContext(BoardContext);
@@ -60,7 +60,7 @@ const CreateBoardPage = () => {
                             </View>
                             {titleValidity ? null :
                             <View style={styles.warningTitleContainer}>
-                                <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                                 <Text style={styles.warningText}>제목을 입력해주세요.</Text>
                             </View>}
                         </View>
@@ -82,7 +82,7 @@ const CreateBoardPage = () => {
                     </View>
                     {contentValidity ? null :
                     <View style={styles.warningContainer}>
-                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                        <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                         <Text style={styles.warningText}>코멘트를 작성해주세요.</Text>
                     </View>}
                 </View>

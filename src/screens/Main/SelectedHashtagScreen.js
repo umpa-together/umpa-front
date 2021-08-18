@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { goBack, push } from '../../navigationRef';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { goBack, push } from 'navigationRef';
 
 const SelectedHashtagScreen = ({ route }) => {
     const { getPlaylist } = useContext(PlaylistContext);
@@ -16,7 +16,7 @@ const SelectedHashtagScreen = ({ route }) => {
                     <View style={{ height:40 * tmpWidth, width:375/4 * tmpWidth,}}>
                         <TouchableOpacity style={styles.backicon} onPress={goBack}>
                             <View style={{height:'100%', width:'100%', }}>
-                                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../../assets/icons/back.svg')} />
+                                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')} />
                             </View>
                         </TouchableOpacity>
                     </View>

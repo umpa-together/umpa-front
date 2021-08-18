@@ -2,12 +2,12 @@ import React, { useCallback, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import TrackPlayer from 'react-native-track-player';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import { SongImage } from '../../components/SongImage'
-import { NavHeader } from '../../components/Header';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
+import { NavHeader } from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';
 
 const MySharedSongsPage = () => {
@@ -39,7 +39,7 @@ const MySharedSongsPage = () => {
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <View style={{width: 130 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
                                         {item.song.attributes.contentRating == "explicit" ? 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                         : null }
                                         <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
                                     </View>

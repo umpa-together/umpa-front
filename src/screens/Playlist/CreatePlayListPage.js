@@ -3,11 +3,11 @@ import { Text, View, StyleSheet, Image, FlatList, TextInput, TouchableOpacity, K
 import { launchImageLibrary } from 'react-native-image-picker';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { Context as PlaylistContext } from '../../context/PlaylistContext'
-import { Context as UserContext } from '../../context/UserContext'
-import { navigate, goBack } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import { SongImage } from '../../components/SongImage'
+import { Context as PlaylistContext } from 'context/PlaylistContext'
+import { Context as UserContext } from 'context/UserContext'
+import { navigate, goBack } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
 
 const PlaylistCreatePage = ({ route }) => {
     const [hashtag, setHashtag] = useState([]);
@@ -106,7 +106,7 @@ const PlaylistCreatePage = ({ route }) => {
             <View style={{width: '100%'}}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon} onPress={goBack}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>플레이리스트 {isEdit ? '수정' : '만들기'}</Text>
                 </View>
@@ -130,7 +130,7 @@ const PlaylistCreatePage = ({ route }) => {
                                 </View>
                                 {titleValidity ? null :
                                 <View style={styles.warningTitleContainer}>
-                                    <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                                    <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                                     <Text style={styles.warningText}>제목을 입력해주세요.</Text>
                                 </View>}
                             </View>
@@ -152,7 +152,7 @@ const PlaylistCreatePage = ({ route }) => {
                         </View>
                         {contentValidity ? null :
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>코멘트를 작성해주세요.</Text>
                         </View>}
                     </View>
@@ -192,7 +192,7 @@ const PlaylistCreatePage = ({ route }) => {
                                     setHashtagValidty(false)
                                 }}}
                             >
-                                <SvgUri width='32' height='32' source={require('../../assets/icons/songPlus.svg')}/>
+                                <SvgUri width='32' height='32' source={require('assets/icons/songPlus.svg')}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -218,7 +218,7 @@ const PlaylistCreatePage = ({ route }) => {
                     </View>
                     {hashtagValidity ? null :
                     <View style={{flexDirection:'row', marginTop: 4 * tmpWidth, marginLeft: 65 * tmpWidth,}}>
-                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                        <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                         <Text style={styles.warningText}>특수문자는 불가능합니다.</Text>
                     </View>}
                 </View>
@@ -227,19 +227,19 @@ const PlaylistCreatePage = ({ route }) => {
                         <Text style={styles.titleSize}>썸네일 이미지 선택하기</Text>
                         {thumbnailValidity ? null :
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>이미지를 선택해주세요.</Text>
                         </View>}
                     </View>
                     { isEdit ? 
                     <View style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail}>
                         {image == '' ?
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
+                        <SvgUri width='40' height='40' source={require('assets/icons/thumbnailPlus.svg')}/>
                         : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
                     </View> :
                     <TouchableOpacity style={thumbnailValidity ? styles.thumbnailBox : styles.validityThumbnail} onPress={() => handleUpload()}>
                         {image == '' ?
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/thumbnailPlus.svg')}/>
+                        <SvgUri width='40' height='40' source={require('assets/icons/thumbnailPlus.svg')}/>
                         : <Image style={{width: '100%', height: '100%', borderRadius: 8 * tmpWidth}}source={{uri:image}}/>}
                     </TouchableOpacity> }
                 </View>
@@ -248,7 +248,7 @@ const PlaylistCreatePage = ({ route }) => {
                         <Text style={styles.titleSize}>곡 담기</Text>
                         <Text style={styles.songText}> (최소 3개, 최대 5개)</Text>
                         <TouchableOpacity onPress={() => navigate('SearchSong', { data:playList, isEdit })}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/songPlus.svg')}/>
                         </TouchableOpacity>
                     </View>
                     <View style={songValidity ? styles.songBox : styles.validitySongBox}>
@@ -272,7 +272,7 @@ const PlaylistCreatePage = ({ route }) => {
                     </View>
                     {songValidity ? null :
                     <View style={styles.warningContainer}>
-                        <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
+                        <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                         <Text style={styles.warningText}>곡을 담아주세요.</Text>
                     </View>}
                 </View>

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext'
-import { Context as DJContext } from '../../context/DJContext'
+import { Context as UserContext } from 'context/UserContext'
+import { Context as DJContext } from 'context/DJContext'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage'
-import { push } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
+import { push } from 'navigationRef';
 
 const CurationNoticeForm = ({ notice }) => {
     const { getOtheruser } = useContext(UserContext);
@@ -20,7 +20,7 @@ const CurationNoticeForm = ({ notice }) => {
                     push('OtherAccount', {otherUserId:notice.noticinguser._id})
                 }}>
                     { notice.noticinguser.profileImage == undefined ?
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                     : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
                 </TouchableOpacity>
                 {notice.curationpost.isSong ?

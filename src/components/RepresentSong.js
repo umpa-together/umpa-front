@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native'
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from '../navigationRef';
-import { tmpWidth } from './FontNormalize';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import TrackPlayer from 'react-native-track-player';
-import HarmfulModal from './HarmfulModal';
-import { SongImage } from './SongImage'
-import { addtracksong, stoptracksong } from './TrackPlayer'
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'components/SongImage'
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
@@ -35,7 +35,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                     <View style={{alignItems: 'center', flexDirection:'row'}}>
                         <Text style={{marginLeft:166 * tmpWidth,fontSize: 16 * tmpWidth, color: 'rgb(80,80,80)'}}>대표곡</Text>
                         <TouchableOpacity style={{width:30 * tmpWidth, marginLeft:130 * tmpWidth,height:30 * tmpWidth, }} onPress={()=> onClose()}>
-                            <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')}/>
+                            <SvgUri width='100%' height='100%' source={require('assets/icons/modalexit.svg')}/>
                         </TouchableOpacity>
                     </View>
                     { myAccount && type == 'Each' ? <TouchableOpacity onPress={() => {
@@ -44,7 +44,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                         style={styles.songedit}
                     >
                         <Text style={{fontSize: 14 * tmpWidth, color:'rgba(141,153,255,0.7)'}}>수정하기</Text>
-                        <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../assets/icons/representchange.svg')}/>
+                        <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('assets/icons/representchange.svg')}/>
                     </TouchableOpacity> : null }
                     { type != 'Each' ?
                     <View style={{justifyContent:'center',alignItems:'center'}}>
@@ -90,7 +90,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                     <View style={{alignItems: 'center'}}>
                                         <View style={{width: 150 * tmpWidth , flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                                             {item.attributes.contentRating == "explicit" ? 
-                                            <SvgUri width="17" height="17" source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
+                                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth, paddingTop: 20 * tmpWidth, paddingBottom: 25 * tmpWidth}}/> 
                                             : null }
                                             <Text style={styles.representsongname} numberOfLines={1}>{item.attributes.name}</Text>
                                         </View>
@@ -103,8 +103,8 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={134} border={134}/>
                                             { isPlayingid != item.id ? 
-                                            <SvgUri width='50' height='50' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
-                                            <SvgUri width='50' height='50' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
+                                            <SvgUri width='50' height='50' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
+                                            <SvgUri width='50' height='50' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         <View style={{width: 180 * tmpWidth}}>
@@ -123,7 +123,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                     </View>
                         <TouchableOpacity style={styles.representlistbutton} onPress={() => {
                             setType('List')}}>
-                            <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('../assets/icons/representlist.svg')}/>
+                            <SvgUri width={18 * tmpWidth} height={18 * tmpWidth} source={require('assets/icons/representlist.svg')}/>
                             <Text style={{fontSize: 11 * tmpWidth, color: 'rgb(153,153,153)',}}>목록보기</Text>
                         </TouchableOpacity>
                     </View>
@@ -146,14 +146,14 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={57} border={57}/>
                                             { isPlayingid != item.id ? 
-                                            <SvgUri width='27' height='27' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
-                                            <SvgUri width='27' height='27' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            <SvgUri width='27' height='27' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='27' height='27' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                         </TouchableOpacity>
                                         {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth }}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                 : null }
                                                 <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>

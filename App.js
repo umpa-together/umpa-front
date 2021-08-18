@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {fcmService} from './src/FCMService';
-import {localNotificationService} from './src/LocalNotificationService';
+import {fcmService} from 'FCMService';
+import {localNotificationService} from 'LocalNotificationService';
 
-import { Provider as AuthProvider } from './src/context/AuthContext';
-import { Provider as SearchProvider } from './src/context/SearchContext';
-import { Provider as BoardProvider } from './src/context/BoardContext';
-import { Provider as PlaylistProvider } from './src/context/PlaylistContext';
-import { Provider as SearchPlaylistProvider } from './src/context/SearchPlaylistContext';
-import { Provider as UserProvider } from './src/context/UserContext';
-import { Provider as DJProvider } from './src/context/DJContext';
-import { Provider as CurationProvider } from './src/context/CurationContext';
-import { Provider as NoticeProvider } from './src/context/NoticeContext';
-import { Provider as WeeklyProvider } from './src/context/WeeklyContext';
-import { Provider as ReportProvider } from './src/context/ReportContext';
+import { Provider as AuthProvider } from 'context/AuthContext';
+import { Provider as SearchProvider } from 'context/SearchContext';
+import { Provider as BoardProvider } from 'context/BoardContext';
+import { Provider as PlaylistProvider } from 'context/PlaylistContext';
+import { Provider as SearchPlaylistProvider } from 'context/SearchPlaylistContext';
+import { Provider as UserProvider } from 'context/UserContext';
+import { Provider as DJProvider } from 'context/DJContext';
+import { Provider as CurationProvider } from 'context/CurationContext';
+import { Provider as NoticeProvider } from 'context/NoticeContext';
+import { Provider as WeeklyProvider } from 'context/WeeklyContext';
+import { Provider as ReportProvider } from 'context/ReportContext';
 
-import MainNavigator from './src/navigator.js';
+import TrackPlayerProvider from 'providers/trackPlayer'
+import ModalProvider from 'providers/modal'
+
+import MainNavigator from 'navigator.js';
 
 export default () => {
     useEffect(()=> {
@@ -56,28 +59,32 @@ export default () => {
     }, []);
 
     return (
-        <ReportProvider>
-            <WeeklyProvider>
-                <NoticeProvider>
-                    <CurationProvider>
-                        <DJProvider>
-                            <UserProvider>
-                                <SearchPlaylistProvider>
-                                    <PlaylistProvider>
-                                        <BoardProvider>
-                                            <SearchProvider>
-                                                <AuthProvider>
-                                                    <MainNavigator/>
-                                                </AuthProvider>
-                                            </SearchProvider>
-                                        </BoardProvider>
-                                    </PlaylistProvider>
-                                </SearchPlaylistProvider>
-                            </UserProvider>
-                        </DJProvider>
-                    </CurationProvider>
-                </NoticeProvider>
-            </WeeklyProvider>
-        </ReportProvider>
+        <ModalProvider>
+        <TrackPlayerProvider>
+            <ReportProvider>
+                <WeeklyProvider>
+                    <NoticeProvider>
+                        <CurationProvider>
+                            <DJProvider>
+                                <UserProvider>
+                                    <SearchPlaylistProvider>
+                                        <PlaylistProvider>
+                                            <BoardProvider>
+                                                <SearchProvider>
+                                                    <AuthProvider>
+                                                        <MainNavigator/>
+                                                    </AuthProvider>
+                                                </SearchProvider>
+                                            </BoardProvider>
+                                        </PlaylistProvider>
+                                    </SearchPlaylistProvider>
+                                </UserProvider>
+                            </DJProvider>
+                        </CurationProvider>
+                    </NoticeProvider>
+                </WeeklyProvider>
+            </ReportProvider>
+        </TrackPlayerProvider>
+        </ModalProvider>
     )
 }

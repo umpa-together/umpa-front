@@ -1,17 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, ActivityIndicator } from 'react-native';
-import { Context as AuthContext } from '../context/AuthContext';
-import { Context as SearchContext } from '../context/SearchContext';
-import { Context as DJContext } from '../context/DJContext';
-import { tmpWidth } from '../components/FontNormalize';
+import { Context as AuthContext } from 'context/AuthContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as DJContext } from 'context/DJContext';
+import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import HarmfulModal from '../components/HarmfulModal';
+import HarmfulModal from 'components/HarmfulModal';
 import Modal from 'react-native-modal';
-import TosForm from '../components/Setting/TosForm';
-import PrivacyPolicyForm from '../components/Setting/PrivacyPolicyForm';
-import { SongImage } from '../components/SongImage'
-import { addtracksong, stoptracksong } from '../components/TrackPlayer'
-import Header from '../components/Header';
+import TosForm from 'components/Setting/TosForm';
+import PrivacyPolicyForm from 'components/Setting/PrivacyPolicyForm';
+import { SongImage } from 'components/SongImage'
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import Header from 'components/Header';
 
 const SignupPage = ({ route }) => {
     const { state, checkName, signup, signin } = useContext(AuthContext);
@@ -201,7 +201,7 @@ const SignupPage = ({ route }) => {
                         </View>
                         { emailerr ?
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>이메일을 입력해주세요.</Text>
                         </View> : null }
                     </View>
@@ -221,7 +221,7 @@ const SignupPage = ({ route }) => {
                         </View>
                         { passworderr?
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>8~20자 영문, 숫자, 특수문자를 모두포함</Text>
                         </View> :
                         <View style={styles.warningContainer}>
@@ -241,12 +241,12 @@ const SignupPage = ({ route }) => {
                         </View>
                         { password != passwordcheck && passwordcheck!=undefined && passwordcheck.length>0 && !passwordcheckerr ?
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>비밀번호가 일치하지 않습니다</Text>
                         </View> : null }
                         { passwordcheckerr ?
                         <View style={styles.warningContainer}>
-                            <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                            <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                             <Text style={styles.warningText}>비밀번호를 한번 더 입력해주세요</Text>
                         </View> : null }
                     </View>
@@ -271,7 +271,7 @@ const SignupPage = ({ route }) => {
                     </View>
                     { double ? !state.doubleCheck ? 
                     <View style={styles.warningContainer}>
-                        <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                        <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                         <Text style={styles.warningText}>이미 존재하는 아이디입니다.</Text>
                     </View> : 
                     <View style={styles.warningContainer}>
@@ -279,7 +279,7 @@ const SignupPage = ({ route }) => {
                     </View> : null }
                     { nameerr ?
                     <View style={styles.warningContainer}>
-                        <SvgUri width='14' height='14' source={require('../assets/icons/warning.svg')}/>
+                        <SvgUri width='14' height='14' source={require('assets/icons/warning.svg')}/>
                         <Text style={styles.warningText}>{nameErrMsg}</Text>
                     </View> : null }
                 </View>
@@ -293,7 +293,7 @@ const SignupPage = ({ route }) => {
                                 setAgree2(false);
                         }}                        
                          >
-                         <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                         <SvgUri width='100%' height='100%' source={require('assets/icons/invalidName.svg')}/>
                         
                          </TouchableOpacity>
                       
@@ -318,7 +318,7 @@ const SignupPage = ({ route }) => {
   
                                 }}
                             >
-                          <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                          <SvgUri width='100%' height='100%' source={require('assets/icons/invalidName.svg')}/>
                                
                             </TouchableOpacity>                            
                             :
@@ -360,7 +360,7 @@ const SignupPage = ({ route }) => {
 
                                 }}
                             >  
-                           <SvgUri width='100%' height='100%' source={require('../assets/icons/invalidName.svg')}/>
+                           <SvgUri width='100%' height='100%' source={require('assets/icons/invalidName.svg')}/>
                                      
                              </TouchableOpacity>                                           
                             :
@@ -414,7 +414,7 @@ const SignupPage = ({ route }) => {
                         <TouchableOpacity style={styles.modalexiticon} onPress={()=>{
                             stoptracksong({ setIsPlayingid })
                             setModalVisible(false)}} >
-                            <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')} />
+                            <SvgUri width='100%' height='100%' source={require('assets/icons/modalexit.svg')} />
                         </TouchableOpacity>
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(80,80,80)', marginLeft:87 * tmpWidth, marginTop:24 * tmpWidth}}>환영합니다!</Text>
                         {songs.length >=1 ?
@@ -430,7 +430,7 @@ const SignupPage = ({ route }) => {
                     </View>
                     <View style={{width:335 * tmpWidth, height:53 * tmpWidth, backgroundColor:'#fff',flexDirection:'row'}}>
                         <View style={{width:39.3 * tmpWidth, height:40 * tmpWidth,marginLeft:13.8 * tmpWidth, marginTop:7 * tmpWidth}}>
-                            <SvgUri width='100%' height='100%' source={require('../assets/icons/signupsearch.svg')}  />
+                            <SvgUri width='100%' height='100%' source={require('assets/icons/signupsearch.svg')}  />
                         </View>
                         <TextInput style={{fontSize:16 * tmpWidth,width:tmpWidth*230}}
                             value = {text}
@@ -456,7 +456,7 @@ const SignupPage = ({ route }) => {
                          style={{width:40 * tmpWidth, height:40 * tmpWidth,marginLeft:4 * tmpWidth, marginTop:7 * tmpWidth}}
                          onPress={()=>{Keyboard.dismiss(); setText(''); setKey(true); setTok(true)}}
                          >
-                            <SvgUri width='95%' height='95%' source={require('../assets/icons/cancel.svg')}  />
+                            <SvgUri width='95%' height='95%' source={require('assets/icons/cancel.svg')}  />
                         </TouchableOpacity>                       
                     </View>
                     <View style={{height:359 * tmpWidth,width:335 * tmpWidth,backgroundColor:'rgb(250,250,250)'}}>
@@ -487,15 +487,15 @@ const SignupPage = ({ route }) => {
                                             }}>
                                                 <SongImage url={item.attributes.artwork.url} size={50} border={50} />
                                                 { isPlayingid != item.id ? 
-                                                <SvgUri width='20' height='20' source={require('../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
-                                                <SvgUri width='20' height='20' source={require('../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                                <SvgUri width='20' height='20' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                                <SvgUri width='20' height='20' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                             </TouchableOpacity>
                                             
                                             <View style={{marginLeft:20 * tmpWidth, flexDirection:'row',width:243.9 * tmpWidth, alignItems: 'center'}}>
                                                 <View style={{width:161.9 * tmpWidth, height:34.1 * tmpWidth }}>
                                                     <View style={{height:17 * tmpWidth,width:140 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
                                                         {item.attributes.contentRating == "explicit" ? 
-                                                        <SvgUri width={17 * tmpWidth} height={17 * tmpWidth} source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/>
+                                                        <SvgUri width={17 * tmpWidth} height={17 * tmpWidth} source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/>
                                                         : null}
                                                         <Text numberOfLines={1} style={{fontSize:14 * tmpWidth,fontWeight:'bold'}}>{item.attributes.name}</Text>
                                                     </View>
@@ -542,7 +542,7 @@ const SignupPage = ({ route }) => {
                                     <TouchableOpacity style={{width:64 * tmpWidth, height:64 * tmpWidth, marginRight:14 * tmpWidth}} onPress={() => deleteItem({data: item})}>
                                         <View style={{alignItems: 'center'}}>
                                             <SongImage url={item.attributes.artwork.url} size={64} border={64} />
-                                            <SvgUri width={20 * tmpWidth} height={20 * tmpWidth} source={require('../assets/icons/modalexit.svg')} />
+                                            <SvgUri width={20 * tmpWidth} height={20 * tmpWidth} source={require('assets/icons/modalexit.svg')} />
                                         </View>
                                     </TouchableOpacity>
                                 )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, ImageBackground } from 'react-native'
-import { tmpWidth } from './FontNormalize'
+import { tmpWidth } from 'components/FontNormalize'
 
 const SongImage = ({ size, border, url, opac = 1.0 }) => {
     url = url.replace('{w}', '300');

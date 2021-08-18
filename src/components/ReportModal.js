@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as ReportContext } from '../context/ReportContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as ReportContext } from 'context/ReportContext';
 
 const ReportModal = ({ reportModal, setReportModal, type, subjectId }) => {
     const { postReport } = useContext(ReportContext);

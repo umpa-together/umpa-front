@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as UserContext } from '../../context/UserContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
-import { push } from '../../navigationRef';
+import { push } from 'navigationRef';
 
 const Playlist = ({ playList }) => {
     const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
@@ -75,15 +75,15 @@ const Playlist = ({ playList }) => {
                                                     <View style={styles.profile}>
                                                         {item.postUserId.profileImage == null ?
                                                         <View style={styles.profileno}>
-                                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                                            <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                                         </View> : <Image style={styles.profileimg} source={{uri: item.postUserId.profileImage}} />}
                                                     </View>
                                                     <View style={{marginLeft:8*tmpWidth}}>
                                                         <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUserId.name}</Text>
                                                         <View style={styles.viewicon}>
-                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/likeslength.svg')} style={{}}/>
+                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('assets/icons/likeslength.svg')} style={{}}/>
                                                             <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.likes.length}</Text>
-                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('../../assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
+                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
                                                             <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.views}</Text>
                                                         </View>
                                                     </View>
@@ -108,10 +108,10 @@ const Playlist = ({ playList }) => {
                                             <View style={styles.likeicon}>
                                                 { item.likes.includes(state.myInfo._id) ?
                                                 <TouchableOpacity onPress={()=>{unlikesPlaylist({id: item._id});         item.likes = item.likes.filter(id => id.toString() != state.myInfo._id.toString()); }}>
-                                                    <SvgUri width='40' height='40' source={require('../../assets/icons/postplaylistfilled.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth}}/>
+                                                    <SvgUri width='40' height='40' source={require('assets/icons/postplaylistfilled.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth}}/>
                                                 </TouchableOpacity> :
                                                 <TouchableOpacity onPress={()=>{likesPlaylist({id: item._id}); item.likes.push(state.myInfo._id); }}>
-                                                    <SvgUri width='40' height='40' source={require('../../assets/icons/frame.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth }}/>
+                                                    <SvgUri width='40' height='40' source={require('assets/icons/frame.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth }}/>
                                                 </TouchableOpacity> }
                                             </View>
                                         </View>

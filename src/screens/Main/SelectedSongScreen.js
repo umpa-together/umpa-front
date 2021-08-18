@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { navigate, goBack, push } from '../../navigationRef';
-import { Context as SearchPlaylistContext } from '../../context/SearchPlaylistContext';
-import { Context as SearchContext } from '../../context/SearchContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { Context as CurationContext } from '../../context/CurationContext';
+import { navigate, goBack, push } from 'navigationRef';
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as CurationContext } from 'context/CurationContext';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../../components/FontNormalize';
-import { SongImage, SongImageBack } from '../../components/SongImage'
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage, SongImageBack } from 'components/SongImage'
 
 const SelectedSongScreen = ({ route }) => {
     const { song, category } = route.params
@@ -33,12 +33,12 @@ const SelectedSongScreen = ({ route }) => {
                     <View style={styles.header}>
                         <View style={{ height:40 * tmpWidth, width: 40 * tmpWidth}}>
                             <TouchableOpacity style={styles.backicon} onPress={goBack}>
-                                <SvgUri width='40' height='40' source={require('../../assets/icons/playlistBack.svg')}/>
+                                <SvgUri width='40' height='40' source={require('assets/icons/playlistBack.svg')}/>
                             </TouchableOpacity>
                         </View>
                         <View style={{justifyContent:'center', alignItems:'center', flexDirection: 'row'}}>
                             {song.attributes.contentRating == "explicit" ? 
-                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                             : null }
                             <Text numberOfLines={1} style={{fontSize:18 * tmpWidth, fontWeight:'500'}}>{song.attributes.name}</Text>
                         </View>
@@ -108,7 +108,7 @@ const SelectedSongScreen = ({ route }) => {
                                                     <View style={{width:18 * tmpWidth, height:18 * tmpWidth}}>
                                                         {item.postUserId.profileImage == null || item.postUserId.profileImage==undefined ?
                                                         <View style={styles.profileImage} >
-                                                            <SvgUri width='18' height='18' source={require('../../assets/icons/noprofile.svg')} />
+                                                            <SvgUri width='18' height='18' source={require('assets/icons/noprofile.svg')} />
                                                         </View> :
                                                         <Image style={{width:'100%', height:'100%', borderRadius:32 * tmpWidth }}source={{uri: item.postUserId.profileImage}} />}
                                                     </View>
@@ -127,12 +127,12 @@ const SelectedSongScreen = ({ route }) => {
                <View style={styles.headerdj}>
                     <View style={{height:40 * tmpWidth, width:40 * tmpWidth}}>
                         <TouchableOpacity style={{ zIndex:2, marginLeft: 20 * tmpWidth}} onPress={goBack}>
-                            <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('../../assets/icons/back.svg')} />
+                            <SvgUri width={35 * tmpWidth} height={35 * tmpWidth} source={require('assets/icons/back.svg')} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.headersongname}>
                         {song.attributes.contentRating == "explicit" ? 
-                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                         : null }
                         <Text style={{fontSize:18 * tmpWidth, fontWeight:'500'}} numberOfLines={1}>{song.attributes.name}</Text>
                     </View>
@@ -165,7 +165,7 @@ const SelectedSongScreen = ({ route }) => {
                                     <View style={{alignItems:'center'}}>
                                         {item.profileImage == undefined ?
                                         <View style={{width:118 * tmpWidth, height:118 * tmpWidth, borderRadius:100 * tmpWidth, backgroundColor:'#eee'}}>
-                                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                            <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                         </View> :
                                         <View style={{width:118 * tmpWidth, height:118 * tmpWidth, borderRadius:100 * tmpWidth}}>
                                             <Image source={{uri: item.profileImage}} style={{width:'100%', height:'100%', borderRadius:100}}/>

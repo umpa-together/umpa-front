@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Pressable, StyleSheet } from 'react-native'
-import { goBack } from '../navigationRef'
+import { goBack } from 'navigationRef'
 
 export default CreateModal = () => {
     return (

@@ -1,16 +1,16 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { tmpWidth } from './FontNormalize'
-import { StatusBarHeight } from './StatusBarHeight'
+import { tmpWidth } from 'components/FontNormalize'
+import { StatusBarHeight } from 'components/StatusBarHeight'
 import SvgUri from 'react-native-svg-uri'
-import { goBack } from '../navigationRef'
+import { goBack } from 'navigationRef'
 
 export default Header = ({ title }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <TouchableOpacity style={styles.back} onPress={goBack}>
-                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/back.svg')}/>
+                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
             </TouchableOpacity>
         </View>
     )
@@ -22,7 +22,7 @@ export const NavHeader = ({ title, isBack = false }) => {
             <Text style={styles.title}>{title}</Text>
             {isBack &&
             <TouchableOpacity style={styles.back} onPress={goBack}>
-                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/back.svg')}/>
+                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
             </TouchableOpacity>}
         </View>
     )

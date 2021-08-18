@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage'
-import { push } from '../../navigationRef';
+import { Context as CurationContext } from 'context/CurationContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
+import { push } from 'navigationRef';
 
 const Curating = ({ curationPosts }) => {
     const { state, getCurationposts, nextCurationposts, getCuration } = useContext(CurationContext);

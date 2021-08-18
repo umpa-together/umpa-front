@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as PlaylistContext } from '../context/PlaylistContext';
-import { Context as UserContext } from '../context/UserContext';
-import { Context as BoardContext } from '../context/BoardContext';
-import { Context as CurationContext } from '../context/CurationContext';
-import { goBack } from '../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as CurationContext } from 'context/CurationContext';
+import { goBack } from 'navigationRef';
 const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);

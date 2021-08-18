@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as PlaylistContext } from '../context/PlaylistContext';
-import { goBack } from '../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { goBack } from 'navigationRef';
 
 const DeletedModal = ({ deletedModal, setDeletedModal, type }) => {
     const { getPlaylists } = useContext(PlaylistContext);

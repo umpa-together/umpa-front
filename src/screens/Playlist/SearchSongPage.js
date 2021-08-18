@@ -3,12 +3,12 @@ import { Text, StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator, 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SvgUri from 'react-native-svg-uri';
-import { Context as SearchContext } from '../../context/SearchContext'
-import { navigate, goBack } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import HarmfulModal from '../../components/HarmfulModal';
-import { SongImage } from '../../components/SongImage'
-import { addtracksong, stoptracksong } from '../../components/TrackPlayer'
+import { Context as SearchContext } from 'context/SearchContext'
+import { navigate, goBack } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'components/SongImage'
+import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 
 const SearchPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -84,7 +84,7 @@ const SearchPage = ({ route }) => {
              <View style={{width: '100%'}}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon} onPress={goBack}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/back.svg')}/>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>플레이리스트 만들기</Text>
                 </View>
@@ -92,7 +92,7 @@ const SearchPage = ({ route }) => {
             <View style={styles.searchBox}>
                 <View style ={{ flexDirection:'row', justifyContent: 'space-between'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 14     * tmpWidth}}>
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/playlistSearch.svg')}/>
+                        <SvgUri width='40' height='40' source={require('assets/icons/playlistSearch.svg')}/>
                         <View style={styles.inputBox}>
                             <TextInput 
                                 value = {text}
@@ -120,7 +120,7 @@ const SearchPage = ({ route }) => {
                         setState('')
                         searchinit()
                         initHint()}}>
-                        <SvgUri width='28' height='28' source={require('../../assets/icons/resultDelete.svg')}/>
+                        <SvgUri width='28' height='28' source={require('assets/icons/resultDelete.svg')}/>
                     </TouchableOpacity> 
                 </View>
             </View>
@@ -150,14 +150,14 @@ const SearchPage = ({ route }) => {
                                         >
                                             <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
-                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
-                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            <SvgUri width='26' height='26' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                             {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                 : null }
                                                 <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
@@ -177,14 +177,14 @@ const SearchPage = ({ route }) => {
                                         >
                                             <SongImage url={item.attributes.artwork.url} size={56} border={56}/>
                                             { isPlayingid != item.id ? 
-                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
-                                            <SvgUri width='26' height='26' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
+                                            <SvgUri width='26' height='26' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
+                                            <SvgUri width='26' height='26' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                             {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
                                         </TouchableOpacity>
                                         <View style={styles.songContainer}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                 : null }
                                                 <Text style={{fontSize: 16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                             </View>
@@ -238,7 +238,7 @@ const SearchPage = ({ route }) => {
                                     <View style={{marginLeft: 22.4 * tmpWidth, width: 180 * tmpWidth}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center', width: item.attributes.contentRating == "explicit" ? 160 * tmpWidth : null }}>
                                             {item.attributes.contentRating == "explicit" ? 
-                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                             : null }
                                             <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                         </View>
@@ -248,7 +248,7 @@ const SearchPage = ({ route }) => {
                                         style={{marginLeft:8*tmpWidth, width:tmpWidth*20, height:tmpWidth*20, justifyContent:'center', alignItems:'center'}}
                                         onPress={()=>{deleteItem({data: item})}}
                                     >
-                                        <SvgUri width={11*tmpWidth} height={11*tmpWidth} source={require('../../assets/icons/songdelete.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        <SvgUri width={11*tmpWidth} height={11*tmpWidth} source={require('assets/icons/songdelete.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                     </TouchableOpacity>                                   
                                 </View>
                             </Swipeable>
