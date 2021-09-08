@@ -11,7 +11,6 @@ export default WeeklyPlaylists = ({ playlists }) => {
     const scrollX = useRef(new Animated.Value(0)).current;
     
     const onClickAll = async () => {
-        await getAllPlaylists()
         navigate('AllContents', {type: '플레이리스트'})
     }
 
