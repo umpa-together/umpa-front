@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { push } from 'navigationRef';
+import LoadingIndicator from '../LoadingIndicator'
 
 const AllPlaylistForm = () => {
-    const { state, getPlaylist, nextAllPlaylists, getAllPlaylists} = useContext(PlaylistContext)
+    const { state, getPlaylist, nextAllPlaylists, getAllPlaylists } = useContext(PlaylistContext)
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    
     const getData = async () => {
         if(state.allPlaylists.length >= 20 && !state.notAllPlaylistsNext){
             setLoading(true);
@@ -15,6 +17,7 @@ const AllPlaylistForm = () => {
             setLoading(false);
         }
     };
+
     const onEndReached = () => {
         if (loading) {
             return;
@@ -22,6 +25,7 @@ const AllPlaylistForm = () => {
             getData();
         }
     };
+
     const fetchData = async () => {
         setRefreshing(true);
         await getAllPlaylists()
@@ -35,11 +39,16 @@ const AllPlaylistForm = () => {
             fetchData();
         }
     }
+
+    useEffect(() => {
+        getAllPlaylists()
+    }, [])
+
     return (
-        <View style={styles.result}>
-            { state.allPlaylists == null ? <View style={{flex: 1,justifyContent: 'center', alignContent: 'center'}}><ActivityIndicator/></View> :
+        <View style={styles.container}>
+            { state.allPlaylists == null ? <LoadingIndicator /> :
             <FlatList 
-                numColumns={2}
+                numColumns={3}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={0}
                 onRefresh={onRefresh}
@@ -47,29 +56,17 @@ const AllPlaylistForm = () => {
                 ListFooterComponent={loading && <ActivityIndicator />}
                 data={state.allPlaylists}
                 keyExtractor={playlist=>playlist._id}
-                renderItem={({item}) => {
+                renderItem={({item, index}) => {
                     return (
-                        <View style={{width: 161 * tmpWidth, marginRight: 14 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                            <TouchableOpacity onPress={async () => {
+                        <TouchableOpacity 
+                            onPress={async () => {
                                 await getPlaylist({id:item._id, postUserId:item.postUserId._id})
                                 push('SelectedPlaylist', {id: item._id, postUser: item.postUserId._id})
-                            }}>
-                                <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius: 8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
-                                    <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
-                                </View>
-                                <View style={{width:161 * tmpWidth}}>
-                                    <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
-                                </View>
-                                <View style={{width:161 * tmpWidth, flexDirection:'row', marginTop: 8 * tmpWidth}}>
-                                <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, color:'rgba(153,153,153,1)',}}>
-                                {item.hashtag.map((hashtag,index) => {
-                                     return (
-                                         <Text style={{fontSize:12 * tmpWidth, color:'rgba(153,153,153,1)', marginRight:6 * tmpWidth}}>{'#'+hashtag}  </Text>
-                                     )})}
-                                </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                            }}
+                            style={index%3 === 1 && styles.secondColumn}
+                        >
+                            <Image style={styles.img} source={{url :item.image}}/>
+                        </TouchableOpacity>
                     )
                 }}
             /> }
@@ -78,11 +75,21 @@ const AllPlaylistForm = () => {
 }
 
 const styles=StyleSheet.create({
-    result:{
-        marginTop:18 * tmpWidth,
-        paddingLeft:20 * tmpWidth,
+    container:{
+        marginTop: 8 * tmpWidth,
+        paddingLeft: 8 * tmpWidth,
         height: '100%',
-        paddingBottom: 18 * tmpWidth,
+    },
+    img: {
+        borderRadius: 4 * tmpWidth,
+        width: 117 * tmpWidth, 
+        height: 117 * tmpWidth, 
+        marginBottom: 4 * tmpWidth, 
+        marginRight: 4 * tmpWidth
+    },
+    secondColumn: {
+        marginTop: 12 * tmpWidth,
+        marginBottom: -12 * tmpWidth,
     }
 })
 
