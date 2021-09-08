@@ -3,10 +3,6 @@ import serverApi from '../api/serverApi';
 
 const DJReducer = (state, action) => {
     switch(action.type) {
-        case 'getSimilarTaste':
-            return { ...state, tasteDJ: action.payload };
-        case 'getWeeklyDJ':
-            return { ...state, weeklyDJ: action.payload };
         case 'recommendDJ':
             return { ...state, recommendDJ: action.payload };
         case 'getSongs':
@@ -15,23 +11,6 @@ const DJReducer = (state, action) => {
             return { ...state, errorMessage: action.payload };
         default:
             return state;
-    }
-};
-
-const getSimilarTaste = (dispatch) => async () => {
-    try {
-        const response = await serverApi.get('/SimilarTaste');
-        dispatch({ type: 'getSimilarTaste', payload: response.data });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getSimilarTaste' });
-    }
-};
-const getWeeklyDJ = (dispatch) => async () => {
-    try {
-        const response = await serverApi.get('/WeeklyDJ');
-        dispatch({ type: 'getWeeklyDJ', payload: response.data });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getWeeklyDJ' });
     }
 };
 
@@ -69,9 +48,19 @@ const recommendDJ = (dispatch) => async() => {
     }
 };
 
+const tmp = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/tmp');
+        console.log(response.data)
+        //dispatch({ type: 'recommendDJ', payload: response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with recommendDJ' });
+    }
+}
+
 
 export const { Provider, Context } = createDataContext(
     DJReducer,
-    { getSimilarTaste, getWeeklyDJ, getSongs, setSongs, editSongs, recommendDJ },
-    { weeklyDJ: [], tasteDJ: [], songs: null, errorMessage: '', recommendDJ: null }
+    { getSongs, setSongs, editSongs, recommendDJ, tmp },
+    { songs: null, errorMessage: '', recommendDJ: null }
 )

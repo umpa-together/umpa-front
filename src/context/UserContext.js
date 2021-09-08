@@ -23,10 +23,6 @@ const userReducer = (state, action) => {
             return { ...state, likePlaylists: action.payload };
         case 'getMyStory' :
             return { ...state, myStory: action.payload[0], storyViewer: action.payload[1]}
-        case 'get_follower':
-            return { ...state, follower:action.payload};
-        case 'get_following':
-            return { ...state, following:action.payload};
         case 'myPlaylist':
             return { ...state, myPlayList: action.payload.reverse() };
         case 'myStory':
@@ -58,18 +54,6 @@ const initOtherUser = (dispatch) => () => {
         dispatch({ type: 'error', payload: 'Something went wrong with initOtherUser' });
     }
 }
-
-const postGuide = (dispatch) => async ({type}) => {
-    try {
-        const response = await serverApi.post('/guide', {type});
-        dispatch({ type: 'getMyInfo', payload: response.data });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with postGuide' });
-    }
-}
-
-
-
 
 const getMyInfo = (dispatch) => async () => {
     try{
@@ -107,14 +91,6 @@ const editProfileImage = (dispatch) => async ({fd}) => {
     }
 };
 
-const addView = (dispatch) => async ({ id }) => {
-    try {
-        await serverApi.post('/addView', { id });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with addView' });
-    }
-};
-
 const follow = dispatch => {
     return async ({ id }) => {
         try{
@@ -133,28 +109,6 @@ const unfollow = dispatch => {
             dispatch({type:'get_otheruser', payload:response.data})
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with unfollow' });
-        }
-    }
-};
-
-const getFollower = dispatch => {
-    return async ({ follower }) => {
-        try{
-            const response = await serverApi.post('/follower', { follower });
-            dispatch({type:'get_follower', payload:response.data})
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getFollower' });
-        }
-    }
-};
-
-const getFollowing = dispatch => {
-    return async ({ following }) => {
-        try{
-            const response = await serverApi.post('/following', { following });
-            dispatch({type:'get_following', payload:response.data})
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getFollowing' });
         }
     }
 };
@@ -286,10 +240,10 @@ const storyCalendar = (dispatch) => async ({id}) => {
 
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { initUser, initOtherUser, postGuide, getMyInfo, getOtheruser, editProfile, editProfileImage, addView,
-        follow, unfollow, getFollower ,getFollowing,
+    { initUser, initOtherUser, getMyInfo, getOtheruser, editProfile, editProfileImage, 
+        follow, unfollow,
         getMyBookmark, getMyContent, getMyComment, getMyScrab, getMyBoardSongs, getLikePlaylists,
         addSonginPlaylists, deleteSonginPlaylists, postStory, deleteStory, getMyStory, getOtherStory, storyView, storyCalendar },
     { myInfo: null, myPlayList: null, likePlaylists: null, otherUser:null, boardBookmark: null, 
-        myContents: null, myBoardSongs: null, follower:null , following: null, myStory: null, otherStory: null, storyViewer: [], storyCalendar: null }
+        myContents: null, myBoardSongs: null, myStory: null, otherStory: null, storyViewer: [], storyCalendar: null }
 )
