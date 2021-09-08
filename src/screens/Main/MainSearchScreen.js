@@ -14,6 +14,7 @@ import CurrentHashtag from 'components/Main/CurrentHashtag'
 import RecentPlaylists from 'components/Main/RecentPlaylists'
 import WeeklyPlaylists from 'components/Main/WeeklyPlaylists';
 import MusicArchive from 'components/Main/MusicArchive'
+import SimilarTasteUsers from '../../components/Main/SimilarTasteUsers';
 import { tmpWidth } from 'components/FontNormalize';
 
 const MainSearchScreen = () => {
@@ -59,6 +60,7 @@ const MainSearchScreen = () => {
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
             <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
+            <SimilarTasteUsers />
         </View>
     )
 }
