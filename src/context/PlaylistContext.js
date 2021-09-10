@@ -178,9 +178,9 @@ const getPlaylist = dispatch =>{
 // Comment
 
 const addComment = dispatch => {
-    return async ({ id, text, noticieduser, noticieduseremail, noticetype, thirdid }) => {
+    return async ({ id, text }) => {
         try{
-            const response = await serverApi.post('/comment/'+id, { text, noticieduser, noticieduseremail, noticetype, thirdid });
+            const response = await serverApi.post('/comment/'+id, { text });
             dispatch({ type:'add_comment', payload:response.data })
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
