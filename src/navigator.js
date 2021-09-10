@@ -108,7 +108,7 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('assets/icons/tabNotice.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'AccountTab') {
+                } else if (route.name === 'Account') {
                     return ( 
                         <View>
                             { focused ? 
@@ -144,7 +144,7 @@ const TabScreen = () => {
                 })}
             />
             <Tab.Screen name="NoticeTab" component={NoticeScreen}/>
-            <Tab.Screen name="AccountTab" component={AccountScreen}/>
+            <Tab.Screen name="Account" component={AccountScreen}/>
         </Tab.Navigator>
     )
 }
