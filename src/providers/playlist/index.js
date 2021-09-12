@@ -18,7 +18,6 @@ export default PlaylistProvider = ({ children }) => {
     const onClickComment = async (comment) => {
         setReCommentModal(true)
         setCurrentComment(comment)
-        console.log(currentComment)
         await getreComment({ commentid: comment._id })
     }
     
@@ -40,11 +39,11 @@ export default PlaylistProvider = ({ children }) => {
         setReCommentModal(false)
     }
 
-    const onClickCommentLikes = async (likes, playlistId, id) => {
+    const onClickCommentLikes = (likes, playlistId, id) => {
         if(likes.includes(userState.myInfo._id)) {
-            await unlikescomment({ playlistid: playlistId, id })
+            unlikescomment({ playlistid: playlistId, id })
         } else {
-            await likescomment({ playlistid: playlistId, id })
+            likescomment({ playlistid: playlistId, id })
         }
     }
 
