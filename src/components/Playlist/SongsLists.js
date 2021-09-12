@@ -5,6 +5,7 @@ import { SongImage } from 'components/SongImage'
 import HarmfulModal from 'components/HarmfulModal';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
+import MoveText from 'components/MoveText'
 
 export default SongsLists = ({ songs }) => {
     const { isPlayingId, addtracksong, stoptracksong } = useTrackPlayer()
@@ -42,13 +43,20 @@ export default SongsLists = ({ songs }) => {
                             />
                         </TouchableOpacity>
                         <HarmfulModal />
-                        <View style={contentRating === 'explicit' ? styles.explicitName : styles.nameBox}>
-                            {contentRating === 'explicit' && <SvgUri width="12" height="12" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
-                            <Text style={styles.name} numberOfLines={1}>{name}</Text>
-                        </View>
-                        <View style={styles.artistBox}>
-                            <Text style={styles.artist} numberOfLines={1}>{artistName}</Text>
-                        </View>
+                        <MoveText 
+                            container={contentRating === 'explicit' ? styles.explicitName : styles.nameBox} 
+                            text={name} 
+                            isMove={id === isPlayingId} 
+                            isExplicit={contentRating === 'explicit'} 
+                            textStyles={styles.name} 
+                        />
+                        <MoveText 
+                            container={styles.artistBox} 
+                            text={artistName} 
+                            isMove={id === isPlayingId} 
+                            isExplicit={false} 
+                            textStyles={styles.artist} 
+                        />
                     </View>
                 )
             }}
@@ -80,13 +88,10 @@ const styles=StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         marginTop: 9 * tmpWidth,
-        width: 105 * tmpWidth,
+        width: 95 * tmpWidth,
     },
     artistBox: {
         width: 110 * tmpWidth
-    },
-    explicit: {
-        marginRight: 5 * tmpWidth
     },
     name: {
         fontSize: 14 * tmpWidth,

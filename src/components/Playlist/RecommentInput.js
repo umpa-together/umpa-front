@@ -39,14 +39,13 @@ export default RecommentInput = () => {
 
 const styles=StyleSheet.create({
     container: {
-        marginTop: 20 * tmpWidth,
+        marginTop: 16 * tmpWidth,
         borderBottomWidth: 1 * tmpWidth,
-        borderBottomColor: 'rgb(207,207,207)',
-        marginLeft: 20 * tmpWidth,
-        marginRight: 20 * tmpWidth,
-        paddingBottom: 6 * tmpWidth,
+        borderBottomColor: '#8bc0ff',
+        paddingLeft: 20 * tmpWidth,
+        paddingBottom: 8 * tmpWidth,
         flexDirection: 'row',
-        marginBottom: 12 * tmpWidth
+        alignItems: 'center'
     },
     profileImg:{
         height: 32 * tmpWidth,
@@ -56,6 +55,5 @@ const styles=StyleSheet.create({
     },
     textInput: {
         width: '80%',
-        marginTop: 4 * tmpWidth
     },
 })

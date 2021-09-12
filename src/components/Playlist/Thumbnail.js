@@ -51,7 +51,7 @@ const styles=StyleSheet.create({
     },
     img: {
         width: 339 * tmpWidth,
-        height: 339 * tmpWidth, 
+        height: 228 * tmpWidth, 
         borderRadius: 4 * tmpWidth
     },
     modalImg: {
