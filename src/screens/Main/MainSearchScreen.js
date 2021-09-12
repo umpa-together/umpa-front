@@ -7,6 +7,7 @@ import {Context as SearchContext} from 'context/SearchContext';
 import {Context as CurationContext} from 'context/CurationContext';
 import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
+import {Context as DJContext} from 'context/DJContext';
 import { useFocusEffect } from '@react-navigation/native';
 
 import SearchBox from 'components/Main/SearchBox'
@@ -25,10 +26,12 @@ const MainSearchScreen = () => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { getCurationposts } = useContext(CurationContext);
     const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists, getMusicArchive } = useContext(WeeklyContext);
+    const { state: djState, getMainRecommendDJ } = useContext(DJContext);
 
     const loadingDataFetch = async () => {
-        await postWeekly()
+        //await postWeekly()
         await Promise.all([
+        getMainRecommendDJ(),
         getMusicArchive(),
         getRecentPlaylists(),
         getWeeklyPlaylist(),
@@ -60,7 +63,7 @@ const MainSearchScreen = () => {
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
             <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
-            <SimilarTasteUsers />
+            <SimilarTasteUsers users={djState.mainRecommendDJ} />
         </View>
     )
 }

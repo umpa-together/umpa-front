@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { navigate } from 'navigationRef';
-export default SimilarTasteUsers = () => {
+export default SimilarTasteUsers = ({ users }) => {
 
     const onClickAll = async () => {
         navigate('AllContents', {type: '유저'})

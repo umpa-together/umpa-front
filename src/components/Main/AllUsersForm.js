@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Context as WeeklyContext } from 'context/WeeklyContext';
+import { Context as DJContext } from 'context/DJContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from '../ProfileImage'
 import { SongImage } from 'components/SongImage'
@@ -8,8 +8,27 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import HarmfulModal from 'components/HarmfulModal';
 
 export default AllUsersForm = () => {
-    const { state } = useContext(WeeklyContext);
+    const { state } = useContext(DJContext);
     const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+    const [userPage, setUserPage] = useState(1)
+    const [loading, setLoading] = useState(false);
+
+    const getData = async () => {
+        if(state.mainRecommendDJ.length / 20 > userPage) {
+            //setLoading(true);
+            setUserPage((prev) => prev + 1)
+            //setLoading(false);
+        }
+    };
+
+    const onEndReached = () => {
+        if (loading) {
+            return;
+        } else {
+            getData();
+        }
+    };
+
     const onClickSong = (item) => {
         if(isPlayingId !== item.id) {
             addtracksong({data: item})
@@ -22,8 +41,10 @@ export default AllUsersForm = () => {
         <View style={styles.container}>
             <FlatList
                 keyboardShouldPersistTaps="handled"
-                data={state.weeklyDJ}
+                data={state.mainRecommendDJ.slice(0, 20 * userPage)}
                 keyExtractor={dj=>dj._id}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0}
                 renderItem={({item})=> {
                     const { profileImage, songs, name, introduction } = item
                     return (
