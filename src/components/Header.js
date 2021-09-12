@@ -31,15 +31,17 @@ export const NavHeader = ({ title, isBack = false }) => {
 
 export const PlaylistHeader = ({ title }) => {
     return (
-        <View style={styles.container}>
-            <TextTicker
-                duration={5000}
-                bounce={false}
-                marqueeDelay={1000}
-                style={styles.title}
-            >
-                {title}
-            </TextTicker>
+        <View style={styles.playlistContainer}>
+            <View style={styles.titleMoveArea}>
+                <TextTicker
+                    duration={10000}
+                    bounce={false}
+                    marqueeDelay={1000}
+                    style={styles.playlistTitle}
+                >
+                    {title}
+                </TextTicker>
+            </View>
             <TouchableOpacity style={styles.back} onPress={goBack}>
                 <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
             </TouchableOpacity>
@@ -55,6 +57,19 @@ const styles=StyleSheet.create({
         backgroundColor: 'rgb(254,254,254)',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    playlistContainer: {
+        height: (48 + StatusBarHeight) * tmpWidth, 
+        paddingTop: StatusBarHeight * tmpWidth,
+        backgroundColor: 'rgb(254,254,254)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    titleMoveArea: {
+        width: 250 * tmpWidth,
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center',
     },
     navContainer: {
         width: '100%',
@@ -72,8 +87,11 @@ const styles=StyleSheet.create({
     title: {
         textAlign: 'center', 
         fontSize: 18 * tmpWidth, 
-        //width: 200 * tmpWidth, 
-        borderWidth: 1
+    },
+    playlistTitle: {
+        textAlign: 'center',
+        fontSize: 16 * tmpWidth,
+        fontWeight: '700'
     },
     back: {
         position: 'absolute',
