@@ -44,7 +44,9 @@ export default TrackPlayerProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingId('0'), 31000);
+        const trackPlayer = setTimeout(() => {
+            stoptracksong()
+        }, 31000);
         setPlayTime(0)
         return () => clearTimeout(trackPlayer);
     }, [isPlayingId])
