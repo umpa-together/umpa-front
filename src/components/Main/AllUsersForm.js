@@ -1,17 +1,20 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Context as DJContext } from 'context/DJContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from '../ProfileImage'
-import { SongImage } from 'components/SongImage'
-import { useTrackPlayer } from 'providers/trackPlayer';
-import HarmfulModal from 'components/HarmfulModal';
+import LoadingIndicator from 'components/LoadingIndicator'
+import { push } from 'navigationRef';
 
 export default AllUsersForm = () => {
-    const { state } = useContext(DJContext);
-    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+    const { state, getSongs } = useContext(DJContext);
+    const { getPlaylist } = useContext(PlaylistContext)
+    const { getOtheruser, follow, unfollow } = useContext(UserContext);
     const [userPage, setUserPage] = useState(1)
     const [loading, setLoading] = useState(false);
+    const [isFollow, setIsFollow] = useState([])
 
     const getData = async () => {
         if(state.mainRecommendDJ.length / 20 > userPage) {
@@ -29,49 +32,69 @@ export default AllUsersForm = () => {
         }
     };
 
-    const onClickSong = (item) => {
-        if(isPlayingId !== item.id) {
-            addtracksong({data: item})
-        } else {
-            stoptracksong()
-        }
+    const onClickPlaylist = async (playlist) => {
+        const { _id: id, postUserId: postUser } = playlist
+        await getPlaylist({ id, postUserId: postUser })
+        push('SelectedPlaylist', { id, postUser })
     }
 
+    const onClickProfile = async (id) => {
+        await Promise.all([
+            getOtheruser({ id }),
+            getSongs({ id })
+        ]);
+        push('OtherAccount', { otherUserId: id });
+    }
+
+    const onClickFollow = (id) => {
+        if(isFollow.includes(id)) {
+            unfollow({ id })
+            setIsFollow(isFollow.filter((item) => item !== id))
+        } else {
+            follow({ id })
+            setIsFollow((prev) => [...prev, id])
+        }
+    }
+    
     return (
         <View style={styles.container}>
+            {state.mainRecommendDJ === null ? <LoadingIndicator /> :
             <FlatList
                 keyboardShouldPersistTaps="handled"
                 data={state.mainRecommendDJ.slice(0, 20 * userPage)}
                 keyExtractor={dj=>dj._id}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={0}
-                renderItem={({item})=> {
-                    const { profileImage, songs, name, introduction } = item
+                renderItem={({ item })=> {
+                    const { profileImage, playlists, name, introduction, id } = item
+                    const length = 3 - playlists.length
                     return (
                         <View style={styles.box}>
-                            <View style={styles.spaceBetween}>
+                            <View style={styles.flexRow}>
                                 <TouchableOpacity 
-                                    onPress={async () => {
-                                        //await Promise.all([getOtheruser({id:item._id}),
-                                        //getSongs({id:item._id})]);
-                                        //push('OtherAccount', {otherUserId:item._id});
-                                    }
-                                }>
+                                    onPress={() => onClickProfile(id)}
+                                >
                                     <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
                                 </TouchableOpacity>
                                 <View style={styles.flexRow}>
-                                    {songs.slice(0, 3).map((item) => {
-                                        const url = item.attributes.artwork.url
+                                    {playlists.slice(0, 3).map((item) => {
+                                        const { image } = item
                                         return (
                                             <TouchableOpacity 
-                                                onPress={() => onClickSong(item)}
+                                                onPress={() => onClickPlaylist(item)}
                                                 style={styles.songmargin}
+                                                key={image}
                                             >
-                                                {isPlayingId !== item.id ? 
-                                                <SongImage url={url} size={80} border={4}  /> : 
-                                                <SongImage url={url} size={80} border={80} /> }
-                                                <HarmfulModal />
+                                                <Image style={styles.playlistImg} source={{uri: image}} />
                                             </TouchableOpacity>
+                                        )
+                                    })}
+                                    {length > 0 && [...Array(length)].map(() => {
+                                        return (
+                                            <View
+                                                style={[styles.songmargin, styles.playlistImg]}
+                                                key={Math.random()}
+                                            />
                                         )
                                     })}
                                 </View>
@@ -81,14 +104,21 @@ export default AllUsersForm = () => {
                                     <Text style={styles.name}>{name}</Text>
                                     <Text style={styles.introduction}>{introduction}</Text>
                                 </View>
-                                <TouchableOpacity style={styles.followBox}>
-                                    <Text style={styles.follow}>팔로우</Text>
+                                <TouchableOpacity 
+                                    style={isFollow.includes(id) ? styles.followBox : styles.followingBox}
+                                    onPress={() => onClickFollow(id)}
+                                >
+                                    <Text 
+                                        style={isFollow.includes(id) ? styles.follow : styles.following}
+                                    >
+                                        { isFollow.includes(id) ? '팔로잉' : '팔로우' }
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     )
                 }}
-            />
+            /> }
         </View>
     )
 }
@@ -96,21 +126,23 @@ export default AllUsersForm = () => {
 const styles=StyleSheet.create({
     container: {
         borderTopColor: '#dcdcdc',
-        borderTopWidth: 0.5 * tmpWidth
+        borderTopWidth: 0.5 * tmpWidth,
+        flex: 1,
     },
     box: {
-        height: 155 * tmpWidth,
         borderBottomWidth: 0.5 * tmpWidth,
         borderBottomColor: '#dcdcdc',
         paddingLeft: 18 * tmpWidth, 
         paddingRight: 18 * tmpWidth,
         paddingTop: 16 * tmpWidth,
+        paddingBottom: 14 * tmpWidth
     },
     profileImg: {
         width: 70 * tmpWidth,
         height: 70 * tmpWidth,
         borderRadius: 70 * tmpWidth,
-        marginTop: 5 * tmpWidth
+        marginTop: 5 * tmpWidth,
+        marginRight: 21 * tmpWidth
     },
     songsImg: {
         width: 80 * tmpWidth,
@@ -146,7 +178,7 @@ const styles=StyleSheet.create({
         borderColor: '#8bc0ff',
         borderRadius: 100 * tmpWidth,
         width: 80 * tmpWidth,
-        height: 25 * tmpWidth,
+        height: 26 * tmpWidth,
         marginTop: 15 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',
@@ -154,5 +186,26 @@ const styles=StyleSheet.create({
     follow: {
         fontSize: 12 * tmpWidth,
         color: '#8bc0ff'
+    },
+    followingBox: {
+        backgroundColor: '#8bc0ff',
+        borderRadius: 100 * tmpWidth,
+        width: 80 * tmpWidth,
+        height: 26 * tmpWidth,
+        marginTop: 15 * tmpWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    following: {
+        fontSize: 12 * tmpWidth,
+        color: '#ffffff'
+    },
+    playlistImg: {
+        width: 80 * tmpWidth,
+        height: 80 * tmpWidth,
+        borderRadius: 4 * tmpWidth,
+        borderWidth: 0.5 * tmpWidth,
+        borderColor: '#e3e3e3',
+        backgroundColor: '#e8e8e8'
     }
 })
