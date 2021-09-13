@@ -7,6 +7,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from '../ProfileImage'
 import LoadingIndicator from 'components/LoadingIndicator'
 import { push } from 'navigationRef';
+import SvgUri from 'react-native-svg-uri';
 
 export default AllUsersForm = () => {
     const { state, getSongs } = useContext(DJContext);
@@ -108,11 +109,16 @@ export default AllUsersForm = () => {
                                     style={isFollow.includes(id) ? styles.followBox : styles.followingBox}
                                     onPress={() => onClickFollow(id)}
                                 >
-                                    <Text 
-                                        style={isFollow.includes(id) ? styles.follow : styles.following}
-                                    >
-                                        { isFollow.includes(id) ? '팔로잉' : '팔로우' }
-                                    </Text>
+                                    { isFollow.includes(id) ? 
+                                    <View style={styles.flexRow}>
+                                        <Text style={styles.follow}>
+                                            팔로우
+                                        </Text>
+                                        <SvgUri width='10' height='10' source={require('assets/icons/followCheck.svg')} style={styles.icon} /> 
+                                    </View> :
+                                    <Text style={styles.following}>
+                                        팔로우
+                                    </Text> }
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -162,11 +168,12 @@ const styles=StyleSheet.create({
         justifyContent: 'space-between'
     },
     flexRow: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     name: {
         fontSize: 13 * tmpWidth,
-        marginTop: 8 * tmpWidth,
+        marginTop: 13 * tmpWidth,
         lineHeight: 19 * tmpWidth
     },
     introduction: {
@@ -179,7 +186,7 @@ const styles=StyleSheet.create({
         borderRadius: 100 * tmpWidth,
         width: 80 * tmpWidth,
         height: 26 * tmpWidth,
-        marginTop: 15 * tmpWidth,
+        marginTop: 16 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -192,7 +199,7 @@ const styles=StyleSheet.create({
         borderRadius: 100 * tmpWidth,
         width: 80 * tmpWidth,
         height: 26 * tmpWidth,
-        marginTop: 15 * tmpWidth,
+        marginTop: 16 * tmpWidth,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -207,5 +214,11 @@ const styles=StyleSheet.create({
         borderWidth: 0.5 * tmpWidth,
         borderColor: '#e3e3e3',
         backgroundColor: '#e8e8e8'
+    },
+    icon: {
+        width: 15 * tmpWidth,
+        height: 15 * tmpWidth,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
