@@ -67,7 +67,7 @@ export default MusicBar = () => {
                 <Animated.View
                     style={{
                         width: '100%',
-                        backgroundColor: '#575757',
+                        backgroundColor: '#8bc0ff',
                         height: '100%',
                         transform: [{
                             translateX: animatedValue
@@ -104,7 +104,7 @@ const styles=StyleSheet.create({
     },
     optionBox: {
         height: 62 * tmpWidth,
-        backgroundColor: '#8bc0ff',
+        backgroundColor: '#000000',
         flexDirection: 'row',
         justifyContent: 'space-around'
     },

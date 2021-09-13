@@ -72,7 +72,7 @@ const styles=StyleSheet.create({
         borderBottomWidth: 0.5 * tmpWidth,
         borderBottomColor: '#dfdfdf',
         paddingLeft: 18 * tmpWidth,
-        paddingRight: 32 * tmpWidth,
+        paddingRight: 18 * tmpWidth,
         marginTop: 16 * tmpWidth,
         paddingBottom: 16 * tmpWidth
     },

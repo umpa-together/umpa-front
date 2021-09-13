@@ -67,7 +67,7 @@ const styles=StyleSheet.create({
         backgroundColor: '#eef4ff',
         flexDirection: 'row',
         paddingLeft: 20 * tmpWidth,
-        paddingRight: 30 * tmpWidth,
+        paddingRight: 18 * tmpWidth,
         paddingTop: 20 * tmpWidth,
         paddingBottom: 20 * tmpWidth,
     },

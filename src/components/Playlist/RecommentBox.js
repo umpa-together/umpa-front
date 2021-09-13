@@ -75,7 +75,7 @@ const styles=StyleSheet.create({
         paddingLeft: 20 * tmpWidth,
         paddingBottom: 16 * tmpWidth,
         paddingTop: 15 * tmpWidth,
-        paddingRight: 30 * tmpWidth,
+        paddingRight: 18 * tmpWidth,
         flexDirection: 'row',
         borderBottomColor: '#dfdfdf',
         borderBottomWidth: 0.5 * tmpWidth

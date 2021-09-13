@@ -35,7 +35,7 @@ export default SongsLists = ({ songs }) => {
                             onPress={() => onClickCover(item)}
                             style={styles.playlistsImg}
                         >
-                            <SongImage url={url} size={117} border={4}/>
+                            <SongImage url={url} size={120} border={4}/>
                             <SvgUri 
                                 width='30' height='30' 
                                 source={isPlayingId !== id ? require('assets/icons/modalPlay.svg') : require('assets/icons/modalStop.svg')} 
@@ -71,11 +71,11 @@ const styles=StyleSheet.create({
         marginTop: 16 * tmpWidth,
     },
     playlistsImg: {
-        width: 117 * tmpWidth,
-        height: 117 * tmpWidth,
+        width: 120 * tmpWidth,
+        height: 120 * tmpWidth,
         borderRadius: 4 * tmpWidth,
-        borderWidth: 0.7 * tmpWidth,
-        borderColor: '#cccccc',
+        borderWidth: 0.5 * tmpWidth,
+        borderColor: '#e3e3e3',
         marginRight: 8 * tmpWidth
     },
     nameBox: {

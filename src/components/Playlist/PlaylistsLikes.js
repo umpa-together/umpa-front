@@ -14,7 +14,7 @@ export default PlaylistsLikes = ({ playlist }) => {
     const { onClickProfile } = usePlaylist()
 
     const onClickLikes = () => {
-        if(likes.includes(userState.myInfo.id)) {
+        if(likes.includes(userState.myInfo._id)) {
             unlikesPlaylist({ id: playlist._id })
         } else {
             likesPlaylist({ id: playlist._id })
@@ -31,10 +31,10 @@ export default PlaylistsLikes = ({ playlist }) => {
                 </TouchableOpacity>
                 <Text style={styles.name}>{postUser.name}</Text>
             </View>
-            <TouchableOpacity style={{borderWidth: 1}} onPress={onClickLikes}>
+            <TouchableOpacity onPress={onClickLikes}>
                 <SvgUri 
                     width={40} height={40} 
-                    source={likes.includes(userState.myInfo._id) ? require('assets/icons/playlisthearto.svg') : require('assets/icons/playlistheart.svg')}
+                    source={likes.includes(userState.myInfo._id) ? require('assets/icons/playlistHearto.svg') : require('assets/icons/playlistHeart.svg')}
                 /> 
             </TouchableOpacity>
         </View>
@@ -47,7 +47,7 @@ const styles=StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         paddingLeft: 18 * tmpWidth,
-        paddingRight: 18 * tmpWidth
+        paddingRight: 10 * tmpWidth
     },
     flexRow: {
         flexDirection: 'row',
