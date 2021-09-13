@@ -35,7 +35,7 @@ export default FollowSearch = ({ type, setResult, user }) => {
                     />
                 </View>
                 <TouchableOpacity style={styles.icon}>
-                    <SvgUri width='100%' height='100%' source={require('assets/icons/resultDelete.svg')}/>
+                    <SvgUri source={require('assets/icons/resultDelete.svg')}/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -44,18 +44,18 @@ export default FollowSearch = ({ type, setResult, user }) => {
 
 const styles=StyleSheet.create({
     container: {
-        alignItems: 'center'  
+        alignItems: 'center'
     },
     searchBox: {
-        width: 335 * tmpWidth ,
+        width: 339 * tmpWidth,
         height: 36 * tmpWidth,
-        borderRadius:10 * tmpWidth,
+        borderRadius: 10 * tmpWidth,
         backgroundColor: 'rgba(153,153,153,0.09)',
-        marginTop: 20 * tmpWidth,
+        marginTop: 16 * tmpWidth,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 12  * tmpWidth,
-        paddingRight: 12  * tmpWidth,
+        paddingLeft: 12 * tmpWidth,
+        paddingRight: 12 * tmpWidth,
         justifyContent: 'space-between'
     },
     rowContainer: {
@@ -63,9 +63,11 @@ const styles=StyleSheet.create({
     },
     textArea: {
         marginLeft: 10 * tmpWidth, 
+        fontSize: 14 * tmpWidth,
+        fontWeight: '400',
     },
     icon: {
-        width: 25  * tmpWidth,
-        height: 25  * tmpWidth,
+        width: 25 * tmpWidth,
+        height: 25 * tmpWidth,
     },
 })
