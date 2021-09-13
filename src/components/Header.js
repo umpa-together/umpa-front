@@ -33,7 +33,8 @@ const styles=StyleSheet.create({
         width: '100%', 
         height: (48 + StatusBarHeight) * tmpWidth, 
         paddingTop: StatusBarHeight * tmpWidth,
-        backgroundColor: 'rgb(254,254,254)' 
+        backgroundColor: 'rgb(254,254,254)',
+        justifyContent: 'center'
     },
     navContainer: {
         width: '100%',
@@ -51,7 +52,6 @@ const styles=StyleSheet.create({
     title: {
         textAlign: 'center', 
         fontSize: 18 * tmpWidth, 
-        paddingTop: 18 * tmpWidth
     },
     back: {
         position: 'absolute',
