@@ -48,7 +48,8 @@ const styles=StyleSheet.create({
         flex: 1
     },
     active: {
-        color: '#8bc0ff', 
+        color: '#8bc0ff',
+        marginBottom: -2 * tmpWidth
     },
     playlist: {
         fontWeight: '400',
