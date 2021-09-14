@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
-import SvgUri from 'react-native-svg-uri';
 
 export default SearchBox = () => {
     return (
