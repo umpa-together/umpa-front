@@ -4,7 +4,7 @@ import serverApi from 'api/serverApi';
 const SearchPlaylistReducer = (state, action) => {
     switch(action.type){
         case 'initPlaylist':
-            return { ...state, playList: null, playListNum: action.payload };
+            return { ...state, playList: null, playListNum: action.payload, dj: null, daily: null };
         case 'searchSongOrArtist':
             return { ...state, playList: action.payload };
         case 'searchHashtag' :
