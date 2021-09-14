@@ -13,7 +13,8 @@ import UserNoticeForm from 'components/Notice/UserNoticeForm';
 import { navigate, push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import { useFocusEffect } from '@react-navigation/native';
-import { NavHeader } from 'components/Header';
+import Header from 'components/Header';
+import LoadingIndicator from 'components/LoadingIndicator'
 
 const NoticeScreen = () => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);
@@ -65,8 +66,8 @@ const NoticeScreen = () => {
 
     return (
         <View style={{height:'100%', width: '100%', backgroundColor: 'rgb(254,254,254)'}}>
-            <NavHeader title="알림" />
-            {state.notice == null ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View> :
+            <Header title="알림" />
+            {state.notice == null ? <LoadingIndicator /> :
             <FlatList
                 data ={state.notice}
                 keyExtractor = {notice => notice._id}
