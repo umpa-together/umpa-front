@@ -8,7 +8,7 @@ import SvgUri from 'react-native-svg-uri';
 
 export default CurrentHashtag = ({ hashtag }) => {
     const { SearchHashtag } = useContext(SearchPlaylistContext);
-    const { state, currentHashtag } = useContext(SearchContext);
+    const { currentHashtag } = useContext(SearchContext);
 
     const onClickHashtag = (item) => {
         navigate('SelectedHashtag', {data: item, text: item.hashtag, searchOption: 'Hashtag'})
