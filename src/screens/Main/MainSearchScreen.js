@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useCallback } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import {Context as PlaylistContext} from 'context/PlaylistContext';
 import {Context as BoardContext} from 'context/BoardContext';
@@ -8,8 +8,6 @@ import {Context as CurationContext} from 'context/CurationContext';
 import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
-import { useFocusEffect } from '@react-navigation/native';
-import { tmpWidth } from 'components/FontNormalize';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -34,7 +32,7 @@ const MainSearchScreen = () => {
         await Promise.all([
         getMusicArchive(),
         getMainRecommendDJ(),
-
+        currentHashtag(),
         getRecentPlaylists(),
         getWeeklyPlaylist(),
         //getWeeklyCuration(),
@@ -50,14 +48,11 @@ const MainSearchScreen = () => {
         getMyBookmark(),
         getnotice()]);
     }
+
     useEffect(() => {
         loadingDataFetch()
     }, [])
-    useFocusEffect(
-        useCallback(() => {
-            currentHashtag()
-        }, [])
-    )
+
     return (
         <ScrollView 
             style={styles.container}
@@ -77,7 +72,6 @@ const MainSearchScreen = () => {
 const styles=StyleSheet.create({
     container: {
         backgroundColor:"#ffffff", 
-        borderWidth: 1,
     }
 })
 export default MainSearchScreen;
