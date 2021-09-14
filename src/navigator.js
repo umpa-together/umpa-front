@@ -92,18 +92,18 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('assets/icons/tabSearch.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'Board') {
+                } else if (route.name === 'CreateModal') {
                     return (
                         <Text>
                             +
                         </Text>
                     )
-                } else if (route.name === 'Notice') {
+                } else if (route.name === 'Board') {
                     return (
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedNotice.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('assets/icons/tabNotice.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedBoard.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabBoard.svg')} /> }
                         </View>
                     )
                 } else if (route.name === 'Account') {
@@ -132,7 +132,7 @@ const TabScreen = () => {
             <Tab.Screen name="Home" component={MainSearchScreen}/>
             <Tab.Screen name="Feed" component={MainPage}/>
             <Tab.Screen 
-                name="Board" 
+                name="CreateModal" 
                 component={MyModalBackgroundScreen}
                 listeners={({ navigation }) => ({
                     tabPress: (e) => {
@@ -141,7 +141,7 @@ const TabScreen = () => {
                     }
                 })}
             />
-            <Tab.Screen name="Notice" component={NoticeScreen}/>
+            <Tab.Screen name="Board" component={FreeBoardPage}/>
             <Tab.Screen name="Account" component={AccountScreen}/>
         </Tab.Navigator>
     )
@@ -182,6 +182,7 @@ const MainStackScreen = () => {
             <MainStack.Screen name="FeedBack" component={FeedBackPage} />
             <MainStack.Screen name="InformationUse" component={InformationUsePage} />
             <MainStack.Screen name="MusicBox" component={MusicBoxScreen} />
+            <MainStack.Screen name="Notice" component={NoticeScreen} />
             <MainStack.Screen name="CreatePosts" component={CreateModal} 
                 options={{
                     presentation: "transparentModal",
