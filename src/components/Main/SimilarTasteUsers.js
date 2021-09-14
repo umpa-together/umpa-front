@@ -51,7 +51,7 @@ export default SimilarTasteUsers = ({ users }) => {
             { users !== null && 
             <FlatList 
                 data={users.slice(0, 10)}
-                keyExtractor={user => user._id}
+                keyExtractor={user => user.id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 bounces={false}
