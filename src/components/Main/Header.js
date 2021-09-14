@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { StatusBarHeight } from 'components/StatusBarHeight'
 import { tmpWidth } from 'components/FontNormalize';
 import { navigate } from 'navigationRef'
+import SvgUri from 'react-native-svg-uri';
 
 export default Header = () => {
     
@@ -22,10 +23,10 @@ export default Header = () => {
                     style={styles.icon}
                     onPress={onClickNotice}
                 >
-                    <Text>알림</Text>
+                    <SvgUri width={40} height={40} source={require('assets/icons/alarm.svg')} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.icon}>
-                    <Text>chat</Text>
+                    <SvgUri width={40} height={40} source={require('assets/icons/chat.svg')} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -48,7 +49,6 @@ const styles=StyleSheet.create({
     icon: {
         width: 40 * tmpWidth,
         height: 40 * tmpWidth,
-        borderWidth: 1,
         marginRight: 8 * tmpWidth
     },
     flexRow: {

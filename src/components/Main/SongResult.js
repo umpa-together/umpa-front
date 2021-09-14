@@ -1,29 +1,22 @@
-import React, { useContext, useCallback, useState } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
-import { Context as CurationContext } from 'context/CurationContext'
 import { useSearch } from 'providers/search';
 import { useFocusEffect } from '@react-navigation/native';
 import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import LoadingIndicator from '../LoadingIndicator'
 
 export default SongResult = () => {
     const { state: searchState } = useContext(SearchContext);
-    const { SearchSongOrArtist, initPlaylist, SearchAll } = useContext(SearchPlaylistContext);
-    const { getCuration } = useContext(CurationContext);
-    const { loading, onEndReached, searchOption, setIsResultClick } = useSearch()
-
+    const { initPlaylist, SearchAll } = useContext(SearchPlaylistContext);
+    const { loading, onEndReached, setIsResultClick } = useSearch()
 
     const onClickSong = (item) => {
         setIsResultClick(true)
         SearchAll({ id: item.id })
-        //getCuration({isSong: true, object: item, id:item.id})
-        //SearchSongOrArtist({ id: item.id})    
-        //navigate('SelectedSong', {song: item, category: searchOption})
     }
 
     useFocusEffect(
@@ -44,21 +37,21 @@ export default SongResult = () => {
                 onEndReachedThreshold={0.8}
                 ListFooterComponent={loading && <ActivityIndicator />}        
                 renderItem={({item}) => {
-                    const song = item.attributes.name
-                    const artist = item.attributes.artistName
+                    const { name, artistName, contentRating } = item.attributes
+                    const url = item.attributes.artwork.url
                     return (
                         <TouchableOpacity 
                             style={styles.resultBox} 
                             onPress={() => onClickSong(item)}
                         >
-                            <SongImage url={item.attributes.artwork.url} size={56} border={56} />
+                            <SongImage url={url} size={46} border={46} />
                             <View style={styles.songBox}>
                                 <View style={styles.flexRow}>
-                                    {item.attributes.contentRating == "explicit" &&
+                                    {contentRating == "explicit" &&
                                     <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
-                                    <Text numberOfLines={1} style={styles.song}>{song}</Text>
+                                    <Text numberOfLines={1} style={styles.name}>{name}</Text>
                                 </View>
-                                <Text numberOfLines={1} style={styles.artist}>{artist}</Text>
+                                <Text numberOfLines={1} style={styles.artist}>{artistName}</Text>
                             </View>
                         </TouchableOpacity>
                     )
@@ -70,18 +63,17 @@ export default SongResult = () => {
 
 const styles=StyleSheet.create({
     container: {
-        paddingTop: 10 * tmpWidth,
+        paddingTop: 14 * tmpWidth,
     }, 
     resultBox:{
-        width: 327 * tmpWidth,
-        height: 70 * tmpWidth,
-        marginLeft: 24 * tmpWidth,
+        height: 54 * tmpWidth,
+        marginLeft: 18 * tmpWidth,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     songBox: {
-        marginLeft: 24 * tmpWidth, 
-        width: 220 * tmpWidth, 
+        marginLeft: 11 * tmpWidth, 
+        width: 270 * tmpWidth, 
     },
     flexRow: {
         flexDirection: 'row', 
@@ -90,12 +82,14 @@ const styles=StyleSheet.create({
     explicit: {
         marginRight: 5 * tmpWidth
     },
-    song: {
-        fontSize: 16 * tmpWidth
+    name: {
+        fontSize: 16 * tmpWidth,
+        fontWeight: '400'
     },
     artist: {
-        color: '#c6c6c6',
-        fontSize: 14 * tmpWidth, 
+        color: '#505050',
+        fontSize: 12 * tmpWidth, 
+        fontWeight: '300',
         marginTop: 3 * tmpWidth
     }
 })

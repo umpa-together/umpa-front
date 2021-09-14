@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { Context as SearchContext } from 'context/SearchContext';
 import { useSearch } from '../../providers/search';
 import { tmpWidth } from 'components/FontNormalize';
-import SvgUri from 'react-native-svg-uri';
 
 export default SongHint = () => {
     const { state: searchState, searchsong } = useContext(SearchContext);
@@ -19,6 +18,7 @@ export default SongHint = () => {
             keyboardShouldPersistTaps="handled"
             data={searchState.hint}
             keyExtractor={term => term}
+            contentContainerStyle={styles.container}
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity
@@ -28,7 +28,6 @@ export default SongHint = () => {
                         <View style={styles.hintArea}>
                             <Text style={styles.hint} numberOfLines={1}>{item}</Text>
                         </View>
-                        <SvgUri width={32 * tmpWidth} height={32 * tmpWidth} source={require('assets/icons/leftup.svg')} />
                     </TouchableOpacity>
                 )
             }}
@@ -38,17 +37,20 @@ export default SongHint = () => {
 }
 
 const styles=StyleSheet.create({
+    container: {
+        paddingTop: 22 * tmpWidth
+    },
     box: {
-        height: 32 * tmpWidth, 
-        paddingLeft: 24 * tmpWidth, 
-        marginTop: 21.5 * tmpWidth,
+        height: 37 * tmpWidth, 
+        paddingLeft: 18 * tmpWidth, 
         flexDirection: 'row',
         alignItems: 'center',
     },
     hintArea: {
-        width:304 * tmpWidth
+        width: 330 * tmpWidth,
     },
     hint: {
-        fontSize:16 * tmpWidth
+        fontSize: 16 * tmpWidth,
+        fontWeight: '400'
     }
 })

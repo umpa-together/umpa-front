@@ -48,7 +48,7 @@ export default SimilarTasteUsers = ({ users }) => {
                     <Text style={styles.subheader}>전체보기</Text>
                 </TouchableOpacity>  
             </View>
-            { users === null ? <LoadingIndicator /> :
+            { users !== null && 
             <FlatList 
                 data={users.slice(0, 10)}
                 keyExtractor={user => user._id}
