@@ -51,7 +51,7 @@ import SearchScreen from 'screens/Main/SearchScreen';
 import SelectedSongScreen from 'screens/Main/SelectedSongScreen';
 import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
 import AllContentsScreen from 'screens/Main/AllContentsScreen';
-
+import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
 import CreateModal from 'components/CreateModal';
 
 const LoginStack = createNativeStackNavigator()
@@ -160,6 +160,7 @@ const MainStackScreen = () => {
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="SearchSong" component={SearchSongPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
+            <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
             <MainStack.Screen name="SelectedCuration" component={SelectedCuration} />
             <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />
