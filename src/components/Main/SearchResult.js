@@ -1,52 +1,48 @@
 import React, { useContext } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import LoadingIndicator from '../LoadingIndicator'
+import { tmpWidth } from 'components/FontNormalize'
+import SvgUri from 'react-native-svg-uri';
+import DJ from './DJ';
+import Playlists from './Playlists';
+import { navigate } from 'navigationRef';
 
 export default SearchResult = () => {
     const { state } = useContext(SearchPlaylistContext);
 
     const optionLists = [{
-        title: '서퍼',
-        lists: state.dj
-    }, {
         title: '플레이리스트',
-        lists: state.playList
+        components: <Playlists playlists={state.playList} isPlaylist={true} />
+    }, {
+        title: '서퍼',
+        components: <DJ dj={state.dj}/>
     }, 
     /*{
         title: '데일리',
-        lists: state.daily
+        lists: state.daily,
+        components: <Daily daily={state.daily} />
     }*/]
+
+    const onClickMore = (option) => {
+        navigate('ContentsMore', { option })
+    }
 
     return (
         <>
             {state.dj === null && state.playList === null ? <LoadingIndicator /> :
             <>
-                <Text>전체보기</Text>
-                {optionLists.map(({ title, lists }) => {
+                {optionLists.map(({ title, components }) => {
                     return (
-                        <>
+                        <View key={title}>
                             <View style={styles.header}>
-                                <Text>{title}</Text>
-                                <TouchableOpacity>
-                                    <Text>{'>'}</Text>
+                                <Text style={styles.title}>{title}</Text>
+                                <TouchableOpacity onPress={() => onClickMore(title)}>
+                                    <SvgUri source={require('assets/icons/more.svg')} style={styles.more}/>
                                 </TouchableOpacity>
                             </View>
-                            <FlatList 
-                                horizontal
-                                showsHorizontalScrollIndicator={false}                            
-                                data={lists.slice(0, 10)}
-                                keyExtractor={item=>item._id}
-                                renderItem={({item}) => {
-                                    const image = item.image || item.profileImage
-                                    return (
-                                        <TouchableOpacity>
-                                            <Image source={{uri: image}} style={{width: 150 ,height: 150, marginRight: 20}} />
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                        </>
+                            {components}
+                        </View>
                     )
                 })}
             </> }
@@ -58,9 +54,18 @@ const styles=StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginTop: 18 * tmpWidth,
+        marginBottom: 9 * tmpWidth,
+        marginLeft: 18 * tmpWidth,
+        marginRight: 6 * tmpWidth
     },
-    flexRow: {
-        flexDirection: 'row',
+    title: {
+        fontSize: 16 * tmpWidth,
+        fontWeight: '700',
+    },
+    more: {
+        width: 30 * tmpWidth,
+        height: 30 * tmpWidth,
     }
 })
