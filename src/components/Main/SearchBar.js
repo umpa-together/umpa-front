@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
-import { View, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Keyboard, TouchableOpacity, Image } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
+import { StatusBarHeight } from 'components/StatusBarHeight'
 import { useSearch } from 'providers/search'
 import { tmpWidth } from 'components/FontNormalize';
 import { goBack } from 'navigationRef';
@@ -9,7 +10,7 @@ import SvgUri from 'react-native-svg-uri';
 
 export default SearchBar = () => {
     const { searchsong, initHint } = useContext(SearchContext);
-    const { SearchHashtagAll } = useContext(SearchPlaylistContext);
+    const { initPlaylist } = useContext(SearchPlaylistContext);
     const { textRef, setIsHint, searchOption, setText, setIsResultClick } = useSearch()
 
     const onChangeText = (text) => {
@@ -19,6 +20,7 @@ export default SearchBar = () => {
 
     const onClickCancel = () => {
         initHint()
+        initPlaylist()
         setIsResultClick(false)
         setIsHint(true)
         textRef.current.clear()
@@ -34,13 +36,9 @@ export default SearchBar = () => {
     }
 
     const onSubmitEditing =() => {
-        setIsHint(false)
         if(searchOption === 'Song'){
             searchsong({ songname: textRef.current.value })
-        } else if (searchOption === 'Hashtag') {
-            SearchHashtagAll({ term: textRef.current.value })
-        } else if (searchOption === 'DJ') {
-            console.log("DJ")
+            setIsHint(false)
         }
     }
 
@@ -53,7 +51,7 @@ export default SearchBar = () => {
                 <SvgUri source={require('assets/icons/back.svg')} />
             </TouchableOpacity>
             <View style={styles.inputbox}>
-                <SvgUri source={require('assets/icons/search.svg')} style={styles.searchIcon}/>
+                <Image source={require('assets/icons/mainSearch.png')} style={styles.searchIcon}/>
                 <TextInput 
                     style={styles.textInput}
                     ref={textRef}
@@ -64,13 +62,13 @@ export default SearchBar = () => {
                     onFocus = {onFocus}
                     onChange = {onChange}
                     onSubmitEditing={onSubmitEditing}
-                    placeholderTextColor ="#999"
+                    placeholderTextColor ="#000"
                 />
                 <TouchableOpacity 
                     onPress={onClickCancel} 
                     style={styles.cancelIcon}
                 >
-                   <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/cancel.svg')} />
+                   <SvgUri width={20} height={20} source={require('assets/icons/searchExit.svg')} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -80,7 +78,8 @@ export default SearchBar = () => {
 const styles=StyleSheet.create({
     container:{
         flexDirection: 'row',
-        height: 44 * tmpWidth,
+        height: (44 + StatusBarHeight) * tmpWidth, 
+        paddingTop: StatusBarHeight * tmpWidth,
         backgroundColor: "#fff",
         alignItems: 'center',
         marginTop: 10 * tmpWidth,
@@ -88,29 +87,32 @@ const styles=StyleSheet.create({
     backIcon:{
         width: 40 * tmpWidth,
         height: 40 * tmpWidth,
-        marginLeft: 10 * tmpWidth,
+        marginLeft: 3 * tmpWidth,
     },
     inputbox:{
         flexDirection:'row',
         alignItems:'center',
-        width: 300 * tmpWidth,
+        width: 313 * tmpWidth,
         height: 44 * tmpWidth,
         borderRadius: 10 * tmpWidth,
-        backgroundColor: "#eee",
+        borderWidth: 1.5 * tmpWidth,
+        borderColor: '#8bc0ff',
+        backgroundColor: "#fff",
     },
     searchIcon:{
         width: 30 * tmpWidth,
         height: 30 * tmpWidth,
         marginLeft: 5 * tmpWidth,
-        marginRight:5 * tmpWidth,
+        marginRight: 5 * tmpWidth,
     },
     textInput:{
         fontSize: 14 * tmpWidth,
-        width: 213 * tmpWidth,
+        width: 230 * tmpWidth,
     },
     cancelIcon: {
-        width:40 * tmpWidth,
-        height:40 * tmpWidth,
-        marginRight: 12 * tmpWidth,
+        width: 40 * tmpWidth,
+        height: 40 * tmpWidth,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 })
