@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
@@ -7,9 +7,9 @@ import SvgUri from 'react-native-svg-uri';
 export default SearchBox = () => {
     return (
         <TouchableOpacity style={styles.inputbox} onPress={() => navigate('Search')}>
-            <View style={{flexDirection: 'row', alignItems:'center'}}>
-                <SvgUri width='16' height='15' source={require('assets/icons/mainSearch.svg')} style={styles.icon}/>
-                <Text style={{color:'#c6c6c6', fontSize: 14 * tmpWidth}}>곡, 아티스트 또는 해시태그를 검색해주세요</Text>
+            <View style={styles.flexRow}>
+                <Image source={require('assets/icons/mainSearch.png')} style={styles.icon} />
+                <Text style={styles.placeholder}>계정, 곡, 해시태그를 입력해주세요</Text>
             </View>
         </TouchableOpacity>
     )
@@ -17,14 +17,27 @@ export default SearchBox = () => {
 
 const styles=StyleSheet.create({
     inputbox:{
-        width: 325 * tmpWidth,
-        height: 44 * tmpWidth,
-        backgroundColor: '#F5F5F5',
+        width: 339 * tmpWidth,
+        height: 40 * tmpWidth,
+        backgroundColor: '#ffffff',
         borderRadius: 10 * tmpWidth,
-        paddingTop: 14 * tmpWidth
+        borderWidth: 1.5 * tmpWidth,
+        borderColor: '#8bc0ff',
+        marginTop: 22 * tmpWidth,
+        justifyContent: 'center',
+        marginLeft: 18 * tmpWidth
+    },
+    flexRow: {
+        flexDirection: 'row', 
+        alignItems:'center'
+    },
+    placeholder: {
+        color: 'rgba(139,192,255,0.5)', 
+        fontSize: 14 * tmpWidth, 
+        fontWeight: '400'
     },
     icon: {
-        marginRight: 12 * tmpWidth,
-        marginLeft: 12 * tmpWidth
+        width: 34 * tmpWidth,
+        height: 34 * tmpWidth,
     }
 })

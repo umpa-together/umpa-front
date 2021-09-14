@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useCallback } from 'react';
-import { View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import {Context as PlaylistContext} from 'context/PlaylistContext';
 import {Context as BoardContext} from 'context/BoardContext';
 import {Context as NoticeContext} from 'context/NoticeContext';
@@ -9,6 +9,7 @@ import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
 import { useFocusEffect } from '@react-navigation/native';
+import { tmpWidth } from 'components/FontNormalize';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -16,7 +17,7 @@ import RecentPlaylists from 'components/Main/RecentPlaylists'
 import WeeklyPlaylists from 'components/Main/WeeklyPlaylists';
 import MusicArchive from 'components/Main/MusicArchive'
 import SimilarTasteUsers from '../../components/Main/SimilarTasteUsers';
-import { tmpWidth } from 'components/FontNormalize';
+import Header from 'components/Main/Header';
 
 const MainSearchScreen = () => {
     const { getPlaylists } = useContext(PlaylistContext);
@@ -31,12 +32,13 @@ const MainSearchScreen = () => {
     const loadingDataFetch = async () => {
         //await postWeekly()
         await Promise.all([
-        getMainRecommendDJ(),
         getMusicArchive(),
+        getMainRecommendDJ(),
+
         getRecentPlaylists(),
         getWeeklyPlaylist(),
-        getWeeklyCuration(),
-        getWeeklyDJ(),
+        //getWeeklyCuration(),
+        //getWeeklyDJ(),
         setnoticetoken(),
         getPlaylists(),
         getCurationposts(),
@@ -57,15 +59,25 @@ const MainSearchScreen = () => {
         }, [])
     )
     return (
-        <View style={{backgroundColor:"#fff", flex: 1, paddingTop: 44 * tmpWidth}}>
+        <ScrollView 
+            style={styles.container}
+            stickyHeaderIndices={[0]}
+        >
+            <Header />
             <MusicArchive archive={WeeklyState.musicArchive} />
             <SearchBox />
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
             <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
             <SimilarTasteUsers users={djState.mainRecommendDJ} />
-        </View>
+        </ScrollView>
     )
 }
 
+const styles=StyleSheet.create({
+    container: {
+        backgroundColor:"#ffffff", 
+        borderWidth: 1,
+    }
+})
 export default MainSearchScreen;

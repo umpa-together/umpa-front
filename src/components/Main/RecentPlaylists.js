@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback, useContext } from 'react'
-import { FlatList, Image, View, Animated, TouchableOpacity } from 'react-native'
+import { Text, FlatList, Image, View, Animated, TouchableOpacity, StyleSheet } from 'react-native'
 import { Directions, FlingGestureHandler, State } from 'react-native-gesture-handler';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import ProfileImage from 'components/ProfileImage'
 
 const SPACING = 10;
 const VISIBLE_ITEMS = 3;
@@ -30,7 +32,8 @@ export default RecentPlaylists = ({ playlists }) => {
     })
     
     return (
-        <View style={{flex: 2}}>
+        <View>
+            <Text style={styles.title}>지금 화제의 플레이리스트</Text>
             <FlingGestureHandler
                 key="left"
                 direction={Directions.LEFT}
@@ -72,14 +75,14 @@ export default RecentPlaylists = ({ playlists }) => {
                                 </View>
                             )
                         }}
-                        
+                        style={{height: 240 * tmpWidth}}
                         scrollEnabled={false}
                         removeClippedSubviews={false}
                         renderItem={({ item, index }) => {
                             const inputRange = [index-1, index, index+1]
                             const translateX = scrollXAnimated.interpolate({
                                 inputRange,
-                                outputRange: [40, 0, -500]
+                                outputRange: [35, 0, -500]
                             })
                             const translateY = scrollXAnimated.interpolate({
                                 inputRange,
@@ -87,17 +90,17 @@ export default RecentPlaylists = ({ playlists }) => {
                             })
                             const scale = scrollXAnimated.interpolate({
                                 inputRange,
-                                outputRange: [.8, 1, 1.3]
+                                outputRange: [.9, 1, 1.3]
                             })
                             const opacity = scrollXAnimated.interpolate({
                                 inputRange,
                                 outputRange: [1 - 1 / VISIBLE_ITEMS, 1, 0]
                             })
-                            const { _id, postUserId } = item
+                            const { _id, postUserId, image, postUserId: postUser, title, hashtag } = item
                             return (
                                 <Animated.View style={{
                                     position: 'absolute', 
-                                    left: -300 / 2, 
+                                    left: -350 / 2, 
                                     transform: [{
                                         translateX
                                     },{
@@ -112,7 +115,15 @@ export default RecentPlaylists = ({ playlists }) => {
                                         activeOpacity={1}
                                         onPress={() => onClickPlaylist(_id, postUserId)}
                                     >
-                                        <Image source={{uri: item.image}} style={{width:300,height:200, borderRadius: 8}}/>
+                                        <Image source={{uri: image}} style={styles.playlistImg}/>
+                                        <View style={styles.flexRow}>
+                                            <ProfileImage img={postUser.profileImage} imgStyle={styles.profileImg} />
+                                            <Text style={styles.name}>{postUser.name}</Text>
+                                        </View>
+                                        <View style={styles.footer}>
+                                            <Text style={styles.title}>{title}</Text>
+                                            <Text style={styles.hashtag}>{hashtag.map((item) => '#'+ item + ' ')}</Text>
+                                        </View>
                                     </TouchableOpacity>
                                 </Animated.View>
                             )
@@ -123,3 +134,51 @@ export default RecentPlaylists = ({ playlists }) => {
         </View>
     )
 }
+
+const styles=StyleSheet.create({
+    title: {
+        fontSize: 16 * tmpWidth,
+        fontWeight: '700',
+        marginTop: 22 * tmpWidth,
+        paddingLeft: 18 * tmpWidth,
+    },
+    playlistImg: {
+        width: 306 * tmpWidth,
+        height: 218 * tmpWidth, 
+        borderRadius: 4 * tmpWidth
+    },
+    flexRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'absolute',
+        left: 12 * tmpWidth,
+        top: 12 * tmpWidth
+    },
+    profileImg: {
+        width: 20 * tmpWidth,
+        height: 20 * tmpWidth,
+        borderRadius: 20 * tmpWidth,
+        marginRight: 6 * tmpWidth,
+    },
+    name: {
+        fontSize: 14 * tmpWidth,
+        fontWeight: '400',
+        color: '#ffffff'
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 12 * tmpWidth,
+        right: 12 * tmpWidth
+    },
+    title: {
+        fontSize: 14 * tmpWidth,
+        fontWeight: '500',
+        color: '#ffffff'
+    },
+    hashtag: {
+        color: '#ffffff',
+        fontSize: 12 * tmpWidth,
+        fontWeight: '400',
+        textAlign: 'right'
+    }
+})
