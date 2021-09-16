@@ -13,6 +13,25 @@ export default PlaylistProvider = ({ children }) => {
     const { getSongs } = useContext(DJContext);
     const [reCommentModal, setReCommentModal] = useState(false)
     const [currentComment, setCurrentComment] = useState(null)
+    const [isArchive, setIsArchive] = useState(false)
+    const [songs, setSongs] = useState([])
+    const [image, setImage] = useState(null)
+    const [title, setTitle] = useState('')
+    const [validity, setValidity] = useState({
+        title: true, 
+        song: true,
+        hashtag: true,
+        thumbnail: true,
+    })
+    const informationRef = useRef({
+        hashtagLists: [], 
+        title: '',
+        imgUrl: '',
+        imgName: '',
+        imgType: '',
+        songs: [],
+        isEdit: false,
+    })
     const scrollRef = useRef()
     
     const onClickComment = async (comment) => {
@@ -47,14 +66,52 @@ export default PlaylistProvider = ({ children }) => {
         }
     }
 
+    const onClickAddSong = (song) => {
+        let tok = false;
+        for(let key in songs){
+            if(song.id == songs[key].id){
+                tok = true;
+                break;
+            }
+        }
+        if (songs.length < 7 && !tok) {
+            setSongs([...songs, song]);
+        }
+    }
+
+    const onClickDeleteSong = (song) => {
+        setSongs(songs.filter(item => item.id !== song.id));
+    }
+
+    const onClickDeleteThumbnail = () => {
+        setImage(null)
+        informationRef.current.imgUrl = ''
+        informationRef.current.imgName = ''
+        informationRef.current.imgType = ''
+    }
+
     const value = {
         scrollRef,
         reCommentModal,
         currentComment,
+        informationRef,
+        validity,
+        isArchive,
+        songs,
+        image,
+        title,
         onClickComment,
         onClose,
         onClickProfile,
         onClickCommentLikes,
+        onClickAddSong,
+        onClickDeleteSong,
+        onClickDeleteThumbnail,
+        setIsArchive,
+        setSongs,
+        setImage,
+        setValidity,
+        setTitle,
     }
 
     return (
