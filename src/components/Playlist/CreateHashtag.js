@@ -1,8 +1,14 @@
-import React, { useState, useRef } from 'react'
-import { TextInput, Text, View, FlatList } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { TextInput, Text, View, FlatList, StyleSheet, TouchableOpacity, Animated } from 'react-native'
+import { usePlaylist } from 'providers/playlist';
+import { tmpWidth } from 'components/FontNormalize'
+import SvgUri from 'react-native-svg-uri';
 
-export default CreateHashtag = ({ informationRef, validity }) => {
+export default CreateHashtag = () => {
+    const { informationRef, image } = usePlaylist()
     const [hashtagLists, setHashtagLists] = useState([])
+    const [checkModal, setCheckModal] = useState(false)
+    const opacity = useState(new Animated.Value(1))[0];
     const hashtagRef = useRef()
     const pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
     const pattern_num = /[0-9]/;
@@ -10,7 +16,7 @@ export default CreateHashtag = ({ informationRef, validity }) => {
     const pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
     const addhashtag = (hashtag) => {
-        if (hashtagLists.length < 3 && hashtag !== '' && !hashtagLists.includes(hashtag)) {
+        if (hashtag !== '' && !hashtagLists.includes(hashtag)) {
             setHashtagLists((prev) => [...prev, hashtag])
             informationRef.current.hashtagLists.push(hashtag)
             return true
@@ -23,7 +29,7 @@ export default CreateHashtag = ({ informationRef, validity }) => {
     }
 
     const onChangeHashtag = (text) => {
-        if(text.length <= 9)    hashtagRef.current.value = text
+        hashtagRef.current.value = text
     }
 
     const onSubmitEditing = () => {
@@ -33,52 +39,145 @@ export default CreateHashtag = ({ informationRef, validity }) => {
                 hashtagRef.current.clear()
                 hashtagRef.current.value = ''
             }
-            //setHashtagValidty(true)
-        }else{
-            //setHashtagValidty(false)
+        } else {
+            setCheckModal(true)
+            setTimeout(() => {
+                Animated.timing(opacity, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: true
+                }).start()
+                setTimeout(() => {
+                    setCheckModal(false)
+                    opacity.setValue(1);
+                }, 1000)
+            }, 1000);
         }
     }
 
+    useEffect(() => {
+        setHashtagLists(informationRef.current.hashtagLists)
+    }, [])
+
+    useEffect(() => {
+        setHashtagLists(informationRef.current.hashtagLists)
+    }, [image])
+
     return (
         <>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: 'rgb(169,193,255)', marginRight: 4 }}>#</Text>
-            <TextInput
-                onChangeText={(text) => onChangeHashtag(text)}
-                placeholder="해시태그를 입력해주세요.(최대 3개, 9글자)"
-                placeholderTextColor='rgb(196,196,196)'
-                autoCapitalize='none'
-                onSubmitEditing={onSubmitEditing}
-                autoCorrect={false}
-                ref={hashtagRef}
-                maxLength={9}
-            />
-            { !validity.hashtag &&
-            <View style={{flexDirection:'row', marginTop: 4 * tmpWidth, marginLeft: 65 * tmpWidth,}}>
-                <SvgUri width='14' height='14' source={require('../../assets/icons/warning.svg')}/>
-                <Text style={styles.warningText}>특수문자는 불가능합니다.</Text>
-            </View> }
-        </View>
-        <View>
-            <FlatList
-                data={hashtagLists}
-                keyExtractor={hashtag => hashtag}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item}) =>{
-                    return (
-                        <View style={styles.tmpHash}>
-                            <View style={styles.hashtagView}>
-                                <Text style={styles.hashtagBox}>{'#'+item}</Text>
+            <View style={styles.container}>
+                <View style={styles.flexRow}>
+                    <Text style={styles.hashtag}>#</Text>
+                    <TextInput
+                        onChangeText={(text) => onChangeHashtag(text)}
+                        placeholder="해시태그를 입력해주세요. (최대 9글자)"
+                        placeholderTextColor='#c4c4c4'
+                        autoCapitalize='none'
+                        onSubmitEditing={onSubmitEditing}
+                        autoCorrect={false}
+                        ref={hashtagRef}
+                        maxLength={9}
+                    />
+                    <TouchableOpacity
+                        style={styles.plus}
+                        onPress={onSubmitEditing}
+                    >
+                        <SvgUri width='19' height='19' source={require('assets/icons/playlistPlus.svg')} />
+                    </TouchableOpacity>
+                </View>
+                <FlatList
+                    data={hashtagLists}
+                    keyExtractor={hashtag => hashtag}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) =>{
+                        return (
+                            <View style={[styles.flexRow, styles.margin]}>
+                                <View style={styles.hashtagBox}>
+                                    <Text style={styles.hashtagText}>{'#'+item}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.icon} onPress={() => deleteHashtag(item)}>
+                                    <SvgUri width='19' height='19' source={require('assets/icons/playlistDelete.svg')}/>
+                                </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={styles.hashtagplus} onPress={() => deletehashtag({data:item})}>
-                                <Text style={{fontSize: 15 * tmpWidth, color: 'rgb(182,201,250)'}}>X</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )
-                }}
-            />
-        </View>
+                        )
+                    }}
+                />
+            </View>
+            { checkModal && 
+            <Animated.View style={[
+                styles.warningBox,
+                { opacity: opacity }
+            ]}>
+                <Animated.Text style={[
+                    styles.warningText, 
+                    {opacity: opacity}
+                ]}>
+                    특수문자는 불가능합니다.
+                </Animated.Text>
+            </Animated.View> }
         </>
     )
 }
+
+const styles=StyleSheet.create({
+    container: {
+        marginLeft: 18 * tmpWidth,
+        marginTop: 16 * tmpWidth,
+        marginBottom: 22 * tmpWidth
+    },
+    flexRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    hashtag: {
+        fontSize: 16 * tmpWidth,
+        fontWeight: '500',
+        color: '#8bc0ff',
+        marginRight: 4 * tmpWidth
+    },
+    warningBox: {
+        backgroundColor: 'rgba(0,0,0,0.46)', 
+        width: 196 * tmpWidth, 
+        height: 29 * tmpWidth, 
+        borderRadius: 100 * tmpWidth, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        bottom: 0, 
+        left: 89 * tmpWidth,
+        position: 'absolute'
+    },
+    warningText: {
+        fontSize: 14 * tmpWidth, 
+        color: '#ffffff'
+    },
+    hashtagBox: {
+        paddingLeft: 10 * tmpWidth,
+        paddingRight: 10 * tmpWidth,
+        paddingTop: 7 * tmpWidth,
+        paddingBottom: 7 * tmpWidth,
+        borderWidth: 1 * tmpWidth,
+        borderColor: '#8bc0ff',
+        borderRadius: 100 * tmpWidth,
+    },
+    hashtagText: {
+        fontSize: 14 * tmpWidth,
+        fontWeight: '400',
+        color: '#8bc0ff'
+    },
+    icon: {
+        width: 19 * tmpWidth,
+        height: 19 * tmpWidth,
+        marginLeft: 4 * tmpWidth,
+        marginRight: 6 * tmpWidth
+    },
+    margin: {
+        marginTop: 15 * tmpWidth
+    },
+    plus: {
+        position: 'absolute',
+        width: 19 * tmpWidth,
+        height: 19 * tmpWidth,
+        right: 18 * tmpWidth
+    }
+})
