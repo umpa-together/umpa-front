@@ -1,6 +1,6 @@
 import createDataContext from './createDataContext';
 import serverApi from 'api/serverApi';
-import { navigate } from 'navigationRef';
+import { navigate, goBack } from 'navigationRef';
 
 const playlistReducer = (state, action) => {
     switch(action.type) {
@@ -80,10 +80,10 @@ const nextAllPlaylists = (dispatch) => async ({page}) => {
 }
 
 
-const addPlaylist = dispatch => async({ title, textcontent, songs, hashtag, fd } ,  callback) =>{
+const addPlaylist = dispatch => async({ title, songs, hashtag, fd } ,  callback) =>{
     try {
-        const response = await serverApi.post('/playlist', { title, textcontent, songs, hashtag });
-        navigate('Main');
+        const response = await serverApi.post('/playlist', { title, songs, hashtag });
+        goBack()
         fd.append('playlistId', response.data);
         await serverApi.post('/imgUpload', fd, { header: {"content-type": "multipart/form-data"}});
     }
@@ -95,10 +95,10 @@ const addPlaylist = dispatch => async({ title, textcontent, songs, hashtag, fd }
     }
 };
 
-const editPlaylist = dispatch => async({ title, textcontent, songs, hashtag, playlistId }, callback) => {
+const editPlaylist = dispatch => async({ title, songs, hashtag, playlistId }, callback) => {
     try {
-        await serverApi.post('/editPlaylist', { title, textcontent, songs, hashtag, playlistId });
-        navigate('Account');
+        await serverApi.post('/editPlaylist', { title, songs, hashtag, playlistId });
+        navigate('Account')
     }
     catch(err){
         dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
@@ -178,9 +178,9 @@ const getPlaylist = dispatch =>{
 // Comment
 
 const addComment = dispatch => {
-    return async ({ id, text, noticieduser, noticieduseremail, noticetype, thirdid }) => {
+    return async ({ id, text }) => {
         try{
-            const response = await serverApi.post('/comment/'+id, { text, noticieduser, noticieduseremail, noticetype, thirdid });
+            const response = await serverApi.post('/comment/'+id, { text });
             dispatch({ type:'add_comment', payload:response.data })
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with addComment' });

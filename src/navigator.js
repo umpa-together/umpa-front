@@ -30,7 +30,6 @@ import InformationUsePage from 'screens/Account/InformationUsePage';
 import MusicBoxScreen from 'screens/Account/MusicBoxScreen'
 
 import MainPage from 'screens/MainPage';
-import SearchSongPage from 'screens/Playlist/SearchSongPage';
 import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
 import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
 
@@ -158,7 +157,6 @@ const MainStackScreen = () => {
             <MainStack.Screen name="Search" component={SearchScreen} />
             <MainStack.Screen name="SelectedSong" component={SelectedSongScreen} />
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
-            <MainStack.Screen name="SearchSong" component={SearchSongPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
             <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />

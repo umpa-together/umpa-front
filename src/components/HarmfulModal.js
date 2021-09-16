@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
-import { useModal } from 'providers/modal';
+import { useModal } from 'providers/modal'
 
 const HarmfulModal = () => {
     const { harmfulModal, onCloseModal } = useModal()
-    
+
     return (
         <Modal
             animationIn="fadeIn"
