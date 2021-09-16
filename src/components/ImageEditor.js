@@ -37,7 +37,6 @@ export const onClickSingle = (setImages) => {
     ImagePicker.openPicker({
         width: 500,
         height: 500,
-        cropping: true,
         includeBase64: true,
         mediaType: 'photo',
     }).then(image => {
