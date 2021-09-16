@@ -2,11 +2,17 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import AllPlaylistForm from 'components/Search/AllPlaylistForm';
-import AllCurationForm from 'components/Search/AllCurationForm';
+import AllPlaylistForm from 'components/Main/AllPlaylistForm';
+import AllUsersForm from '../../components/Main/AllUsersForm';
 import { goBack } from 'navigationRef';
+
 const AllContentsScreen = ({ route }) => {
     const { type } = route.params
+    const contentsForm = {
+        '플레이리스트': <AllPlaylistForm />,
+        '유저': <AllUsersForm />
+    }
+
     return (
         <View style={styles.container}> 
             <View style={styles.headerContainer}>
@@ -19,7 +25,7 @@ const AllContentsScreen = ({ route }) => {
                 <View style={{width: 40 * tmpWidth, height: 40 * tmpWidth, marginRight: 5 * tmpWidth}}/>
             </View>
             <View style={{backgroundColor: 'rgb(255,255,255)', flex: 1 }}>
-                {type == '플레이리스트' ? <AllPlaylistForm /> : <AllCurationForm />}
+                {contentsForm[type]}
             </View>
         </View>
     )

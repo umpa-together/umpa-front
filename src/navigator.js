@@ -6,7 +6,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import navigationRef from 'navigationRef';
 import SvgUri from 'react-native-svg-uri';
-
 import { Context as AuthContext } from 'context/AuthContext';
 import { Context as UserContext } from 'context/UserContext';
 
@@ -46,13 +45,12 @@ import MusicArchivePage from 'screens/Board/MusicArchivePage';
 import SearchMusicPage from 'screens/Board/SearchMusicPage';
 import MySharedSongsPage from 'screens/Board/MySharedSongsPage';
 
-import MainSearchScreen from 'screens/Search/MainSearchScreen';
-import SearchScreen from 'screens/Search/SearchScreen';
-import SearchResultScreen from 'screens/Search/SearchResultScreen';
-import SelectedSongScreen from 'screens/Search/SelectedSongScreen';
-import SelectedHashtagScreen from 'screens/Search/SelectedHashtagScreen';
-import AllContentsScreen from 'screens/Search/AllContentsScreen';
-
+import MainSearchScreen from 'screens/Main/MainSearchScreen';
+import SearchScreen from 'screens/Main/SearchScreen';
+import SelectedSongScreen from 'screens/Main/SelectedSongScreen';
+import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
+import AllContentsScreen from 'screens/Main/AllContentsScreen';
+import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
 import CreateModal from 'components/CreateModal';
 
 const LoginStack = createNativeStackNavigator()
@@ -77,7 +75,7 @@ const TabScreen = () => {
         <Tab.Navigator
         screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
-                if (route.name === 'HomeTab') {
+                if (route.name === 'Home') {
                     return (
                         <View>
                             { focused ? 
@@ -85,7 +83,7 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('assets/icons/tabHome.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'FeedTab') {
+                } else if (route.name === 'Feed') {
                     return (
                         <View>
                             { focused ? 
@@ -93,18 +91,18 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('assets/icons/tabSearch.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'BoardTab') {
+                } else if (route.name === 'CreateModal') {
                     return (
                         <Text>
                             +
                         </Text>
                     )
-                } else if (route.name === 'NoticeTab') {
+                } else if (route.name === 'Board') {
                     return (
                         <View>
                             { focused ? 
-                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedNotice.svg')} /> : 
-                            <SvgUri width='40' height='40' source={require('assets/icons/tabNotice.svg')} /> }
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabFocusedBoard.svg')} /> : 
+                            <SvgUri width='40' height='40' source={require('assets/icons/tabBoard.svg')} /> }
                         </View>
                     )
                 } else if (route.name === 'Account') {
@@ -130,10 +128,10 @@ const TabScreen = () => {
             },
             headerShown: false,
         })}>
-            <Tab.Screen name="HomeTab" component={MainSearchScreen}/>
-            <Tab.Screen name="FeedTab" component={MainPage}/>
+            <Tab.Screen name="Home" component={MainSearchScreen}/>
+            <Tab.Screen name="Feed" component={MainPage}/>
             <Tab.Screen 
-                name="BoardTab" 
+                name="CreateModal" 
                 component={MyModalBackgroundScreen}
                 listeners={({ navigation }) => ({
                     tabPress: (e) => {
@@ -142,7 +140,7 @@ const TabScreen = () => {
                     }
                 })}
             />
-            <Tab.Screen name="NoticeTab" component={NoticeScreen}/>
+            <Tab.Screen name="Board" component={FreeBoardPage}/>
             <Tab.Screen name="Account" component={AccountScreen}/>
         </Tab.Navigator>
     )
@@ -157,10 +155,10 @@ const MainStackScreen = () => {
         >
             <MainStack.Screen name="Tab" component={TabScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen} />
-            <MainStack.Screen name="SearchResult" component={SearchResultScreen} />
             <MainStack.Screen name="SelectedSong" component={SelectedSongScreen} />
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
+            <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
             <MainStack.Screen name="SelectedCuration" component={SelectedCuration} />
             <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />
@@ -183,6 +181,7 @@ const MainStackScreen = () => {
             <MainStack.Screen name="FeedBack" component={FeedBackPage} />
             <MainStack.Screen name="InformationUse" component={InformationUsePage} />
             <MainStack.Screen name="MusicBox" component={MusicBoxScreen} />
+            <MainStack.Screen name="Notice" component={NoticeScreen} />
             <MainStack.Screen name="CreatePosts" component={CreateModal} 
                 options={{
                     presentation: "transparentModal",

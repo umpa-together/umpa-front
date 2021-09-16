@@ -7,6 +7,8 @@ const DJReducer = (state, action) => {
             return { ...state, recommendDJ: action.payload };
         case 'getSongs':
             return { ...state, songs: action.payload };
+        case 'mainRecommendDJ':
+            return { ...state, mainRecommendDJ: action.payload };
         case 'error':
             return { ...state, errorMessage: action.payload };
         default:
@@ -48,11 +50,10 @@ const recommendDJ = (dispatch) => async() => {
     }
 };
 
-const tmp = (dispatch) => async () => {
+const getMainRecommendDJ = (dispatch) => async () => {
     try {
-        const response = await serverApi.get('/tmp');
-        console.log(response.data)
-        //dispatch({ type: 'recommendDJ', payload: response.data });
+        const response = await serverApi.get('/mainRecommend');
+        dispatch({ type: 'mainRecommendDJ', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with recommendDJ' });
     }
@@ -61,6 +62,6 @@ const tmp = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     DJReducer,
-    { getSongs, setSongs, editSongs, recommendDJ, tmp },
-    { songs: null, errorMessage: '', recommendDJ: null }
+    { getSongs, setSongs, editSongs, recommendDJ, getMainRecommendDJ },
+    { songs: null, errorMessage: '', recommendDJ: null, mainRecommendDJ: null }
 )
