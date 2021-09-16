@@ -1,70 +1,55 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
-import { launchImageLibrary } from 'react-native-image-picker';
 import ProfileImage from 'components/ProfileImage';
 import { tmpWidth } from 'components/FontNormalize';
+import { onClickSingle } from 'components/ImageEditor'
 
 export default ProfilePreview = ({ img }) => {
     const { state } = useContext(UserContext);
-    const [image, setImage] = useState(state.myInfo.profileImage);
+    const [image, setImage] = useState({
+        name: '',
+        uri: state.myInfo.profileImage,
+        type: 'image/jpeg'
+    });
     
     const onClickChange = () => {
-        handleUpload()
+        onClickSingle(setImage)
     }
 
-    const handleUpload = () => {
-        launchImageLibrary({maxWidth: 500, maxHeight: 500}, (response) => {
-            if(response.didCancel) {
-                return;
-            }
-            img.name = response.fileName
-            img.type = response.type
-            img.uri = response.uri
-            setImage(response.uri)
-        });
-    };
+    useEffect(() => {
+        img.name = image.name
+        img.type = image.type
+        img.uri = image.uri
+    }, [image])
 
     return (
-        <>
-            <View style={styles.header}>
-                <Text style={styles.title}>프로필 사진</Text>
-                <TouchableOpacity onPress={onClickChange}>
-                    <Text style={styles.change}>사진 변경</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.profileBox}>
-                <ProfileImage img={image} imgStyle={styles.profileImage}/>
-            </View>
-        </>
+        <View style={styles.container}>
+            <ProfileImage img={image.uri} imgStyle={styles.profileImage}/>
+            <TouchableOpacity
+                onPress={onClickChange}
+            >
+                <Text style={styles.text}>프로필 사진 바꾸기</Text>
+            </TouchableOpacity>
+        </View>
     )
 }
 
 const styles=StyleSheet.create({
-    header:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginLeft: 24  * tmpWidth,
-        marginRight: 24 * tmpWidth,
-        marginTop: 12 * tmpWidth
-    },
-    title: {
-        fontSize: 16 * tmpWidth
-    },
-    change: {
-        fontSize: 14 * tmpWidth, 
-        color: 'rgb(137,148,242)'
+    container: {
+        paddingTop: 24 * tmpWidth,
+        alignItems: 'center',
     },
     profileImage: {
-        width: 114 * tmpWidth,
-        height: 114 * tmpWidth,
-        borderRadius: 114 * tmpWidth,
+        width: 108 * tmpWidth,
+        height: 108 * tmpWidth,
+        borderRadius: 108 * tmpWidth,
     },
-    profileBox: {
-        paddingTop: 36 * tmpWidth,
-        alignItems: 'center', 
-        height: 181.5 * tmpWidth,
-        borderBottomWidth: 1 * tmpWidth,
-        borderBottomColor: 'rgba(196,196,196,0.3)'
-    },
+    text: {
+        fontSize: 13 * tmpWidth,
+        fontWeight: '700',
+        color: '#8bc0ff',
+        marginTop: 12 * tmpWidth,
+        marginBottom: 28 * tmpWidth,
+    }
 })

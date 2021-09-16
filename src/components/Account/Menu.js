@@ -2,26 +2,36 @@ import React from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { tmpWidth } from 'components/FontNormalize'
 
-export default Menu = ({ user, menu, setMenu }) => {
+export default Menu = ({ menu, setMenu }) => {
+
     const onClickPlaylist = () => {
         setMenu('playlist')
     }
-    const onClickCuration = () => {
-        setMenu('curating')    
+    const onClickDaily = () => {
+        setMenu('daily')    
     }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity 
-                style={menu=='playlist' ? styles.selectedMenu : styles.notselectedMenu} 
+                style={menu=='playlist' ? styles.activeMenu : styles.menu} 
                 onPress={onClickPlaylist}
             >
-                <Text style={menu=='playlist' ? styles.selectedText : styles.notSelectedText}>플레이리스트 {user.playlists.length}</Text>
+                <Text 
+                    style={[ styles.playlist, menu=='playlist' && styles.active ]}
+                >
+                    플레이리스트
+                </Text>
             </TouchableOpacity>
             <TouchableOpacity 
-                style={menu=='curating' ? styles.selectedMenu : styles.notselectedMenu} 
-                onPress={onClickCuration}
+                style={menu=='daily' ? styles.activeMenu : styles.menu} 
+                onPress={onClickDaily}
             >
-                <Text style={menu=='curating' ? styles.selectedText : styles.notSelectedText}>큐레이션 {user.curationposts.length}</Text>
+                <Text 
+                    style={[ styles.daily, menu=='daily' && styles.active ]}
+                >
+                    데일리
+                </Text>
             </TouchableOpacity>
         </View>
     )
@@ -32,32 +42,37 @@ const styles=StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        paddingLeft: 20 * tmpWidth,
-        paddingRight: 20 * tmpWidth,
-        height: 44 * tmpWidth,
-        backgroundColor: 'rgb(250,250,250)',
+        backgroundColor: '#ffffff',
         borderBottomWidth : 1 * tmpWidth,
-        borderColor: 'rgba(153,153,153,0.2)',
+        borderColor: '#ececec',
+        flex: 1
     },
-    selectedMenu: {
-        height: 28 * tmpWidth,
-        borderBottomWidth: 1.4 * tmpWidth,
-        borderBottomColor: 'rgba(25,25,25,1)',
-        width: 160 * tmpWidth,
+    active: {
+        color: '#8bc0ff',
+        marginBottom: -2 * tmpWidth
     },
-    notselectedMenu: {
-        height: 28 * tmpWidth,
-        width: 160 * tmpWidth
+    playlist: {
+        fontWeight: '400',
+        fontSize: 16 * tmpWidth,
+        textAlign: 'center',
+        color: '#aaaaaa', 
     },
-    selectedText: {
+    daily: {
         fontWeight: '500',
-        fontSize: 14 * tmpWidth,
-        color: '#000', 
-        textAlign: 'center'
+        fontSize: 16 * tmpWidth,
+        textAlign: 'center',
+        color: '#aaaaaa', 
     },
-    notSelectedText: {
-        fontSize: 14 * tmpWidth,
-        color: 'rgba(25,25,25,0.5)', 
-        textAlign: 'center'
-    }
+    activeMenu: {
+        height: 36 * tmpWidth,
+        borderBottomWidth: 2 * tmpWidth,
+        borderBottomColor: '#8bc0ff',
+        flex: 1,
+        justifyContent: 'center',
+    },
+    menu: {
+        height: 36 * tmpWidth,
+        flex: 1,
+        justifyContent: 'center',
+    },
 })
