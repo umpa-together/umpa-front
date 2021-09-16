@@ -7,7 +7,7 @@ export const useSearch = () => useContext(SearchContext)
 
 export default SearchProvider = ({ children }) => {
     const { state: searchState, searchHint, initHint, hashtagHint, djHint, songNext } = useContext(SearchHintContext);
-    const [isHint, setIsHint] = useState(false)
+    const [isHint, setIsHint] = useState(true)
     const [text, setText] = useState('')
     const [searchOption, setSearchOption] = useState('Song')
     const [loading, setLoading] = useState(false);
@@ -32,6 +32,7 @@ export default SearchProvider = ({ children }) => {
 
     useEffect(() => {
         if(text === ''){
+            setIsHint(true)
             setIsResultClick(false)
             initHint()
         } else {
@@ -46,6 +47,7 @@ export default SearchProvider = ({ children }) => {
     }, [text])
 
     const value = {
+        text,
         textRef,
         searchOption,
         isHint,
