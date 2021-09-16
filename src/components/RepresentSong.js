@@ -1,28 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native'
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
-import TrackPlayer from 'react-native-track-player';
 import HarmfulModal from 'components/HarmfulModal';
 import { SongImage } from 'components/SongImage'
-import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { useTrackPlayer } from 'providers/trackPlayer'
 
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [type, setType] = useState('Each');
     const scrollX = useRef(new Animated.Value(0)).current;
     const [harmfulModal, setHarmfulModal] = useState(false);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+
     const onClose = () => {
         setRepresentModal(false);
-        setIsPlayingid('0');
-        TrackPlayer.reset()
     }
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
+
     return (
         <Modal
             isVisible={representModal}
@@ -95,14 +90,14 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                             <Text style={styles.representsongname} numberOfLines={1}>{item.attributes.name}</Text>
                                         </View>
                                         <TouchableOpacity onPress={() => {
-                                            if(isPlayingid == item.id) {
-                                                stoptracksong({ setIsPlayingid })
+                                            if(isPlayingId == item.id) {
+                                                stoptracksong()
                                             }else{
-                                                addtracksong({ data:item, setIsPlayingid, setHarmfulModal })
+                                                addtracksong({ data:item })
                                             }
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={134} border={134}/>
-                                            { isPlayingid != item.id ? 
+                                            { isPlayingId != item.id ? 
                                             <SvgUri width='50' height='50' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
                                             <SvgUri width='50' height='50' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
                                         </TouchableOpacity>
@@ -138,14 +133,14 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                 return (
                                     <View style={styles.listBox}>
                                         <TouchableOpacity onPress={() => {
-                                            if(isPlayingid == item.id){
-                                                stoptracksong({ setIsPlayingid })
+                                            if(isPlayingId == item.id){
+                                                stoptracksong()
                                             }else{
-                                                addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+                                                addtracksong({ data: item })
                                             }
                                         }}>
                                             <SongImage url={item.attributes.artwork.url} size={57} border={57}/>
-                                            { isPlayingid != item.id ? 
+                                            { isPlayingId != item.id ? 
                                             <SvgUri width='27' height='27' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='27' height='27' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                         </TouchableOpacity>
