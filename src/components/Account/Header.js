@@ -64,6 +64,17 @@ export default Header = ({ user, isMyAccount }) => {
     )
 }
 
+export const EditHeader = () => {
+    return (
+        <View style={styles.editContainer}>
+            <Text style={styles.title}>프로필 편집</Text>
+            <TouchableOpacity style={styles.editBack} onPress={goBack}>
+                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
+            </TouchableOpacity>
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     container: {
         height: (40 + StatusBarHeight) * tmpWidth, 
@@ -101,5 +112,22 @@ const styles = StyleSheet.create({
     },
     reportText:{ 
         color: 'rgb(80,80,80)'
+    },
+    title: {
+        fontSize: 16 * tmpWidth,
+        fontWeight: '700',
+        textAlign: 'center', 
+    },
+    editContainer: {
+        width: '100%', 
+        height: (48 + StatusBarHeight) * tmpWidth, 
+        paddingTop: StatusBarHeight * tmpWidth,
+        backgroundColor: 'rgb(254,254,254)',
+        justifyContent: 'center',
+    },
+    editBack: { 
+        position: 'absolute',
+        left: 5 * tmpWidth, 
+        top: (2 + StatusBarHeight) * tmpWidth
     }
 })
