@@ -31,7 +31,6 @@ import InformationUsePage from 'screens/Account/InformationUsePage';
 import MusicBoxScreen from 'screens/Account/MusicBoxScreen'
 
 import MainPage from 'screens/MainPage';
-import SearchSongPage from 'screens/Playlist/SearchSongPage';
 import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
 import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
 
@@ -108,7 +107,7 @@ const TabScreen = () => {
                             <SvgUri width='40' height='40' source={require('assets/icons/tabNotice.svg')} /> }
                         </View>
                     )
-                } else if (route.name === 'AccountTab') {
+                } else if (route.name === 'Account') {
                     return ( 
                         <View>
                             { focused ? 
@@ -144,7 +143,7 @@ const TabScreen = () => {
                 })}
             />
             <Tab.Screen name="NoticeTab" component={NoticeScreen}/>
-            <Tab.Screen name="AccountTab" component={AccountScreen}/>
+            <Tab.Screen name="Account" component={AccountScreen}/>
         </Tab.Navigator>
     )
 }
@@ -161,7 +160,6 @@ const MainStackScreen = () => {
             <MainStack.Screen name="SearchResult" component={SearchResultScreen} />
             <MainStack.Screen name="SelectedSong" component={SelectedSongScreen} />
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
-            <MainStack.Screen name="SearchSong" component={SearchSongPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
             <MainStack.Screen name="SelectedCuration" component={SelectedCuration} />
