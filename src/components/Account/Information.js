@@ -4,7 +4,7 @@ import { tmpWidth } from 'components/FontNormalize'
 import { push } from 'navigationRef';
 
 export default Information = ({ user, followerNum }) => {
-    const { name, introduction, following, follower } = user
+    const { name, introduction, following, follower, realName } = user
     const onClickFollowing = () => {
         push('Follow', {name, type: 'following'})
     }
@@ -16,6 +16,8 @@ export default Information = ({ user, followerNum }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.name}>{name}</Text>
+            { realName &&
+            <Text style={styles.realName}>{realName}</Text> }
             <Text style={styles.introduction}>{introduction}</Text>
             <View style={styles.flexRow}>
                 <TouchableOpacity 
@@ -68,5 +70,10 @@ const styles=StyleSheet.create({
     flexRow: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    realName: {
+        fontWeight: '400',
+        fontSize: 13 * tmpWidth,
+        marginBottom: 8 * tmpWidth
     }
 })
