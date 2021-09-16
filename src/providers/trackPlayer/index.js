@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
 import { useModal } from 'providers/modal';
 import TrackPlayer from 'react-native-track-player';
 
@@ -11,7 +11,8 @@ export default TrackPlayerProvider = ({ children }) => {
     const [currentSong, setCurrentSong] = useState(null)
     const [playTime, setPlayTime] = useState(0)
     const { setHarmfulModal } = useModal()
-
+    const idRef = useRef('0')
+    
     const addtracksong= async ({ data }) => {
         const track = new Object();
         track.id = data.id;
@@ -20,6 +21,7 @@ export default TrackPlayerProvider = ({ children }) => {
         track.artist = data.attributes.artistName;
         if (data.attributes.contentRating != "explicit") {
             setIsPlayingId(data.id);
+            idRef.current = data.id
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
@@ -31,6 +33,7 @@ export default TrackPlayerProvider = ({ children }) => {
     
     const stoptracksong= () => {    
         setIsPlayingId('0');
+        idRef.current = '0'
         setCurrentSong(null)
         TrackPlayer.reset()
     };
@@ -52,7 +55,9 @@ export default TrackPlayerProvider = ({ children }) => {
     }, [isPlayingId])
 
     useEffect(() => {
-        const timeInterval = setInterval(() => setPlayTime((prev) => prev+1), 1000)
+        const timeInterval = setInterval(() => {
+            if(idRef.current !== '0') setPlayTime((prev) => prev+1)
+        }, 1000)
         return () => {
             if(playTime === 30) clearInterval(timeInterval)
         }
