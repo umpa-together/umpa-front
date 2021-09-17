@@ -1,12 +1,14 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { StatusBarHeight } from 'components/StatusBarHeight'
 import { tmpWidth } from 'components/FontNormalize';
 import { navigate } from 'navigationRef'
 import SvgUri from 'react-native-svg-uri';
+import { Context as ChatContext } from 'context/ChatContext';
 
 export default Header = () => {
-    
+    const {state: chatState, postChat,getlist } = useContext(ChatContext);
+
     const onClickNotice = () => {
         navigate('Notice')
     }
@@ -25,7 +27,7 @@ export default Header = () => {
                 >
                     <SvgUri width={40} height={40} source={require('assets/icons/alarm.svg')} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon}>
+                <TouchableOpacity style={styles.icon} onPress={async() => {await getlist(); navigate('Chat')}}>
                     <SvgUri width={40} height={40} source={require('assets/icons/chat.svg')} />
                 </TouchableOpacity>
             </View>

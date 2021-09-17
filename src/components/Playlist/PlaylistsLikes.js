@@ -76,7 +76,7 @@ export default PlaylistsLikes = ({ playlist }) => {
                 <TouchableOpacity onPress={onClickLikes}>
                     <SvgUri 
                         width={40} height={40} 
-                        source={likes.includes(userState.myInfo._id) ? require('assets/icons/playlistHearto.svg') : require('assets/icons/playlistHeart.svg')}
+                        source={likes.includes(userState.myInfo._id) ? require('assets/icons/playlisthearto.svg') : require('assets/icons/playlistheart.svg')}
                     /> 
                 </TouchableOpacity>
             </View>

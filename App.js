@@ -15,6 +15,8 @@ import { Provider as CurationProvider } from 'context/CurationContext';
 import { Provider as NoticeProvider } from 'context/NoticeContext';
 import { Provider as WeeklyProvider } from 'context/WeeklyContext';
 import { Provider as ReportProvider } from 'context/ReportContext';
+import { Provider as DailyProvider } from './src/context/DailyContext';
+import { Provider as ChatProvider } from './src/context/ChatContext';
 
 import TrackPlayerProvider from 'providers/trackPlayer'
 import ModalProvider from 'providers/modal'
@@ -64,23 +66,27 @@ export default () => {
             <ReportProvider>
                 <WeeklyProvider>
                     <NoticeProvider>
-                        <CurationProvider>
-                            <DJProvider>
-                                <UserProvider>
-                                    <SearchPlaylistProvider>
-                                        <PlaylistProvider>
-                                            <BoardProvider>
-                                                <SearchProvider>
-                                                    <AuthProvider>
-                                                        <MainNavigator/>
-                                                    </AuthProvider>
-                                                </SearchProvider>
-                                            </BoardProvider>
-                                        </PlaylistProvider>
-                                    </SearchPlaylistProvider>
-                                </UserProvider>
-                            </DJProvider>
-                        </CurationProvider>
+                        <DailyProvider>
+                            <CurationProvider>
+                                <ChatProvider>
+                                    <DJProvider>
+                                        <UserProvider>
+                                            <SearchPlaylistProvider>
+                                                <PlaylistProvider>
+                                                    <BoardProvider>
+                                                        <SearchProvider>
+                                                            <AuthProvider>
+                                                                <MainNavigator/>
+                                                            </AuthProvider>
+                                                        </SearchProvider>
+                                                    </BoardProvider>
+                                                </PlaylistProvider>
+                                            </SearchPlaylistProvider>
+                                        </UserProvider>
+                                    </DJProvider>
+                                </ChatProvider>
+                            </CurationProvider>
+                        </DailyProvider>
                     </NoticeProvider>
                 </WeeklyProvider>
             </ReportProvider>

@@ -46,7 +46,8 @@
     "react-native-svg-uri": "1.2.3",
     "react-native-swift": "^1.2.3",
     "react-native-text-ticker": "1.13.0",
-    "react-native-track-player": "1.2.7"
+    "react-native-track-player": "1.2.7",
+    "socket.io-client": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

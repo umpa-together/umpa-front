@@ -53,6 +53,13 @@ import AllContentsScreen from 'screens/Main/AllContentsScreen';
 import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
 import CreateModal from 'components/CreateModal';
 
+import Chat from 'screens/Chat/Chat';
+import SelectedChat from 'screens/Chat/SelectedChat';
+
+import DailyCreate from 'screens/Daily/DailyCreate';
+import DailySearchSongPage from 'screens/Daily/DailySearchSongPage';
+import SelectedDaily from 'screens/Daily/SelectedDaily';
+
 const LoginStack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 const MainStack = createNativeStackNavigator()
@@ -159,6 +166,11 @@ const MainStackScreen = () => {
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
             <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />
+            <MainStack.Screen name="SearchSongDaily" component={DailySearchSongPage} />
+            <MainStack.Screen name="SelectedDaily" component={SelectedDaily} />
+            <MainStack.Screen name="Chat" component={Chat} />
+            <MainStack.Screen name="SelectedChat" component={SelectedChat} />
+
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
             <MainStack.Screen name="SelectedCuration" component={SelectedCuration} />
             <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />
@@ -166,12 +178,15 @@ const MainStackScreen = () => {
             <MainStack.Screen name="SearchBoard" component={SearchBoardPage} />
             <MainStack.Screen name="CreateBoard" component={CreateBoardPage} />
             <MainStack.Screen name="SelectedBoard" component={SelectedBoardPage} />
+            <MainStack.Screen name="CreateDaily" component={DailyCreate} />
+
             <MainStack.Screen name="CreateContent" component={CreateContentPage} />
             <MainStack.Screen name="SelectedContent" component={SelectedContentPage} />
             <MainStack.Screen name="MyContents" component={MyContentsPage} />
             <MainStack.Screen name="SearchContent" component={SearchContentPage} />
             <MainStack.Screen name="MusicArchive" component={MusicArchivePage} />
             <MainStack.Screen name="SearchMusic" component={SearchMusicPage} />
+            
             <MainStack.Screen name="MySharedSongs" component={MySharedSongsPage} />
             <MainStack.Screen name="OtherAccount" component={OtherAccount} />
             <MainStack.Screen name="Follow" component={FollowPage} />
