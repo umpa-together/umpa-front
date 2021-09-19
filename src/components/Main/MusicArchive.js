@@ -6,11 +6,11 @@ import SongStory from 'components/SongStory'
 
 export default MusicArchive = ({ archive }) => {
     const [archiveModal, setArchiveModal] = useState(false)
-    const [story, setStory] = useState(null)
+    const [selectedArchive, setSelectedArchive] = useState(null)
     
-    const onClickArchive = (songs) => {
+    const onClickArchive = (item) => {
+        setSelectedArchive(item)
         setArchiveModal(true)
-        setStory(songs)
     }
 
     return (
@@ -23,13 +23,13 @@ export default MusicArchive = ({ archive }) => {
                 keyExtractor={community => community._id._id}
                 contentContainerStyle={styles.padding}
                 bounces={false}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     const { songs, _id: board } = item
-                    const backgroundImg = songs[0].attributes.artwork.url
+                    const backgroundImg = songs[0].song.attributes.artwork.url
                     return (
                         <TouchableOpacity 
                             style={styles.archiveBox}
-                            onPress={() => onClickArchive(songs)}
+                            onPress={() => onClickArchive(item)}
                         >
                             <SongImageBack url={backgroundImg} width={92} height={110} border={4} opac={1} />
                             <Text style={styles.name} numberOfLines={1}>{board.name}</Text>
@@ -37,7 +37,7 @@ export default MusicArchive = ({ archive }) => {
                     )
                 }}
             />
-            {archiveModal && <SongStory setArchiveModal={setArchiveModal} songs={story} />}
+            {archiveModal && <SongStory setArchiveModal={setArchiveModal} archive={selectedArchive} /> }
         </>
     )
 }
