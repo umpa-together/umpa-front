@@ -2,12 +2,12 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import { Context as UserContext } from '../../context/UserContext';
 import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage';
+import { SongImage } from 'components/SongImage';
 import SvgUri from 'react-native-svg-uri';
-import LoadingIndicator from '../LoadingIndicator';
-import { useTrackPlayer } from '../../providers/trackPlayer';
-import { DeletePlaylistModal } from '../PlaylistModal';
-import HarmfulModal from '../HarmfulModal';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { useTrackPlayer } from 'providers/trackPlayer';
+import { DeletePlaylistModal } from 'components/PlaylistModal';
+import HarmfulModal from 'components/HarmfulModal';
 
 export default AddedSongLists = () => {
     const { state, getMyInfo } = useContext(UserContext);
@@ -83,7 +83,7 @@ export default AddedSongLists = () => {
                                 <View style={styles.flexRowContainer}>
                                     <View style={styles.song}>
                                         {item.attributes.contentRating == "explicit" && 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit}/> }
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
                                         <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
                                     </View>
                                 </View>

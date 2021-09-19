@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { tmpWidth } from './FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { Context as UserContext } from '../context/UserContext';
-import { SongImage } from './SongImage'
-import HarmfulModal from './HarmfulModal'
-import { useTrackPlayer } from '../providers/trackPlayer';
+import { Context as UserContext } from 'context/UserContext';
+import { SongImage } from 'components/SongImage'
+import HarmfulModal from 'components/HarmfulModal'
+import { useTrackPlayer } from 'providers/trackPlayer';
 
 const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     const { state } = useContext(UserContext);
@@ -115,7 +115,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                                 }}
                                 style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
                             >
-                                <SvgUri width='43' height='43' source={require('../assets/icons/representleft.svg')}/>
+                                <SvgUri width='43' height='43' source={require('assets/icons/representleft.svg')}/>
                             </TouchableOpacity>
                             <View style={styles.titleContainer}>
                                 <Text style={styles.titleText}>{monthName}</Text>
@@ -128,7 +128,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                                 }}
                                 style={{width: 43 * tmpWidth, height: 43 * tmpWidth}}
                             >
-                                <SvgUri width='43' height='43' source={require('../assets/icons/representright.svg')} />
+                                <SvgUri width='43' height='43' source={require('assets/icons/representright.svg')} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.rowContainer}>
@@ -178,7 +178,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                     <View style={{justifyContent: 'center', width: 160 * tmpWidth, marginLeft: 24 * tmpWidth}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             {selectedStory.song.attributes.contentRating == "explicit" ? 
-                            <SvgUri width="17" height="17" source={require('../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                             : null }
                             <Text style={{fontSize: 18 * tmpWidth, fontWeight: '500'}} numberOfLines={1}>{selectedStory.song.attributes.name}</Text>
                         </View>

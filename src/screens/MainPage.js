@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {Context as UserContext} from '../context/UserContext';
-import Recommend from '../components/Feed/Recommend';
-import Feed from '../components/Feed/Feed';
+import {Context as UserContext} from 'context/UserContext';
+import Recommend from 'components/Feed/Recommend';
+import Feed from 'components/Feed/Feed';
 
 const MainPage = () => {
     const { state: userState } = useContext(UserContext);

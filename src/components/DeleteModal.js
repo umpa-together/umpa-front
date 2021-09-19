@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as PlaylistContext } from '../context/PlaylistContext';
-import { Context as UserContext } from '../context/UserContext';
-import { Context as BoardContext } from '../context/BoardContext';
-import { Context as CurationContext } from '../context/CurationContext';
-import { goBack } from '../navigationRef';
-const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, setComments, playlistId }) => {
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as CurationContext } from 'context/CurationContext';
+import { goBack } from 'navigationRef';
+const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state: curationState, deleteCuration, getCurationposts } = useContext(CurationContext);
-    const [isDelete, setIsDelete] = useState(false);
     const onClose = () =>{
         setDeleteModal(false);
     };
@@ -59,9 +58,6 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, setComments
         }
     }, []);
 
-    useEffect(() => {
-        if(isDelete)    setComments(state.current_comments)
-    },[state.current_comments])
     return (
         <Modal
             animationIn="fadeIn"
@@ -78,7 +74,6 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, setComments
                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(133,133,133)'}}>취소하기</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.deleteBox} onPress={async () => {
-                        await setIsDelete(true)
                         deleteSelection()}}>
                         <Text style={{fontSize: 12 * tmpWidth, color: 'rgb(86,86,86)'}}>삭제하기</Text>
                     </TouchableOpacity>

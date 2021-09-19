@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../../components/Header';
-import Setting from '../../components/Account/Setting';
+import Header from 'components/Header';
+import Setting from 'components/Account/Setting';
 
 const SettingPage = () => {
     return (

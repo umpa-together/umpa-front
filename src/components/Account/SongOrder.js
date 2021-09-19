@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext'
-import { Context as DJContext } from '../../context/DJContext'
+import { Context as UserContext } from 'context/UserContext'
+import { Context as DJContext } from 'context/DJContext'
 import SvgUri from 'react-native-svg-uri';
 import Modal from 'react-native-modal';
-import { tmpWidth } from '../FontNormalize';
-import { SongImage } from '../SongImage'
-import { goBack } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { SongImage } from 'components/SongImage'
+import { goBack } from 'navigationRef';
 
 export default SongOrder = ({ setOrderModal, songs }) => {
     const { getMyInfo} = useContext(UserContext);
@@ -72,7 +72,7 @@ export default SongOrder = ({ setOrderModal, songs }) => {
                                 <View style={styles.infoBox}>
                                     <View style={styles.rowContainer}>
                                         {item.attributes.contentRating == "explicit" &&
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
                                         <Text style={styles.song} numberOfLines={1}>{song}</Text>
                                     </View>
                                     <Text style={styles.artist} numberOfLines={1}>{artist}</Text>

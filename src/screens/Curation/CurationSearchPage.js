@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { Text, TextInput,View,Keyboard, FlatList,StyleSheet,SafeAreaView,TouchableOpacity, ActivityIndicator  } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
-import { Context as CurationContext } from '../../context/CurationContext'
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import { Context as SearchContext } from 'context/SearchContext'
+import { Context as CurationContext } from 'context/CurationContext'
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { SongImage } from '../../components/SongImage'
-import { push, goBack } from '../../navigationRef';
+import { SongImage } from 'components/SongImage'
+import { push, goBack } from 'navigationRef';
 const CurationSearchPage = () => {
     const [text, setState] = useState('');
     const [isSong, setIsSong]= useState(true);
@@ -44,14 +44,14 @@ const CurationSearchPage = () => {
             </View>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.back} onPress={goBack}>
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/back.svg')}/>
+                    <SvgUri width='100%' height='100%' source={require('assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <Text style={styles.headertext}>큐레이션 검색</Text>
             </View>
             <View style={styles.input}>
                 <View style ={{ flexDirection:'row'}}>
                     <View style={styles.inputicon}>
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/curationsearch.svg')}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/curationsearch.svg')}/>
                     </View>
                     <View>
                         <TextInput style={styles.inputtext}
@@ -71,7 +71,7 @@ const CurationSearchPage = () => {
                     style={{marginLeft:tmpWidth*10, width:28*tmpWidth, height:tmpWidth*28, marginTop:tmpWidth*15}}
                     onPress={()=>{Keyboard.dismiss(); setState('');}}
                     >
-                        <SvgUri width='100%' height='100%' source={require('../../assets/icons/resultDelete.svg')}/>
+                        <SvgUri width='100%' height='100%' source={require('assets/icons/resultDelete.svg')}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -131,7 +131,7 @@ const CurationSearchPage = () => {
                                                     <View style={{marginLeft: 24 * tmpWidth, width: 220 * tmpWidth,}}>
                                                         <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center'}}>
                                                             {item.attributes.contentRating == "explicit" ? 
-                                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                             : null }
                                                             <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name.split("(feat.")[0]}</Text>
                                                         </View>
@@ -168,7 +168,7 @@ const CurationSearchPage = () => {
                                                 <View style={{marginLeft: 24 * tmpWidth}}>
                                                     <View style={{marginTop:10 * tmpWidth, flexDirection: 'row', alignItems: 'center', width: 220 * tmpWidth}}>
                                                         {item.attributes.contentRating == "explicit" ? 
-                                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                         : null }
                                                     <Text style={{fontSize:16 * tmpWidth}} numberOfLines={1}>{item.attributes.name}</Text>
                                                     </View>

@@ -7,7 +7,7 @@ export default ProfileImage = ({ img, imgStyle }) => {
         <>
             { img == undefined ?
             <View style={imgStyle}>
-                <SvgUri width='100%' height='100%' source={require('../assets/icons/noprofile.svg')} />
+                <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
             </View> : <Image style={imgStyle} source={{uri: img}}/> }
         </>
     )

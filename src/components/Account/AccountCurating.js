@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { tmpWidth, tmpHeight } from '../FontNormalize';
-import { Context as CurationContext } from '../../context/CurationContext';
-import { SongImage } from '../SongImage'
-import { push } from '../../navigationRef';
+import { tmpWidth, tmpHeight } from 'components/FontNormalize';
+import { Context as CurationContext } from 'context/CurationContext';
+import { SongImage } from 'components/SongImage'
+import { push } from 'navigationRef';
 const AccountCurating = ({ curating }) => {
     curating.sort(function(a,b){
         if(a.time > b.time)  return -1;

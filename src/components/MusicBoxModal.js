@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import { tmpWidth } from './FontNormalize';
-import { Context as UserContext } from '../context/UserContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from '../navigationRef';
+import { navigate } from 'navigationRef';
 
 const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
     const { getLikePlaylists } = useContext(UserContext);
+    
     const onClose = () =>{
         setMusicBoxModal(false);
     };
@@ -20,6 +21,7 @@ const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
         getLikePlaylists()
         navigate('MusicBox', {title: '좋아요한 플레이리스트'})
     }
+
     return (
         <Modal
             isVisible={musicBoxModal}
@@ -31,21 +33,18 @@ const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>보관함</Text>
                 </View>
-                <TouchableOpacity  style={styles.exitIcon} onPress={onClose}>
-                    <SvgUri width='100%' height='100%' source={require('../assets/icons/modalexit.svg')}/>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.itemContainer} onPress={onClickSong}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/musicBoxSong.svg')}/>
+                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/musicBox.svg')}/>
                     <Text style={styles.itemText}>담은 곡</Text>
                     <View style={styles.nextIcon}>
-                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/musicBoxNext.svg')}/>
+                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('assets/icons/musicBoxNext.svg')}/>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.itemContainer} onPress={onClickPlaylist}>
-                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('../assets/icons/musicBoxPlaylist.svg')}/>
+                    <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/musicBoxPlaylist.svg')}/>
                     <Text style={styles.itemText}>좋아요한 플레이리스트</Text>
                     <View style={styles.nextIcon}>
-                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('../assets/icons/musicBoxNext.svg')}/>
+                        <SvgUri width={30 * tmpWidth} height={30 * tmpWidth} source={require('assets/icons/musicBoxNext.svg')}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -72,15 +71,8 @@ const styles=StyleSheet.create({
     titleText: {
         textAlign: 'center', 
         fontSize: 16 * tmpWidth, 
-        color: 'rgb(118,118,118)',
-        marginTop: 20 * tmpWidth
-    },
-    exitIcon: {
-        position :"absolute", 
-        width:30 * tmpWidth, 
-        height:30 * tmpWidth, 
-        top: 14 * tmpWidth,
-        right:10 * tmpWidth,
+        marginTop: 20 * tmpWidth,
+        fontWeight: '500'
     },
     itemContainer: {
         flexDirection: 'row', 
@@ -91,7 +83,7 @@ const styles=StyleSheet.create({
     itemText: {
         marginLeft: 10 * tmpWidth, 
         fontSize: 16 * tmpWidth, 
-        color: 'rgb(80,80,80)'
+        fontWeight: '400'
     },
     nextIcon: {
         position: 'absolute', 

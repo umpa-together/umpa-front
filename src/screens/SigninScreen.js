@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, StyleSheet, TextInput, Text,Image, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
-import { Context as AuthContext } from '../context/AuthContext';
-import { navigate } from '../navigationRef';
+import { Context as AuthContext } from 'context/AuthContext';
+import { navigate } from 'navigationRef';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, {KAKAO_AUTH_TYPES} from '@react-native-seoul/kakao-login';
 import { NaverLogin } from "@react-native-seoul/naver-login";
-import { tmpWidth } from '../components/FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import jwtDecode from 'jwt-decode';
-import * as config from '../config'
+import * as config from 'config'
 
 const SigninScreen = () => {
     const { state, signin, getGoogleInfo, getKakaoInfo, getNaverInfo, getAppleInfo,clearErrorMessage } = useContext(AuthContext);
@@ -82,7 +82,7 @@ const SigninScreen = () => {
                 <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={{width: 194.9*tmpWidth, height: 119.9 * tmpWidth}}>
-                        <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/logo.png')} />
+                        <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/logo.png')} />
                     </View>
                 </View>
                 </TouchableWithoutFeedback>
@@ -121,16 +121,16 @@ const SigninScreen = () => {
                     </View>
                     <View style={{width:240 * tmpWidth, height:60 * tmpWidth, marginTop:19 * tmpWidth, flexDirection:'row'}}>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => googleLogin()}  >
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/google.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/google.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth,}} onPress={() => naverLogin(iosKeys)}>
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/naver.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/naver.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => kakaoLogin()}>
-                          <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/kakao.png')} />
+                          <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/kakao.png')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{width:60 * tmpWidth, height:60 * tmpWidth}} onPress={() => appleLogin()}  >
-                            <Image style={{width:'100%', height:'100%'}} source={require('../assets/icons/apple.png')} />
+                            <Image style={{width:'100%', height:'100%'}} source={require('assets/icons/apple.png')} />
                         </TouchableOpacity>  
                     </View>
                 </View>

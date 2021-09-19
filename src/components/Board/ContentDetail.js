@@ -3,18 +3,18 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator,
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
 import CommentDetail from './CommentDetail';
 import ScrabForm from './ScrabForm';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
-import ReportModal from '../ReportModal';
-import DeleteModal from '../DeleteModal';
-import DeletedModal from '../DeletedModal';
-import { SongImage } from '../SongImage'
-import { NavHeader } from '../../components/Header';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import ReportModal from 'components/ReportModal';
+import DeleteModal from 'components/DeleteModal';
+import DeletedModal from 'components/DeletedModal';
+import { SongImage } from 'components/SongImage'
+import { NavHeader } from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTrackPlayer } from '../../providers/trackPlayer';
 import HarmfulModal from '../HarmfulModal';
@@ -132,7 +132,7 @@ const ContentDetail = ({ title }) => {
                                         }}>
                                             { state.currentContent.postUserId.profileImage == undefined ?
                                             <View style={styles.profile}>
-                                               <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                               <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                             </View> :
                                             <Image style={styles.profile} source={{uri: state.currentContent.postUserId.profileImage}} /> }
                                         </TouchableOpacity>
@@ -209,16 +209,16 @@ const ContentDetail = ({ title }) => {
                                         <View style={{alignItems: 'center', flexDirection: 'row'}}>
                                             {state.currentContent.likes.includes(userState.myInfo._id) ? 
                                             <TouchableOpacity onPress={async () => await unlikeContent({contentId: state.currentContent._id})}>
-                                                <SvgUri width='24' height='24' source={require('../../assets/icons/boardLike.svg')} style={{marginRight: 2 * tmpWidth}}/>
+                                                <SvgUri width='24' height='24' source={require('assets/icons/boardLike.svg')} style={{marginRight: 2 * tmpWidth}}/>
                                             </TouchableOpacity> : 
                                             <TouchableOpacity onPress={async() => await likeContent({contentId: state.currentContent._id })}>
-                                                <SvgUri width='24' height='24' source={require('../../assets/icons/boardUnlike.svg')} style={{marginRight: 2 * tmpWidth}}/>
+                                                <SvgUri width='24' height='24' source={require('assets/icons/boardUnlike.svg')} style={{marginRight: 2 * tmpWidth}}/>
                                             </TouchableOpacity> }
                                             <Text style={styles.footerText}>좋아요 {state.currentContent.likes.length}</Text>
                                             <ScrabForm contentId={state.currentContent._id} />
                                         </View>
                                         <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/boardComment.svg')} style={{marginRight: 2 * tmpWidth}}/>
+                                            <SvgUri width='24' height='24' source={require('assets/icons/boardComment.svg')} style={{marginRight: 2 * tmpWidth}}/>
                                             <Text style={styles.footerText}>댓글 {state.currentContent.comments.length}</Text>
                                         </View>
                                     </View>
@@ -232,7 +232,7 @@ const ContentDetail = ({ title }) => {
                             <View style={{flexDirection: 'row'}}>
                                 { userState.myInfo.profileImage == undefined ?
                                 <View style={styles.commentProfile}>
-                                   <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                                   <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                                 </View> :
                                 <Image style={styles.commentProfile} source={{uri: userState.myInfo.profileImage}}/> }
                                 <View style={styles.commentInput}>

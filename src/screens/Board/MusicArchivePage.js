@@ -2,16 +2,16 @@ import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
-import { navigate, push } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
-import HarmfulModal from '../../components/HarmfulModal';
-import { SongImage } from '../../components/SongImage'
-import Header from '../../components/Header';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { navigate, push } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'components/SongImage'
+import Header from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import { useTrackPlayer } from 'providers/trackPlayer';
 
 const MusicArchivePage = ({ route }) => {
     const { state, likeSong, unlikeSong, addSongView, getMusicArchive, getMusicChart } = useContext(BoardContext);
@@ -63,7 +63,7 @@ const MusicArchivePage = ({ route }) => {
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.shareText}>공유된 음악</Text>
                         <TouchableOpacity onPress={() => navigate('SearchMusic', {isMusicArchive: true})}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/songPlus.svg')}/>    
+                            <SvgUri width='40' height='40' source={require('assets/icons/songPlus.svg')}/>    
                         </TouchableOpacity>
                     </View>
                     <FlatList 
@@ -87,7 +87,7 @@ const MusicArchivePage = ({ route }) => {
                                         <View style={styles.nameBox}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.song.attributes.contentRating == "explicit" ? 
-                                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                 : null }
                                                 <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
                                             </View>
@@ -121,7 +121,7 @@ const MusicArchivePage = ({ route }) => {
                                             <View style={styles.popularNameBox}>
                                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                     {item.song.attributes.contentRating == "explicit" ? 
-                                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                                    <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                                     : null }
                                                     <Text style={styles.titleText} numberOfLines={1}>{item.song.attributes.name}</Text>
                                                 </View>
@@ -129,9 +129,9 @@ const MusicArchivePage = ({ route }) => {
                                             </View>
                                         </View>
                                         <View style={styles.likeContainer}>
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/musicView.svg')}/>
+                                            <SvgUri width='24' height='24' source={require('assets/icons/musicView.svg')}/>
                                             <Text style={styles.likeText}>{item.views}</Text>
-                                            <SvgUri width='24' height='24' source={require('../../assets/icons/musicHeart.svg')}/>
+                                            <SvgUri width='24' height='24' source={require('assets/icons/musicHeart.svg')}/>
                                             <Text style={styles.likeText}>{item.likes.length}</Text>
                                         </View>
                                     </View>
@@ -165,7 +165,7 @@ const MusicArchivePage = ({ route }) => {
                         }}>
                             {selectedStory.postUserId.profileImage == undefined ? 
                             <View style={styles.profile}>
-                               <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
+                               <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
                             </View> :
                             <Image style={styles.profile} source={{uri: selectedStory.postUserId.profileImage}}/> }
                             <Text style={{marginLeft: 12 * tmpWidth}}>{selectedStory.postUser}</Text>
@@ -180,7 +180,7 @@ const MusicArchivePage = ({ route }) => {
                                     }else{
                                         storyClick({item: state.musicChart[selectedIdx-1], index: selectedIdx-1})
                                     }}}>
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalLeft.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/modalLeft.svg')}/>
                                 </TouchableOpacity> : <View style={styles.nextIcon}/>}
                             <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                                 if(isPlayingId == selectedStory.song.id){
@@ -207,13 +207,13 @@ const MusicArchivePage = ({ route }) => {
                                             storyClick({item: state.musicChart[selectedIdx+1], index: selectedIdx+1})
                                         }}}
                                 >
-                                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/modalRight.svg')}/>
+                                    <SvgUri width='100%' height='100%' source={require('assets/icons/modalRight.svg')}/>
                                 </TouchableOpacity>: <View style={styles.nextIcon}/>}
                             </View>
                             <View style={styles.textContainer}>
                                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                     {selectedStory.song.attributes.contentRating == "explicit" ? 
-                                    <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                    <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                     : null }
                                     <Text numberOfLines={1} style={styles.modalTitleText}>{selectedStory.song.attributes.name}</Text>
                                 </View>
@@ -224,13 +224,13 @@ const MusicArchivePage = ({ route }) => {
                             onPress={async () => {
                                 setLike(false)
                                 await likeSong({id: selectedStory._id, boardName: route.params.name, boardId: state.boards._id})}}>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/heart.svg')}/>     
+                                <SvgUri width='100%' height='100%' source={require('assets/icons/heart.svg')}/>     
                             </TouchableOpacity> : 
                             <TouchableOpacity style={styles.likeIcon}
                             onPress={async () => {
                                 setLike(true)
                                 await unlikeSong({id: selectedStory._id, boardId: state.boards._id})}}>
-                                <SvgUri width='100%' height='100%' source={require('../../assets/icons/hearto.svg')}/>
+                                <SvgUri width='100%' height='100%' source={require('assets/icons/hearto.svg')}/>
                             </TouchableOpacity> }
                         </View>
                     </View>

@@ -1,9 +1,9 @@
 import React, { useContext, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { tmpWidth } from '../../components/FontNormalize';
-import { Context as ReportContext } from '../../context/ReportContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { goBack } from '../../navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as ReportContext } from 'context/ReportContext';
+import { Context as UserContext } from 'context/UserContext';
+import { goBack } from 'navigationRef';
 
 export default Feedback = () => {
     const feedbackRef = useRef()

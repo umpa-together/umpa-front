@@ -1,16 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Text, View, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
+import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { SongImage } from '../../components/SongImage'
-import StoryCalendar from '../../components/StoryCalendar';
-import HarmfulModal from '../../components/HarmfulModal';
-import DeleteModal from '../../components/DeleteModal';
-import { tmpWidth } from '../../components/FontNormalize';
+import { useTrackPlayer } from 'providers/trackPlayer';
+import { SongImage } from 'components/SongImage'
+import StoryCalendar from 'components/StoryCalendar';
+import HarmfulModal from 'components/HarmfulModal';
+import DeleteModal from 'components/DeleteModal';
+import { tmpWidth } from 'components/FontNormalize';
 import StoryViewer from './StoryViewer'
-import ProfileImage from '../ProfileImage';
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import ProfileImage from 'components/ProfileImage';
 
 require('date-utils');
 
@@ -91,7 +91,7 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
                             style={styles.calendar}
                             onPress={onClickCalendar}
                         >
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/calendar.svg')} />
+                            <SvgUri width='40' height='40' source={require('assets/icons/calendar.svg')} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             if(isPlayingId == story.song.id){
@@ -108,7 +108,7 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
                         <HarmfulModal />
                         <View style={styles.songBox}>
                             { story.song.attributes.contentRating == "explicit" && 
-                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit} /> }
+                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit} /> }
                             <Text style={styles.song} numberOfLines={1}>{story.song.attributes.name}</Text>
                         </View>
                         <View style={styles.artistBox}>

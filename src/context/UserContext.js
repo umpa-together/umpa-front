@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import serverApi from '../api/serverApi';
+import serverApi from 'api/serverApi';
 
 const userReducer = (state, action) => {
     switch(action.type) {
@@ -73,9 +73,9 @@ const getOtheruser = (dispatch) => async ({id}) => {
     }
 };
 
-const editProfile = (dispatch) => async ({name, introduction}) => {
+const editProfile = (dispatch) => async ({nickName, name, introduction}) => {
     try {
-        const response = await serverApi.post('/editProfile', {name, introduction});
+        const response = await serverApi.post('/editProfile', {nickName, name, introduction});
         dispatch({ type: 'getMyInfo', payload: response.data });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with editProfile' });

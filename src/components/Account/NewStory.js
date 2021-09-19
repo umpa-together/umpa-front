@@ -1,64 +1,50 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Keyboard, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as SearchContext } from '../../context/SearchContext';
-import LoadingIndicator from '../LoadingIndicator';
-import { SongImage } from '../SongImage';
-import HarmfulModal from '../../components/HarmfulModal';
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { SongImage } from 'components/SongImage';
+import HarmfulModal from 'components/HarmfulModal';
+import { useTrackPlayer } from 'providers/trackPlayer';
+import { useSearch } from 'providers/search';
 
 export default NewStory = ({ newStory, setNewStory }) => {
     const { postStory, getMyStory, getOtherStory } = useContext(UserContext);
-    const { state: searchState, searchsong, searchinit, searchHint, initHint, songNext } = useContext(SearchContext);
-    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
-    const [text, setText] = useState('');
-    const [tok, setTok] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const { state: searchState, searchsong, searchinit, initHint } = useContext(SearchContext);
     const [selectedId, setSelectedId] = useState('');
-
-    const getData = async () => {
-        if(searchState.songData.length >= 20){
-            setLoading(true);
-            await songNext({ next: searchState.songNext.substr(22) });
-            setLoading(false);
-        }
-    };
-
-    const onEndReached = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
-    };  
+    const { loading, onEndReached, setIsHint, setText, textRef, isHint } = useSearch()
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
 
     const onClose = () => {
-        setText('');
+        textRef.current.clear()
+        setIsPlayingid('0');
         setSelectedId('');
         setNewStory(false);
-        setTok(false);
+        setIsHint(true)
         initHint();
         searchinit();
         stoptracksong()
     }
 
     const onClickCancel = () => {
+        initHint()
+        setIsHint(true)
+        textRef.current.clear()
         Keyboard.dismiss()
-        setText('')
-        setTok(false)
     }
 
-    const onChange = (text) => {
+    const onChangeText = (text) => {
+        textRef.current.value = text
         setText(text)
-        if(text=='')  setTok(false)
+        setIsHint(true)
     }
 
     const onSubmit = () => {
-        searchsong({ songname: text})
-        setTok(true)
+        searchsong({ songname: textRef.current.value})
+        setIsHint(false)
     }
 
     const onClickSong = (id) => {
@@ -86,16 +72,12 @@ export default NewStory = ({ newStory, setNewStory }) => {
 
     const onClickHint = (item) => {
         searchsong({ songname: item })
-        setTok(true)
+        setIsHint(false)
     }
 
-    useEffect(() => {
-        if(text == ''){
-            initHint();
-        }else{
-            searchHint({term: text});
-        }
-    }, [text]);
+    const onFocus = () => {
+        setIsHint(true)
+    }
 
     return (
         <Modal
@@ -109,17 +91,19 @@ export default NewStory = ({ newStory, setNewStory }) => {
                 <View style={styles.header}>
                     <Text style={styles.title}>오늘의 곡</Text>
                     <TouchableOpacity style={styles.exit} onPress={() => onClose()}>
-                        <SvgUri source={require('../../assets/icons/modalexit.svg')} />
+                        <SvgUri source={require('assets/icons/modalexit.svg')} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.searchBox}>
-                    <SvgUri source={require('../../assets/icons/storySearch.svg')} style={styles.searchIcon} />
+                    <SvgUri source={require('assets/icons/storySearch.svg')} style={styles.searchIcon} />
                     <TextInput
-                        value={text}
-                        onChangeText={(text)=> onChange(text)}
+                        ref={textRef}
+                        onChangeText={(text)=> onChangeText(text)}
                         placeholder="오늘의 곡을 검색해주세요."
                         autoCapitalize='none'
                         autoCorrect={false}
+                        autoFocus={true}
+                        onFocus={onFocus}
                         onSubmitEditing= {onSubmit}
                         placeholderTextColor= 'rgb(211,211,211)'
                         style={styles.searchArea}
@@ -128,11 +112,11 @@ export default NewStory = ({ newStory, setNewStory }) => {
                             style={styles.searchRemove}
                             onPress={onClickCancel}
                         >
-                            <SvgUri width='100%' height='100%' source={require('../../assets/icons/cancel.svg')} />
+                            <SvgUri width='100%' height='100%' source={require('assets/icons/cancel.svg')} />
                         </TouchableOpacity>  
                 </View>
                 <View style={styles.result}>
-                    { tok ?
+                    { !isHint ?
                     searchState.songData.length == 0 ? <LoadingIndicator /> :
                     <FlatList
                         contentContainerStyle={{paddingTop: 14 * tmpWidth}}
@@ -159,7 +143,7 @@ export default NewStory = ({ newStory, setNewStory }) => {
                                         <View style={styles.songBox}>
                                             <View>
                                                 <View style={selectedId !== item.id ? styles.notSelectedName : styles.selectedName}>
-                                                    { isExplicit && <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
+                                                    { isExplicit && <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> }
                                                     <Text style={styles.songText} numberOfLines={1}>{item.attributes.name}</Text>
                                                 </View>
                                                 <View style={selectedId !== item.id ? styles.notSelectedArtist : styles.selectedArtist}>

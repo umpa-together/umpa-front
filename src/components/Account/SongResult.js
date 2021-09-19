@@ -1,33 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
-import HarmfulModal from '../HarmfulModal';
-import { SongImage } from '../SongImage'
+import { Context as SearchContext } from 'context/SearchContext'
+import HarmfulModal from 'components/HarmfulModal';
+import { useTrackPlayer } from 'providers/trackPlayer';
+import { SongImage } from 'components/SongImage'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize'
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import { tmpWidth } from 'components/FontNormalize'
+import { useSearch } from 'providers/search';
 
 export default SongResult = ({ songs, setSong }) => {
-    const { state, songNext } = useContext(SearchContext);
-    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
-    const [loading, setLoading] = useState(false);
+    const { state } = useContext(SearchContext);
     const [selectedId, setSelectedId] = useState('');
-
-    const getData = async () => {
-        if(state.songData.length >= 20){
-            setLoading(true);
-            await songNext({ next: state.songNext.substr(22) });
-            setLoading(false);
-        }
-    };
-
-    const onEndReached = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
-    };
+    const { loading, onEndReached } = useSearch()
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
 
     const addItem = ({data}) => {
         let tok = false;
@@ -88,7 +73,7 @@ export default SongResult = ({ songs, setSong }) => {
                         <View style={styles.infoContainer}>
                             <View style={styles.flexRow}>
                                 { item.attributes.contentRating == "explicit" &&
-                                <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={styles.explicit}/> }
+                                <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit}/> }
                                 <Text style={styles.song} numberOfLines={1}>{item.attributes.name}</Text>
                             </View>
                             <Text style={styles.artist} numberOfLines={1}>{item.attributes.artistName}</Text>

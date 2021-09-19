@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as PlaylistContext } from '../../context/PlaylistContext';
-import { tmpWidth } from '../../components/FontNormalize';
-import LoadingIndicator from '../LoadingIndicator';
-import { push } from '../../navigationRef';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { tmpWidth } from 'components/FontNormalize';
+import LoadingIndicator from 'components/LoadingIndicator';
+import { push } from 'navigationRef';
 
 export default LikePlaylists = () => {
     const { state, getLikePlaylists } = useContext(UserContext);
@@ -39,27 +39,18 @@ export default LikePlaylists = () => {
                 refreshing={refreshing}
                 data={state.likePlaylists}
                 keyExtractor={playlist=>playlist._id}
-                contentContainerStyle={{paddingBottom: 18 * tmpWidth}}
+                contentContainerStyle={styles.padding}
                 renderItem={({item}) => {
+                    const { image } = item
                     return (
-                        <View style={styles.playlistGrid}>
-                            <TouchableOpacity 
-                                onPress={() => onClickPlaylist(item._id, item.postUserId)}
-                            >
-                                <View style={styles.thumbnail}>
-                                    <Image style={styles.img} source={{url :item.image}}/>
-                                </View>
-                                <View style={styles.titleArea}>
-                                    <Text numberOfLines={2} style={styles.title}>{item.title}</Text>
-                                </View>
-                                <View style={styles.hashtagArea}>
-                                    { item.hashtag.length > 0 &&
-                                    <Text numberOfLines={1} style={styles.hashtag}>
-                                        {'#' + item.hashtag.join(' #')}
-                                    </Text> }
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity 
+                            onPress={() => onClickPlaylist(item._id, item.postUserId)}
+                        >
+                            <Image style={styles.thumbnail} source={{url: image}}/>
+                            <View style={styles.titleArea}>
+                                <Text numberOfLines={2} style={styles.title}>{item.title}</Text>
+                            </View>
+                        </TouchableOpacity>
                     )
                 }}
             /> }
@@ -69,20 +60,16 @@ export default LikePlaylists = () => {
 
 const styles=StyleSheet.create({
     container: {
-        marginTop: 20 * tmpWidth,
-        paddingLeft: 20 * tmpWidth,
+        marginTop: 8 * tmpWidth,
+        paddingLeft: 18 * tmpWidth,
         flex: 1,
     },
-    playlistGrid: {
-        width: 161 * tmpWidth, 
-        marginRight: 14 * tmpWidth, 
-        marginBottom: 10 * tmpWidth, 
-    },
     thumbnail: {
-        width: 161 * tmpWidth, 
-        height: 157 * tmpWidth, 
-        borderRadius: 8 * tmpWidth, 
-        marginBottom: 10 * tmpWidth, 
+        width: 160 * tmpWidth, 
+        height: 160 * tmpWidth, 
+        borderRadius: 4 * tmpWidth, 
+        marginBottom: 8 * tmpWidth, 
+        marginRight: 12 * tmpWidth
     },
     img: {
         width: '100%', 
@@ -94,15 +81,10 @@ const styles=StyleSheet.create({
     },
     title: {
         fontSize: 14 * tmpWidth, 
-        color: "rgba(79,79,79,1)"
+        fontWeight: '400',
+        marginBottom: 16 * tmpWidth
     },
-    hashtagArea: {
-        width: 161 * tmpWidth, 
-        flexDirection: 'row', 
-        marginTop: 8 * tmpWidth,
-    },
-    hashtag: {
-        fontSize: 12 * tmpWidth, 
-        color: 'rgba(153,153,153,1)',
+    padding: {
+        paddingBottom: 18 * tmpWidth
     }
 })

@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext'
-import Header from '../../components/Header';
-import FollowSearch from '../../components/Account/FollowSearch';
-import FollowOption from '../../components/Account/FollowOption';
-import LoadingIndicator from '../../components/LoadingIndicator';
-import FollowLists from '../../components/Account/FollowLists';
+import { Context as UserContext } from 'context/UserContext'
+import Header from 'components/Header';
+import FollowSearch from 'components/Account/FollowSearch';
+import FollowOption from 'components/Account/FollowOption';
+import LoadingIndicator from 'components/LoadingIndicator';
+import FollowLists from 'components/Account/FollowLists';
 
 const FollowPage = ({ route }) => {
     const { state } = useContext(UserContext);

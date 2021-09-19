@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import serverApi from '../api/serverApi';
+import serverApi from 'api/serverApi';
 
 const searchReducer = (state, action) => {
     switch(action.type) {
@@ -22,9 +22,9 @@ const searchReducer = (state, action) => {
         case 'error':
             return { ...state, errorMessage: action.payload };
         case 'searchinit' :
-            return { users: [], hint: [], songData: [] };
+            return { ...state, users: [], hint: [], songData: [] };
         case 'initHint':
-            return { hint: [], hashtagHint: [], djHint: [], songData: [] };
+            return { ...state, hint: [], hashtagHint: [], djHint: [], songData: [] };
         case 'searchHint':
             return { ...state, hint: action.payload };
         case 'hashtagHint':

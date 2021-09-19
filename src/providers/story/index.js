@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useState } from 'react'
-import {Context as UserContext} from '../../context/UserContext';
-import {Context as DJContext} from '../../context/DJContext';
-import TrackPlayer from 'react-native-track-player';
-import { push } from '../../navigationRef';
-import { useTrackPlayer } from '../trackPlayer';
+import {Context as UserContext} from 'context/UserContext';
+import {Context as DJContext} from 'context/DJContext';
+import { push } from 'navigationRef';
+import { useTrackPlayer } from 'providers/trackPlayer';
 
 const StoryContext = createContext(null)
 
@@ -14,7 +13,6 @@ export default StoryProvider = ({ children }) => {
     const { getSongs } = useContext(DJContext);
     const { addtracksong, stoptracksong } = useTrackPlayer()
 
-    const [, setIsPlayingid] = useState('0');
     const [storyModal, setStoryModal] = useState(false)
     const [currentStory, setCurrentStory] = useState({
         story: null, index: 0
@@ -31,8 +29,7 @@ export default StoryProvider = ({ children }) => {
     const onClose = () => {
         getOtherStory()
         setStoryModal(false);
-        setIsPlayingid('0');
-        TrackPlayer.reset()
+        stoptracksong()
     }
 
     const onClickProfile = async () => {

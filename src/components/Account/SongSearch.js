@@ -1,47 +1,48 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { View, StyleSheet, Keyboard, TouchableOpacity, TextInput } from 'react-native';
-import { Context as SearchContext } from '../../context/SearchContext'
+import { Context as SearchContext } from 'context/SearchContext'
 import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { tmpWidth } from 'components/FontNormalize';
+import { useSearch } from 'providers/search'
 
-export default SongSearch = ({ setTok }) => {
-    const { searchsong, searchHint, initHint } = useContext(SearchContext);
-    const [text, setText] = useState('');
+export default SongSearch = () => {
+    const { searchsong, initHint } = useContext(SearchContext);
+    const { textRef, setIsHint, setText } = useSearch()
 
     const onChangeText = (text) => {
+        textRef.current.value = text
         setText(text)
-        if(text=='')  setTok(false)
+        setIsHint(true)
     }
 
-    const onSubmit = (text) => {
-        searchsong({songname: text})
-        setTok(true)
+    const onSubmit = () => {
+        setIsHint(false)
+        searchsong({songname: textRef.current.value})
     }
 
     const onClickCancel = () => {
+        initHint()
+        setIsHint(true)
+        textRef.current.clear()
         Keyboard.dismiss()
-        setText('')
-        setTok(false)
     }
 
-    useEffect(() => {
-        if(text == ''){
-            initHint();
-        }else{
-            searchHint({term: text});
-        }
-    }, [text]);
+    const onFocus = () => {
+        setIsHint(true)
+    }
 
     return (
         <View style={styles.container}>
-            <SvgUri style={styles.searchIcon} source={require('../../assets/icons/songeditsearch.svg')}/>
+            <SvgUri style={styles.searchIcon} source={require('assets/icons/songeditsearch.svg')}/>
             <TextInput
-                value={text}
+                ref={textRef}
                 onChangeText={(text) => onChangeText(text)}
                 placeholder="곡, 아티스트를 검색해주세요."
                 autoCapitalize='none'
                 autoCorrect={false}
-                onSubmitEditing= {() => onSubmit(text)}
+                autoFocus={true}
+                onFocus={onFocus}
+                onSubmitEditing= {onSubmit}
                 placeholderTextColor= 'rgb(196,196,196)'
                 style={styles.textArea}
             />
@@ -49,7 +50,7 @@ export default SongSearch = ({ setTok }) => {
                 style={styles.cancelIcon}
                 onPress={onClickCancel}
             >
-                <SvgUri source={require('../../assets/icons/resultDelete.svg')}/>
+                <SvgUri source={require('assets/icons/resultDelete.svg')}/>
             </TouchableOpacity>                    
         </View>
     )

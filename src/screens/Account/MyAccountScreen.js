@@ -1,21 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { RefreshControl, View, ScrollView } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext';
-import AccountPlaylist from  '../../components/Account/AccountPlaylist';
-import AccountCurating from  '../../components/Account/AccountCurating';
-import Header from '../../components/Account/Header'
-import LoadingIndicator from '../../components/LoadingIndicator'
-import SongProfile from '../../components/Account/SongProfile'
-import FollowBox from '../../components/Account/FollowBox'
-import Introduction from '../../components/Account/Introduction'
-import Menu from '../../components/Account/Menu'
+import { RefreshControl, View, ScrollView, StyleSheet } from 'react-native';
+import { Context as UserContext } from 'context/UserContext';
+import AccountPlaylist from  'components/Account/AccountPlaylist';
+import AccountCurating from  'components/Account/AccountCurating';
+import Header from 'components/Account/Header'
+import LoadingIndicator from 'components/LoadingIndicator'
+import Menu from 'components/Account/Menu'
+import Information from 'components/Account/Information'
+import ProfileSong from 'components/Account/ProfileSong'
+import Profile from 'components/Account/Profile'
+import { tmpWidth } from 'components/FontNormalize'
+import ProfileButton from 'components/Account/Button'
 
 require('date-utils');
 
 const MyAccountScreen = () => {
     const { state: userState, getMyInfo, getMyStory } = useContext(UserContext);
     const [menu, setMenu] = useState('playlist');
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [refreshing, setRefreshing] = useState(false);
 
@@ -37,11 +38,6 @@ const MyAccountScreen = () => {
     };
 
     useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
-
-    useEffect(() => {
         if(userState.myStory != null){
             setUrl(userState.myStory.song.attributes.artwork.url);
         }else {
@@ -50,9 +46,9 @@ const MyAccountScreen = () => {
     }, [userState.myStory]);
 
     return (
-        <View style={{backgroundColor: 'rgb(250,250,250)', flex: 1}}>
+        <View style={styles.container}>
             { userState.myInfo == null ? <LoadingIndicator /> :
-            <View style={{flex: 1}}>
+            <View style={styles.flex}>
                 <Header user={userState.myInfo} isMyAccount={true} />
                 <ScrollView refreshControl={
                     <RefreshControl
@@ -63,15 +59,20 @@ const MyAccountScreen = () => {
                     stickyHeaderIndices={[1]}
                 >
                     <View>
-                        <SongProfile user={userState.myInfo} url={url} story={userState.myStory} isMyAccount={true} />
-                        <FollowBox user={userState.myInfo} isMyAccount={true} />
-                        <Introduction user={userState.myInfo} />
+                        <View style={styles.profile}>
+                            <View style={styles.column}>
+                                <Profile user={userState.myInfo} isMyAccount={true} url={url} story={userState.myStory} />
+                                <ProfileButton isMyAccount={true} />
+                            </View>
+                            <Information user={userState.myInfo} />
+                        </View>
+                        <ProfileSong song={userState.myInfo.songs} isMyAccount={true} />
                     </View>
                     <View>
-                        <Menu user={userState.myInfo} menu={menu} setMenu={setMenu} />
+                        <Menu menu={menu} setMenu={setMenu} />
                     </View>
-                    <View style={{backgroundColor: 'rgb(255,255,255))'}}>
-                        { menu == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} /> :
+                    <View style={styles.background}>
+                        { menu == 'playlist' ?  <AccountPlaylist playList={userState.myInfo.playlists} isMyAccount={true} /> :
                         <AccountCurating curating={userState.myInfo.curationposts} /> }
                     </View>
                 </ScrollView>
@@ -79,5 +80,26 @@ const MyAccountScreen = () => {
         </View>
     );
 };
+
+const styles=StyleSheet.create({
+    container: {
+        backgroundColor: '#ffffff', 
+        flex: 1
+    },
+    flex: {
+        flex: 1
+    },
+    profile: {
+        flexDirection: 'row', 
+        marginLeft: 22 * tmpWidth 
+    },
+    column: {
+        flexDirection: 'column', 
+        alignItems: 'center'
+    },
+    background: {
+        backgroundColor: '#ffffff'
+    }
+})
 
 export default MyAccountScreen;

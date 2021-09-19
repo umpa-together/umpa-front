@@ -1,15 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList,Keyboard ,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Context as SearchContext } from '../../context/SearchContext'
-import { Context as BoardContext } from '../../context/BoardContext'
-import { tmpWidth } from '../../components/FontNormalize';
-import HarmfulModal from '../../components/HarmfulModal';
-import { SongImage } from '.././../components/SongImage'
-
-import Header from '../../components/Header';
-import { goBack } from '../../navigationRef';
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import { Context as SearchContext } from 'context/SearchContext'
+import { Context as BoardContext } from 'context/BoardContext'
+import { tmpWidth } from 'components/FontNormalize';
+import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'components/SongImage'
+import { useTrackPlayer } from 'providers/trackPlayer';
+import Header from 'components/Header';
+import { goBack } from 'navigationRef';
 
 const SearchMusicPage = ({ route }) => {
     const { state, searchsong, searchinit, songNext, searchHint, initHint } = useContext(SearchContext);
@@ -67,7 +66,7 @@ const SearchMusicPage = ({ route }) => {
             <View style={styles.searchBox}>
                 <View style ={styles.header}>
                     <View style={{flexDirection: 'row',  alignItems: 'center'}}>
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/boardSearch.svg')} style={styles.backIcon}/>    
+                        <SvgUri width='40' height='40' source={require('assets/icons/boardSearch.svg')} style={styles.backIcon}/>    
                         <View style={styles.textInput}>
                             <TextInput
                                 value = {text}
@@ -94,7 +93,7 @@ const SearchMusicPage = ({ route }) => {
                         setText('')
                         searchinit()
                         initHint()}}>
-                        <SvgUri width='28' height='28' source={require('../../assets/icons/resultDelete.svg')} />
+                        <SvgUri width='28' height='28' source={require('assets/icons/resultDelete.svg')} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -130,7 +129,7 @@ const SearchMusicPage = ({ route }) => {
                                     <View style={styles.infoBox}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             {item.attributes.contentRating == "explicit" ? 
-                                            <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                            <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                             : null }
                                             <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
                                         </View>
@@ -163,7 +162,7 @@ const SearchMusicPage = ({ route }) => {
                                 <View style={styles.infoBox}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         {item.attributes.contentRating == "explicit" ? 
-                                        <SvgUri width="17" height="17" source={require('../../assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
+                                        <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={{marginRight: 5 * tmpWidth}}/> 
                                         : null }
                                         <Text style={styles.titleText} numberOfLines={1}>{item.attributes.name}</Text>
                                     </View>

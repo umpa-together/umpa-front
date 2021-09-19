@@ -1,8 +1,8 @@
 import React, { useCallback, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
+import { Context as BoardContext } from 'context/BoardContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import { useFocusEffect } from '@react-navigation/native';
 
 const MyContentForm = ({ Contents }) => {

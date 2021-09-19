@@ -1,12 +1,11 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import TrackPlayer from 'react-native-track-player';
-import { Context as BoardContext } from '../../context/BoardContext';
-import ContentsForm from '../../components/Board/ContentsForm';
-import BoardHeader from '../../components/Board/BoardHeader';
-import { navigate, goBack } from '../../navigationRef';
-import { tmpWidth } from '../../components/FontNormalize';
+import { Context as BoardContext } from 'context/BoardContext';
+import ContentsForm from 'components/Board/ContentsForm';
+import BoardHeader from 'components/Board/BoardHeader';
+import { navigate, goBack } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -29,7 +28,7 @@ const SelectedBoard = ({ route }) => {
         <View style={styles.container}> 
             <View style={styles.headerContainer}>
                 <TouchableOpacity style={{marginLeft: 5 * tmpWidth}} onPress={goBack}>
-                    <SvgUri width='40' height='40' source={require('../../assets/icons/back.svg')}/>
+                    <SvgUri width='40' height='40' source={require('assets/icons/back.svg')}/>
                 </TouchableOpacity>
                 <View style={{flexDirection: 'row', flex: 1, paddingTop: 10 * tmpWidth}}>
                     <Text style={{fontSize: 16 * tmpWidth, fontWeight: '400'}} numberOfLines={1}>{title}</Text>
@@ -40,12 +39,12 @@ const SelectedBoard = ({ route }) => {
             { state.currentBoard == null ? <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}><ActivityIndicator /></View> :
             <View style={{flex: 1}}>
                 <TouchableOpacity style={styles.introductionBox} onPress={() => setIntroductionModal(true)}>
-                    <SvgUri width='32' height='32' source={require('../../assets/icons/boardIntroduction.svg')}/>
+                    <SvgUri width='32' height='32' source={require('assets/icons/boardIntroduction.svg')}/>
                     <Text style={styles.introductionText} numberOfLines={1}>{introduction}</Text>
                 </TouchableOpacity>
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => navigate('SearchContent')}>
-                        <SvgUri width='40' height='40' source={require('../../assets/icons/boardSearch.svg')} style={{marginLeft: 8}}/>
+                        <SvgUri width='40' height='40' source={require('assets/icons/boardSearch.svg')} style={{marginLeft: 8}}/>
                         <Text style={styles.searchText}>게시글을 검색해주세요.</Text>
                     </TouchableOpacity>
                 </View>

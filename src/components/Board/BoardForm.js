@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Context as BoardContext } from '../../context/BoardContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { navigate } from '../../navigationRef';
-import { tmpWidth } from '../FontNormalize';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as UserContext } from 'context/UserContext';
+import { navigate } from 'navigationRef';
+import { tmpWidth } from 'components/FontNormalize';
 
 const BoardForm = ({ boards }) => {
     const { getCurrentBoard, getSelectedBoard, pushBookmark, deleteBookmark, getGenreBoard } = useContext(BoardContext);
@@ -30,14 +30,14 @@ const BoardForm = ({ boards }) => {
                             await deleteBookmark({id: item._id})
                             getMyBookmark()
                             getGenreBoard()}}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/staro.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/staro.svg')}/>
                         </TouchableOpacity> :
                         <TouchableOpacity onPress={async () => {
                             item.pick.push(state.myInfo._id)
                             await pushBookmark({id: item._id})
                             getMyBookmark()
                             getGenreBoard()}}>
-                            <SvgUri width='40' height='40' source={require('../../assets/icons/star.svg')}/>
+                            <SvgUri width='40' height='40' source={require('assets/icons/star.svg')}/>
                         </TouchableOpacity>}
                         <View style={styles.titleText}>
                             <Text style={{fontSize: 14 * tmpWidth}} numberOfLines={1}>{item.name}</Text>
