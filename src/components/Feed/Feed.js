@@ -8,6 +8,7 @@ import Playlist from  './Playlist';
 import Story from './Story';
 import StoryProvider from 'providers/story';
 import SelectedStory from './SelectedStory';
+import Contents from './Contents'
 
 const Feed = () => {
     const { state } = useContext(PlaylistContext);
@@ -20,7 +21,7 @@ const Feed = () => {
             </View>
             <View style={{flex:1}}>
                 <Story story={userState.otherStory} />
-                <Playlist playList={state.playlists} />
+                <Contents playList={state.playlists} />
             </View>       
             <SelectedStory />
         </StoryProvider>
