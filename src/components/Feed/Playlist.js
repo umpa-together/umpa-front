@@ -6,8 +6,13 @@ import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import LinearGradient from 'react-native-linear-gradient';
 import { push } from 'navigationRef';
+import PostUser from './PostUser'
+import SongsLists from 'components/Playlist/SongsLists'
+import Footer from './Footer'
 
 const Playlist = ({ playList }) => {
+    const { _id: id, hashtag, comments, likes, postUserId: postUser, songs, textcontent: content } = playList
+
     const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { state, getOtherStory } = useContext(UserContext);
     const [refreshing, setRefreshing] = useState(false);
@@ -46,181 +51,46 @@ const Playlist = ({ playList }) => {
         }
     }
     return (
-        <View style={{ flex: 1 }}>
-            {state.otherStory && 
-            <View style={{flex: 1, paddingTop:10*tmpWidth }}>
-                { playList.length !=0 ?
-                <FlatList
-                    data ={playList}
-                    keyExtractor = {playlists => playlists._id}
-                    onEndReached={onEndReached}
-                    onEndReachedThreshold={0}
-                    onRefresh={onRefresh}
-                    refreshing={refreshing}
-                    ListFooterComponent={loading && <ActivityIndicator />}
-                    renderItem = {({item}) => {
-                        return (
-                            <View style={styles.playlist}>
-                                <View style={{width: 335 * tmpWidth}}>
-                                <TouchableOpacity style={{width: 335 * tmpWidth }} onPress={async () => {
-                                    await getPlaylist({id:item._id, postUserId:item.postUserId._id})
-                                    push('SelectedPlaylist', {id: item._id , postUser: item.postUserId._id })
-                                }}>
-                                        <View style={styles.backpic}>
-                                            <Image style={styles.backpicimg} source={{uri: item.image}} />
-                                        </View>
-                                        <View style={styles.playlisthead}>
-                                            <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0)']} style={{width:tmpWidth*335, marginLeft:0*tmpWidth, height:tmpHeight*80,flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}} source={require('../../assets/icons/backgrad.png')}>
-                                                <View style={{width:tmpWidth*335, height:tmpHeight*80, flexDirection:'row',borderTopLeftRadius:16*tmpWidth, borderTopRightRadius:16*tmpWidth}}>
-                                                    <View style={styles.profile}>
-                                                        {item.postUserId.profileImage == null ?
-                                                        <View style={styles.profileno}>
-                                                            <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
-                                                        </View> : <Image style={styles.profileimg} source={{uri: item.postUserId.profileImage}} />}
-                                                    </View>
-                                                    <View style={{marginLeft:8*tmpWidth}}>
-                                                        <Text style={{fontSize:12*tmpWidth, color:'#fff',marginLeft:5*tmpWidth, marginTop:tmpWidth*16}}>{item.postUserId.name}</Text>
-                                                        <View style={styles.viewicon}>
-                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('assets/icons/likeslength.svg')} style={{}}/>
-                                                            <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.likes.length}</Text>
-                                                            <SvgUri width={28 * tmpWidth} height={28 * tmpWidth} source={require('assets/icons/mainplaylistview.svg')} style={{marginLeft:tmpWidth*4}}/>
-                                                            <Text style={{fontSize:12 * tmpWidth,color:'rgb(255,255,255)'}}>{item.views}</Text>
-                                                        </View>
-                                                    </View>
-                                                </View>
-                                            </LinearGradient>  
-                                        </View>
-                                        <View style={styles.playlistinfo}>
-                                            <View style={{width: 335/5*4 * tmpWidth}}>
-                                                <View style={{width:335/5*4*tmpWidth, }}>
-                                                    <Text numberOfLines= {1} style={styles.title}>{item.title}</Text>
-                                                </View>
-                                                <View style={{ overflow :'hidden', flexWrap: 'wrap', width:335/5*4*tmpWidth, paddingLeft:16*tmpWidth,flexDirection:'row', marginBottom: 13 * tmpWidth}}>
-                                                    {item.hashtag != null && item.hashtag.map(el => {
-                                                        return (
-                                                            <View style={styles.hashtagbox} key={el}>
-                                                                <Text style={styles.hashtag}>#{el}</Text>
-                                                             </View>
-                                                        )
-                                                    })}
-                                                </View>
-                                            </View>
-                                            <View style={styles.likeicon}>
-                                                { item.likes.includes(state.myInfo._id) ?
-                                                <TouchableOpacity onPress={()=>{unlikesPlaylist({id: item._id});         item.likes = item.likes.filter(id => id.toString() != state.myInfo._id.toString()); }}>
-                                                    <SvgUri width='40' height='40' source={require('assets/icons/postplaylistfilled.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth}}/>
-                                                </TouchableOpacity> :
-                                                <TouchableOpacity onPress={()=>{likesPlaylist({id: item._id}); item.likes.push(state.myInfo._id); }}>
-                                                    <SvgUri width='40' height='40' source={require('assets/icons/frame.svg')} style={{marginRight: 8 * tmpWidth, marginTop:8*tmpWidth }}/>
-                                                </TouchableOpacity> }
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        )
-                    }}
-                /> : 
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{color: 'rgb(93,93,93)'}}>팔로우한 사람이 올린 플레이리스트가 없습니다.</Text>
-                    <Text style={{color: 'rgb(93,93,93)', marginTop: 10 * tmpWidth}}>다른 사람들을 팔로우 해보세요!</Text>
-                    <TouchableOpacity 
-                        style={{justiftyContent:'center', alignItems:'center',backgroundColor:'rgb(169,193,255)', borderRadius:20,width:80*tmpWidth,height: 30*tmpWidth,marginTop: 20*tmpWidth,}}
-                        onPress={()=> fetchData()}
-                    >   
-                        <Text style={{color:'white',marginTop:8*tmpWidth}}>새로고침</Text>
-                    </TouchableOpacity>
-                </View> }
-            </View> }
+        <View style={styles.container}>
+            <PostUser user={postUser} />
+            <View style={styles.contentArea}>
+                <Text style={styles.content} numberOfLines={3}>{content}</Text>
+            </View>
+            <SongsLists 
+                songs={songs} 
+                container={styles.songsContainer} 
+            />
+            <Footer 
+                hashtag={hashtag}
+                likes={likes}
+                comments={comments}
+                id={id}
+            />
         </View>
     );
 };
 
 const styles=StyleSheet.create({
-    playlist:{
-        width:375 * tmpWidth,
-        alignItems: 'center',
-        marginBottom: 20 * tmpWidth,
-        shadowColor : "#E0E0E0",
-        shadowRadius: 3 * tmpWidth,
-        shadowOffset:{height:0,},
-        shadowOpacity : 1,
+    container: {
+        borderBottomWidth: 1 * tmpWidth,
+        borderBottomColor: '#dcdcdc',
+        paddingBottom: 4 * tmpWidth,
     },
-    backpic:{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
+    contentArea: {
+        marginRight: 18 * tmpWidth,
+        marginTop: 8 * tmpWidth,
+        paddingLeft: 18 * tmpWidth
     },
-    backpicimg:{
-        width:'100%',
-        height:'99%',
+    content: {
+        fontSize: 14 * tmpWidth,
+        fontWeight: '500',
+        lineHeight: 24 * tmpWidth
+    },
+    songsContainer: {
+        paddingLeft: 18 * tmpWidth,
+        marginTop: 6 * tmpWidth
+    },
 
-        borderRadius:16 * tmpWidth,
-    },
-    playlisthead:{
-        flexDirection: 'row',
-        width: 335 * tmpWidth,
-        height: 160 * tmpWidth,
-        borderBottomLeftRadius:16 * tmpWidth,
-        borderBottomRightRadius:16 * tmpWidth,
-    },
-    profile:{
-        width: 40 * tmpWidth,
-        height: 40 * tmpWidth,
-        borderRadius: 40 * tmpWidth,
-        marginLeft:12 * tmpWidth,
-        marginTop:14 * tmpWidth,
-    },
-    profileno:{
-        width: 40 * tmpWidth,
-        height: 40 * tmpWidth,
-        borderRadius: 40 * tmpWidth,
-    },
-    profileimg:{
-        width: 40 * tmpWidth,
-        height: 40 * tmpWidth,
-        borderRadius: 50 * tmpWidth
-    },
-    viewicon:{
-        flexDirection: 'row',
-        width:100 * tmpWidth,
-        alignItems:'center'
-    },
-    playlistinfo:{
-        flexDirection:'row',
-        width: 335 * tmpWidth,
-        flexDirection:'row',
-        backgroundColor:'#fff',
-        borderBottomLeftRadius:16 * tmpWidth,
-        borderBottomRightRadius:16 * tmpWidth,
-    },
-    title:{
-        marginLeft:16 * tmpWidth,
-        marginTop:12 * tmpWidth,
-        fontSize:13 * tmpWidth,
-    },
-    likeicon:{
-        width: 335/5 * tmpWidth,
-        height: 51 * tmpWidth,
-        alignItems:'flex-end',
-        marginRight:6 * tmpWidth
-    },
-    hashtag:{
-        color:'rgb(169,193,255)' ,
-        fontSize:12*tmpWidth,
-    },
-    hashtagbox:{
-        borderRadius:100,
-        height:20*tmpWidth,
-        paddingLeft:5*tmpWidth,
-        paddingRight:5*tmpWidth,
-        paddingTop:2*tmpWidth,
-        paddingBottom:2*tmpWidth,
-        borderWidth: 1 * tmpWidth,
-        marginTop:tmpWidth*5,
-        borderColor:'rgb(169,193,255)' ,
-        marginRight:6*tmpWidth,
-    },
 });
 
 export default Playlist;
