@@ -20,7 +20,6 @@ export default NewStory = ({ newStory, setNewStory }) => {
 
     const onClose = () => {
         textRef.current.clear()
-        setIsPlayingid('0');
         setSelectedId('');
         setNewStory(false);
         setIsHint(true)
