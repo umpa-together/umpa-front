@@ -29,7 +29,7 @@ import FeedBackPage from 'screens/Account/FeedbackPage';
 import InformationUsePage from 'screens/Account/InformationUsePage';
 import MusicBoxScreen from 'screens/Account/MusicBoxScreen'
 
-import MainPage from 'screens/MainPage';
+import MainFeedPage from 'screens/Feed/MainFeed';
 import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
 import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
 
@@ -136,7 +136,7 @@ const TabScreen = () => {
             headerShown: false,
         })}>
             <Tab.Screen name="Home" component={MainSearchScreen}/>
-            <Tab.Screen name="Feed" component={MainPage}/>
+            <Tab.Screen name="Feed" component={MainFeedPage}/>
             <Tab.Screen 
                 name="CreateModal" 
                 component={MyModalBackgroundScreen}
