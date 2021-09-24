@@ -57,7 +57,6 @@ import Chat from 'screens/Chat/Chat';
 import SelectedChat from 'screens/Chat/SelectedChat';
 
 import DailyCreate from 'screens/Daily/DailyCreate';
-import DailySearchSongPage from 'screens/Daily/DailySearchSongPage';
 import SelectedDaily from 'screens/Daily/SelectedDaily';
 
 const LoginStack = createNativeStackNavigator()
@@ -166,7 +165,6 @@ const MainStackScreen = () => {
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
             <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />
-            <MainStack.Screen name="SearchSongDaily" component={DailySearchSongPage} />
             <MainStack.Screen name="SelectedDaily" component={SelectedDaily} />
             <MainStack.Screen name="Chat" component={Chat} />
             <MainStack.Screen name="SelectedChat" component={SelectedChat} />
