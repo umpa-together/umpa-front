@@ -24,7 +24,9 @@ export default SearchResult = () => {
     }]
 
     const onClickMore = (option) => {
-        navigate('ContentsMore', { option })
+        navigate('ContentsMore', 
+        { option, playlist: state.playList,
+        daily: state.daily, dj: state.dj })
     }
 
     return (
