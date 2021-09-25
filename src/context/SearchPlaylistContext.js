@@ -10,7 +10,7 @@ const SearchPlaylistReducer = (state, action) => {
         case 'searchHashtag' :
             return { ...state, playList: action.payload };  
         case 'searchAll':
-            return { ...state, playList: action.payload.playlists, dj: action.payload.dj }  
+            return { ...state, playList: action.payload.playlists, dj: action.payload.dj, daily: action.payload.daily }  
         case 'searchHashtagAll':
             return { ...state, playList: action.payload.playlists, daily: action.payload.daily }
         case 'error':
