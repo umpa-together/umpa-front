@@ -16,8 +16,10 @@ export default DailyProvider = ({ children }) => {
     const [currentComment, setCurrentComment] = useState(null)
     const [isArchive, setIsArchive] = useState(false)
     const [songs, setSongs] = useState([])
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState([])
     const [title, setTitle] = useState('')
+    const imagecheck = image.length;
+
     const [validity, setValidity] = useState({
         title: true, 
         song: true,
@@ -84,8 +86,8 @@ export default DailyProvider = ({ children }) => {
         setSongs(songs.filter(item => item.id !== song.id));
     }
 
-    const onClickDeleteThumbnail = () => {
-        setImage(null)
+    const onClickDeleteThumbnail = (item) => {
+        setImage(image.filter(state=>state.uri !==item.uri));
         informationRef.current.imgUrl = ''
         informationRef.current.imgName = ''
         informationRef.current.imgType = ''
@@ -101,6 +103,7 @@ export default DailyProvider = ({ children }) => {
         songs,
         image,
         title,
+        imagecheck,
         onClickComment,
         onClose,
         onClickProfile,

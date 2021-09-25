@@ -1,25 +1,43 @@
 import React from 'react'
-import { TouchableOpacity, View, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity, View, Text,FlatList,StyleSheet, Image } from 'react-native'
 import { useDaily } from 'providers/daily';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 
 export default CreateThumbnail = () => {
-    const { image, onClickDeleteThumbnail, informationRef } = useDaily()
-
+    const {  onClickDeleteThumbnail, informationRef,image } = useDaily()
     return (
         <>
-            {image && 
-            <View style={styles.container}>
-                <Image source={{uri: image.uri || image}} style={styles.img}/>
-                {!informationRef.current.isEdit &&
-                <TouchableOpacity
-                    style={styles.icon}
-                    onPress={onClickDeleteThumbnail}
-                >
-                    <SvgUri width='19' height='19' source={require('assets/icons/addedSongDelete.svg')} />
-                </TouchableOpacity> }
-            </View> }
+            {image[0]!=undefined ||image[0]!=null ?
+             <View style={styles.container}>
+            <FlatList
+                data={image}
+                keyExtractor={!informationRef.current.isEdit ? id=>id.uri : uri => uri}
+                horizontal={true}
+                pagingEnabled
+
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) =>{
+                    return (
+                            <View>
+                            <Image source={{uri: informationRef.current.isEdit ?item : item.uri }} style={styles.img}/>
+                                {!informationRef.current.isEdit &&
+                                    <TouchableOpacity
+                                        style={styles.icon}
+                                        onPress={()=>onClickDeleteThumbnail(item)}
+                                    >
+                                        <SvgUri width='19' height='19' source={require('assets/icons/addedSongDelete.svg')} />
+                                    </TouchableOpacity> }
+                                    <Text>dd</Text>
+                            </View>
+                        )
+                            }}
+                        />
+                                                
+            </View> 
+            : null
+
+}
         </>
     )
 }

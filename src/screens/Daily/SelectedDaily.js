@@ -203,7 +203,8 @@ const SelectedDaily = ({route}) => {
                     showsVerticalScrollIndicator={false}
                     stickyHeaderIndices={[0]}
                 >
-                <Thumbnail img={currentDaily.image[0]} />
+                
+                <Thumbnail img={currentDaily.image} />
                 <DailyProvider>
                         <DailyLikes daily={currentDaily} />
                 </DailyProvider>    

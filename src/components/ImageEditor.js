@@ -53,7 +53,15 @@ export const onClickMultiple = (setImages) => {
         mediaType: 'photo',
         maxFiles: MAX_FILES
     }).then(images => {
-        multipleCrop(images, setImages)
+        var arr =[]
+        images.forEach((item) => {
+            arr.push({
+                name: item.filename,
+                type: item.mime,
+                uri: 'file://' + item.path
+            });
+        });
+        setImages(arr)
     })
 }
 

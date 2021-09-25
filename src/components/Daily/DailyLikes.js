@@ -29,7 +29,7 @@ export default DailysLikes = ({ daily }) => {
     }
 
     const onClickEdit = () => {
-        navigate('CreateDaily', {'data': song, 'isEdit': true})
+        navigate('CreateDaily', {'data': [song], 'isEdit': true})
     }
     const onClickDelete = () => {
         if(!daily.isWeekly){
