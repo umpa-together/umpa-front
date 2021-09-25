@@ -4,11 +4,11 @@ import serverApi from 'api/serverApi';
 const SearchPlaylistReducer = (state, action) => {
     switch(action.type){
         case 'initPlaylist':
-            return { ...state, playList: null, playListNum: action.payload, dj: null, daily: null };
+            return { ...state, playList: null, dj: null, daily: null, hashtag: null };
         case 'searchSongOrArtist':
             return { ...state, playList: action.payload };
         case 'searchHashtag' :
-            return { ...state, playList: action.payload };  
+            return { ...state, hashtag: action.payload };  
         case 'searchAll':
             return { ...state, playList: action.payload.playlists, dj: action.payload.dj, daily: action.payload.daily }  
         case 'searchHashtagAll':
@@ -68,5 +68,5 @@ const SearchHashtagAll = (dispatch) => async ({ term }) => {
 export const { Provider, Context } = createDataContext(
     SearchPlaylistReducer,
     { SearchSongOrArtist, initPlaylist, SearchHashtag, SearchAll, SearchHashtagAll },
-    { playList: null, playListNum: 0, dj: null, daily: null, errorMessage: '' }
+    { playList: null, dj: null, daily: null, hashtag: null, errorMessage: '' }
 )
