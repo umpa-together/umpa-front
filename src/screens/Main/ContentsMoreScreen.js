@@ -4,12 +4,14 @@ import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext'
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext'
 import { Context as DJContext } from 'context/DJContext'
+import { Context as DailyContext } from 'context/DailyContext'
 import Header from 'components/Header'
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'navigationRef';
 
 export default ContentsMoreScreen = ({ route }) => {
     const { getPlaylist } = useContext(PlaylistContext)
+    const { getDaily } = useContext(DailyContext)
     const { state } = useContext(SearchPlaylistContext);
     const { getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
@@ -27,6 +29,10 @@ export default ContentsMoreScreen = ({ route }) => {
                 getSongs({ id: item._id })
             ]);
             push('OtherAccount', { otherUserId: item._id })
+        } else {
+            const postUserId = item.postUserId._id || item.postUserId
+            await getDaily({ id: item._id, postUserId: postUserId })
+            push('SelectedDaily', { id: item._id, postUser: postUserId })
         }
     }
 
@@ -35,6 +41,8 @@ export default ContentsMoreScreen = ({ route }) => {
             setElements(state.playList)
         } else if(option === '서퍼') {
             setElements(state.dj)
+        } else {
+            setElements(state.daily)
         }
     }, [])
 
@@ -47,7 +55,12 @@ export default ContentsMoreScreen = ({ route }) => {
                 keyExtractor={element => element._id}
                 contentContainerStyle={styles.padding}
                 renderItem={({item}) => {
-                    const img = item.image || item.profileImage
+                    let img
+                    if(option !== '데일리') {
+                        img = item.image || item.profileImage
+                    } else {
+                        img = item.image[0] || item.song.attributes.artwork.url
+                    }
                     return (
                         <TouchableOpacity onPress={() => onClickImg(item)}>
                             <Image source={{uri: img}} style={styles.img} />
