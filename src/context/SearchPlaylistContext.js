@@ -22,7 +22,6 @@ const SearchPlaylistReducer = (state, action) => {
 
 const initPlaylist = (dispatch) => async () => {
     try{
-        const response = await serverApi.get('/initPlaylist');
         dispatch({ type: 'initPlaylist', payload: response.data.playlistNum });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with initPlaylist' });
