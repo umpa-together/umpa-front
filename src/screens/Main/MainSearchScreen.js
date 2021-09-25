@@ -14,8 +14,9 @@ import CurrentHashtag from 'components/Main/CurrentHashtag'
 import RecentPlaylists from 'components/Main/RecentPlaylists'
 import WeeklyPlaylists from 'components/Main/WeeklyPlaylists';
 import MusicArchive from 'components/Main/MusicArchive'
-import SimilarTasteUsers from '../../components/Main/SimilarTasteUsers';
+import SimilarTasteUsers from 'components/Main/SimilarTasteUsers';
 import Header from 'components/Main/Header';
+import WeeklyDailies from 'components/Main/WeeklyDailies';
 
 const MainSearchScreen = () => {
     const { getPlaylists } = useContext(PlaylistContext);
@@ -24,29 +25,29 @@ const MainSearchScreen = () => {
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { state, currentHashtag } = useContext(SearchContext);
     const { getCurationposts } = useContext(CurationContext);
-    const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists, getMusicArchive } = useContext(WeeklyContext);
+    const { state: WeeklyState, getWeeklyPlaylist, postWeekly, getRecentPlaylists, getMusicArchive, getWeekly } = useContext(WeeklyContext);
     const { state: djState, getMainRecommendDJ } = useContext(DJContext);
 
     const loadingDataFetch = async () => {
         //await postWeekly()
         await Promise.all([
-        getMusicArchive(),
-        getMainRecommendDJ(),
-        currentHashtag(),
-        getRecentPlaylists(),
-        getWeeklyPlaylist(),
-        //getWeeklyCuration(),
-        //getWeeklyDJ(),
-        setnoticetoken(),
-        getPlaylists(),
-        getCurationposts(),
-        getGenreBoard(),
-        initUser(),
-        getMyScrab(),
-        getMyStory(),
-        getOtherStory(),
-        getMyBookmark(),
-        getnotice()]);
+            getWeekly(),
+            getMusicArchive(),
+            getMainRecommendDJ(),
+            currentHashtag(),
+            getRecentPlaylists(),
+            getWeeklyPlaylist(),
+            setnoticetoken(),
+            getPlaylists(),
+            getCurationposts(),
+            getGenreBoard(),
+            initUser(),
+            getMyScrab(),
+            getMyStory(),
+            getOtherStory(),
+            getMyBookmark(),
+            getnotice()
+        ]);
     }
 
     useEffect(() => {
@@ -63,8 +64,9 @@ const MainSearchScreen = () => {
             <SearchBox />
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />
-            <WeeklyPlaylists playlists={WeeklyState.weeklyPlaylist} />
+            <WeeklyPlaylists playlists={WeeklyState.mainPlaylist} />
             <SimilarTasteUsers users={djState.mainRecommendDJ} />
+            <WeeklyDailies dailies={WeeklyState.mainDaily} />
         </ScrollView>
     )
 }
