@@ -3,9 +3,13 @@ import { Text, View, StyleSheet,  FlatList, TouchableOpacity, Image, SafeAreaVie
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as DailyContext } from 'context/DailyContext';
+
 import { goBack, push } from 'navigationRef';
 
 const SelectedHashtagScreen = ({ route }) => {
+    const {  getDaily } = useContext(DailyContext);
+
     const { getPlaylist } = useContext(PlaylistContext);
     const { data, text: hashtag, searchOption } = route.params
     return (
@@ -42,6 +46,37 @@ const SelectedHashtagScreen = ({ route }) => {
                                     }}>
                                         <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
                                             <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image}}/>
+                                        </View>
+                                        <View style={{width:161 * tmpWidth}}>
+                                            <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>
+                                        </View>
+                                        <View style={{width:161 * tmpWidth, flexDirection:'row', marginTop: 8 * tmpWidth}}>
+                                        <Text numberOfLines ={1} style={{fontSize:12 * tmpWidth, color:'rgba(153,153,153,1)',}}>
+                                        {item.hashtag.map((hashtag,index) => {
+                                             return (
+                                                 <Text style={{fontSize:12 * tmpWidth, color:'rgba(153,153,153,1)', marginRight:6 * tmpWidth}}>{'#'+hashtag}  </Text>
+                                             )})}
+                                        </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }}
+                    />
+                    <FlatList
+                        contentContainerStyle={{paddingBottom: 30 * tmpWidth}}
+                        numColumns={2}
+                        data ={data.dailyId}
+                        keyExtractor = {daily => daily._id}
+                        renderItem = {({item}) => {
+                            return (
+                                <View style={{width:161 * tmpWidth, marginRight:14 * tmpWidth, marginBottom:10 * tmpWidth}}>
+                                    <TouchableOpacity onPress={async () => {
+                                        await getDaily({id:item._id, postUserId:item.postUserId})
+                                        push('SelectedDaily', {id: item._id, postUser: item.postUserId})
+                                    }}>
+                                        <View style={{width: 161 * tmpWidth, height: 157 * tmpWidth, borderRadius:8 * tmpWidth, marginBottom: 10 * tmpWidth}}>
+                                            <Image style={ {width:'100%', height:'100%', borderRadius:8 * tmpWidth}} source={{url :item.image[0]}}/>
                                         </View>
                                         <View style={{width:161 * tmpWidth}}>
                                             <Text numberOfLines ={2} style={{fontSize: 14 * tmpWidth, color:"rgba(79,79,79,1)"}}>{item.title}</Text>

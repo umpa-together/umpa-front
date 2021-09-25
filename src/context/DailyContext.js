@@ -1,11 +1,11 @@
 import createDataContext from './createDataContext';
 import serverApi from '../api/serverApi';
-import { navigate } from '../navigationRef';
+import { navigate, goBack } from 'navigationRef';
 
 const dailyReducer = (state, action) => {
     switch(action.type) {
         case 'init_Daily':
-            return { ...state, current_Daily: null, current_comments:null, current_songs:[] };
+            return { ...state, current_daily: null, current_comments:null, current_songs:[] };
         case 'init_recomment':
             return { ...state, current_recomments: null }
         case 'getAllDailys':
@@ -17,21 +17,21 @@ const dailyReducer = (state, action) => {
         case 'get_Dailys':
             return { ...state,  Dailys: action.payload, notNext: false, currentDailyPage: 1};
         case 'get_Daily':
-            return { ...state, current_Daily:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
+            return { ...state, current_daily:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
         case 'nextDailys':
             return { ...state, Dailys: state.Dailys.concat(action.payload), currentDailyPage: state.currentDailyPage + 1 };
         case 'notNext':
             return { ...state, notNext: true };
         case 'deleted_Daily':
-            return { ...state, current_Daily: [] };
+            return { ...state, current_daily: [] };
         case 'get_comment':
             return { ...state, current_comments:action.payload}
         case 'add_comment':
-            return { ...state, current_Daily:action.payload[0],  current_comments: action.payload[1], current_songs: action.payload[0].songs }
+            return { ...state, current_daily:action.payload[0],  current_comments: action.payload[1], current_songs: action.payload[0].songs }
         case 'get_recomment' :
             return { ...state , current_recomments:action.payload}
         case 'like' :
-            return { ...state, current_Daily:action.payload };
+            return { ...state, current_daily:action.payload };
         case 'error':
             return { ...state, errorMessage: action.payload };    
         default:
@@ -83,9 +83,9 @@ const nextAllDailys = (dispatch) => async ({page}) => {
 const addDaily = dispatch => async({  textcontent, songs, hashtag, fd } ,  callback) =>{
     try {
         const response = await serverApi.post('/Daily', {  textcontent, songs, hashtag });
-        navigate('Main');
-        fd.append('DailyId', response.data);
-        await serverApi.post('/DailyimgUpload', fd, { header: {"content-type": "multipart/form-data"}});
+        goBack();
+       
+        await serverApi.post('/DailyimgUpload/'+response.data, fd, { header: {"content-type": "multipart/form-data"} });
     }
     catch(err){
         dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
@@ -233,9 +233,9 @@ const getreComment = dispatch => {
 };
 
 const likescomment = dispatch => {
-    return async ({ Dailyid, id }) => {
+    return async ({ dailyid, id }) => {
         try{
-            const response =await serverApi.post('/Dailylikecomment/'+Dailyid+'/'+id);
+            const response =await serverApi.post('/Dailylikecomment/'+dailyid+'/'+id);
             dispatch({ type:'get_comment', payload:response.data });
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
@@ -244,9 +244,9 @@ const likescomment = dispatch => {
 };
 
 const unlikescomment = dispatch => {
-    return async ({ Dailyid, id }) => {
+    return async ({ dailyid, id }) => {
         try{
-            const response = await serverApi.delete('/Dailylikecomment/'+Dailyid+'/'+id);
+            const response = await serverApi.delete('/Dailylikecomment/'+dailyid+'/'+id);
             dispatch({ type:'get_comment', payload:response.data })
         }catch(err){
             dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
@@ -280,5 +280,5 @@ export const { Provider, Context } = createDataContext(
     dailyReducer,
     { initDaily, getAllDailys, nextAllDailys, addDaily, editDaily, deleteDaily, likesDaily, unlikesDaily, getDailys, getDaily, nextDailys,
         addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
-    { allDailys: null, notAllDailysNext: false, currentAllDailysPage: 1, Dailys: null, currentDailyPage: 1, notNext: false, current_Daily: null, current_comments:null, current_songs: [], current_recomments:null, userDailys:null, errorMessage: '' }
+    { allDailys: null, notAllDailysNext: false, currentAllDailysPage: 1, Dailys: null, currentDailyPage: 1, notNext: false, current_daily: null, current_comments:null, current_songs: [], current_recomments:null, userDailys:null, errorMessage: '' }
 )
