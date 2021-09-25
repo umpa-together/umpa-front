@@ -74,8 +74,8 @@ const SelectedPlaylist = ({ route }) => {
     }, [playlistid, state.current_playlist])
 
     useEffect(() => {
-        if(searchState.playList != null && hashtag != '') navigate('SelectedHashtag', {data: searchState.playList, text: hashtag, searchOption : 'Hashtag' });
-    }, [searchState.playList])
+        if(searchState.hashtag != null && hashtag != '') navigate('SelectedHashtag', {data: searchState.hashtag });
+    }, [searchState.hashtag])
 
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist.length == 0)    setDeletedModal(true);
