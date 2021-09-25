@@ -17,6 +17,7 @@ import { Provider as WeeklyProvider } from 'context/WeeklyContext';
 import { Provider as ReportProvider } from 'context/ReportContext';
 import { Provider as DailyProvider } from './src/context/DailyContext';
 import { Provider as ChatProvider } from './src/context/ChatContext';
+import { Provider as FeedProvider } from './src/context/FeedContext';
 
 import TrackPlayerProvider from 'providers/trackPlayer'
 import ModalProvider from 'providers/modal'
@@ -61,6 +62,7 @@ export default () => {
     }, []);
 
     return (
+        <FeedProvider>
         <ModalProvider>
         <TrackPlayerProvider>
             <ReportProvider>
@@ -92,5 +94,6 @@ export default () => {
             </ReportProvider>
         </TrackPlayerProvider>
         </ModalProvider>
+        </FeedProvider>
     )
 }

@@ -1,60 +1,29 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
-import { Context as UserContext } from 'context/UserContext';
-import SvgUri from 'react-native-svg-uri';
-import { tmpWidth, tmpHeight } from 'components/FontNormalize';
-import LinearGradient from 'react-native-linear-gradient';
+import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'navigationRef';
 import PostUser from './PostUser'
 import SongsLists from 'components/Playlist/SongsLists'
 import Footer from './Footer'
 
-const Playlist = ({ playList }) => {
-    const { _id: id, hashtag, comments, likes, postUserId: postUser, songs, textcontent: content } = playList
+const Playlist = ({ playList, type }) => {
+    const { _id: id, hashtag, comments, likes, postUserId: postUser, songs, title } = playList
+    const { getPlaylist } = useContext(PlaylistContext);
 
-    const { state: playlistState, likesPlaylist, unlikesPlaylist, getPlaylists, nextPlaylists, getPlaylist } = useContext(PlaylistContext);
-    const { state, getOtherStory } = useContext(UserContext);
-    const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(false);
-    
-    const getData = async () => {
-        if(playList.length >= 20 && !playlistState.notNext){
-            setLoading(true);
-            await nextPlaylists({ page: playlistState.currentPlaylistPage });
-            setLoading(false);
-        }
-    };
-
-    const onEndReached = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
-    };
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        await Promise.all([
-            getPlaylists(),
-            getOtherStory()
-        ])
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
+    const onClickPlaylist = async () => {
+        await getPlaylist({ id, postUserId: postUser._id })
+        push('SelectedPlaylist', { id, postUser: postUser._id })
     }
+
     return (
-        <View style={styles.container}>
+        <TouchableOpacity 
+            style={styles.container}
+            onPress={onClickPlaylist}
+        >
             <PostUser user={postUser} />
             <View style={styles.contentArea}>
-                <Text style={styles.content} numberOfLines={3}>{content}</Text>
+                <Text style={styles.content} numberOfLines={3}>{title}</Text>
             </View>
             <SongsLists 
                 songs={songs} 
@@ -65,8 +34,9 @@ const Playlist = ({ playList }) => {
                 likes={likes}
                 comments={comments}
                 id={id}
+                type={type}
             />
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -90,7 +60,6 @@ const styles=StyleSheet.create({
         paddingLeft: 18 * tmpWidth,
         marginTop: 6 * tmpWidth
     },
-
 });
 
 export default Playlist;

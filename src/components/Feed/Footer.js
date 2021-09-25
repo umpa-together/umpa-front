@@ -2,19 +2,32 @@ import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as DailyContext } from 'context/DailyContext';
+import { Context as FeedContext } from 'context/FeedContext';
 import { tmpWidth } from 'components/FontNormalize';
 
-export default Footer = ({ hashtag, likes, comments, id }) => {
+export default Footer = ({ hashtag, likes, comments, id, type }) => {
     const { state } = useContext(UserContext);
     const { likesPlaylist, unlikesPlaylist } = useContext(PlaylistContext);
+    const { likesDaily, unlikesDaily } = useContext(DailyContext);
+    const { getFeeds } = useContext(FeedContext)
     const [isLike, setIsLike] = useState(likes.includes(state.myInfo._id))
     
     const onClickLikes = () => {
         if(likes.includes(state.myInfo._id)) {
-            unlikesPlaylist({ id });         
+            if(type === 'playlist') {
+                unlikesPlaylist({ id });
+            } else {
+                unlikesDaily({ id })
+            }     
         } else {
-            likesPlaylist({ id }); 
+            if(type === 'playlist') {
+                likesPlaylist({ id }); 
+            } else {
+                likesDaily({ id })
+            }
         }
+        getFeeds()
         setIsLike(!isLike)
     }
 

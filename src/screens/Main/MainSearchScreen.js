@@ -8,6 +8,7 @@ import {Context as CurationContext} from 'context/CurationContext';
 import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
+import {Context as FeedContext} from 'context/FeedContext';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -26,6 +27,7 @@ const MainSearchScreen = () => {
     const { getCurationposts } = useContext(CurationContext);
     const { state: WeeklyState, getWeeklyPlaylist, getWeeklyCuration, getWeeklyDJ, postWeekly, getRecentPlaylists, getMusicArchive } = useContext(WeeklyContext);
     const { state: djState, getMainRecommendDJ } = useContext(DJContext);
+    const { getFeeds } = useContext(FeedContext)
 
     const loadingDataFetch = async () => {
         //await postWeekly()
@@ -35,6 +37,7 @@ const MainSearchScreen = () => {
         currentHashtag(),
         getRecentPlaylists(),
         getWeeklyPlaylist(),
+        getFeeds(),
         //getWeeklyCuration(),
         //getWeeklyDJ(),
         setnoticetoken(),
