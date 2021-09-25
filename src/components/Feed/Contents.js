@@ -44,7 +44,6 @@ export default Contents = () => {
             fetchData();
         }
     }
-
     return (
         <View style={styles.flex}>
             {state.otherStory && 
@@ -63,7 +62,8 @@ export default Contents = () => {
                         return (
                             <View key={id}>
                                 { type == 'playlist' ? 
-                                <Playlist playList={playlist} type={type} /> : <Daily daily={daily} type={type} /> }
+                                <Playlist playList={playlist} type={type} /> 
+                                : <Daily daily={daily} type={type} /> }
                             </View>
                         ) 
                     }}

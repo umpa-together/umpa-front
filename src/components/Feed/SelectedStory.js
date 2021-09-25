@@ -21,12 +21,10 @@ export default SelectedStory = () => {
     const { story: selectedStory, index: selectedIdx } = currentStory
     
     const onClickPrevStory = () => {
-        console.log('rev')
         onClickStory({ item: state.otherStory[selectedIdx-1], index: selectedIdx-1 })
     }
     
     const onClickNextStory = () => {
-        console.log('next')
         onClickStory({ item: state.otherStory[selectedIdx+1], index: selectedIdx+1 })
     }
 

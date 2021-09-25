@@ -50,7 +50,7 @@ export default Story = ({ story }) => {
                 { story && story.map((item, index) => {
                     const { song, profileImage, name } = item
                     return (
-                        <View style={styles.nameArea}>
+                        <View style={styles.nameArea} key={name}>
                             <TouchableOpacity
                                 style={styles.story}
                                 onPress={() => onClickStory({ item, index })}

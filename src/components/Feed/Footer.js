@@ -38,7 +38,7 @@ export default Footer = ({ hashtag, likes, comments, id, type }) => {
                     <View style={[styles.flexRow, styles.wrap]}>
                         {hashtag.map((item) => {
                             return (
-                                <View style={styles.box}>
+                                <View style={styles.box} key={item}>
                                     <Text style={styles.hashtag}>#{item}</Text>
                                 </View>
                             )
