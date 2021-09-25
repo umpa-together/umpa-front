@@ -17,10 +17,10 @@ export default SearchResult = () => {
         components: <Playlists playlists={state.playList} isPlaylist={true} />
     }, {
         title: '데일리',
-        components: <Daily daily={state.daily} />
+        components: <Daily daily={state.daily} isDaily={true} />
     }, {
         title: '서퍼',
-        components: <DJ dj={state.dj} isDaily={true} />
+        components: <DJ dj={state.dj} />
     }]
 
     const onClickMore = (option) => {
