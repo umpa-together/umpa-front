@@ -4,13 +4,11 @@ import serverApi from 'api/serverApi';
 const SearchPlaylistReducer = (state, action) => {
     switch(action.type){
         case 'initPlaylist':
-            return { ...state, playList: null, playListNum: action.payload, dj: null, daily: null };
-        case 'searchSongOrArtist':
-            return { ...state, playList: action.payload };
+            return { ...state, playList: null, dj: null, daily: null, hashtag: null };
         case 'searchHashtag' :
-            return { ...state, playList: action.payload };  
+            return { ...state, hashtag: action.payload };  
         case 'searchAll':
-            return { ...state, playList: action.payload.playlists, dj: action.payload.dj }  
+            return { ...state, playList: action.payload.playlists, dj: action.payload.dj, daily: action.payload.daily }  
         case 'searchHashtagAll':
             return { ...state, playList: action.payload.playlists, daily: action.payload.daily }
         case 'error':
@@ -22,19 +20,9 @@ const SearchPlaylistReducer = (state, action) => {
 
 const initPlaylist = (dispatch) => async () => {
     try{
-        const response = await serverApi.get('/initPlaylist');
         dispatch({ type: 'initPlaylist', payload: response.data.playlistNum });
     } catch (err) {
         dispatch({ type: 'error', payload: 'Something went wrong with initPlaylist' });
-    }
-};
-
-const SearchSongOrArtist = (dispatch) => async ({ id }) => {
-    try {
-        const response = await serverApi.get('/searchSongOrArtist/'+id);
-        dispatch({ type: 'searchSongOrArtist', payload: response.data});
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with SearchSongOrArtist' });
     }
 };
 
@@ -67,6 +55,6 @@ const SearchHashtagAll = (dispatch) => async ({ term }) => {
 
 export const { Provider, Context } = createDataContext(
     SearchPlaylistReducer,
-    { SearchSongOrArtist, initPlaylist, SearchHashtag, SearchAll, SearchHashtagAll },
-    { playList: null, playListNum: 0, dj: null, daily: null, errorMessage: '' }
+    { initPlaylist, SearchHashtag, SearchAll, SearchHashtagAll },
+    { playList: null, dj: null, daily: null, hashtag: null, errorMessage: '' }
 )
