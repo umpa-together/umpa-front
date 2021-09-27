@@ -18,16 +18,10 @@ const OtherAccountScreen = ({ route }) => {
     const {state: userState } = useContext(UserContext);
     const [menu, setMenu] = useState('playlist');
     const [story, setStory] = useState(null);
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const [url, setUrl] = useState('');
     const [user, setUser] = useState(null);   
     const { otherUserId: id } = route.params
     const [FollwerNum, setFollowerNum] = useState(0)
-
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     useEffect(() => {
         if(user != null){

@@ -13,13 +13,7 @@ const SongEditPage = ({ route }) => {
     const [songs, setSong] = useState([]);
     const [isEdit, setIsEdit] = useState(true);
     const [orderModal, setOrderModal] = useState(false);
-    const [isPlayingid, setIsPlayingid] = useState('0');
     const { data: currentplayList } = route.params
-
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     useEffect(()=>{
         searchinit();
