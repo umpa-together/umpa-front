@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import AccountPlaylist from  'components/Account/AccountPlaylist';
-import AccountCurating from  'components/Account/AccountCurating';
+import AccountDaily from 'components/Account/AccountDaily'
 import Header from 'components/Account/Header'
 import Menu from 'components/Account/Menu'
 import LoadingIndicator from 'components/LoadingIndicator'
@@ -74,7 +74,7 @@ const OtherAccountScreen = ({ route }) => {
                     </View>
                     <View style={styles.background}>
                         {menu == 'playlist' ?  <AccountPlaylist playList={user.playlists} /> :
-                        <AccountCurating curating={user.curationposts} />}
+                        <AccountDaily daily={user.dailys} /> }
                     </View>
                 </ScrollView>
             </View> }

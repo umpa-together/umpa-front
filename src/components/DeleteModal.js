@@ -6,13 +6,17 @@ import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
 import { Context as CurationContext } from 'context/CurationContext';
+import { Context as DailyContext } from '/context/DailyContext';
+
 import { goBack } from 'navigationRef';
-const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId }) => {
+const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComments, playlistId,dailyId }) => {
     const [title, setTitle] = useState('');
     const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state: curationState, deleteCuration, getCurationposts } = useContext(CurationContext);
+    const { state:daily, deleteDaily, deleteComment:dailydeleteComment, deletereComment:dailydeletereComment, } = useContext(DailyContext);
+
     const onClose = () =>{
         setDeleteModal(false);
     };
@@ -23,11 +27,24 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId 
             getMyInfo()
             getPlaylists()
             goBack()
+        } else if (type=='daily'){
+            await deleteDaily({id:daily.current_daily._id});
+            getMyInfo()
+            goBack()
+
+
         } else if (type == 'playlistComment') {
             await deleteComment({id:playlistId, commentid : subjectId})
         } else if (type == 'playlistReComment') {
             deletereComment({commentid:subjectId})
-        } else if (type == 'boardContent') {
+        
+        } else if (type == 'dailyComment') {
+            await dailydeleteComment({id:dailyId, commentid : subjectId})
+        } else if (type == 'dailyReComment') {
+            dailydeletereComment({commentid:subjectId})
+        }
+   
+        else if (type == 'boardContent') {
             await deleteContent({ contentId: boardState.currentContent._id, boardId: boardState.currentContent.boardId })
             getMyInfo()
             goBack()
@@ -47,12 +64,12 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId 
     useEffect(() => {
         if (type == 'boardContent') {
             setTitle('게시글을')
-        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment') {
+        } else if (type == 'boardComment' || type == 'boardReComment' || type == 'playlistComment' || type == 'playlistReComment'|| type == 'dailyComment' || type == 'dailyReComment') {
             setTitle('댓글을')
         } else if (type == 'playlist'){
             setTitle('플레이리스트를')
-        } else if (type == 'curation'){
-            setTitle('큐레이션을')
+        } else if (type == 'daily'){
+            setTitle('데일리를')
         } else {
             setTitle('오늘의 곡을')
         }

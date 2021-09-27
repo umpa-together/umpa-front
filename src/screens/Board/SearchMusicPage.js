@@ -15,7 +15,7 @@ const SearchMusicPage = ({ route }) => {
     const { state:boardState, addSong } = useContext(BoardContext);
     const [text, setText] = useState('');
     const [musicArchiveSong, setMusicArchiveSong] = useState({});
-    const { setSong, isMusicArchive } = route.params
+    const { setSong, isMusicArchive, boardId } = route.params
     const [loading, setLoading] = useState(false);
     const [tok, setTok]= useState(false);
     const [selectedId, setSelectedId] = useState('');
@@ -38,7 +38,10 @@ const SearchMusicPage = ({ route }) => {
 
     const okPress = async () => {
         goBack();
-        if(isMusicArchive)  await addSong({boardId: boardState.boards._id, song: musicArchiveSong});
+        if(isMusicArchive) {
+            const id = boardState.boards ? boardState.boards._id : boardId
+            await addSong({boardId: id, song: musicArchiveSong});
+        }
     }
 
     const selectSong = ({item}) => {
