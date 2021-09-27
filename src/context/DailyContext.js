@@ -84,8 +84,8 @@ const addDaily = dispatch => async({  textcontent, songs, hashtag, fd } ,  callb
     try {
         const response = await serverApi.post('/Daily', {  textcontent, songs, hashtag });
         goBack();
-        fd.append('DailyId', response.data);
-        await serverApi.post('/DailyimgUpload', fd, { header: {"content-type": "multipart/form-data"}});
+       
+        await serverApi.post('/DailyimgUpload/'+response.data, fd, { header: {"content-type": "multipart/form-data"} });
     }
     catch(err){
         dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });

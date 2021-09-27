@@ -7,7 +7,6 @@ import { useTrackPlayer } from 'providers/trackPlayer'
 
 export default CreateSongsLists = ({ songs }) => {
     const { isPlayingId, addtracksong, stoptracksong } = useTrackPlayer()
-    console.log(songs);
     const onClickPlay = (song) => {
         if(isPlayingId === song.id) {
             stoptracksong()

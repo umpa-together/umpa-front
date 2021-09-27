@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, Text, StyleSheet, Image, ScrollView } from 'react-native'
-import { getQuickPhoto, onClickSingle } from 'components/ImageEditor';
+import { getQuickPhoto, onClickMultiple } from 'components/ImageEditor';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { useDaily } from 'providers/daily';
 
 export default CreateFooter = ({ songs, setIsSearch }) => {
     const [images, setImages] = useState([])
-    const { informationRef, image, setImage, validity, setValidity } = useDaily()
-
+    const { informationRef, image, setImage,imagecheck, validity, setValidity } = useDaily()
     const onClickAddSongs = () => {
         setIsSearch(true)
     }
 
     const onClickAlbum = () => {
         if(!informationRef.current.isEdit) {
-            onClickSingle(setImage)
+            onClickMultiple(setImage)
         }
     }
-    const onClickPhoto = (image) => {
+    const onClickPhoto = (img) => {
         if(!informationRef.current.isEdit) {
-            setImage({ name: image.filename, type: 'image/jpeg', uri: image.uri })
+            setImage([ ...image, {name: img.filename, type: 'image/jpeg', uri: img.uri} ] )
         }
     }
 
@@ -29,15 +28,12 @@ export default CreateFooter = ({ songs, setIsSearch }) => {
     }, [])
 
     useEffect(() => {
-        if(image) {
+        if(imagecheck) {
             informationRef.current.imgUrl = image.uri
             informationRef.current.imgName = image.name
             informationRef.current.imgType = image.type
         }
-        setValidity((prev) => ({
-            ...prev,
-            thumbnail: true
-        }))  
+       
     }, [image])
 
     useEffect(() => {
@@ -58,16 +54,16 @@ export default CreateFooter = ({ songs, setIsSearch }) => {
             <TouchableOpacity 
                 onPress={onClickAlbum}
                 style={[styles.box, styles.add, styles.column, 
-                    image && styles.active, !validity.thumbnail && styles.warningBorder
+                    imagecheck && styles.active, !validity.thumbnail && styles.warningBorder
                 ]}
             >
                 <SvgUri 
                     width='40' height='40' 
-                    source={image ? require('assets/icons/editPhoto.svg') : require('assets/icons/addPhoto.svg')} 
+                    source={imagecheck ? require('assets/icons/editPhoto.svg') : require('assets/icons/addPhoto.svg')} 
                     style={styles.icon} 
                 />
-                <Text style={[image ? styles.activeText : styles.text, !validity.thumbnail && styles.warning]}>
-                    {image ? '사진 수정' : '사진 추가' }
+                <Text style={[imagecheck ? styles.activeText : styles.text, !validity.thumbnail && styles.warning]}>
+                    {imagecheck ? '사진 추가' : '사진 추가' }
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity 

@@ -14,8 +14,7 @@ import { useDaily } from 'providers/daily'
 export default CreateMain = ({ isEdit, setIsSearch, daily }) => {
     const { state } = useContext(DailyContext);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
-    const { informationRef, setTitle, setImage, image } = useDaily()
-    console.log(keyboardHeight);
+    const { informationRef, setTitle, setImage, image,imagecheck } = useDaily()
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
     }
@@ -36,13 +35,13 @@ export default CreateMain = ({ isEdit, setIsSearch, daily }) => {
     )
 
     useEffect(() => {
-        if(isEdit && !image) {
+        if(isEdit && !imagecheck) {
             informationRef.current.hashtagLists = state.current_daily.hashtag,
             informationRef.current.songs = daily,
             informationRef.current.isEdit = true,
             informationRef.current.title = state.current_daily.textcontent,
             setTitle(state.current_daily.textcontent)
-            setImage(state.current_daily.image[0])
+            setImage(state.current_daily.image)
         }
     }, [])
 
@@ -60,7 +59,7 @@ export default CreateMain = ({ isEdit, setIsSearch, daily }) => {
                 <View style={{paddingBottom: keyboardHeight, flex:1}}>
                     <CreateSongsLists songs={daily} />
                     <CreateTitle/>
-                    <CreateHashtag isEdit={isEdit} />
+                    <CreateHashtag  isEdit={isEdit} />
                     <CreateThumbnail />
                     <CreateFooter songs={daily} setIsSearch={setIsSearch} />
                 </View>

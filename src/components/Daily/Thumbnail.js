@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity,FlatList ,Text} from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { goBack } from 'navigationRef'
 import Modal from 'react-native-modal';
@@ -7,8 +7,9 @@ import SvgUri from 'react-native-svg-uri';
 
 export default Thumbnail = ({ img }) => {
     const [imgModal, setImgModal] = useState(false)
-
-    const onClickImg = () => {
+    const [imgzoom, setImgzoom] =useState('')
+    const onClickImg = (item) => {
+        setImgzoom(item);
         setImgModal(true)
     }
 
@@ -18,32 +19,58 @@ export default Thumbnail = ({ img }) => {
 
     return (
         <View style={styles.container}>
+            {  img[0] == undefined || img[0] == null  ? 
+            <View style={{height:tmpWidth*60}}>
+            <TouchableOpacity style={styles.back} onPress={goBack}>
+                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/playlistBack.svg')}/>
+            </TouchableOpacity>         
+            </View>  
+            :
+            <View>
             <TouchableOpacity style={styles.back} onPress={goBack}>
                 <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/playlistBack.svg')}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={onClickImg}>
-                <Image style={styles.img} source={{uri: img}}/>
-            </TouchableOpacity>
-            <Modal
-                animationIn="fadeIn"
-                animationOut="fadeOut"
-                isVisible={imgModal}
-                backdropOpacity={1}
-                onBackdropPress={onClose}
-                style={{alignItems: 'center', margin: 0}}
-            >
-                <TouchableOpacity 
-                    style={styles.modalExit}
-                    onPress={onClose}
-                >
-                    <SvgUri width={40} height={40} source={require('assets/icons/modalexit.svg')} />
-                </TouchableOpacity>
-                <Image 
-                    source={{uri: img}} 
-                    style={styles.modalImg} 
-                    resizeMode="contain"
-                />
-            </Modal>
+            <View>
+            <FlatList
+                data={img}
+                keyExtractor={hashtag => hashtag}
+                horizontal={true}
+                pagingEnabled
+
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) =>{
+                    return (
+                        <View style={{width:375*tmpWidth}} >
+                        <TouchableOpacity onPress={()=>onClickImg(item)}>
+                            <Image style={styles.img} source={{uri: item }}/>
+                        </TouchableOpacity>
+                        <Modal
+                            animationIn="fadeIn"
+                            animationOut="fadeOut"
+                            isVisible={imgModal}
+                            backdropOpacity={1}
+                            onBackdropPress={onClose}
+                            style={{alignItems: 'center', margin: 0}}
+                        >
+                            <TouchableOpacity 
+                                style={styles.modalExit}
+                                onPress={onClose}
+                            >
+                                <SvgUri width={40} height={40} source={require('assets/icons/modalexit.svg')} />
+                            </TouchableOpacity>
+                            <Image 
+                                source={{uri: imgzoom }} 
+                                style={styles.modalImg} 
+                                resizeMode="contain"
+                            />
+                        </Modal>
+                        </View>
+                    )
+                }}
+            />
+                </View>
+            </View>
+            }
         </View>
     )
 }

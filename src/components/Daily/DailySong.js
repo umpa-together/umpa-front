@@ -5,19 +5,19 @@ import { tmpWidth } from 'components/FontNormalize';
 import { useTrackPlayer } from 'providers/trackPlayer'
 
 export default DailySong = ({ song}) => {
-    const { name, artistName } = song[0].attributes
+    const { name, artistName } = song.attributes
     const [representModal, setRepresentModal] = useState(false);
 
     const {isPlayingId, addtracksong, stoptracksong } = useTrackPlayer()
 
 
     const onClickPlay = () => {
-        if(isPlayingId === song[0].id) {
+        if(isPlayingId === song.id) {
             setRepresentModal(false)
             stoptracksong()
         } else { 
             setRepresentModal(true)
-            addtracksong({ data: song[0] })
+            addtracksong({ data: song })
         }       
     }
 

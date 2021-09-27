@@ -13,7 +13,7 @@ export default CommentBox = ({ comment }) => {
     const [commentReportModal, setCommentReportModal] = useState(false);
     const [commentDeleteModal, setCommentDeleteModal] = useState(false);
     const { onClickComment, onClickProfile, onClickCommentLikes } = useDaily()
-    console.log(comment)
+  
     const onClickComments = async (comment) => {
         onClickComment(comment)
     }

@@ -40,11 +40,17 @@ export default Header = ({ title, click, setIsSearch, isEdit }) => {
                     });
                 }else{
                     const fd = new FormData();
-                    fd.append('img', {
-                        name: informationRef.current.imgName,
-                        type: informationRef.current.imgType,
-                        uri: informationRef.current.imgUrl
-                    })
+                    
+                    image.forEach((item) => {
+                        fd.append('img', {
+                            name: item.name,
+                            type: item.type,
+                            uri: item.uri
+                        });
+                    });
+                    
+                    
+                
                     await addDaily({ 
                         textcontent: informationRef.current.title, 
                         songs: informationRef.current.songs, 
@@ -67,18 +73,7 @@ export default Header = ({ title, click, setIsSearch, isEdit }) => {
                         title: true
                     }))        
                 }
-                if(!image){
-                    setValidity((prev) => ({
-                        ...prev,
-                        thumbnail: false
-                    }))            
-                    return;
-                } else {
-                    setValidity((prev) => ({
-                        ...prev,
-                        thumbnail: true
-                    }))        
-                }
+
                 if(informationRef.current.songs.length != 1){
                     setValidity((prev) => ({
                         ...prev,
@@ -111,7 +106,7 @@ export default Header = ({ title, click, setIsSearch, isEdit }) => {
                 setIsClick(false)
             }
         } else {
-            if(songs.length == 1 && informationRef.current.title.length !== 0 && image) {
+            if(songs.length == 1 && informationRef.current.title.length !== 0 ) {
                 setIsClick(true)
             } else {
                 setIsClick(false)
