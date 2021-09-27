@@ -9,7 +9,7 @@ import { goBack, navigate } from 'navigationRef'
 import { usePlaylist } from 'providers/playlist';
 
 export default Header = ({ title, click, setIsSearch, isEdit }) => {
-    const { state, addPlaylist, editPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { state, addPlaylist, editPlaylist } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext)
     const { songs, informationRef, setValidity, image, title: playlistTitle } = usePlaylist()
     const [isClick, setIsClick] = useState(false)
@@ -53,7 +53,6 @@ export default Header = ({ title, click, setIsSearch, isEdit }) => {
                     });            
                 }
                 getMyInfo();
-                getPlaylists();
             } else {
                 if(informationRef.current.title.length == 0){
                     setValidity((prev) => ({

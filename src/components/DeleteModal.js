@@ -8,9 +8,9 @@ import { Context as BoardContext } from 'context/BoardContext';
 import { Context as DailyContext } from '/context/DailyContext';
 
 import { goBack } from 'navigationRef';
-const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComments, playlistId,dailyId }) => {
+const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, playlistId,dailyId }) => {
     const [title, setTitle] = useState('');
-    const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
+    const { state, deletePlaylist, deleteComment, deletereComment } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state:daily, deleteDaily, deleteComment:dailydeleteComment, deletereComment:dailydeletereComment, } = useContext(DailyContext);
@@ -23,7 +23,6 @@ const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComment
         if (type == 'playlist') {
             await deletePlaylist({id:state.current_playlist._id});
             getMyInfo()
-            getPlaylists()
             goBack()
         } else if (type=='daily'){
             await deleteDaily({id:daily.current_daily._id});
