@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, StyleSheet } from 'react-native'
+import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { useSearch } from 'providers/search';
 import SongHint from './SongHint';
 import HashtagHint from './HashtagHint';
@@ -10,6 +11,7 @@ import HashtagResult from './HashtagResult';
 
 export default SearchView = () => {
     const { searchOption, isHint, isResultClick } = useSearch()
+    const { state } = useContext(SearchPlaylistContext);
 
     return (
         <View style={styles.container}>
@@ -22,7 +24,7 @@ export default SearchView = () => {
             </> :
             searchOption === 'Hashtag' ? 
             <>
-                { isHint ? <HashtagHint /> : <HashtagResult /> }
+                { isHint ? <HashtagHint /> : <HashtagResult playlist={state.playList} daily={state.daily} /> }
             </> : <DJHint /> }
         </View>
     )

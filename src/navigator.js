@@ -47,7 +47,6 @@ import MySharedSongsPage from 'screens/Board/MySharedSongsPage';
 
 import MainSearchScreen from 'screens/Main/MainSearchScreen';
 import SearchScreen from 'screens/Main/SearchScreen';
-import SelectedSongScreen from 'screens/Main/SelectedSongScreen';
 import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
 import AllContentsScreen from 'screens/Main/AllContentsScreen';
 import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
@@ -161,7 +160,6 @@ const MainStackScreen = () => {
         >
             <MainStack.Screen name="Tab" component={TabScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen} />
-            <MainStack.Screen name="SelectedSong" component={SelectedSongScreen} />
             <MainStack.Screen name="Create" component={CreatePlayListPage} />
             <MainStack.Screen name="AllContents" component={AllContentsScreen} />
             <MainStack.Screen name="ContentsMore" component={ContentsMoreScreen} />

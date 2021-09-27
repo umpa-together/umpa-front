@@ -17,8 +17,6 @@ const searchReducer = (state, action) => {
             return { ...state, songNext: action.payload };
         case 'setArtistNext':
             return { ...state, artistNext: action.payload };
-        case 'searchDJ':
-            return { ...state, users: action.payload };
         case 'error':
             return { ...state, errorMessage: action.payload };
         case 'searchinit' :
@@ -113,15 +111,6 @@ const searchinit = (dispatch) => async () => {
     }
 };
 
-const searchDJ = (dispatch) => async ({ id }) => {
-    try {
-        const response = await serverApi.get('/searchDJ/'+id );
-        dispatch({ type: 'searchDJ', payload: response.data });
-    } catch (err){
-        dispatch({ type: 'error', payload: 'Something went wrong with searchDJ' });
-    }
-};
-
 const hashtagHint = (dispatch) => async({ term }) => {
     try {
         const response = await serverApi.get('/hashtagHint/'+term);
@@ -151,6 +140,6 @@ const currentHashtag = (dispatch) => async() => {
 
 export const { Provider, Context } = createDataContext(
     searchReducer,
-    { initHint, searchsong, searchalbum,searchinit, searchDJ, songNext, artistNext, searchartist, searchHint, hashtagHint, djHint, currentHashtag },
+    { initHint, searchsong, searchalbum,searchinit, songNext, artistNext, searchartist, searchHint, hashtagHint, djHint, currentHashtag },
     { songData: [], songNext: [], artistData: [], artistNext: [], albumData: [], albumNext: [], users: [], errorMessage: '', hint: [], hashtagHint: [], djHint: [], currentHashtag: null  }
 )

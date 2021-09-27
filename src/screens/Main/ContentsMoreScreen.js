@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
-import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext'
 import { Context as DJContext } from 'context/DJContext'
@@ -8,15 +7,16 @@ import { Context as DailyContext } from 'context/DailyContext'
 import Header from 'components/Header'
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'navigationRef';
+import { SongImage } from 'components/SongImage'
 
 export default ContentsMoreScreen = ({ route }) => {
     const { getPlaylist } = useContext(PlaylistContext)
     const { getDaily } = useContext(DailyContext)
-    const { state } = useContext(SearchPlaylistContext);
     const { getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
     const [elements, setElements] = useState([])
-    const { option } = route.params
+    const [isSongImg, setSongImg] = useState(false)
+    const { option, playlist, daily, dj } = route.params
 
     const onClickImg = async (item) => {
         if(option === '플레이리스트') {
@@ -38,11 +38,11 @@ export default ContentsMoreScreen = ({ route }) => {
 
     useEffect(() => {
         if(option === '플레이리스트') {
-            setElements(state.playList)
+            setElements(playlist)
         } else if(option === '서퍼') {
-            setElements(state.dj)
+            setElements(dj)
         } else {
-            setElements(state.daily)
+            setElements(daily)
         }
     }, [])
 
@@ -59,11 +59,19 @@ export default ContentsMoreScreen = ({ route }) => {
                     if(option !== '데일리') {
                         img = item.image || item.profileImage
                     } else {
+                        if(!item.image[0]) {
+                            setSongImg(true)
+                        }
                         img = item.image[0] || item.song.attributes.artwork.url
                     }
                     return (
-                        <TouchableOpacity onPress={() => onClickImg(item)}>
-                            <Image source={{uri: img}} style={styles.img} />
+                        <TouchableOpacity 
+                            onPress={() => onClickImg(item)}
+                            style={styles.item}
+                        >
+                            {!isSongImg ?
+                            <Image source={{uri: img}} style={styles.img} /> : 
+                            <SongImage url={img} size={117} border={4}/> }
                         </TouchableOpacity>
                     )
                 }}
@@ -77,12 +85,14 @@ const styles=StyleSheet.create({
         backgroundColor: '#ffffff',
         flex: 1
     },
+    item: {
+        marginRight: 4 * tmpWidth,
+        marginBottom: 4 * tmpWidth,
+    },
     img: {
         width: 117 * tmpWidth,
         height: 117 * tmpWidth,
         borderRadius: 4 * tmpWidth,
-        marginRight: 4 * tmpWidth,
-        marginBottom: 4 * tmpWidth
     },
     padding: {
         paddingLeft: 8 * tmpWidth,

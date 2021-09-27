@@ -32,7 +32,7 @@ export default Playlists = ({ daily, isDaily }) => {
                     >
                         {image[0] ? 
                         <Image source={{uri: image[0]}} style={styles.dailyImg} /> : 
-                        <SongImage url={song.attributes.artwork.url} size={117} border={4}/> }
+                        <SongImage url={song.attributes.artwork.url} size={120} border={4}/> }
                         <Text style={styles.songName} numberOfLines={1}>{name}</Text>
                         <Text style={styles.artist}>{artistName}</Text>
                         { isDaily &&
