@@ -11,7 +11,6 @@ import { Provider as PlaylistProvider } from 'context/PlaylistContext';
 import { Provider as SearchPlaylistProvider } from 'context/SearchPlaylistContext';
 import { Provider as UserProvider } from 'context/UserContext';
 import { Provider as DJProvider } from 'context/DJContext';
-import { Provider as CurationProvider } from 'context/CurationContext';
 import { Provider as NoticeProvider } from 'context/NoticeContext';
 import { Provider as WeeklyProvider } from 'context/WeeklyContext';
 import { Provider as ReportProvider } from 'context/ReportContext';
@@ -63,37 +62,35 @@ export default () => {
 
     return (
         <FeedProvider>
-        <ModalProvider>
-        <TrackPlayerProvider>
-            <ReportProvider>
-                <WeeklyProvider>
-                    <NoticeProvider>
-                        <DailyProvider>
-                            <CurationProvider>
-                                <ChatProvider>
-                                    <DJProvider>
-                                        <UserProvider>
-                                            <SearchPlaylistProvider>
-                                                <PlaylistProvider>
-                                                    <BoardProvider>
-                                                        <SearchProvider>
-                                                            <AuthProvider>
-                                                                <MainNavigator/>
-                                                            </AuthProvider>
-                                                        </SearchProvider>
-                                                    </BoardProvider>
-                                                </PlaylistProvider>
-                                            </SearchPlaylistProvider>
-                                        </UserProvider>
-                                    </DJProvider>
-                                </ChatProvider>
-                            </CurationProvider>
-                        </DailyProvider>
-                    </NoticeProvider>
-                </WeeklyProvider>
-            </ReportProvider>
-        </TrackPlayerProvider>
-        </ModalProvider>
+            <ModalProvider>
+                <TrackPlayerProvider>
+                    <ReportProvider>
+                        <WeeklyProvider>
+                            <NoticeProvider>
+                                <DailyProvider>
+                                        <ChatProvider>
+                                            <DJProvider>
+                                                <UserProvider>
+                                                    <SearchPlaylistProvider>
+                                                        <PlaylistProvider>
+                                                            <BoardProvider>
+                                                                <SearchProvider>
+                                                                    <AuthProvider>
+                                                                        <MainNavigator/>
+                                                                    </AuthProvider>
+                                                                </SearchProvider>
+                                                            </BoardProvider>
+                                                        </PlaylistProvider>
+                                                    </SearchPlaylistProvider>
+                                                </UserProvider>
+                                            </DJProvider>
+                                        </ChatProvider>
+                                </DailyProvider>
+                            </NoticeProvider>
+                        </WeeklyProvider>
+                    </ReportProvider>
+                </TrackPlayerProvider>
+            </ModalProvider>
         </FeedProvider>
     )
 }

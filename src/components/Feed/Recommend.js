@@ -6,8 +6,7 @@ import SvgUri from 'react-native-svg-uri';
 import {Context as PlaylistContext} from 'context/PlaylistContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
-import {Context as CurationContext} from 'context/CurationContext';
-import { navigate, push } from 'navigationRef';
+import { push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import RepresentSong from 'components/RepresentSong';
 
@@ -15,7 +14,6 @@ const Recommend = () => {
     const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
-    const { getCurationposts } = useContext(CurationContext);
     const [representSong, setRepresentSong] = useState(null);
     const [representModal, setRepresentModal] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -30,7 +28,6 @@ const Recommend = () => {
         setRefreshing(true);
         await Promise.all([
             getPlaylists(),
-            getCurationposts(),
             getMyInfo()
         ])
         setRefreshing(false);
@@ -52,15 +49,6 @@ const Recommend = () => {
                     <TouchableOpacity style={styles.opt2} onPress={() => setResult('curating')}>
                         {result == 'curating' ? <Text style={{fontSize: 18 * tmpWidth}}>큐레이션</Text> : <Text style={{fontSize: 18 * tmpWidth, color:'gray'}}>큐레이션</Text> }
                     </TouchableOpacity>
-                </View>
-                <View style={styles.optright}>
-                    {result == 'playlist' ?
-                    <TouchableOpacity style={{marginRight:21.3 * tmpWidth, width:40 * tmpWidth, height:40 * tmpWidth}} onPress = {()=>navigate('Create', {'data': []})}>
-                        <SvgUri width='100%' height='100%' source={require('assets/icons/postplaylist.svg')} style={{ }}/>
-                    </TouchableOpacity> :
-                    <TouchableOpacity style={{marginRight:21.3 * tmpWidth,width:40 * tmpWidth, height:40 * tmpWidth}}  onPress = {()=>navigate('CurationSearch')}>
-                        <SvgUri width='100%' height='100%' source={require('assets/icons/curationsearch.svg')} style={{}}/>
-                    </TouchableOpacity>}
                 </View>
             </View>
             <ScrollView refreshControl={

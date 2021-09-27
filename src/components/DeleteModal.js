@@ -5,7 +5,6 @@ import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
-import { Context as CurationContext } from 'context/CurationContext';
 import { Context as DailyContext } from '/context/DailyContext';
 
 import { goBack } from 'navigationRef';
@@ -14,7 +13,6 @@ const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComment
     const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
-    const { state: curationState, deleteCuration, getCurationposts } = useContext(CurationContext);
     const { state:daily, deleteDaily, deleteComment:dailydeleteComment, deletereComment:dailydeletereComment, } = useContext(DailyContext);
 
     const onClose = () =>{
@@ -52,10 +50,6 @@ const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComment
             deleteBoardComment({ contentId: boardState.currentContent._id, commentId: subjectId })
         } else if (type == 'boardReComment') {
             deleteRecomment({ contentId: boardState.currentContent._id, commentId: subjectId })
-        } else if (type == 'curation') {
-            await deleteCuration({id:curationState.mycurationpost._id.toString()})
-            getMyInfo()
-            getCurationposts()
         } else if (type == 'todaySong') {
             deleteStory()
         }
