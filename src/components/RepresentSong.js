@@ -11,7 +11,6 @@ import { useTrackPlayer } from 'providers/trackPlayer'
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) => {
     const [type, setType] = useState('Each');
     const scrollX = useRef(new Animated.Value(0)).current;
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
 
     const onClose = () => {
@@ -101,7 +100,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                             <SvgUri width='50' height='50' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> :
                                             <SvgUri width='50' height='50' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 42 * tmpWidth, top: 42 * tmpWidth}}/> }
                                         </TouchableOpacity>
-                                        {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        <HarmfulModal />
                                         <View style={{width: 180 * tmpWidth}}>
                                             <Text style={{fontSize: 14 * tmpWidth, marginTop: 29 * tmpWidth, textAlign: 'center'}} numberOfLines={1}>{item.attributes.artistName}</Text>
                                         </View>
@@ -144,7 +143,7 @@ const RepresentSong = ({ representModal, setRepresentModal, song, myAccount}) =>
                                             <SvgUri width='27' height='27' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> :
                                             <SvgUri width='27' height='27' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 15 * tmpWidth, top: 15 * tmpWidth}}/> }
                                         </TouchableOpacity>
-                                        {harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                                        <HarmfulModal />
                                         <View style={{marginLeft: 17 * tmpWidth, width: 250 * tmpWidth }}>
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {item.attributes.contentRating == "explicit" ? 

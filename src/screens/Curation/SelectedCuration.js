@@ -6,19 +6,19 @@ import { Context as DJContext } from 'context/DJContext';
 import { navigate, goBack, push } from 'navigationRef';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-
 import { tmpWidth } from 'components/FontNormalize';
 import ReportModal from 'components/ReportModal';
 import DeleteModal from 'components/DeleteModal';
 import HarmfulModal from 'components/HarmfulModal';
 import { SongImage, SongImageBack } from 'components/SongImage'
-import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { useTrackPlayer } from 'providers/trackPlayer';
 import { useFocusEffect } from '@react-navigation/native';
 
 const SelectedCuration = ({ route }) => {
     const { state, postCuration, getmyCuration,addComment, deleteComment,getComment, likecurationpost,unlikecurationpost,editCuration, getCurationposts } = useContext(CurationContext);
     const { state: userState, getOtheruser, getMyInfo } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [hidden, setHidden] = useState(false);
     const [commentitem, setCommentitem] = useState();
     const [text, setText] = useState('');
@@ -40,17 +40,11 @@ const SelectedCuration = ({ route }) => {
     const [reportModal2, setReportModal2] = useState(false);
 
     const [deleteModal, setDeleteModal] = useState(false);
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const [currentCuration, setCurrentCuration] = useState(state.currentCuration);
     const [currentCurationPosts, setCurrentCurationPosts] = useState([]);
     const onClose =() => {
         setShowModal(false);
     }
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
@@ -66,7 +60,7 @@ const SelectedCuration = ({ route }) => {
             return () => {
                 Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
                 Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
-                stoptracksong({ setIsPlayingid })
+                stoptracksong()
             }
         }, [])
     )
@@ -105,19 +99,19 @@ const SelectedCuration = ({ route }) => {
                     <View style={{marginTop:27 * tmpWidth, flex:1, justifyContent: 'center', alignItems: 'center'}}>
                         {currentCuration.isSong ? 
                         <TouchableOpacity onPress={() => {
-                            if(isPlayingid == currentCuration.object.id){
-                                stoptracksong({ setIsPlayingid })
+                            if(isPlayingId == currentCuration.object.id){
+                                stoptracksong()
                             }else{
-                                addtracksong({ data: currentCuration.object, setIsPlayingid, setHarmfulModal })
+                                addtracksong({ data: currentCuration.object })
                             }
                         }}>
                             <SongImage url={currentCuration.object.attributes.artwork.url} size={160} border={160} />
-                            { isPlayingid != currentCuration.object.id ? 
-                            <SvgUri width='60' height='60' source={require('assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> :
-                            <SvgUri width='60' height='60' source={require('assets/icons/modalStop.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> }
+                            { isPlayingId != currentCuration.object.id ? 
+                            <SvgUri width='60' height='60' source={require('../../assets/icons/modalPlay.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> :
+                            <SvgUri width='60' height='60' source={require('../../assets/icons/modalStop.svg')} style={{position: 'absolute', left: 50 * tmpWidth, top: 50 * tmpWidth}}/> }
                         </TouchableOpacity> :
                         <SongImage url={currentCuration.object.artwork.url} size={160} border={160} /> }
-                        { harmfulModal ? <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> : null }
+                        <HarmfulModal />
                     </View>
                     <View style={styles.curationinfo}>
                         {currentCuration.isSong ?

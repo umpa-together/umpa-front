@@ -7,6 +7,7 @@ import {Context as SearchContext} from 'context/SearchContext';
 import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
+import {Context as FeedContext} from 'context/FeedContext';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -25,6 +26,7 @@ const MainSearchScreen = () => {
     const { state, currentHashtag } = useContext(SearchContext);
     const { state: WeeklyState, postWeekly, getRecentPlaylists, getMusicArchive, getWeekly } = useContext(WeeklyContext);
     const { state: djState, getMainRecommendDJ } = useContext(DJContext);
+    const { getFeeds } = useContext(FeedContext)
     const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = () => {
@@ -51,6 +53,7 @@ const MainSearchScreen = () => {
             getWeekly(),
             getMusicArchive(),
             getMainRecommendDJ(),
+            getFeeds(),
             currentHashtag(),
             getRecentPlaylists(),
             getPlaylists(),
@@ -80,7 +83,9 @@ const MainSearchScreen = () => {
             stickyHeaderIndices={[0]}
         >
             <Header />
+            {/* 
             <MusicArchive archive={WeeklyState.musicArchive} />
+            */}
             <SearchBox />
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />

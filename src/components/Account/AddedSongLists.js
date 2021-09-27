@@ -1,19 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import { Context as UserContext } from 'context/UserContext';
-import { tmpWidth } from 'components/FontNormalize';
+import { Context as UserContext } from '../../context/UserContext';
+import { tmpWidth } from '../FontNormalize';
 import { SongImage } from 'components/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { addtracksong, stoptracksong } from 'components/TrackPlayer';
+import { useTrackPlayer } from 'providers/trackPlayer';
 import { DeletePlaylistModal } from 'components/PlaylistModal';
+import HarmfulModal from 'components/HarmfulModal';
 
 export default AddedSongLists = () => {
     const { state, getMyInfo } = useContext(UserContext);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+
     const [refreshing, setRefreshing] = useState(false);
     const [deletePlaylistModal, setDeletePlaylistModal] = useState(false)
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
     const [time, setTime] = useState('')
     const [idx, setIdx] = useState('-1')
 
@@ -40,10 +41,10 @@ export default AddedSongLists = () => {
     }
 
     const onClickSongCover = (item) => {
-        if(isPlayingid == item.id){
-            stoptracksong({ setIsPlayingid })
+        if(isPlayingId == item.id){
+            stoptracksong()
         }else{
-            addtracksong({ data: item, setIsPlayingid, setHarmfulModal })
+            addtracksong({ data: item })
         }
     }
 
@@ -55,11 +56,6 @@ export default AddedSongLists = () => {
     useEffect(() => {
         if(!deletePlaylistModal)    setIdx('-1')
     },[deletePlaylistModal])
-
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
     
     return (
         <View style={styles.container}>
@@ -78,10 +74,10 @@ export default AddedSongLists = () => {
                         >
                             <TouchableOpacity onPress={() => onClickSongCover(item)}>
                                 <SongImage url={item.attributes.artwork.url} size={56} border={56} />
-                                { isPlayingid != item.id ? 
-                                <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
-                                <SvgUri width='26.5' height='26.5' source={require('assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
-                                {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                                { isPlayingId != item.id ? 
+                                <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndPlay}/> :
+                                <SvgUri width='26.5' height='26.5' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndPlay}/> }
+                                <HarmfulModal />
                             </TouchableOpacity>
                             <View style={styles.textBox}>
                                 <View style={styles.flexRowContainer}>

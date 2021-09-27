@@ -14,15 +14,17 @@ import ReportModal from 'components/ReportModal';
 import DeleteModal from 'components/DeleteModal';
 import DeletedModal from 'components/DeletedModal';
 import { SongImage } from 'components/SongImage'
-import { addtracksong, stoptracksong } from 'components/TrackPlayer'
 import { NavHeader } from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTrackPlayer } from '../../providers/trackPlayer';
+import HarmfulModal from '../HarmfulModal';
 
 const ContentDetail = ({ title }) => {
     const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
     const { state: userState, getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [commentId, setCommentId] = useState('');
     const [recomment, setRecomment] = useState(false);
@@ -33,8 +35,6 @@ const ContentDetail = ({ title }) => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
     const [reportModal, setReportModal] = useState(false);
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [harmfulModal, setHarmfulModal] = useState(false);
 
     const img = [];
     const inputRef = useRef();
@@ -99,11 +99,6 @@ const ContentDetail = ({ title }) => {
             }
         }, [])
     )
-
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
 
     useEffect(() => {
         if(keyboardHeight == 0) setRecomment(false);
@@ -180,17 +175,17 @@ const ContentDetail = ({ title }) => {
                                         </View>
                                         <TouchableOpacity style={{marginRight: 5 * tmpWidth}}
                                             onPress={() =>{
-                                                if(isPlayingid == state.currentContent.song.id){
-                                                    stoptracksong({ setIsPlayingid })
+                                                if(isPlayingId == state.currentContent.song.id){
+                                                    stoptracksong()
                                                 } else { 
-                                                    addtracksong({data: state.currentContent.song, setIsPlayingid, setHarmfulModal })
+                                                    addtracksong({data: state.currentContent.song })
                                                 }
                                             }
                                         }>
-                                            { isPlayingid != state.currentContent.song.id ?
-                                            <SvgUri width='36' height='36' source={require('assets/icons/boardMusicPlay.svg')}/> :
-                                            <SvgUri width='36' height='36' source={require('assets/icons/boardMusicStop.svg')}/> }
-                                            {harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                                            { isPlayingId != state.currentContent.song.id ?
+                                            <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicPlay.svg')}/> :
+                                            <SvgUri width='36' height='36' source={require('../../assets/icons/boardMusicStop.svg')}/> }
+                                            <HarmfulModal />
                                         </TouchableOpacity>
                                     </View>}
                                     {state.currentContent != null && state.currentContent.image.length == 0 ? null:

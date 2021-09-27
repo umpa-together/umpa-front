@@ -4,7 +4,7 @@ import {Context as UserContext} from 'context/UserContext';
 import Recommend from 'components/Feed/Recommend';
 import Feed from 'components/Feed/Feed';
 
-const MainPage = () => {
+const MainFeedPage = () => {
     const { state: userState } = useContext(UserContext);
     
     return (
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MainPage;
+export default MainFeedPage;

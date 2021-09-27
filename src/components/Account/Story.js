@@ -3,13 +3,12 @@ import { Text, View, TouchableOpacity, FlatList, StyleSheet } from 'react-native
 import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { addtracksong, stoptracksong } from 'components/TrackPlayer'
+import { useTrackPlayer } from 'providers/trackPlayer';
 import { SongImage } from 'components/SongImage'
 import StoryCalendar from 'components/StoryCalendar';
 import HarmfulModal from 'components/HarmfulModal';
 import DeleteModal from 'components/DeleteModal';
 import { tmpWidth } from 'components/FontNormalize';
-import TrackPlayer from 'react-native-track-player';
 import StoryViewer from './StoryViewer'
 import ProfileImage from 'components/ProfileImage';
 
@@ -17,18 +16,16 @@ require('date-utils');
 
 export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
     const { state: userState } = useContext(UserContext);
-    const [harmfulModal, setHarmfulModal] = useState(false);
+    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [deleteModal, setDeleteModal] = useState(false);
     const [viewerModal, setViewerModal] = useState(false);
     const [calendarModal, setCalendarModal] = useState(false);
-    const [isPlayingid, setIsPlayingid] = useState('0')
     const newDate = new Date()
     const today = newDate.toFormat('YYYY.MM.DD')
 
     const onClose = () => {
         setStoryModal(false);
-        setIsPlayingid('0');
-        TrackPlayer.reset()
+        stoptracksong()
     }
 
     const onClickViewer = () => {
@@ -44,15 +41,12 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
     }
 
     useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
-    useEffect(() => {
         if(!story)  setStoryModal(false)
     }, [story])
+
     useEffect(() => {
         if(storyModal && story.song.attributes.contentRating != "explicit"){
-            addtracksong({ data: story.song, setIsPlayingid, setHarmfulModal });
+            addtracksong({ data: story.song });
         }
     }, [storyModal])
 
@@ -100,18 +94,18 @@ export default Story = ({ story, storyModal, setStoryModal, isMyAccount }) => {
                             <SvgUri width='40' height='40' source={require('assets/icons/calendar.svg')} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if(isPlayingid == story.song.id){
-                                stoptracksong({ setIsPlayingid })
+                            if(isPlayingId == story.song.id){
+                                stoptracksong()
                             }else{
-                                addtracksong({ data: story.song, setIsPlayingid, setHarmfulModal })
+                                addtracksong({ data: story.song })
                             }
                         }}>
                             <SongImage url={story.song.attributes.artwork.url} size={155} border={155}/>
-                            { isPlayingid != story.song.id ? 
-                            <SvgUri width='56' height='56' source={require('assets/icons/modalPlay.svg')} style={styles.stopAndplay}/> :
-                            <SvgUri width='56' height='56' source={require('assets/icons/modalStop.svg')} style={styles.stopAndplay}/> }
+                            { isPlayingId != story.song.id ? 
+                            <SvgUri width='56' height='56' source={require('../../assets/icons/modalPlay.svg')} style={styles.stopAndplay}/> :
+                            <SvgUri width='56' height='56' source={require('../../assets/icons/modalStop.svg')} style={styles.stopAndplay}/> }
                         </TouchableOpacity>
-                        { harmfulModal && <HarmfulModal harmfulModal={harmfulModal} setHarmfulModal={setHarmfulModal}/> }
+                        <HarmfulModal />
                         <View style={styles.songBox}>
                             { story.song.attributes.contentRating == "explicit" && 
                             <SvgUri width="17" height="17" source={require('assets/icons/19.svg')} style={styles.explicit} /> }

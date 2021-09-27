@@ -30,7 +30,6 @@ import HarmfulModal from '../../components/HarmfulModal';
 import DeletedModal from '../../components/DeletedModal';
 import { useTrackPlayer } from 'providers/trackPlayer'
 import { SongImage } from '../../components/SongImage'
-import { stoptracksong } from '../../components/TrackPlayer'
 import { useFocusEffect } from '@react-navigation/native';
 
 

@@ -15,6 +15,7 @@ import Comments from 'components/Playlist/Comments';
 import PlaylistProvider from 'providers/playlist';
 import MusicBar from 'components/MusicBar'
 import { useTrackPlayer } from 'providers/trackPlayer'
+import { tmpWidth } from 'components/FontNormalize'
 
 const SelectedPlaylist = ({ route }) => {
     const { state, getPlaylist } = useContext(PlaylistContext);
@@ -99,7 +100,7 @@ const SelectedPlaylist = ({ route }) => {
                     <PlaylistProvider>
                         <PlaylistsLikes playlist={currentPlaylist} />
                     </PlaylistProvider>    
-                    <SongsLists songs={currentSongs} />
+                    <SongsLists songs={currentSongs} container={styles.songContainer} />
                     <HashtagLists hashtag={currentPlaylist.hashtag} setHashtag={setHashtag} />
                     <Thumbnail img={currentPlaylist.image} />
                     <PlaylistProvider>
@@ -123,6 +124,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         height: '100%', 
         flex: 1,
+    },
+    songContainer: { 
+        paddingLeft: 18 * tmpWidth, 
+        marginTop: 16 * tmpWidth,
     },
 });
 

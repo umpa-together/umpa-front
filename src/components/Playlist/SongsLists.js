@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { SongImage } from 'components/SongImage'
 import HarmfulModal from 'components/HarmfulModal';
@@ -7,7 +7,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
 import MoveText from 'components/MoveText'
 
-export default SongsLists = ({ songs }) => {
+export default SongsLists = ({ songs, container }) => {
     const { isPlayingId, addtracksong, stoptracksong } = useTrackPlayer()
     
     const onClickCover = (preview) => {
@@ -20,7 +20,7 @@ export default SongsLists = ({ songs }) => {
 
     return (
         <FlatList
-            contentContainerStyle={styles.container}
+            contentContainerStyle={container}
             data={songs}
             keyExtractor={playlist=>playlist.id}
             horizontal = {true}
@@ -66,10 +66,6 @@ export default SongsLists = ({ songs }) => {
 }
 
 const styles=StyleSheet.create({
-    container: { 
-        paddingLeft: 18 * tmpWidth, 
-        marginTop: 16 * tmpWidth,
-    },
     playlistsImg: {
         width: 120 * tmpWidth,
         height: 120 * tmpWidth,
