@@ -16,9 +16,6 @@ import SignupScreen from 'screens/SignupScreen';
 import Signupopt from 'screens/Signupopt';
 import NoticeScreen from 'screens/NoticeScreen';
 
-import CurationSearchPage from 'screens/Curation/CurationSearchPage';
-import SelectedCuration from 'screens/Curation/SelectedCuration';
-
 import AccountScreen from 'screens/Account/MyAccountScreen';
 import OtherAccount from 'screens/Account/OtherAccount';
 import FollowPage from 'screens/Account/FollowPage';
@@ -168,9 +165,7 @@ const MainStackScreen = () => {
             <MainStack.Screen name="SelectedChat" component={SelectedChat} />
 
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
-            <MainStack.Screen name="SelectedCuration" component={SelectedCuration} />
             <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />
-            <MainStack.Screen name="CurationSearch" component={CurationSearchPage} />
             <MainStack.Screen name="SearchBoard" component={SearchBoardPage} />
             <MainStack.Screen name="CreateBoard" component={CreateBoardPage} />
             <MainStack.Screen name="SelectedBoard" component={SelectedBoardPage} />

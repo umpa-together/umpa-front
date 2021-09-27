@@ -4,11 +4,9 @@ import { Context as NoticeContext } from 'context/NoticeContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
-import { Context as CurationContext } from 'context/CurationContext';
 import { Context as BoardContext } from 'context/BoardContext';
 import PlaylistNoticeForm from 'components/Notice/PlaylistNoticeForm';
 import BoardNoticeForm from 'components/Notice/BoardNoticeForm';
-import CurationNoticeForm from 'components/Notice/CurationNoticeForm';
 import UserNoticeForm from 'components/Notice/UserNoticeForm';
 import { navigate, push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
@@ -21,7 +19,6 @@ const NoticeScreen = () => {
     const { initPlaylist, getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, initOtherUser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    const { getCuration } = useContext(CurationContext);
     const { getCurrentContent, initMusic, initCurrentContent, getSelectedBoard } = useContext(BoardContext);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -98,15 +95,6 @@ const NoticeScreen = () => {
                             }}>
                                 <PlaylistNoticeForm notice={item} /> 
                             </TouchableOpacity> :
-                            (item.noticetype == 'culike' || item.noticetype=='ccom' ?
-                            <TouchableOpacity onPress={async () => {
-                                if(item.curationpost != null){
-                                    await getCuration({isSong : item.curationpost.isSong,object:item.curationpost,id:item.curationpost.songoralbumid})
-                                    navigate('SelectedCuration', {id: item.curationpost.songoralbumid, postid:item.curationpost._id})                                   
-                                }
-                            }}>
-                                <CurationNoticeForm notice={item} />
-                            </TouchableOpacity> :
                             (item.noticetype == 'blike' || item.noticetype == 'bcom' || item.noticetype == 'bcomlike' 
                             || item.noticetype == 'brecom' || item.noticetype == 'brecomlike' ?
                             <TouchableOpacity onPress={() => {
@@ -131,7 +119,7 @@ const NoticeScreen = () => {
                                 push('OtherAccount', {otherUserId: item.noticinguser._id})
                             }}>
                                 <UserNoticeForm notice={item} />
-                            </TouchableOpacity> : null )))))}
+                            </TouchableOpacity> : null ))))}
                         </View>
                     )
                 }}

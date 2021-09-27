@@ -3,7 +3,6 @@ import { RefreshControl, View, ScrollView, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import AccountPlaylist from  'components/Account/AccountPlaylist';
 import AccountDaily from 'components/Account/AccountDaily'
-import AccountCurating from  'components/Account/AccountCurating';
 import Header from 'components/Account/Header'
 import LoadingIndicator from 'components/LoadingIndicator'
 import Menu from 'components/Account/Menu'
