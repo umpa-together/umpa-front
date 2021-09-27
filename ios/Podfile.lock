@@ -646,7 +646,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 09bec9a79bb2361b71fc1efcbffbe58f8cc9f9b2
+  FBReactNativeSpec: f0c7d22ee1180b4fb9529cdfdeea6d3f07549024
   Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
   FirebaseAnalytics: 9f8f4feab1f3fddf4e4515f8f022fe6aa9e51043
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
@@ -711,6 +711,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
-PODFILE CHECKSUM: 71bfae0e2671e433f8b2b2c97a424be54d3eb189
+PODFILE CHECKSUM: ccb5458dabfbf6de187a965664f40ae5cf38d1a5
 
 COCOAPODS: 1.10.1
