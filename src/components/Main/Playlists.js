@@ -9,8 +9,9 @@ export default Playlists = ({ playlists, isPlaylist }) => {
     const { getPlaylist } = useContext(PlaylistContext);
 
     const onClickPlaylist = async (id, postUser) => {
-        await getPlaylist({ id, postUserId: postUser })
-        push('SelectedPlaylist', { id, postUser })
+        const postUserId = postUser._id || postUser
+        await getPlaylist({ id, postUserId })
+        push('SelectedPlaylist', { id, postUser: postUserId })
     }
 
     return (
@@ -25,7 +26,7 @@ export default Playlists = ({ playlists, isPlaylist }) => {
                 return (
                     <TouchableOpacity 
                         style={styles.playlist}
-                        onPress={() => onClickPlaylist(id, postUser._id)}
+                        onPress={() => onClickPlaylist(id, postUser)}
                     >
                         <Image source={{uri: image}} style={styles.playlistImg} />
                         <Text style={styles.title} numberOfLines={1}>{title}</Text>

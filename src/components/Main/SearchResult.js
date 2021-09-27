@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import LoadingIndicator from '../LoadingIndicator'
 import { tmpWidth } from 'components/FontNormalize'
 import SvgUri from 'react-native-svg-uri';
 import DJ from './DJ';
 import Playlists from './Playlists';
+import Daily from './Daily';
 import { navigate } from 'navigationRef';
 
 export default SearchResult = () => {
@@ -15,23 +16,25 @@ export default SearchResult = () => {
         title: '플레이리스트',
         components: <Playlists playlists={state.playList} isPlaylist={true} />
     }, {
-        title: '서퍼',
-        components: <DJ dj={state.dj}/>
-    }, 
-    /*{
         title: '데일리',
-        lists: state.daily,
-        components: <Daily daily={state.daily} />
-    }*/]
+        components: <Daily daily={state.daily} isDaily={true} />
+    }, {
+        title: '서퍼',
+        components: <DJ dj={state.dj} />
+    }]
 
     const onClickMore = (option) => {
-        navigate('ContentsMore', { option })
+        navigate('ContentsMore', 
+        { option, playlist: state.playList,
+        daily: state.daily, dj: state.dj })
     }
 
     return (
         <>
             {state.dj === null && state.playList === null ? <LoadingIndicator /> :
-            <>
+            <ScrollView
+                contentContainerStyle={styles.container}
+            >
                 {optionLists.map(({ title, components }) => {
                     return (
                         <View key={title}>
@@ -45,7 +48,7 @@ export default SearchResult = () => {
                         </View>
                     )
                 })}
-            </> }
+            </ScrollView> }
         </>
     )
 }
@@ -67,5 +70,8 @@ const styles=StyleSheet.create({
     more: {
         width: 30 * tmpWidth,
         height: 30 * tmpWidth,
+    },
+    container: {
+        paddingBottom: 30 * tmpWidth
     }
 })

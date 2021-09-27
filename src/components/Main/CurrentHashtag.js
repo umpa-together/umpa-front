@@ -1,18 +1,15 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { Context as SearchContext } from 'context/SearchContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { navigate } from 'navigationRef';
 import SvgUri from 'react-native-svg-uri';
 
 export default CurrentHashtag = ({ hashtag }) => {
-    const { SearchHashtag } = useContext(SearchPlaylistContext);
     const { currentHashtag } = useContext(SearchContext);
 
     const onClickHashtag = (item) => {
-        navigate('SelectedHashtag', {data: item, text: item.hashtag, searchOption: 'Hashtag'})
-        SearchHashtag({ object: item.hashtag })
+        navigate('SelectedHashtag', { data: item })
     }
 
     const onClickRefresh = () => {
