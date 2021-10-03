@@ -20,8 +20,8 @@ export default RecentPlaylists = ({ playlists }) => {
     })
 
     const onClickPlaylist = async (id, postUserId) => {
-        await getPlaylist({id:id, postUserId:postUserId})
-        push('SelectedPlaylist', {id: id, postUser: postUserId})
+        await getPlaylist({id:id, postUserId:postUserId._id})
+        push('SelectedPlaylist', {id: id, postUser: postUserId._id})
     }
 
     useEffect(() => {
