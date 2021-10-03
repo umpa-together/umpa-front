@@ -11,7 +11,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import RepresentSong from 'components/RepresentSong';
 
 const Recommend = () => {
-    const { getPlaylists, getPlaylist } = useContext(PlaylistContext);
+    const { getPlaylist } = useContext(PlaylistContext);
     const { getOtheruser, getMyInfo, follow, unfollow } = useContext(UserContext);
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const [representSong, setRepresentSong] = useState(null);
@@ -26,10 +26,7 @@ const Recommend = () => {
 
     const fetchData = async () => {
         setRefreshing(true);
-        await Promise.all([
-            getPlaylists(),
-            getMyInfo()
-        ])
+        getMyInfo()
         setRefreshing(false);
     };
     const onRefresh = () => {
