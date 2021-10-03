@@ -1,106 +1,109 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext'
 import { Context as DJContext } from 'context/DJContext'
-import SvgUri from 'react-native-svg-uri';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as NoticeContext } from 'context/NoticeContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push, navigate } from 'navigationRef';
+import ProfileImage from 'components/ProfileImage'
 
 const BoardNoticeForm = ({ notice }) => {
+    const { noticinguser: user, noticetype: type, time, board, boardcontent, boardcomment, boardrecomment, boardsong, _id: id, isRead } = notice
     const { getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
+    const { getCurrentContent, getSelectedBoard } = useContext(BoardContext);
+    const { readNotice } = useContext(NoticeContext)
+
+    const onClickProfile = async () => {
+        await Promise.all([
+            getOtheruser({ id: user._id }),
+            getSongs({ id: user._id })
+        ]);
+        push('OtherAccount', { otherUserId: user._id })
+    }
+
+    const onClickNotice = async () => {
+        if(!isRead)  readNotice({ id })
+        if (type === 'bsonglike') {
+            await getSelectedBoard({ id: board._id })
+            navigate('MusicArchive', { name: board.name })
+        } else {
+            getCurrentContent({ id: boardcontent._id })
+            navigate('SelectedContent', { boardName: board.name, boardId: board._id })
+        }
+    }
+
     return (
-        <View style={styles.container}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity style={styles.img} onPress={async () =>{
-                    await Promise.all([getOtheruser({id:notice.noticinguser._id}),
-                    getSongs({id:notice.noticinguser._id})]);
-                    push('OtherAccount', {otherUserId:notice.noticinguser._id})
-                }}>                
-                    { notice.noticinguser.profileImage == undefined ?
-                    <SvgUri width='100%' height='100%' source={require('assets/icons/noprofile.svg')} />
-                    : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
-                </TouchableOpacity> 
-                { notice.noticetype == 'blike' && notice.board != null && notice.boardcontent != null ?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name}
-                            <Text style={styles.innerText}> 님이 게시글: {notice.boardcontent.content}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                : notice.noticetype == 'bcom'  && notice.board != null  && notice.boardcomment != null && notice.boardcontent != null ?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'에 댓글을 달았습니다: {notice.boardcomment.comment} <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                : notice.noticetype == 'bcomlike' && notice.board != null  && notice.boardcomment != null && notice.boardcontent != null ?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'의 댓글: {notice.boardcomment.comment}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                : notice.noticetype == 'brecom' && notice.board != null  && notice.boardrecomment != null && notice.boardcontent != null ?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'에 대댓글을 달았습니다: {notice.boardrecomment.comment} <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                : notice.noticetype == 'brecomlike' && notice.board != null  && notice.boardrecomment != null && notice.boardcontent != null?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 게시글 '{notice.boardcontent.content}'의 대댓글: {notice.boardrecomment.comment}을 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                : notice.noticetype == 'bsonglike' && notice.board != null  && notice.boardsong != null ?
-                    <View style={styles.content}>
-                        <Text style={styles.boardName} numberOfLines={1}>{notice.board.name}</Text>
-                        <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                            <Text style={styles.innerText}> 님이 {notice.boardsong.song.attributes.artistName} - {notice.boardsong.song.attributes.name}를 좋아합니다. <Text style={styles.boardName}>{notice.time}</Text></Text>
-                        </Text>
-                    </View>
-                :
-                    <View style={styles.content}>
-                        <Text>삭제된 알람입니다</Text>
-                    </View>
-                }
+        <TouchableOpacity 
+            style={[styles.container, styles.flexRow]}
+            onPress={onClickNotice}
+        >
+            <TouchableOpacity onPress={onClickProfile}>
+                <ProfileImage img={user.profileImage} imgStyle={styles.profileImg}/>
+            </TouchableOpacity> 
+            <View style={styles.content}>
+                <Text style={styles.title} numberOfLines={1}>{board.name}</Text>
+                <Text style={styles.name} numberOfLines={2}>{user.name} 
+                    {type === 'blike' ?
+                    <Text style={styles.contentText}> 님이 게시글: {boardcontent.content}을 좋아합니다. <Text style={styles.time}>{time}</Text></Text> :
+                    type === 'bcom' ? 
+                    <Text style={styles.contentText}> 님이 게시글 '{boardcontent.content}'에 댓글을 달았습니다: {boardcomment.comment} <Text style={styles.time}>{notice.time}</Text></Text> :
+                    type === 'bcomlike' ?
+                    <Text style={styles.contentText}> 님이 게시글 '{boardcontent.content}'의 댓글: {boardcomment.comment}을 좋아합니다. <Text style={styles.time}>{notice.time}</Text></Text> :
+                    type === 'brecom' ?
+                    <Text style={styles.contentText}> 님이 게시글 '{boardcontent.content}'에 대댓글을 달았습니다: {boardrecomment.comment} <Text style={styles.time}>{notice.time}</Text></Text> :
+                    type === 'brecomlike' ? 
+                    <Text style={styles.contentText}> 님이 게시글 '{boardcontent.content}'의 대댓글: {boardrecomment.comment}을 좋아합니다. <Text style={styles.time}>{notice.time}</Text></Text> :
+                    type === 'bsonglike' ?
+                    <Text style={styles.contentText}> 님이 {boardsong.song.attributes.artistName} - {boardsong.song.attributes.name}를 좋아합니다. <Text style={styles.time}>{notice.time}</Text></Text> : null }
+                </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 };
 
 const styles=StyleSheet.create({
     container: {
-        marginLeft: 20  * tmpWidth, 
-        marginRight: 20 * tmpWidth,  
-        flex: 1
+        marginLeft: 18  * tmpWidth, 
+        marginRight: 18 * tmpWidth,  
+        marginBottom: 7 * tmpWidth,
+        marginTop: 7 * tmpWidth
     },
-    img: {
+    flexRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    profileImg: {
         height: 48 * tmpWidth, 
         width: 48 * tmpWidth, 
         borderRadius: 48 * tmpWidth,
     },
     content: {
-        marginLeft: 14 * tmpWidth, 
-        flex: 1,
-    },
-    boardName: {
+        flex: 1, 
+        paddingLeft: 12 * tmpWidth, 
+        paddingRight: 12 * tmpWidth
+    },  
+    title: {
         fontSize: 12 * tmpWidth,
-        color: 'rgba(0,0,0,0.61)',
-        lineHeight: 18 * tmpWidth,
+        color: '#5d5d5d',
+        fontWeight: '400',
+        lineHeight: 14 * tmpWidth,
     },
-    outerText: {
-        fontSize: 14 * tmpWidth, 
+    name: {
+        fontSize: 14 * tmpWidth,
         fontWeight: '500',
-        lineHeight: 18 * tmpWidth,
+        lineHeight: 18 * tmpWidth
     },
-    innerText: {
-        fontWeight:'400',
-        lineHeight: 18 * tmpWidth,
+    contentText: {
+        fontSize: 14 * tmpWidth,
+        fontWeight: '400',
+        lineHeight: 18 * tmpWidth
+    },
+    time: {
+        fontSize: 12 * tmpWidth,
+        fontWeight: '400',
+        color: '#9499a3'
     }
 });
 

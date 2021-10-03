@@ -2,17 +2,17 @@ import React, { useContext } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext'
 import { Context as DJContext } from 'context/DJContext'
-import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as DailyContext } from 'context/DailyContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'navigationRef';
 import ProfileImage from 'components/ProfileImage'
 
-const PlaylistNoticeForm = ({ notice }) => {
-    const { noticinguser: user, noticetype: type, playlist, playlistcomment, playlistrecomment, time, _id: id, isRead } = notice
+const DailyNoticeForm = ({ notice }) => {
+    const { noticinguser: user, noticetype: type, daily, dailycomment, dailyrecomment, time, _id: id, isRead } = notice
     const { getOtheruser } = useContext(UserContext);
     const { getSongs } = useContext(DJContext);
-    const { getPlaylist } = useContext(PlaylistContext);
+    const { getDaily } = useContext(DailyContext);
     const { readNotice } = useContext(NoticeContext)
 
     const onClickProfile = async () => {
@@ -25,8 +25,8 @@ const PlaylistNoticeForm = ({ notice }) => {
 
     const onClickNotice = async () => {
         if(!isRead)  readNotice({ id })
-        await getPlaylist({ id: playlist._id, postUserId: playlist.postUserId })
-        push('SelectedPlaylist', { id: playlist._id, postUser: playlist.postUserId })
+        await getDaily({ id: daily._id, postUserId: daily.postUserId })
+        push('SelectedDaily', { id: daily._id, postUser: daily.postUserId })
     }
 
     return (
@@ -38,21 +38,21 @@ const PlaylistNoticeForm = ({ notice }) => {
                 <ProfileImage img={user.profileImage} imgStyle={styles.profileImg}/>
             </TouchableOpacity> 
             <View style={styles.content}>
-                <Text style={styles.title} numberOfLines={1}>{playlist.title}</Text>
+                <Text style={styles.title} numberOfLines={1}>{daily.textcontent}</Text>
                 <Text style={styles.name} numberOfLines={2}>{user.name} 
-                    { type === 'plike' ? 
-                    <Text style={styles.contentText}> 님이 플레이리스트를 좋아합니다. <Text style={styles.time}>{time}</Text></Text> : 
-                    type === 'pcom' ? 
-                    <Text style={styles.contentText}> 님이 댓글을 달았습니다: {playlistcomment.text} <Text style={styles.time}>{time}</Text></Text> :
-                    type === 'pcomlike' ?
-                    <Text style={styles.contentText}> 님이 댓글: {playlistcomment.text}를 좋아합니다. <Text style={styles.time}>{time}</Text></Text> :
-                    type === 'precom' ? 
-                    <Text style={styles.contentText}> 님이 대댓글을 달았습니다: {playlistrecomment.text} <Text style={styles.time}>{time}</Text></Text> :
-                    type === 'precomlike' ? 
-                    <Text style={styles.contentText}> 님이 대댓글: {playlistrecomment.text}을 좋아합니다. <Text style={styles.time}>{time}</Text></Text> : null }
+                    { type === 'dlike' ? 
+                    <Text style={styles.contentText}> 님이 데일리를 좋아합니다. <Text style={styles.time}>{time}</Text></Text> : 
+                    type === 'dcom' ? 
+                    <Text style={styles.contentText}> 님이 댓글을 달았습니다: {dailycomment.text} <Text style={styles.time}>{time}</Text></Text> :
+                    type === 'dcomlike' ?
+                    <Text style={styles.contentText}> 님이 댓글: {dailycomment.text}를 좋아합니다. <Text style={styles.time}>{time}</Text></Text> :
+                    type === 'drecom' ? 
+                    <Text style={styles.contentText}> 님이 대댓글을 달았습니다: {dailyrecomment.text} <Text style={styles.time}>{time}</Text></Text> :
+                    type === 'drecomlike' ? 
+                    <Text style={styles.contentText}> 님이 대댓글: {dailyrecomment.text}을 좋아합니다. <Text style={styles.time}>{time}</Text></Text> : null }
                 </Text>
             </View>
-            <Image style={styles.playlistImg} source={{uri: playlist.image}} />
+            {daily.image[0] && <Image style={styles.dailyImg} source={{uri: daily.image[0]}} /> }
         </TouchableOpacity>
     )
 };
@@ -78,7 +78,7 @@ const styles=StyleSheet.create({
         width: 48 * tmpWidth, 
         borderRadius: 48 * tmpWidth,
     },
-    playlistImg: {
+    dailyImg: {
         height: 48 * tmpWidth, 
         width: 48 * tmpWidth, 
     },
@@ -105,4 +105,4 @@ const styles=StyleSheet.create({
     }
 });
 
-export default PlaylistNoticeForm;
+export default DailyNoticeForm;
