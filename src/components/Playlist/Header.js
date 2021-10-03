@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext'
 import { Context as UserContext } from 'context/UserContext'
+import { Context as FeedContext } from 'context/FeedContext';
 import SvgUri from 'react-native-svg-uri'
 import { tmpWidth } from 'components/FontNormalize'
 import { StatusBarHeight } from 'components/StatusBarHeight'
@@ -9,8 +10,9 @@ import { goBack, navigate } from 'navigationRef'
 import { usePlaylist } from 'providers/playlist';
 
 export default Header = ({ title, click, setIsSearch, isEdit }) => {
-    const { state, addPlaylist, editPlaylist, getPlaylists } = useContext(PlaylistContext);
+    const { state, addPlaylist, editPlaylist } = useContext(PlaylistContext);
     const { getMyInfo } = useContext(UserContext)
+    const { getFeeds } = useContext(FeedContext)
     const { songs, informationRef, setValidity, image, title: playlistTitle } = usePlaylist()
     const [isClick, setIsClick] = useState(false)
 
@@ -53,7 +55,7 @@ export default Header = ({ title, click, setIsSearch, isEdit }) => {
                     });            
                 }
                 getMyInfo();
-                getPlaylists();
+                getFeeds()
             } else {
                 if(informationRef.current.title.length == 0){
                     setValidity((prev) => ({

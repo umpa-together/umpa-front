@@ -15,8 +15,21 @@ const LoadingPage = ({ setIsSplash }) => {
     }
     
     useEffect(()=>{
-        TrackPlayer.setupPlayer().then(async() => {
-            console.log('reday');
+        TrackPlayer.setupPlayer({waitForBuffer: true}).then(async() => {
+            await TrackPlayer.updateOptions({
+                stopWithApp: false,
+                capabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE, TrackPlayer.CAPABILITY_STOP],
+                compactCapabilities: [
+                    TrackPlayer.CAPABILITY_PLAY,
+                    TrackPlayer.CAPABILITY_PAUSE,
+                    TrackPlayer.CAPABILITY_STOP,
+                ],
+                notificationCapabilities: [
+                    TrackPlayer.CAPABILITY_PLAY,
+                    TrackPlayer.CAPABILITY_PAUSE,
+                    TrackPlayer.CAPABILITY_STOP,
+                ],
+            });        
         });        
         fadeIn();
         const loading = setTimeout(() => setIsSplash(false), 1500);

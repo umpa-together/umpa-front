@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const NoticeReducer = (state, action) => {
     switch(action.type){
             case 'get_notice':
-                return { ...state, notice: action.payload, currentNoticePage: 1};
+                return { ...state, notice: action.payload, currentNoticePage: 1, notNext: false };
             case 'nextNotice':
                   return { ...state, notice: state.notice.concat(action.payload), currentNoticePage: state.currentNoticePage + 1}
             case 'set_token' :
@@ -42,9 +42,9 @@ const nextNotice = (dispatch) => async ({page}) => {
       }  
 }
 
-const deletenotice = (dispatch) => async ({ id }) => {
+const readNotice = (dispatch) => async ({ id }) => {
       try {
-            await serverApi.delete('/notice/'+id);
+            await serverApi.put('/notice/'+id);
       } catch (err) {
             dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
       }
@@ -70,6 +70,6 @@ const deletenoticetoken = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     NoticeReducer,
-    { deletenoticetoken, getnotice, deletenotice, setnoticetoken, nextNotice },
+    { deletenoticetoken, getnotice, readNotice, setnoticetoken, nextNotice },
     { notice: null, errorMessage: '', currentNoticePage: 0, notNext: false }
 )

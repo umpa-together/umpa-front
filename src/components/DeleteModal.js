@@ -5,15 +5,17 @@ import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
-import { Context as DailyContext } from '/context/DailyContext';
-
+import { Context as DailyContext } from 'context/DailyContext';
+import { Context as FeedContext } from 'context/FeedContext';
 import { goBack } from 'navigationRef';
-const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComments, playlistId,dailyId }) => {
+
+const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, playlistId,dailyId }) => {
     const [title, setTitle] = useState('');
-    const { state, deletePlaylist, deleteComment, deletereComment, getPlaylists } = useContext(PlaylistContext);
+    const { state, deletePlaylist, deleteComment, deletereComment } = useContext(PlaylistContext);
     const { getMyInfo, deleteStory } = useContext(UserContext);
     const { state: boardState, deleteContent, deleteComment: deleteBoardComment, deleteRecomment } = useContext(BoardContext);
     const { state:daily, deleteDaily, deleteComment:dailydeleteComment, deletereComment:dailydeletereComment, } = useContext(DailyContext);
+    const { getFeeds } = useContext(FeedContext)
 
     const onClose = () =>{
         setDeleteModal(false);
@@ -23,25 +25,22 @@ const DeleteModal = ({  deleteModal, setDeleteModal, type, subjectId, setComment
         if (type == 'playlist') {
             await deletePlaylist({id:state.current_playlist._id});
             getMyInfo()
-            getPlaylists()
+            getFeeds()
             goBack()
         } else if (type=='daily'){
             await deleteDaily({id:daily.current_daily._id});
             getMyInfo()
             goBack()
-
-
+            getFeeds()
         } else if (type == 'playlistComment') {
             await deleteComment({id:playlistId, commentid : subjectId})
         } else if (type == 'playlistReComment') {
             deletereComment({commentid:subjectId})
-        
         } else if (type == 'dailyComment') {
             await dailydeleteComment({id:dailyId, commentid : subjectId})
         } else if (type == 'dailyReComment') {
             dailydeletereComment({commentid:subjectId})
         }
-   
         else if (type == 'boardContent') {
             await deleteContent({ contentId: boardState.currentContent._id, boardId: boardState.currentContent.boardId })
             getMyInfo()

@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
-import {Context as PlaylistContext} from 'context/PlaylistContext';
 import {Context as BoardContext} from 'context/BoardContext';
 import {Context as NoticeContext} from 'context/NoticeContext';
 import {Context as SearchContext} from 'context/SearchContext';
@@ -19,7 +18,6 @@ import Header from 'components/Main/Header';
 import WeeklyDailies from 'components/Main/WeeklyDailies';
 
 const MainSearchScreen = () => {
-    const { getPlaylists } = useContext(PlaylistContext);
     const { getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
@@ -56,7 +54,6 @@ const MainSearchScreen = () => {
             getFeeds(),
             currentHashtag(),
             getRecentPlaylists(),
-            getPlaylists(),
             getMyStory(),
             getOtherStory(),
             getGenreBoard(),
@@ -83,9 +80,7 @@ const MainSearchScreen = () => {
             stickyHeaderIndices={[0]}
         >
             <Header />
-            {/* 
             <MusicArchive archive={WeeklyState.musicArchive} />
-            */}
             <SearchBox />
             <CurrentHashtag hashtag={state.currentHashtag}/>
             <RecentPlaylists playlists={WeeklyState.recentPlaylists} />

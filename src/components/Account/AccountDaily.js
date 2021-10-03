@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as DailyContext } from 'context/DailyContext';
 import { navigate, push } from 'navigationRef';
+import { SongImage } from 'components/SongImage';
 
 const AccountDaily = ({ daily, isMyAccount }) => {
     daily.sort(function(a,b){
@@ -31,11 +32,14 @@ const AccountDaily = ({ daily, isMyAccount }) => {
                         <TouchableOpacity 
                             onPress={() => onClickDaily(id, postUser)}
                             key={id}
+                            style={styles.item}
                         >
+                            {image[0] ? 
                             <Image 
                                 style={styles.daily} 
                                 source={{ url: img }} 
-                            />
+                            /> : 
+                            <SongImage url={img} size={117} border={4}/> }
                         </TouchableOpacity>
                     )
                 })}
@@ -70,12 +74,14 @@ const styles=StyleSheet.create({
         alignItems: 'center',
         paddingTop: 78 * tmpWidth
     },
+    item: {
+        marginRight: 4 * tmpWidth,
+        marginBottom: 4 * tmpWidth
+    },
     daily: {
         width: 117 * tmpWidth,
         height: 117 * tmpWidth,
         borderRadius: 4 * tmpWidth,
-        marginRight: 4 * tmpWidth,
-        marginBottom: 4 * tmpWidth
     },
     title: {
         fontSize: 16 * tmpWidth,
