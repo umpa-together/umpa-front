@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useModal } from 'providers/modal';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { useProgress } from 'react-native-track-player';
 
 const TrackPlayerContext = createContext(null)
 
@@ -9,10 +9,9 @@ export const useTrackPlayer = () => useContext(TrackPlayerContext)
 export default TrackPlayerProvider = ({ children }) => {
     const [isPlayingId, setIsPlayingId] = useState('0')
     const [currentSong, setCurrentSong] = useState(null)
-    const [playTime, setPlayTime] = useState(0)
     const { setHarmfulModal } = useModal()
-    const idRef = useRef('0')
-    
+    const { position, duration } = useProgress()
+
     const addtracksong= async ({ data }) => {
         const track = new Object();
         track.id = data.id;
@@ -21,7 +20,6 @@ export default TrackPlayerProvider = ({ children }) => {
         track.artist = data.attributes.artistName;
         if (data.attributes.contentRating != "explicit") {
             setIsPlayingId(data.id);
-            idRef.current = data.id
             await TrackPlayer.reset()
             await TrackPlayer.add(track);
             TrackPlayer.play();
@@ -33,7 +31,6 @@ export default TrackPlayerProvider = ({ children }) => {
     
     const stoptracksong= () => {    
         setIsPlayingId('0');
-        idRef.current = '0'
         setCurrentSong(null)
         TrackPlayer.reset()
     };
@@ -41,7 +38,8 @@ export default TrackPlayerProvider = ({ children }) => {
     const value = {
         isPlayingId,
         currentSong,
-        playTime,
+        position,
+        duration,
         addtracksong,
         stoptracksong,
     }
@@ -49,19 +47,10 @@ export default TrackPlayerProvider = ({ children }) => {
     useEffect(() => {
         const trackPlayer = setTimeout(() => {
             stoptracksong()
-        }, 31000);
-        setPlayTime(0)
+        }, 30000);
         return () => clearTimeout(trackPlayer);
-    }, [isPlayingId])
+    }, [isPlayingId, duration])
 
-    useEffect(() => {
-        const timeInterval = setInterval(() => {
-            if(idRef.current !== '0') setPlayTime((prev) => prev+1)
-        }, 1000)
-        return () => {
-            if(playTime === 30) clearInterval(timeInterval)
-        }
-    }, [])
     return (
         <TrackPlayerContext.Provider value={value}>{children}</TrackPlayerContext.Provider>
     )

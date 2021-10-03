@@ -7,13 +7,12 @@ import { useTrackPlayer } from 'providers/trackPlayer'
 
 export default MusicBar = () => {
     const { addSonginPlaylists } = useContext(UserContext);
-    const { currentSong, playTime } = useTrackPlayer()
+    const { currentSong, position, duration } = useTrackPlayer()
     const [width, setWidth] = useState(0)
     const animatedValue = useRef(new Animated.Value(-1000)).current
     const reactive = useRef(new Animated.Value(-1000)).current
     const opacity = useState(new Animated.Value(1))[0];
     const [addModal, setAddModal] = useState(false)
-    const songsTime = 30
 
     const onClickAdd = () => {
         setAddModal(true)
@@ -40,8 +39,10 @@ export default MusicBar = () => {
     }, [])
 
     useEffect(() => {
-        reactive.setValue(-width + width * ( playTime / songsTime))
-    }, [playTime, width])
+        if(duration != 0) {
+            reactive.setValue(-width + width * ( position / duration))
+        }
+    }, [position, width, duration])
 
     return (
         <View style={styles.container}>
