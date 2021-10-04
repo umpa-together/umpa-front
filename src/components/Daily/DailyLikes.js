@@ -10,6 +10,7 @@ import DeleteModal from 'components/DeleteModal';
 import Modal from 'react-native-modal';
 import ReportModal from 'components/ReportModal';
 import { navigate } from 'navigationRef';
+import { SendFeed } from 'components/KaKaoShare';
 
 export default DailysLikes = ({ daily }) => {
     const { likesDaily, unlikesDaily } = useContext(DailyContext);
@@ -55,6 +56,11 @@ export default DailysLikes = ({ daily }) => {
                 <Text style={styles.name}>{postUser.name}</Text>
             </View>
             <View style={styles.flexRow}>
+                <TouchableOpacity
+                    onPress={() => SendFeed({ daily })}
+                >
+                    <Text style={styles.text}>공유</Text>
+                </TouchableOpacity>
                 { userState.myInfo._id === postUser._id ?
                 <View style={styles.flexRow}>
                     <TouchableOpacity
