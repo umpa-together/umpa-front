@@ -9,15 +9,24 @@ export const useTrackPlayer = () => useContext(TrackPlayerContext)
 export default TrackPlayerProvider = ({ children }) => {
     const [isPlayingId, setIsPlayingId] = useState('0')
     const [currentSong, setCurrentSong] = useState(null)
+    const [isMute, setIsMute] = useState(false)
     const { setHarmfulModal } = useModal()
     const { position, duration } = useProgress()
-
+    
     const addtracksong= async ({ data }) => {
+        data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300')
+        data.attributes.artwork.url = data.attributes.artwork.url.replace('{h}', '300')        
+        
         const track = new Object();
         track.id = data.id;
         track.url = data.attributes.previews[0].url;
         track.title = data.attributes.name;
         track.artist = data.attributes.artistName;
+        track.date = data.attributes.releaseDate;
+        track.album = data.attributes.albumName;
+        track.duration = data.attributes.durationInMillis;
+        track.artwork = data.attributes.artwork.url;
+
         if (data.attributes.contentRating != "explicit") {
             setIsPlayingId(data.id);
             await TrackPlayer.reset()
@@ -35,13 +44,24 @@ export default TrackPlayerProvider = ({ children }) => {
         TrackPlayer.reset()
     };
 
+    const onClickVolume = () => {
+        if(isMute) {
+            TrackPlayer.setVolume(1.0)
+        } else {
+            TrackPlayer.setVolume(0)
+        }
+        setIsMute(!isMute)
+    }
+
     const value = {
         isPlayingId,
         currentSong,
         position,
         duration,
+        isMute,
         addtracksong,
         stoptracksong,
+        onClickVolume
     }
 
     useEffect(() => {

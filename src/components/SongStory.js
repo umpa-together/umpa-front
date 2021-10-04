@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
 import Modal from 'react-native-modal';
@@ -16,11 +16,11 @@ export default SongStory = ({ setArchiveModal, archive }) => {
     const { state } = useContext(UserContext)
     const { likeSong, unlikeSong, addSongView } = useContext(BoardContext);
     const [idx, setIdx] = useState(0)
-    const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
+    const { addtracksong, stoptracksong, isPlayingId, isMute, onClickVolume } = useTrackPlayer()
     const { songs, _id: board } = archive
     const [currentSong, setCurrentSong] = useState(songs[0])
     const [likeCheck, setLikeCheck] = useState(songs[0].likes.includes(state.myInfo._id))
-    
+
     const onClose = () => {
         setArchiveModal(false)
         stoptracksong()
@@ -38,14 +38,6 @@ export default SongStory = ({ setArchiveModal, archive }) => {
         setCurrentSong(songs[idx+1])
         setIdx((prev) => prev+1)
         addtracksong({ data: songs[idx+1].song })
-    }
-
-    const onClickPlay = () => {
-        if(isPlayingId === '0') {
-            addtracksong({ data: songs[idx].song })
-        } else {
-            stoptracksong()
-        }
     }
 
     const onClickLikes = () => {
@@ -88,7 +80,7 @@ export default SongStory = ({ setArchiveModal, archive }) => {
                                 style={[
                                     styles.songBar,
                                     { width: (340/songs.length) * tmpWidth },
-                                    idx >= index && styles.active
+                                    idx >= index && styles.active,
                                 ]}
                                 key={index}
                             />
@@ -138,12 +130,12 @@ export default SongStory = ({ setArchiveModal, archive }) => {
                 <View style={styles.footer}>
                     <TouchableOpacity
                         style={styles.icon}
-                        onPress={onClickPlay}
+                        onPress={onClickVolume}
                     >
                         <SvgUri 
                             width='40' 
                             height='40' 
-                            source={isPlayingId !== '0' ? require('assets/icons/storyPlay.svg') 
+                            source={!isMute ? require('assets/icons/storyPlay.svg') 
                             : require('assets/icons/storyStop.svg')} 
                         /> 
                     </TouchableOpacity>
