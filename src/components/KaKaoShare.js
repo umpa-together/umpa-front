@@ -58,28 +58,26 @@ export default SendList = async ({ playlist }) => {
     }
 }
 
-export const SendFeed = async ({ playlist }) => {
-    const { title, songs, likes, comments } = playlist
+export const SendFeed = async ({ daily }) => {
+    const { song, likes, comments, textcontent, views } = daily
 
-    songs.forEach(({ attributes }) => {
-        attributes.artwork.url = attributes.artwork.url.replace('{w}', '300')
-        attributes.artwork.url = attributes.artwork.url.replace('{h}', '300')
-    })
-
+    song.attributes.artwork.url = song.attributes.artwork.url.replace('{w}', '300')
+    song.attributes.artwork.url = song.attributes.artwork.url.replace('{h}', '300')
     try {
         await KakaoShareLink.sendFeed({
             content: {
-                title: songs[0].attributes.name,
-                imageUrl: songs[0].attributes.artwork.url,
+                title: `${song.attributes.name} - ${song.attributes.artistName}`,
+                imageUrl: song.attributes.artwork.url,
                 link: {
                     webUrl: 'https://developers.kakao.com/',
                     mobileWebUrl: 'https://developers.kakao.com/',
                 },
-                description: songs[0].attributes.artistName,
+                description: textcontent,
             },
             social: {
                 commentCount: comments.length,
                 likeCount: likes.length,
+                viewCount: views
             },
             buttons: [{
                 title: '음파 이용하러 가기'
