@@ -10,6 +10,7 @@ import DeleteModal from 'components/DeleteModal';
 import Modal from 'react-native-modal';
 import ReportModal from 'components/ReportModal';
 import { navigate } from 'navigationRef';
+import SendList from 'components/KaKaoShare';
 
 export default PlaylistsLikes = ({ playlist }) => {
     const { likesPlaylist, unlikesPlaylist } = useContext(PlaylistContext);
@@ -55,6 +56,11 @@ export default PlaylistsLikes = ({ playlist }) => {
                 <Text style={styles.name}>{postUser.name}</Text>
             </View>
             <View style={styles.flexRow}>
+                <TouchableOpacity
+                    onPress={() => SendList({ playlist })}
+                >
+                    <Text style={styles.text}>공유</Text>
+                </TouchableOpacity>
                 { userState.myInfo._id === postUser._id ?
                 <View style={styles.flexRow}>
                     <TouchableOpacity
