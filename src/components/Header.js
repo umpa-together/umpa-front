@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { tmpWidth } from 'components/FontNormalize'
 import { StatusBarHeight } from 'components/StatusBarHeight'
 import SvgUri from 'react-native-svg-uri'
-import { goBack } from 'navigationRef'
+import { goBack,navigate } from 'navigationRef'
 import TextTicker from 'react-native-text-ticker'
+import { tmpHeight } from './FontNormalize'
 
 export default Header = ({ title }) => {
     return (
@@ -49,6 +50,21 @@ export const PlaylistHeader = ({ title }) => {
     )
 }
 
+export const ChatHeader = ({ title ,callback,isCreate, setModal}) => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>{title}</Text>
+            <TouchableOpacity style={styles.back} onPress={callback? callback : goBack}>
+                <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
+            </TouchableOpacity>
+            {isCreate ? null:
+            <TouchableOpacity style={styles.icon} onPress={()=>{!callback? navigate('CreateChat') : setModal(true)}}>
+                <View style={{width:40*tmpWidth, height:40*tmpHeight, backgroundColor:'#222'}}/>
+            </TouchableOpacity>
+            }
+        </View>
+    )
+}
 const styles=StyleSheet.create({
     container: {
         width: '100%', 
@@ -96,6 +112,11 @@ const styles=StyleSheet.create({
     back: {
         position: 'absolute',
         left: 5 * tmpWidth, 
+        top: (2 + StatusBarHeight) * tmpWidth
+    },
+    icon:{
+        position: 'absolute',
+        right: 5 * tmpWidth, 
         top: (2 + StatusBarHeight) * tmpWidth
     }
 })

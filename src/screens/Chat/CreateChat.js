@@ -2,32 +2,36 @@ import React, {useEffect, useContext, useState} from 'react';
 import { StyleSheet, View,Text,FlatList,TextInput,SafeAreaView } from 'react-native';
 import { Context as AuthContext } from 'context/AuthContext';
 import { Context as ChatContext } from 'context/ChatContext';
+import { Context as UserContext } from 'context/UserContext';
+
 import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import  {ChatHeader}  from 'components/Header';
 import  SearchBox from 'components/Chat/SearchBox';
-import  ChatList from 'components/Chat/ChatList';
+import  ChatUserList from 'components/Chat/ChatUserList';
 
 import ChatProvider from 'providers/chat';
 
 import { goBack,navigate} from 'navigationRef';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Chat= ({route}) => {
-    const {state: chatState, gotoChat } = useContext(ChatContext);
+const CreateChat= ({route}) => {
+    const {state: chatState, gotoChat,getlist } = useContext(ChatContext);
+    const { state:userState} = useContext(UserContext);
+
     const [search, setSearch] = useState(false)
-    const [chatlist, setChatlist] = useState(chatState.chatlist);
+    const [chatuserlist, setChatuserlist] = useState(userState.myInfo.following);
   
     useEffect(() => {
-        if(chatState.chatlist != null)  setChatlist(chatState.chatlist)
-    }, [chatState.chatlist])
+        if(userState.myInfo.following!= null)  setChatuserlist(userState.myInfo.following)
+    }, [userState.myInfo.following])
     return (
         <View style={{flex:1 ,backgroundColor:'#fff'}}>
-        <ChatHeader title={"메시지"} />
+        <ChatHeader title={"새 메시지"} isCreate={true} callback={getlist} />
         <ChatProvider>
             <SearchBox setSearch={setSearch}/>
-            {chatlist == null || chatlist== undefined ? null :
+            {chatuserlist == null || chatuserlist== undefined ? null :
 
-                <ChatList search ={search} data={chatlist} />
+                <ChatUserList search ={search} data={chatuserlist} />
            
         
             }   
@@ -41,4 +45,4 @@ const styles=StyleSheet.create({
 
 
 });
-export default Chat;
+export default CreateChat;
