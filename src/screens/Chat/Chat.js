@@ -1,44 +1,36 @@
-import React, {useEffect, useContext, useState} from 'react';
-import { StyleSheet, View,Text,FlatList,TextInput,SafeAreaView } from 'react-native';
-import { Context as AuthContext } from 'context/AuthContext';
+import React, { useEffect, useContext, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Context as ChatContext } from 'context/ChatContext';
-import { tmpWidth, tmpHeight } from 'components/FontNormalize';
-import  {ChatHeader}  from 'components/Header';
-import  SearchBox from 'components/Chat/SearchBox';
-import  ChatList from 'components/Chat/ChatList';
-
+import { ChatHeader }  from 'components/Header';
+import SearchBox from 'components/Chat/SearchBox';
+import ChatList from 'components/Chat/ChatList';
 import ChatProvider from 'providers/chat';
+import LoadingIndicator from 'components/LoadingIndicator'
 
-import { goBack,navigate} from 'navigationRef';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const Chat= ({route}) => {
-    const {state: chatState, gotoChat } = useContext(ChatContext);
-    const [search, setSearch] = useState(false)
-    const [chatlist, setChatlist] = useState(chatState.chatlist);
+const Chat= () => {
+    const { state: chatState } = useContext(ChatContext);
+    const [, setSearch] = useState(false)
+    const [chatLists, setChatLists] = useState(null);
   
     useEffect(() => {
-        if(chatState.chatlist != null)  setChatlist(chatState.chatlist)
+        setChatLists(chatState.chatlist)
     }, [chatState.chatlist])
+
     return (
-        <View style={{flex:1 ,backgroundColor:'#fff'}}>
-        <ChatHeader title={"메시지"} />
-        <ChatProvider>
-            <SearchBox setSearch={setSearch}/>
-            {chatlist == null || chatlist== undefined ? null :
-
-                <ChatList search ={search} data={chatlist} />
-           
-        
-            }   
-        </ChatProvider>
-
+        <View style={styles.container}>
+            <ChatProvider>
+                <ChatHeader title={"메시지"} />
+                <SearchBox setSearch={setSearch} />
+                { chatLists === null ? <LoadingIndicator /> : <ChatList data={chatLists} /> }   
+            </ChatProvider>
         </View>
     );
 };
 const styles=StyleSheet.create({
- 
-
-
+    container: {
+        flex: 1,
+        backgroundColor: '#ffffff'
+    }
 });
+
 export default Chat;

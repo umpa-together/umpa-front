@@ -7,14 +7,15 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as ChatContext } from 'context/ChatContext';
 
 export default Header = () => {
-    const {state: chatState, postChat,getlist } = useContext(ChatContext);
+    const { getChatList } = useContext(ChatContext);
 
     const onClickNotice = () => {
         navigate('Notice')
     }
 
     const onClickChat = () => {
-
+        getChatList() 
+        navigate('Chat')
     }
 
     return (
@@ -27,7 +28,10 @@ export default Header = () => {
                 >
                     <SvgUri width={40} height={40} source={require('assets/icons/alarm.svg')} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} onPress={async() => {await getlist(); navigate('Chat')}}>
+                <TouchableOpacity 
+                    style={styles.icon} 
+                    onPress={onClickChat}
+                >
                     <SvgUri width={40} height={40} source={require('assets/icons/chat.svg')} />
                 </TouchableOpacity>
             </View>

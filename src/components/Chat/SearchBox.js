@@ -1,11 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image,TextInput } from 'react-native';
-import { navigate } from 'navigationRef';
+import { View, StyleSheet, Image, TextInput } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
-import { useChat} from 'providers/chat';
+import { useChat } from 'providers/chat';
 
-export default SearchBox = ({setSearch}) => {
-    const { text, setText,textRef} = useChat()
+export default SearchBox = ({ setSearch }) => {
+    const { setText, textRef } = useChat()
 
     const onChangeText = (text) => {
         textRef.current.value = text
@@ -15,8 +14,8 @@ export default SearchBox = ({setSearch}) => {
         }else{
             setSearch(false)
         }
-
     }
+
     return (
         <View style={styles.inputbox} >
             <View style={styles.flexRow}>
@@ -24,12 +23,11 @@ export default SearchBox = ({setSearch}) => {
                 <TextInput
                     ref={textRef}
                     onChangeText={(text)=> onChangeText(text)}
-                    onSubmitEditing={()=>{}}
                     placeholder="검색"
                     autoCapitalize='none'
                     autoCorrect={false}
                     style={styles.textInput}
-                    placeholderTextColor='#999999'
+                    placeholderTextColor='#8bc0ff'
                 />           
             </View>
         </View>
@@ -44,9 +42,9 @@ const styles=StyleSheet.create({
         borderRadius: 10 * tmpWidth,
         borderWidth: 1.5 * tmpWidth,
         borderColor: '#8bc0ff',
-        marginTop: 22 * tmpWidth,
         justifyContent: 'center',
-        marginLeft: 18 * tmpWidth
+        marginLeft: 18 * tmpWidth,
+        marginTop: 4 * tmpWidth
     },
     flexRow: {
         flexDirection: 'row', 
@@ -62,7 +60,6 @@ const styles=StyleSheet.create({
         height: 34 * tmpWidth,
     },
     textInput: {
-        height: 30*tmpWidth,
-        width:250*tmpWidth,
+        width: 250 * tmpWidth,
     },
 })

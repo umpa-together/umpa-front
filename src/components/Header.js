@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { tmpWidth } from 'components/FontNormalize'
 import { StatusBarHeight } from 'components/StatusBarHeight'
 import SvgUri from 'react-native-svg-uri'
-import { goBack,navigate } from 'navigationRef'
+import { goBack, navigate } from 'navigationRef'
 import TextTicker from 'react-native-text-ticker'
 import { tmpHeight } from './FontNormalize'
+import { useChat } from 'providers/chat'
 
 export default Header = ({ title }) => {
     return (
@@ -50,21 +51,42 @@ export const PlaylistHeader = ({ title }) => {
     )
 }
 
-export const ChatHeader = ({ title ,callback,isCreate, setModal}) => {
+export const ChatHeader = ({ title, callback, isCreate }) => {
+    const { setOptionModal } = useChat()
+
+    const onClickBack = () => {
+        if(callback) callback()
+        goBack()
+    }
+
+    const onClickOption = () => {
+        if(!callback) {
+            navigate('CreateChat')
+        } else {
+            setOptionModal(true)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity style={styles.back} onPress={callback? callback : goBack}>
+            <TouchableOpacity 
+                style={styles.back} 
+                onPress={onClickBack}
+            >
                 <SvgUri width={40 * tmpWidth} height={40 * tmpWidth} source={require('assets/icons/back.svg')}/>
             </TouchableOpacity>
-            {isCreate ? null:
-            <TouchableOpacity style={styles.icon} onPress={()=>{!callback? navigate('CreateChat') : setModal(true)}}>
+            { !isCreate && 
+            <TouchableOpacity 
+                style={styles.icon} 
+                onPress={onClickOption}
+            >
                 <View style={{width:40*tmpWidth, height:40*tmpHeight, backgroundColor:'#222'}}/>
-            </TouchableOpacity>
-            }
+            </TouchableOpacity> }
         </View>
     )
 }
+
 const styles=StyleSheet.create({
     container: {
         width: '100%', 

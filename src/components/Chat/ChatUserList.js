@@ -1,101 +1,103 @@
-import React,{useContext, useEffect,useState} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image,TextInput ,FlatList} from 'react-native';
+import React,{ useContext, useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
-import { useChat} from 'providers/chat';
+import { useChat } from 'providers/chat';
 import { Context as ChatContext } from 'context/ChatContext'
-import { Context as UserContext } from 'context/UserContext';
 import ProfileImage from 'components/ProfileImage'
 import SvgUri from 'react-native-svg-uri'
 
-export default ChatUserList = ({data, search}) => {
-    const {state: chatState, postChat } = useContext(ChatContext);
-    const { text, setText,textRef,onClickProfile} = useChat()
-    const { state: userState, } = useContext(UserContext);
+export default ChatUserList = ({ data }) => {
+    const { profileChat } = useContext(ChatContext);
+    const { text, onClickProfile } = useChat()
     const [result, setResult] = useState(data)
     
+    const onClickChat = async (user) => {
+        await profileChat({ participate: user._id });  
+        navigate('SelectedChat',{ target: user })
+    }
+
     useEffect(()=>{
         if(text){
-        setResult(data.filter(item=> {
-            if(item.name.includes(text) ){
-                return true
-            }
-
-        }));
-        }else{
+            setResult(data.filter(({ name })=> {
+                return name.includes(text)
+            }));
+        } else {
             setResult(data)
         }
     }, [text]);
 
     return (
-        <View style={{flex:1}} >
+        <View style={styles.flex}>
             <FlatList
                 data={result}
-                keyExtractor={data._id}
+                keyExtractor={user => user._id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) =>{
-                
+                    const { profileImage, _id: id, name, realName } = item
                     return (
-                            <View style={styles.item}>
-                                   
-                                        <TouchableOpacity
-                                         style={{flexDirection:'row'}}
-                                         onPress={async()=>{await postChat({participate:item._id});  navigate('SelectedChat',{target:item})}}
-                                        >
-                                        <TouchableOpacity onPress={() => onClickProfile(item._id)}>
-                                            <ProfileImage img={item.profileImage } imgStyle={styles.chatProfile} />
-                                        </TouchableOpacity> 
-                                        <View style={styles.chatinfo}>
-                                        <Text style={styles.profilenametext}>{item.name}</Text>
-
-                                        </View>
-                                        
-                                        <View style={styles.icon} >
-                                            <SvgUri width={14 * tmpWidth} height={13 * tmpWidth} source={require('assets/icons/Vector.svg')}/>
-                                        </View>                                      
-                        
-                                        </TouchableOpacity>
-                                
+                        <TouchableOpacity
+                            style={styles.userContainer}
+                            onPress={() => onClickChat(item)}
+                        >
+                            <View style={styles.flexRow}>
+                                <TouchableOpacity onPress={() => onClickProfile(id)}>
+                                    <ProfileImage img={profileImage} imgStyle={styles.chatProfile} />
+                                </TouchableOpacity> 
+                                <View style={styles.chatInfo}>
+                                    <Text style={styles.nickName} numberOfLines={1}>{name}</Text>
+                                    {realName !== undefined && <Text style={styles.realName} numberOfLines={1}>{realName}</Text> }
+                                </View>
                             </View>
-                        )
-                            }}
+                            <SvgUri style={styles.icon} source={require('assets/icons/Vector.svg')}/>
+                        </TouchableOpacity>
+                    )
+                }}
             />            
         </View>
     )
 }
 
 const styles=StyleSheet.create({
-    item:{
-        width:375*tmpWidth,
-        height:72*tmpWidth,
-        justifyContent:'center',
-        alignItems:'center',
+    flex: {
+        flex: 1,
+    },
+    flexRow: {
         flexDirection: 'row',
     },
-    chatinfo:{
-        height:44*tmpWidth, 
-        width:235*tmpWidth, 
+    userContainer: {
+        alignItems:'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 7 * tmpWidth,
+        paddingBottom: 7 * tmpWidth,
+        paddingLeft: 18 * tmpWidth,
+        paddingRight: 18 * tmpWidth,
+    },
+    chatInfo:{
+        width: 200 * tmpWidth, 
         justifyContent:'center',
     },
     chatProfile:{
-        height: 50 * tmpWidth,
-        width: 50 * tmpWidth,
-        borderRadius: 50 * tmpWidth,
-        marginRight: 14 * tmpWidth,
-        
+        height: 46 * tmpWidth,
+        width: 46 * tmpWidth,
+        borderRadius: 46 * tmpWidth,
+        marginRight: 11 * tmpWidth,
     },
-    profilenametext:{
-        fontSize: 16*tmpWidth 
+    nickName:{
+        fontSize: 16 * tmpWidth,
+        fontWeight: '400'
     },
-    chattext:{
-        fontSize:12*tmpWidth, color:'#505050'
+    realName: {
+        fontSize: 12 * tmpWidth,
+        fontWeight: '300',
+        color: '#505050',
+        marginTop: 4 * tmpWidth
     },
     icon:{
-        paddingLeft:25*tmpWidth,
-        width:40*tmpWidth, 
-        height: 44*tmpWidth, 
-        justifyContent:'center'
+        width: 40 * tmpWidth, 
+        height: 40 * tmpWidth, 
+        justifyContent: 'center',
+        alignItems: 'flex-end',
     }
-    
-
 })

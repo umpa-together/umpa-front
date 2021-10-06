@@ -1,97 +1,58 @@
-import { StyleSheet, View,Text,FlatList,Keyboard ,TextInput,SafeAreaView, TouchableOpacity} from 'react-native';
-
-import React, {useEffect, useContext,useRef,useState} from 'react';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
+import React, { useEffect, useContext, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { io } from 'socket.io-client'
-
-import { Context as AuthContext } from '../../context/AuthContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as ChatContext } from '../../context/ChatContext';
-
-import  {ChatHeader}  from 'components/Header';
-
-import { goBack } from '../../navigationRef';
-import  ChatText from 'components/Chat/ChatText';
-import  ReportBar from 'components/Chat/ReportBar';
-
+import { Context as ChatContext } from 'context/ChatContext';
+import { ChatHeader } from 'components/Header';
+import ChatText from 'components/Chat/ChatText';
+import ReportBar from 'components/Chat/ReportBar';
 import ChatInput from 'components/Chat/ChatInput';
+import ChatProvider from 'providers/chat'
+import * as config from 'config'
 
-const SelectedChat= ({route}) => {
-    const {state, receiveMsg,getlist  } = useContext(ChatContext);
-    const { state:userState} = useContext(UserContext);
+const SelectedChat= ({ route }) => {
+    const { state, receiveMsg, getChatList } = useContext(ChatContext);
     const { target } = route.params
-
-    const [socket, setSocket] = useState(io(`http://5c79-211-200-53-218.ngrok.io/chat`));
-    const [modal, setModal] = useState(false);
+    const [socket, ] = useState(io(`${config.serverURL}/chat`));
     const [data, setData]= useState(state.chatroom.messages)
 
-    const commentRef = useRef();
+    const back = async ()=>{
+        await socket.emit('end',{}); 
+        await getChatList(); 
+    }
     
-
-
     useEffect(async()=>{
-        await socket.emit('joinroom', {room:state.chatroom._id});
+        await socket.emit('joinroom', { room: state.chatroom._id });
         socket.on('chat message', function(data){
-
-            receiveMsg ({chat:data})
+            receiveMsg ({ chat: data })
         })
-
-        return () => {
-            
-
-        };
     }, []);
 
     useEffect(() => {
-        if(state.chatroom.messages != null)  setData(state.chatroom.messages.reverse())
-    }, [state.chatroom.messages])
-
-    const back =async()=>{
-        await socket.emit('end',{}); 
-        await socket.disconnect(); 
-        await getlist(); 
-        
-        goBack(); 
-
-    }
-
-
- 
+        if(state.chatroom !== null)  setData(state.chatroom.messages)
+    }, [state.chatroom])
 
     return (
-        <>
-        <View style={{flex:1, backgroundColor:'#fff', }} >
-            <ChatHeader title={target.name} callback={back} setModal={setModal} />
-
-            { state.chatroom == null ||state.chatroom == undefined  ? null :
-            <View style={{flex:1}}>
-            <ChatText data={data}/>
-
-
-            </View> 
-            }       
-            <ChatInput id={state.chatroom._id} socket={socket} />
-                        
-            {modal &&
-            <ReportBar modal={modal} setModal={setModal} user={target} /> 
-            }
-
-        </View>
-        </>
-    
-        
+        <ChatProvider>
+            <View style={styles.container} >
+                <ChatHeader title={target.name} callback={back} />
+                { state.chatroom == null ||state.chatroom == undefined  ? null :
+                <View style={styles.flex}>
+                    <ChatText data={data}/>
+                </View> }       
+                <ChatInput id={state.chatroom._id} socket={socket} />
+                <ReportBar user={target} />
+            </View>
+        </ChatProvider>    
     );
 };
 const styles=StyleSheet.create({
- 
-    textInput: {
-        width: '80%',
-        marginTop: 4 * tmpWidth,
-        padding: 0,
+    container: {
+        flex:1, 
+        backgroundColor:'#fff'
     },
-
-
-
+    flex: {
+        flex: 1
+    },
 });
 export default SelectedChat;
 
