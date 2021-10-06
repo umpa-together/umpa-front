@@ -64,3 +64,5 @@ android/java_pid89036.hprof
 # serverApi
 /src/api/serverApi.js
 
+# config
+/src/config.js
