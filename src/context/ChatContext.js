@@ -88,5 +88,5 @@ const unblockchat = (dispatch) => async ({chatid}) => {
 export const { Provider, Context } = createDataContext(
     chatReducer,
     { postChat,gotoChat,getlist, unblockchat,receiveMsg,blockchat },
-    {  chatroom:null, chatlist: []}
+    {  chatroom:null, chatlist: null}
 );

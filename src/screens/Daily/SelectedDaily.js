@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState, useRef, useCallback } from 'react';
-import { View, Text, Image, StyleSheet, RefreshControl,ActivityIndicator ,TextInput, TouchableOpacity, FlatList, ScrollView, Keyboard, TouchableWithoutFeedback, Animated, Platform, StatusBar } from 'react-native';
-import TrackPlayer from 'react-native-track-player';
-import Modal from 'react-native-modal';
-import SvgUri from 'react-native-svg-uri';
-import { goBack, navigate,push } from 'navigationRef'
+import { View,  StyleSheet, RefreshControl, ScrollView, Keyboard, Platform, StatusBar } from 'react-native';
+
+import {  navigate } from 'navigationRef'
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 
 import { Context as DailyContext } from '../../context/DailyContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as DJContext } from '../../context/DJContext';
+
 import { tmpWidth } from '../../components/FontNormalize';
-import Header from 'components/Header';
 import DailyProvider from 'providers/daily';
 
 import Thumbnail from 'components/Daily/Thumbnail';
@@ -24,12 +20,7 @@ import TextContent from 'components/Daily/TextContent';
 
 
 import LoadingIndicator from 'components/LoadingIndicator'
-import ReportModal from '../../components/ReportModal';
-import DeleteModal from '../../components/DeleteModal';
-import HarmfulModal from '../../components/HarmfulModal';
-import DeletedModal from '../../components/DeletedModal';
 import { useTrackPlayer } from 'providers/trackPlayer'
-import { SongImage } from '../../components/SongImage'
 import { useFocusEffect } from '@react-navigation/native';
 
 
@@ -43,26 +34,12 @@ const SelectedDaily = ({route}) => {
     const [isPlayingid, setIsPlayingid] = useState('0');
     const [refreshing, setRefreshing] = useState(false);
 
-    //const [showModal, setShowModal] = useState('0');
-    //const [currentcommentid, setCurrentcommentid] = useState('');
     const [tok, setTok] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
-    //const [commentDeleteModal, setCommentDeleteModal] = useState(false);
-    //const [reCommentDeleteModal, setReCommentDeleteModal] = useState(false);
-    //const [reportModal, setReportModal] = useState(false);
-    //const [commentReportModal, setCommentReportModal] = useState(false);
-    //const [reportId, setReportId] = useState('');
-    //const [deleteId, setDeleteId] = useState('');
+ 
     const [hashtag, setHashtag] = useState('');
-    //const [harmfulModal, setHarmfulModal] = useState(false);
     const [deletedModal, setDeletedModal] = useState(false);
-    //const [weeklyModal, setWeeklyModal] = useState(false);
-    //const [selectedSong, setSelectedSong] = useState(null);
-    //const [completeModal, setCompleteModal] = useState(false);
-
-    //const opacity = useState(new Animated.Value(1))[0];
-    //const commentRef = useRef();
-    //const recommentRef = useRef();
+ 
 
 
     const [currentDaily, setCurrentDaily] = useState(state.current_daily)
@@ -70,58 +47,7 @@ const SelectedDaily = ({route}) => {
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
     const { isPlayingId } = useTrackPlayer()
 
-    const onClose =() => {
-        setShowModal('0');
-        initRecomment();
-        setKeyboardHeight(0);
-    }
-    const recommendedClick = () => {
-        comments.sort(function(a, b) {
-            if(a.likes.length > b.likes.length) return -1;
-            if(a.likes.length < b.likes.length) return 1;
-            return 0;
-        })
-        setTok(!tok);
-    }
-    const newestClick = () => {
-        comments.reverse();
-        setTok(!tok);
-    }
-    const onClickPlay = () => {
-        setRepresentModal(true)
-        addtracksong({ data: currentDaily.song[0] })
-    }
 
-    const addtracksong= async ({data}) => {
-        setSelectedSong(data)
-        const track = new Object();
-        track.id = data.id;
-        track.url = data.attributes.previews[0].url;
-        track.title = data.attributes.name;
-        track.artist = data.attributes.artistName;
-        if (data.attributes.contentRating != "explicit") {
-            setIsPlayingid(data.id);
-            await TrackPlayer.reset()
-            await TrackPlayer.add(track);
-            TrackPlayer.play();
-        } else {
-            setHarmfulModal(true)
-        }
-    };
-    const onClickMusicPlus = ({song}) => {
-        setCompleteModal(true)
-        addSonginDailys({song})
-        setTimeout(() => {
-            Animated.timing(opacity, {
-                toValue: 0,
-                duration: 1000,
-            }).start()
-            setTimeout(() => {
-                setCompleteModal(false)
-                opacity.setValue(1);
-            }, 1000)
-        }, 1000);
-    }
     useEffect(() => {
         const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
         return () => clearTimeout(trackPlayer);
