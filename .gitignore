@@ -57,5 +57,10 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/ios/Podfile.lock
 
 android/java_pid89036.hprof
+
+# serverApi
+/src/api/serverApi.js
+
