@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{ useContext } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { StatusBarHeight } from 'components/StatusBarHeight'
 import { tmpWidth } from 'components/FontNormalize';
@@ -7,7 +7,7 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as ChatContext } from 'context/ChatContext';
 
 export default Header = () => {
-    const { getChatList } = useContext(ChatContext);
+    const { state, getChatList } = useContext(ChatContext);
 
     const onClickNotice = () => {
         navigate('Notice')
@@ -33,6 +33,10 @@ export default Header = () => {
                     onPress={onClickChat}
                 >
                     <SvgUri width={40} height={40} source={require('assets/icons/chat.svg')} />
+                    { state.unReadMessagesNum > 0 && 
+                    <View style={styles.alarm}>
+                        <Text style={styles.messages}>{state.unReadMessagesNum}</Text>
+                    </View> }
                 </TouchableOpacity>
             </View>
         </View>
@@ -55,10 +59,26 @@ const styles=StyleSheet.create({
     icon: {
         width: 40 * tmpWidth,
         height: 40 * tmpWidth,
-        marginRight: 8 * tmpWidth
+        marginRight: 8 * tmpWidth,
     },
     flexRow: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    messages: {
+        fontSize: 12 * tmpWidth,
+        fontWeight: '500',
+        color: '#ffffff'
+    },
+    alarm: {
+        width: 18 * tmpWidth,
+        height: 18 * tmpWidth,
+        borderRadius: 18 * tmpWidth,
+        backgroundColor: '#e74d4d',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        right: 0,
+        bottom: 1 * tmpWidth
     }
 })

@@ -7,6 +7,7 @@ import {Context as WeeklyContext} from 'context/WeeklyContext';
 import {Context as UserContext} from 'context/UserContext';
 import {Context as DJContext} from 'context/DJContext';
 import {Context as FeedContext} from 'context/FeedContext';
+import {Context as ChatContext} from 'context/ChatContext';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -25,6 +26,7 @@ const MainSearchScreen = () => {
     const { state: WeeklyState, postWeekly, getRecentPlaylists, getMusicArchive, getWeekly } = useContext(WeeklyContext);
     const { state: djState, getMainRecommendDJ } = useContext(DJContext);
     const { getFeeds } = useContext(FeedContext)
+    const { getMessagesNum, state:chatState } = useContext(ChatContext)
     const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = () => {
@@ -37,6 +39,7 @@ const MainSearchScreen = () => {
 
     const dataFetchinMain = async () => {
         await Promise.all([
+            getMessagesNum(),
             getWeekly(),
             getMusicArchive(),
             getMainRecommendDJ(),
@@ -48,6 +51,7 @@ const MainSearchScreen = () => {
     const loadingDataFetch = async () => {
         //await postWeekly()
         await Promise.all([
+            getMessagesNum(),
             getWeekly(),
             getMusicArchive(),
             getMainRecommendDJ(),

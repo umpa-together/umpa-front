@@ -9,13 +9,14 @@ import ProfileImage from 'components/ProfileImage'
 import { useFocusEffect } from '@react-navigation/native';
 
 export default ChatList = ({ data }) => {
-    const { getSelectedChat } = useContext(ChatContext);
+    const { getSelectedChat, getMessagesNum } = useContext(ChatContext);
     const { text, onClickProfile } = useChat()
     const { state: userState } = useContext(UserContext);
     const [result, setResult] = useState(data)
 
     const onClickChat = async (id, user) => {
         await getSelectedChat({ chatid: id })
+        getMessagesNum()
         navigate('SelectedChat', { target: user })
     }
 

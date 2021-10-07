@@ -11,6 +11,8 @@ const chatReducer = (state, action) => {
             return { ...state, chatroom: action.payload };      
         case 'get_list' : 
             return { ...state, chatlist: action.payload };
+        case 'getMessagesNum':
+            return { ...state, unReadMessagesNum: action.payload.messagesNum };
         default:
             return state;
     }
@@ -69,8 +71,17 @@ const unblockchat = (dispatch) => async ({ chatid }) => {
     }
 }
 
+const getMessagesNum = (dispatch) => async () => {
+    try {
+        const response = await serverApi.get('/messages');
+        dispatch({ type: 'getMessagesNum', payload:response.data });
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with unblgetMessagesNumockchat' });
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     chatReducer,
-    { profileChat, getSelectedChat, getChatList, receiveMsg, blockchat, unblockchat },
-    {  chatroom: null, chatlist: null }
+    { profileChat, getSelectedChat, getChatList, receiveMsg, blockchat, unblockchat, getMessagesNum },
+    {  chatroom: null, chatlist: null, unReadMessagesNum: 0 }
 );
