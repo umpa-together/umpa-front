@@ -10,7 +10,11 @@ const chatReducer = (state, action) => {
         case 'receive_Msg':
             return { ...state, chatroom: action.payload };      
         case 'get_list' : 
-            return { ...state, chatlist: action.payload };
+            return { ...state, chatlist: action.payload, currentChatListsPage: 1, notChatListsNext: false };
+        case 'nextChatLists':
+            return { ...state, chatlist: state.chatlist.concat(action.payload), currentChatListsPage: state.currentChatListsPage + 1 }
+        case 'notChatListsNext':
+            return { ...state, notChatListsNext: true }
         case 'getMessagesNum':
             return { ...state, unReadMessagesNum: action.payload.messagesNum };
         default:
@@ -42,6 +46,19 @@ const getChatList = (dispatch) => async () =>{
         dispatch({ type: 'get_list', payload:response.data });
     } catch(err) {
         dispatch({ type: 'error', payload: 'Something went wrong with getChatList' });
+    }
+}
+
+const nextChatList = (dispatch) => async ({ page }) => {
+    try{
+        const response = await serverApi.get('/chatList/'+page)
+        if(response.data.length != 0){
+            dispatch({ type: 'nextChatLists', payload: response.data });
+        }else{
+            dispatch({ type: 'notChatListsNext'});
+        }
+    } catch(err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with nextChatList' });
     }
 }
 
@@ -82,6 +99,6 @@ const getMessagesNum = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     chatReducer,
-    { profileChat, getSelectedChat, getChatList, receiveMsg, blockchat, unblockchat, getMessagesNum },
-    {  chatroom: null, chatlist: null, unReadMessagesNum: 0 }
+    { profileChat, getSelectedChat, getChatList, receiveMsg, blockchat, unblockchat, getMessagesNum, nextChatList },
+    {  chatroom: null, chatlist: null, unReadMessagesNum: 0, notChatListsNext: false, currentChatListsPage: 1 }
 );

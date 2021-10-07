@@ -1,5 +1,5 @@
-import React,{useCallback, useContext, useEffect,useState} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React,{ useCallback, useContext, useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import { useChat } from 'providers/chat';
@@ -9,10 +9,42 @@ import ProfileImage from 'components/ProfileImage'
 import { useFocusEffect } from '@react-navigation/native';
 
 export default ChatList = ({ data }) => {
-    const { getSelectedChat, getMessagesNum } = useContext(ChatContext);
+    const { state, getSelectedChat, getMessagesNum, getChatList, nextChatList } = useContext(ChatContext);
     const { text, onClickProfile } = useChat()
     const { state: userState } = useContext(UserContext);
     const [result, setResult] = useState(data)
+    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    
+    const getData = async () => {
+        if(state.chatlist.length >= 20 && !state.notChatListsNext){
+            setLoading(true);
+            await nextChatList({ page: state.currentChatListsPage });
+            setLoading(false);
+        }
+    };
+
+    const onEndReached = () => {
+        if (loading) {
+            return;
+        } else {
+            getData();
+        }
+    };
+
+    const fetchData = async () => {
+        setRefreshing(true);
+        getChatList();
+        setRefreshing(false);
+    };
+
+    const onRefresh = () => {
+        if (refreshing){
+            return;
+        }else{
+            fetchData();
+        }
+    }
 
     const onClickChat = async (id, user) => {
         await getSelectedChat({ chatid: id })
@@ -43,6 +75,11 @@ export default ChatList = ({ data }) => {
                 data={result}
                 keyExtractor={user => user._id}
                 showsVerticalScrollIndicator={false}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0}
+                onRefresh={onRefresh}
+                refreshing={refreshing}
+                ListFooterComponent={loading && <ActivityIndicator />}
                 renderItem={({ item }) => {
                     const { participate, _id: id, messages, time } = item
                     const targetuser = participate[0]._id == userState.myInfo._id ? participate[1] : participate[0]
