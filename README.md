@@ -21,7 +21,6 @@ Locate static files in here. we only use icons directory.
 ## /components
 1. Write part of views in each section.
 2. Make reusable components.
-+ ### Example: <MainFeed />
 ## /context
 Write Context, Reducer in here.
 It is related to global data that is fetched from server used in each section (e.g. Account, Chat, Playlist ...) and it's function(reducer).
@@ -50,6 +49,7 @@ It is not data fetched from server just to use not passing props in every compon
 + ### daily
     + It is for dealing with daily data that is used when create daily, comments.
 + ### modal
+    + It is for dealing with modal.   
 + ### playlist
     + It is for dealing with playlist data that is used when create playlist, comments.
 + ### search
