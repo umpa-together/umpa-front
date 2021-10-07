@@ -9,7 +9,7 @@
 <br />
 
 ## __Components__
-## `__DeleteModal__`
+## __`DeleteModal`__
 삭제 버튼을 눌렀을 때, 나타나는 되는 모달 입니다.
 삭제 상황 : 플레이리스트, 데일리, 게시판, 댓글, 대댓글, 스토리
 |Property|Default (Nullable)|Remark|
@@ -30,7 +30,7 @@
 ```
 <br/>
 
-## `__ReportModal__`
+## __`ReportModal`__
 신고 버튼을 눌렀을 때, 나타나는 모달 입니다.
 신고 상황 : 게시글, 댓글, 플레이리스트, 계정, 채팅
 |Property|Default (Nullable)|Remark|
@@ -50,7 +50,7 @@
 ```
 <br/>
 
-## `__RepresentSong__`
+## __`RepresentSong`__
 유저의 대표곡 리스트를 보기 위한 모달 입니다.
 |Property|Default (Nullable)|Remark|
 |---|---|---|
@@ -69,7 +69,7 @@
 ```
 <br/>
 
-## `__FontNormalize__`
+## __`FontNormalize`__
 핸드폰 기기에 맞추어 반응형으로 사이즈를 조절하게끔 비율을 계산하는 컴포넌트 입니다.
 ### __Usage__
 ```
@@ -83,7 +83,7 @@ container: {
 ```
 <br/>
 
-## `__Header__`
+## __`Header`__
 스크린의 상단 헤더 부분을 담당하는 컴포넌트 입니다.
 ### Header, PlaylistHeader
 |Property|Default (Nullable)|Remark|
@@ -117,7 +117,7 @@ container: {
 ```
 <br/>
 
-## `__Header__`
+## __`KaKaoShare`
 카카오톡 공유하기를 담당하는 컴포넌트 입니다.
 SendList는 플레이리스트, SendFeed는 데일리에 이용됩니다.
 ## SendList
@@ -134,7 +134,7 @@ onPress={() => SendList({ playlist })}
 ```
 <br/>
 
-## `__LoadingIndicator__`
+## __`LoadingIndicator`__
 서버로부터 data fecth가 되기전 nullable할 때, 로딩시 필요한 컴포넌트 입니다.
 ### __Usage__
 ```
@@ -142,7 +142,7 @@ onPress={() => SendList({ playlist })}
 ```
 <br/>
 
-## `__MoveText__`
+## __`MoveText`__
 노래 제목과 아티스트 이름이 View 넓이 영역보다 길 때, 노래를 활성화 시키면 text를 움직입니다.
 |Property|Default (Nullable)|Remark|
 |---|---|---|
@@ -163,7 +163,7 @@ onPress={() => SendList({ playlist })}
 ```
 <br/>
 
-## `__ProfileImage__`
+## __`ProfileImage`__
 프로필 이미지를 렌더하기 위한 컴포넌트로 프로필 이미지가 등록되지 않았을 때는 기본 이미지를 나타냅니다.
 |Property|Default (Nullable)|Remark|
 |---|---|---|
@@ -175,7 +175,7 @@ onPress={() => SendList({ playlist })}
 ```
 <br/>
  
-## `__SongImage__`
+## __`SongImage`__
 앨범 이미지의 url 사이즈를 바꾸어준 후, 렌더링을 담당합니다.
 ## SongImage
 |Property|Default (Nullable)|Remark|
