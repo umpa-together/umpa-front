@@ -51,6 +51,8 @@ import CreateModal from 'components/CreateModal';
 
 import Chat from 'screens/Chat/Chat';
 import SelectedChat from 'screens/Chat/SelectedChat';
+import CreateChat from 'screens/Chat/CreateChat';
+
 
 import DailyCreate from 'screens/Daily/DailyCreate';
 import SelectedDaily from 'screens/Daily/SelectedDaily';
@@ -163,6 +165,7 @@ const MainStackScreen = () => {
             <MainStack.Screen name="SelectedDaily" component={SelectedDaily} />
             <MainStack.Screen name="Chat" component={Chat} />
             <MainStack.Screen name="SelectedChat" component={SelectedChat} />
+            <MainStack.Screen name="CreateChat" component={CreateChat} />
 
             <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
             <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />

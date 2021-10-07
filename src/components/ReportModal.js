@@ -21,6 +21,8 @@ const ReportModal = ({ reportModal, setReportModal, type, subjectId }) => {
             setTitle('플레이리스트를')
         } else if (type == 'account') {
             setTitle('계정을')
+        } else if (type =='chat') {
+            setTitle('유저를')
         }
     }, []);
     const report = () => {

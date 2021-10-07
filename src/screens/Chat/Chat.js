@@ -1,71 +1,36 @@
-import React, {useEffect, useContext} from 'react';
-import { StyleSheet, View,Text,FlatList,TextInput,SafeAreaView } from 'react-native';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { Context as ChatContext } from '../../context/ChatContext';
-import { tmpWidth, tmpHeight } from '../../components/FontNormalize';
-
-import { goBack,navigate} from '../../navigationRef';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, useContext, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Context as ChatContext } from 'context/ChatContext';
+import { ChatHeader }  from 'components/Header';
+import SearchBox from 'components/Chat/SearchBox';
+import ChatList from 'components/Chat/ChatList';
+import ChatProvider from 'providers/chat';
+import LoadingIndicator from 'components/LoadingIndicator'
 
 const Chat= () => {
-    const { state: userState, postStory, getMyInfo, getMyStory, getOtheruser, storyCalendar, getOtherStory } = useContext(UserContext);
-    const {state: chatState, gotoChat } = useContext(ChatContext);
-    //const { tryLocalSignin } = useContext(AuthContext);
-    //const { state, getMyInfo } = useContext(UserContext);
-    /*
-    useEffect(()=>{
-        tryLocalSignin();
-        getMyInfo();
-    }, []);
+    const { state: chatState } = useContext(ChatContext);
+    const [, setSearch] = useState(false)
+    const [chatLists, setChatLists] = useState(null);
+  
     useEffect(() => {
-        if(state.myInfo != null)    navigate('Loading')
-    }, [state.myInfo]);*/
+        setChatLists(chatState.chatlist)
+    }, [chatState.chatlist])
 
     return (
-        <SafeAreaView>
-        <View >
-            <TouchableOpacity onPress={()=>{goBack()}}>
-                <Text>뒤로가기</Text>
-            </TouchableOpacity>
-            <Text>Chat</Text>
-            <FlatList
-                            data={chatState.chatlist}
-                            keyExtractor={term=>term._id}
-                            renderItem={({item, index})=> {
-                                return (
-                                        <TouchableOpacity
-                                         onPress={async()=>{await gotoChat({chatid:item._id});  navigate('SelectedChat')}}
-                                        >
-                                        <Text style={{fontSize: 16 , marginBottom: 24  }}>{item.participate[0].name == userState.myInfo.name ?item.participate[1].name :item.participate[0].name}</Text>
-                                        { item.messages[item.messages.length-1] == undefined || item.messages[item.messages.length-1] == null? null :
-                                            item.messages[item.messages.length-1].isRead ? 
-                                            <View>
-                                            <Text>{item.messages[item.messages.length-1].text}</Text>
-                                            <Text>읽음</Text>
-                                            </View>
-                                            :
-                                            <View>
-                                            <Text>{item.messages[item.messages.length-1].text}</Text>
-                                            <Text>안읽음</Text>
-                                            </View>
-                                        }
-                                        
-                                        
-                                        
-                                        </TouchableOpacity>
-                                )
-                            }}            
-            />
-
-
+        <View style={styles.container}>
+            <ChatProvider>
+                <ChatHeader title={"메시지"} />
+                <SearchBox setSearch={setSearch} />
+                { chatLists === null ? <LoadingIndicator /> : <ChatList data={chatLists} /> }   
+            </ChatProvider>
         </View>
-        </SafeAreaView>
     );
 };
 const styles=StyleSheet.create({
- 
-
-
+    container: {
+        flex: 1,
+        backgroundColor: '#ffffff'
+    }
 });
+
 export default Chat;
