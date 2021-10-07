@@ -38,8 +38,8 @@ const SelectedChat= ({ route }) => {
                 { state.chatroom == null ||state.chatroom == undefined  ? null :
                 <View style={styles.flex}>
                     <ChatText data={data}/>
+                    <ChatInput chatroom={state.chatroom} socket={socket} />
                 </View> }       
-                <ChatInput chatroom={state.chatroom} socket={socket} />
                 <ReportBar user={target} />
             </View>
         </ChatProvider>    
@@ -48,10 +48,10 @@ const SelectedChat= ({ route }) => {
 const styles=StyleSheet.create({
     container: {
         flex:1, 
-        backgroundColor:'#fff'
+        backgroundColor:'#fff',
     },
     flex: {
-        flex: 1
+        flex: 1,
     },
 });
 export default SelectedChat;
