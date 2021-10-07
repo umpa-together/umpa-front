@@ -9,7 +9,7 @@ import SvgUri from 'react-native-svg-uri'
 
 export default ChatUserList = ({ data }) => {
     const { profileChat } = useContext(ChatContext);
-    const { text, onClickProfile } = useChat()
+    const { text } = useChat()
     const [result, setResult] = useState(data)
     
     const onClickChat = async (user) => {
@@ -41,9 +41,7 @@ export default ChatUserList = ({ data }) => {
                             onPress={() => onClickChat(item)}
                         >
                             <View style={styles.flexRow}>
-                                <TouchableOpacity onPress={() => onClickProfile(id)}>
-                                    <ProfileImage img={profileImage} imgStyle={styles.chatProfile} />
-                                </TouchableOpacity> 
+                                <ProfileImage img={profileImage} imgStyle={styles.chatProfile} />
                                 <View style={styles.chatInfo}>
                                     <Text style={styles.nickName} numberOfLines={1}>{name}</Text>
                                     {realName !== undefined && <Text style={styles.realName} numberOfLines={1}>{realName}</Text> }
