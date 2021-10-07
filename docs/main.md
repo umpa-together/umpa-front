@@ -117,7 +117,7 @@ container: {
 ```
 <br/>
 
-## __`KaKaoShare`
+## __`KaKaoShare`__
 카카오톡 공유하기를 담당하는 컴포넌트 입니다.
 SendList는 플레이리스트, SendFeed는 데일리에 이용됩니다.
 ## SendList
@@ -242,7 +242,7 @@ useEffect(() => {
 ```
 <br/>
 
-## `__SearchProvider__`
+## __`SearchProvider`__
 곡을 검색하는 부분을 담당합니다.
 |Context Prop|Remark|
 |---|---|
