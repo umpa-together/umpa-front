@@ -10,7 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export default ChatList = ({ data }) => {
     const { state, getSelectedChat, getMessagesNum, getChatList, nextChatList } = useContext(ChatContext);
-    const { text, onClickProfile } = useChat()
+    const { text } = useChat()
     const { state: userState } = useContext(UserContext);
     const [result, setResult] = useState(data)
     const [refreshing, setRefreshing] = useState(false);
@@ -89,11 +89,7 @@ export default ChatList = ({ data }) => {
                             style={styles.userContainer}
                             onPress={() => onClickChat(id, targetuser)}
                         >
-                            <TouchableOpacity 
-                                onPress={() => onClickProfile(targetuser._id)}
-                            >
-                                <ProfileImage img={targetuser.profileImage} imgStyle={styles.chatProfile} />
-                            </TouchableOpacity> 
+                            <ProfileImage img={targetuser.profileImage} imgStyle={styles.chatProfile} />
                             <View style={styles.flex}>
                                 <Text style={styles.name}>{targetuser.name}</Text>
                                 { messages[messages.length-1] != undefined && 
@@ -109,7 +105,7 @@ export default ChatList = ({ data }) => {
                                         {messages[messages.length-1].text}
                                     </Text>
                                     <View style={styles.flexRow}>
-                                        <Text style={styles.messages}>{isLastTargetUser && messages[messages.length-1].isRead && '읽음'}</Text>
+                                        <Text style={styles.messages}>{!isLastTargetUser && messages[messages.length-1].isRead && '읽음'}</Text>
                                         <Text style={[styles.messages, styles.margin]}>{time}</Text>
                                     </View>
                                 </View> }
@@ -158,7 +154,8 @@ const styles=StyleSheet.create({
         alignItems: 'center'
     },
     unRead: {
-        color: '#000000'
+        color: '#000000',
+        fontWeight: '700'
     },
     margin: {
         marginLeft: 4 * tmpWidth,

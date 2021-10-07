@@ -13,6 +13,13 @@ export default ChatProvider = ({ children }) => {
     const [text, setText] = useState(false)
     const [optionModal, setOptionModal] = useState(false)
     const textRef = useRef()
+    const chatRef = useRef()
+
+    const onMove = () => {
+        if(chatRef) {
+            chatRef.current.scrollToEnd()        
+        }
+    }
 
     const onClickProfile = async (id) => {
         if(id == userState.myInfo._id) {
@@ -30,6 +37,8 @@ export default ChatProvider = ({ children }) => {
         text,
         textRef,
         optionModal,
+        chatRef,
+        onMove,
         setText,
         setOptionModal,
         onClickProfile,

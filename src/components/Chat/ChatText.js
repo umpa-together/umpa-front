@@ -1,15 +1,9 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native';
 import TextType from './ChatType'
-
+import { useChat } from 'providers/chat';
 export default ChatText = ({ data }) => {
-    const chatRef = useRef()
-
-    const onMove = () => {
-        if(chatRef) {
-            chatRef.current.scrollToEnd()        
-        }
-    }
+    const { chatRef, onMove } = useChat()
 
     return (
         <ScrollView 
@@ -32,6 +26,6 @@ export default ChatText = ({ data }) => {
 
 const styles=StyleSheet.create({
     flex: {
-        flex: 1
+        flex: 1,
     },
 })

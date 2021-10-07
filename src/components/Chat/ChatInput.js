@@ -1,14 +1,17 @@
-import React, { useState, useCallback, useRef,useContext } from 'react';
+import React, { useCallback, useRef, useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Keyboard ,TouchableOpacity, TextInput } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as UserContext } from 'context/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
+import { useChat } from 'providers/chat';
 
 export default ChatInput = ({ chatroom, socket }) => {
     const commentRef = useRef();
     const { state:userState } = useContext(UserContext);
-    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const [keyboardHeight, setKeyboardHeight] = useState(0)
     const { _id: id, participate } = chatroom
+    const { onMove } = useChat()
+
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
     }
@@ -48,6 +51,10 @@ export default ChatInput = ({ chatroom, socket }) => {
             return () => removeEventListener()
         }, [])
     )
+
+    useEffect(() => {
+        if(keyboardHeight !== 0)    onMove()
+    }, [keyboardHeight])
 
     return (
         <View style={[styles.container, { marginBottom: keyboardHeight }]}> 
