@@ -39,7 +39,7 @@ const SelectedChat= ({ route }) => {
                 <View style={styles.flex}>
                     <ChatText data={data}/>
                 </View> }       
-                <ChatInput id={state.chatroom._id} socket={socket} />
+                <ChatInput chatroom={state.chatroom} socket={socket} />
                 <ReportBar user={target} />
             </View>
         </ChatProvider>    

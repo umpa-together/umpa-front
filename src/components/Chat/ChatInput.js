@@ -4,11 +4,11 @@ import { tmpWidth } from 'components/FontNormalize';
 import { Context as UserContext } from 'context/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
 
-export default ChatInput = ({id,socket}) => {
+export default ChatInput = ({ chatroom, socket }) => {
     const commentRef = useRef();
-    const { state:userState} = useContext(UserContext);
+    const { state:userState } = useContext(UserContext);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
-
+    const { _id: id, participate } = chatroom
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
     }
@@ -33,7 +33,8 @@ export default ChatInput = ({id,socket}) => {
             text: commentRef.current.value, 
             msg: commentRef.current.value, 
             type:'text', 
-            id: userState.myInfo._id 
+            sender: userState.myInfo._id,
+            receiver: participate[0] === userState.myInfo._id ? participate[1] : participate[0]
         })
         commentRef.current.value = '';
         commentRef.current.clear();
@@ -47,7 +48,7 @@ export default ChatInput = ({id,socket}) => {
             return () => removeEventListener()
         }, [])
     )
-    
+
     return (
         <View style={[styles.container, { marginBottom: keyboardHeight }]}> 
             <View style={styles.inputbox}>
