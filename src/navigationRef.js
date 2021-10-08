@@ -5,7 +5,7 @@ import { StackActions } from '@react-navigation/native';
 export default navigationRef = createNavigationContainerRef()
 
 export const navigate = (name, params) => {
-    navigationRef.dispatch(
+    navigationRef.current?.dispatch(
         CommonActions.navigate({
             name,
             params
@@ -14,7 +14,7 @@ export const navigate = (name, params) => {
 };
 
 export const push = (name, params) => {
-    navigationRef.dispatch(
+    navigationRef.current?.dispatch(
         StackActions.push(
             name,
             params
@@ -23,11 +23,11 @@ export const push = (name, params) => {
 }
 
 export const goBack = () => {
-    navigationRef.dispatch(
+    navigationRef.current?.dispatch(
         CommonActions.goBack()
     )
 }
 
 export const addListener = (type, callback) => {
-    navigationRef.addListener(type, callback())
+    navigationRef.current?.addListener(type, callback())
 }

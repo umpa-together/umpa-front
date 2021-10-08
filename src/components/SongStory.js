@@ -79,7 +79,7 @@ export default SongStory = ({ setArchiveModal, archive }) => {
                             <View 
                                 style={[
                                     styles.songBar,
-                                    { width: (340/songs.length) * tmpWidth },
+                                    { width: `${100 / songs.length}%` },
                                     idx >= index && styles.active,
                                 ]}
                                 key={index}
@@ -174,8 +174,6 @@ const styles=StyleSheet.create({
         margin: 0
     },
     header: {
-        paddingLeft: 4 * tmpWidth,
-        paddingRight: 4 * tmpWidth,
         width: '100%',
         paddingTop: StatusBarHeight * tmpWidth,
         height: (30 + StatusBarHeight) * tmpWidth,

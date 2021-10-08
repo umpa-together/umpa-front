@@ -7,7 +7,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import navigationRef from 'navigationRef';
 import SvgUri from 'react-native-svg-uri';
 import { Context as AuthContext } from 'context/AuthContext';
-import { Context as UserContext } from 'context/UserContext';
 
 import LoadingPage from 'screens/LoadingPage';
 
@@ -204,12 +203,10 @@ const MyModalBackgroundScreen = () => null
 
 export default MainNavigator = () => {
     const { state: authState, tryLocalSignin } = useContext(AuthContext);
-    const { getMyInfo } = useContext(UserContext);
     const [isSplash, setIsSplash] = useState(true)
 
     useEffect(() => {
         tryLocalSignin();
-        getMyInfo();
     }, [])
 
     if(isSplash){

@@ -20,7 +20,7 @@ import WeeklyDailies from 'components/Main/WeeklyDailies';
 import { useRefresh } from 'providers/refresh';
 
 const MainSearchScreen = () => {
-    const { getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
+    const { getMyScrab, getMyBookmark, getMyStory, getOtherStory, getMyInfo } = useContext(UserContext);
     const { getGenreBoard } = useContext(BoardContext);
     const { getnotice, setnoticetoken } = useContext(NoticeContext);
     const { state, currentHashtag } = useContext(SearchContext);
@@ -42,6 +42,7 @@ const MainSearchScreen = () => {
     const loadingDataFetch = async () => {
         //await postWeekly()
         await Promise.all([
+            getMyInfo(),
             getMessagesNum(),
             getWeekly(),
             getMusicArchive(),
