@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Image, FlatList, ScrollView, RefreshControl, Keyboard, KeyboardEvent } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, Image, FlatList, ScrollView, RefreshControl, Keyboard } from 'react-native';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import SvgUri from 'react-native-svg-uri';
@@ -16,8 +16,9 @@ import DeletedModal from 'components/DeletedModal';
 import { SongImage } from 'components/SongImage'
 import { NavHeader } from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTrackPlayer } from '../../providers/trackPlayer';
+import { useTrackPlayer } from 'providers/trackPlayer';
 import HarmfulModal from '../HarmfulModal';
+import { useRefresh } from 'providers/refresh';
 
 const ContentDetail = ({ title }) => {
     const { state, likeContent, unlikeContent, createComment, createReComment, getCurrentContent } = useContext(BoardContext);
@@ -28,7 +29,7 @@ const ContentDetail = ({ title }) => {
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [commentId, setCommentId] = useState('');
     const [recomment, setRecomment] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const [imageModal, setImageModal] = useState(false);
     const [image, setImage] = useState([]);
     const [imageIdx, setImageIdx] = useState(0);
@@ -38,18 +39,9 @@ const ContentDetail = ({ title }) => {
 
     const img = [];
     const inputRef = useRef();
-    const getData = async () => {
-        setLoading(true);
-        await getCurrentContent({id: state.currentContent._id});
-        setLoading(false);
-    };
 
-    const onRefresh = () => {
-        if (loading) {
-            return;
-        } else {
-            getData();
-        }
+    const fetchData = () => {
+        getCurrentContent({id: state.currentContent._id});
     };
 
     const imageClick = ({index}) => {
@@ -105,6 +97,7 @@ const ContentDetail = ({ title }) => {
     }, [keyboardHeight]);
 
     useEffect(() => {
+        if(state.currentContent !== null)   setRefresh(fetchData)
         if(state.currentContent != null && state.currentContent.length == 0)    setDeletedModal(true);  
     }, [state.currentContent]);
 
@@ -115,7 +108,7 @@ const ContentDetail = ({ title }) => {
                 <View style={styles.container}>
                     <NavHeader title={title} isBack={true} />
                     <ScrollView refreshControl={
-                        <RefreshControl refreshing={loading} onRefresh={onRefresh} />}
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                     >
                         <View>
                             <View style={styles.contentContainer}>

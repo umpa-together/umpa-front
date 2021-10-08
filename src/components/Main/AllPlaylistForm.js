@@ -4,11 +4,12 @@ import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { push } from 'navigationRef';
 import LoadingIndicator from '../LoadingIndicator'
+import { useRefresh } from 'providers/refresh';
 
 const AllPlaylistForm = () => {
     const { state, getPlaylist, nextAllPlaylists, getAllPlaylists } = useContext(PlaylistContext)
     const [loading, setLoading] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     
     const getData = async () => {
         if(state.allPlaylists.length >= 20 && !state.notAllPlaylistsNext){
@@ -26,22 +27,9 @@ const AllPlaylistForm = () => {
         }
     };
 
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getAllPlaylists()
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
-
     useEffect(() => {
         getAllPlaylists()
+        setRefresh(getAllPlaylists)
     }, [])
 
     return (

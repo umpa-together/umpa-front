@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from 'context/BoardContext';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
+import { useRefresh } from 'providers/refresh';
 
 const ContentsForm = ({ Contents }) => {
     const { state, getCurrentBoard, getCurrentContent, nextContents } = useContext(BoardContext);
     const [loading, setLoading] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
     const getData = async () => {
         if(Contents.length >= 20 && !state.boardNotNext){
@@ -26,19 +27,13 @@ const ContentsForm = ({ Contents }) => {
         }
     };
 
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getCurrentBoard({boardId: state.boards._id});
-        setRefreshing(false);
+    const fetchData = () => {
+        getCurrentBoard({boardId: state.boards._id});
     };
 
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
+    useEffect(() => {
+        setRefresh(fetchData)
+    }, [])
     
     return (
         <View style={styles.container}>

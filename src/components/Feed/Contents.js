@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as FeedContext } from 'context/FeedContext';
 import { tmpWidth } from 'components/FontNormalize';
 import Playlist from './Playlist'
 import Daily from './Daily';
+import { useRefresh } from 'providers/refresh';
 
 export default Contents = () => {
     const { state: feedState, getFeeds, nextFeeds } = useContext(FeedContext);
     const { state, getOtherStory } = useContext(UserContext);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const [loading, setLoading] = useState(false);
     
     const getData = async () => {
@@ -29,21 +30,14 @@ export default Contents = () => {
     };
 
     const fetchData = async () => {
-        setRefreshing(true);
-        await Promise.all([
-            getFeeds(),
-            getOtherStory()
-        ])
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
+        getFeeds(),
+        getOtherStory()
     }
+
+    useEffect(() => {
+        setRefresh(fetchData)
+    }, [])
+
     return (
         <View style={styles.flex}>
             {state.otherStory && 

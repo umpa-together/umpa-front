@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
@@ -9,6 +9,7 @@ import Header from 'components/Header';
 import LoadingIndicator from 'components/LoadingIndicator'
 import ReadNotice from 'components/Notice/ReadNotice';
 import UnReadNotice from 'components/Notice/UnReadNotice';
+import { useRefresh } from 'providers/refresh';
 
 const NoticeScreen = () => {
     const { state, getnotice, nextNotice } = useContext(NoticeContext);
@@ -16,7 +17,7 @@ const NoticeScreen = () => {
     const { initOtherUser } = useContext(UserContext);
     const { initMusic, initCurrentContent } = useContext(BoardContext);
     const [loading, setLoading] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
     const getData = async () => {
         if(state.notice.length >= 20 && !state.notNext){
@@ -34,20 +35,6 @@ const NoticeScreen = () => {
         }
     };
 
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getnotice();
-        setRefreshing(false);
-    };
-    
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
-
     useFocusEffect(
         useCallback(() => {
             initPlaylist()
@@ -56,6 +43,10 @@ const NoticeScreen = () => {
             initCurrentContent()
         }, [])        
     )
+
+    useEffect(() => {
+        setRefresh(getnotice)
+    }, [])
 
     return (
         <View style={styles.container}>

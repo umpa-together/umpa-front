@@ -7,13 +7,14 @@ import { Context as ChatContext } from 'context/ChatContext'
 import { Context as UserContext } from 'context/UserContext';
 import ProfileImage from 'components/ProfileImage'
 import { useFocusEffect } from '@react-navigation/native';
+import { useRefresh } from 'providers/refresh';
 
 export default ChatList = ({ data }) => {
     const { state, getSelectedChat, getMessagesNum, getChatList, nextChatList } = useContext(ChatContext);
     const { text } = useChat()
     const { state: userState } = useContext(UserContext);
     const [result, setResult] = useState(data)
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const [loading, setLoading] = useState(false);
     
     const getData = async () => {
@@ -31,20 +32,6 @@ export default ChatList = ({ data }) => {
             getData();
         }
     };
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        getChatList();
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
 
     const onClickChat = async (id, user) => {
         await getSelectedChat({ chatid: id })
@@ -69,6 +56,10 @@ export default ChatList = ({ data }) => {
         })
     )
 
+    useEffect(() => {
+        setRefresh(getChatList)
+    }, [])
+    
     return (
         <View style={styles.flex}>
             <FlatList

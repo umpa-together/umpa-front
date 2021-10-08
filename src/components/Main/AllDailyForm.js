@@ -5,11 +5,12 @@ import { Context as DailyContext } from 'context/DailyContext';
 import { push } from 'navigationRef';
 import LoadingIndicator from '../LoadingIndicator'
 import { SongImage } from 'components/SongImage'
+import { useRefresh } from 'providers/refresh';
 
 export default AllDailyForm = () => {
     const { state, getDaily, nextAllDailys, getAllDailys } = useContext(DailyContext)
     const [loading, setLoading] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     
     const getData = async () => {
         if(state.allDailys.length >= 20 && !state.notAllDailysNext){
@@ -27,23 +28,11 @@ export default AllDailyForm = () => {
         }
     };
 
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getAllDailys()
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
-
     useEffect(() => {
         getAllDailys()
+        setRefresh(getAllDailys)
     }, [])
+
     return (
         <View style={styles.container}>
             { state.allDailys == null ? <LoadingIndicator /> :

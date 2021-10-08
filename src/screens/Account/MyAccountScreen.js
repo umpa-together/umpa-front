@@ -11,6 +11,7 @@ import ProfileSong from 'components/Account/ProfileSong'
 import Profile from 'components/Account/Profile'
 import { tmpWidth } from 'components/FontNormalize'
 import ProfileButton from 'components/Account/Button'
+import { useRefresh } from 'providers/refresh';
 
 require('date-utils');
 
@@ -18,23 +19,11 @@ const MyAccountScreen = () => {
     const { state: userState, getMyInfo, getMyStory } = useContext(UserContext);
     const [menu, setMenu] = useState('playlist');
     const [url, setUrl] = useState('');
-    const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
     const fetchData = async () => {
-        setRefreshing(true);
-        await Promise.all([
-            getMyInfo(),
-            getMyStory()
-        ])
-        setRefreshing(false);
+        getMyInfo(),
+        getMyStory()
     };
 
     useEffect(() => {
@@ -44,6 +33,10 @@ const MyAccountScreen = () => {
             setUrl('')
         }
     }, [userState.myStory]);
+
+    useEffect(() => {
+        setRefresh(fetchData)
+    }, [])
 
     return (
         <View style={styles.container}>

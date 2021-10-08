@@ -1,34 +1,25 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import { Context as UserContext } from 'context/UserContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { tmpWidth } from 'components/FontNormalize';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { push } from 'navigationRef';
+import { useRefresh } from 'providers/refresh';
 
 export default LikePlaylists = () => {
     const { state, getLikePlaylists } = useContext(UserContext);
     const { getPlaylist } = useContext(PlaylistContext)
-    const [refreshing, setRefreshing] = useState(false);
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getLikePlaylists()
-        setRefreshing(false);
-    };
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
     const onClickPlaylist = async (id, postUserId) => {
         await getPlaylist({ id, postUserId })
         push('SelectedPlaylist', {id, postUser: postUserId})
     }
+
+    useEffect(() => {
+        setRefresh(getLikePlaylists)
+    }, [])
 
     return (
         <View style={styles.container}>
