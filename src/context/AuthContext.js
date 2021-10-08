@@ -31,9 +31,9 @@ const tryLocalSignin = dispatch => async()=> {
     }
 };
 
-const signup = (dispatch) => async ({ email, password ,name, informationagree}) => {
+const signup = (dispatch) => async ({ email, password, name, informationagree, songs }) => {
     try {
-        const response = await serverApi.post('/signup', { email, password,name,informationagree});
+        const response = await serverApi.post('/signup', { email, password, name, informationagree, songs });
         await AsyncStorage.setItem('token', response.data.token);
         dispatch({ type: 'signup', payload: response.data.token });
     } catch (err){
@@ -46,7 +46,6 @@ const signin = (dispatch) => async ({ email, password }) => {
         const response = await serverApi.post('/signin', { email, password });
         await AsyncStorage.setItem('token', response.data.token);
         dispatch({ type: 'signin', payload: response.data.token });
-        navigate('Loading');
     } catch (err) {
         dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
     }
@@ -78,8 +77,6 @@ const getGoogleInfo = (dispatch) => async ({ email, id }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Hello');
-            //navigate('Main');
         }
     } catch (err) {
         dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -95,7 +92,6 @@ const getAppleInfo = (dispatch) => async ({ email, id }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Hello');
             //navigate('Main');
         }
     } catch (err) {
@@ -112,7 +108,6 @@ const getKakaoInfo = (dispatch) => async ({ token }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Hello');
             //navigate('Main');
         }
     } catch (err) {
@@ -129,7 +124,6 @@ const getNaverInfo = (dispatch) => async ({ token }) => {
             const res = await serverApi.post('/signin', { email: response.data[1], password: response.data[2] });
             await AsyncStorage.setItem('token', res.data.token);
             dispatch({ type: 'signin', payload: res.data.token });
-            navigate('Hello');
             //navigate('Main');
         }
     } catch (err) {

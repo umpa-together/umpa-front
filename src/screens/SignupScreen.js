@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput,ScrollView, Text, Keyboard, FlatList, ActivityIndicator } from 'react-native';
 import { Context as AuthContext } from 'context/AuthContext';
 import { Context as SearchContext } from 'context/SearchContext';
-import { Context as DJContext } from 'context/DJContext';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import HarmfulModal from 'components/HarmfulModal';
@@ -14,8 +13,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import Header from 'components/Header';
 
 const SignupPage = ({ route }) => {
-    const { state, checkName, signup, signin } = useContext(AuthContext);
-    const { setSongs } = useContext(DJContext);
+    const { state, checkName, signup } = useContext(AuthContext);
     const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
     const [email, setEmail] = useState(route.params.email);
     const [emailerr, setEmailerr] = useState(false);
@@ -415,9 +413,7 @@ const SignupPage = ({ route }) => {
                         <Text style={{fontSize:16 * tmpWidth, color:'rgb(80,80,80)', marginLeft:87 * tmpWidth, marginTop:24 * tmpWidth}}>환영합니다!</Text>
                         {songs.length >=1 ?
                             <TouchableOpacity style={{width:30 * tmpWidth, height:19 * tmpWidth,marginLeft:80 * tmpWidth, marginTop:24 * tmpWidth}} onPress={async () => {
-                                await signup({ email, password, name, informationagree: agree2 });
-                                await setSongs({ songs: songs })
-                                await signin({ email, password });
+                                await signup({ email, password, name, informationagree: agree2, songs });
                                 setModalVisible(false)
                                 stoptracksong()}}
                             >
