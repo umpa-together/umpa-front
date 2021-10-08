@@ -14,13 +14,13 @@ import { Provider as DJProvider } from 'context/DJContext';
 import { Provider as NoticeProvider } from 'context/NoticeContext';
 import { Provider as WeeklyProvider } from 'context/WeeklyContext';
 import { Provider as ReportProvider } from 'context/ReportContext';
-import { Provider as DailyProvider } from './src/context/DailyContext';
-import { Provider as ChatProvider } from './src/context/ChatContext';
-import { Provider as FeedProvider } from './src/context/FeedContext';
+import { Provider as DailyProvider } from 'context/DailyContext';
+import { Provider as ChatProvider } from 'context/ChatContext';
+import { Provider as FeedProvider } from 'context/FeedContext';
 
 import TrackPlayerProvider from 'providers/trackPlayer'
 import ModalProvider from 'providers/modal'
-
+import RefreshProvider from 'providers/refresh';
 import MainNavigator from 'navigator.js';
 
 export default () => {
@@ -61,36 +61,38 @@ export default () => {
     }, []);
 
     return (
-        <FeedProvider>
-            <ModalProvider>
-                <TrackPlayerProvider>
-                    <ReportProvider>
-                        <WeeklyProvider>
-                            <NoticeProvider>
-                                <DailyProvider>
-                                        <ChatProvider>
-                                            <DJProvider>
-                                                <UserProvider>
-                                                    <SearchPlaylistProvider>
-                                                        <PlaylistProvider>
-                                                            <BoardProvider>
-                                                                <SearchProvider>
-                                                                    <AuthProvider>
-                                                                        <MainNavigator/>
-                                                                    </AuthProvider>
-                                                                </SearchProvider>
-                                                            </BoardProvider>
-                                                        </PlaylistProvider>
-                                                    </SearchPlaylistProvider>
-                                                </UserProvider>
-                                            </DJProvider>
-                                        </ChatProvider>
-                                </DailyProvider>
-                            </NoticeProvider>
-                        </WeeklyProvider>
-                    </ReportProvider>
-                </TrackPlayerProvider>
-            </ModalProvider>
-        </FeedProvider>
+        <RefreshProvider>
+            <FeedProvider>
+                <ModalProvider>
+                    <TrackPlayerProvider>
+                        <ReportProvider>
+                            <WeeklyProvider>
+                                <NoticeProvider>
+                                    <DailyProvider>
+                                            <ChatProvider>
+                                                <DJProvider>
+                                                    <UserProvider>
+                                                        <SearchPlaylistProvider>
+                                                            <PlaylistProvider>
+                                                                <BoardProvider>
+                                                                    <SearchProvider>
+                                                                        <AuthProvider>
+                                                                            <MainNavigator/>
+                                                                        </AuthProvider>
+                                                                    </SearchProvider>
+                                                                </BoardProvider>
+                                                            </PlaylistProvider>
+                                                        </SearchPlaylistProvider>
+                                                    </UserProvider>
+                                                </DJProvider>
+                                            </ChatProvider>
+                                    </DailyProvider>
+                                </NoticeProvider>
+                            </WeeklyProvider>
+                        </ReportProvider>
+                    </TrackPlayerProvider>
+                </ModalProvider>
+            </FeedProvider>
+        </RefreshProvider>
     )
 }

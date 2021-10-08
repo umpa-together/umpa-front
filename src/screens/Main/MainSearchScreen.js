@@ -1,13 +1,13 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
-import {Context as BoardContext} from 'context/BoardContext';
-import {Context as NoticeContext} from 'context/NoticeContext';
-import {Context as SearchContext} from 'context/SearchContext';
-import {Context as WeeklyContext} from 'context/WeeklyContext';
-import {Context as UserContext} from 'context/UserContext';
-import {Context as DJContext} from 'context/DJContext';
-import {Context as FeedContext} from 'context/FeedContext';
-import {Context as ChatContext} from 'context/ChatContext';
+import { Context as BoardContext } from 'context/BoardContext';
+import { Context as NoticeContext } from 'context/NoticeContext';
+import { Context as SearchContext } from 'context/SearchContext';
+import { Context as WeeklyContext } from 'context/WeeklyContext';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { Context as FeedContext } from 'context/FeedContext';
+import { Context as ChatContext } from 'context/ChatContext';
 
 import SearchBox from 'components/Main/SearchBox'
 import CurrentHashtag from 'components/Main/CurrentHashtag'
@@ -17,6 +17,7 @@ import MusicArchive from 'components/Main/MusicArchive'
 import SimilarTasteUsers from 'components/Main/SimilarTasteUsers';
 import Header from 'components/Main/Header';
 import WeeklyDailies from 'components/Main/WeeklyDailies';
+import { useRefresh } from 'providers/refresh';
 
 const MainSearchScreen = () => {
     const { getMyScrab, getMyBookmark, getMyStory, getOtherStory } = useContext(UserContext);
@@ -26,26 +27,16 @@ const MainSearchScreen = () => {
     const { state: WeeklyState, postWeekly, getRecentPlaylists, getMusicArchive, getWeekly } = useContext(WeeklyContext);
     const { state: djState, getMainRecommendDJ } = useContext(DJContext);
     const { getFeeds } = useContext(FeedContext)
-    const { getMessagesNum, state:chatState } = useContext(ChatContext)
-    const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            dataFetchinMain();
-        }
-    }
+    const { getMessagesNum } = useContext(ChatContext)
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
     const dataFetchinMain = async () => {
-        await Promise.all([
-            getMessagesNum(),
-            getWeekly(),
-            getMusicArchive(),
-            getMainRecommendDJ(),
-            currentHashtag(),
-            getRecentPlaylists(),
-        ])
+        getMessagesNum()
+        getWeekly()
+        getMusicArchive()
+        getMainRecommendDJ()
+        currentHashtag()
+        getRecentPlaylists()
     }
 
     const loadingDataFetch = async () => {
@@ -70,6 +61,7 @@ const MainSearchScreen = () => {
 
     useEffect(() => {
         loadingDataFetch()
+        setRefresh(dataFetchinMain)
     }, [])
 
     return (

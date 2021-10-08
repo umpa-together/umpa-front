@@ -22,6 +22,7 @@ import TextContent from 'components/Daily/TextContent';
 import LoadingIndicator from 'components/LoadingIndicator'
 import { useTrackPlayer } from 'providers/trackPlayer'
 import { useFocusEffect } from '@react-navigation/native';
+import { useRefresh } from 'providers/refresh';
 
 
 const SelectedDaily = ({route}) => {
@@ -31,27 +32,24 @@ const SelectedDaily = ({route}) => {
     const { state: searchState, SearchHashtag } = useContext(SearchPlaylistContext);
     const { id: Dailyid } = route.params
 
-    const [isPlayingid, setIsPlayingid] = useState('0');
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
 
-    const [tok, setTok] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
  
     const [hashtag, setHashtag] = useState('');
-    const [deletedModal, setDeletedModal] = useState(false);
+    const [, setDeletedModal] = useState(false);
  
 
 
     const [currentDaily, setCurrentDaily] = useState(state.current_daily)
     const [comments, setComments] = useState(state.current_comments);
-    const [currentSongs, setCurrentSongs] = useState(state.current_songs)
+    const [, setCurrentSongs] = useState(state.current_songs)
     const { isPlayingId } = useTrackPlayer()
 
+    const fetchData = () => {
+        getDaily({id:state.current_daily._id, postUserId:state.current_daily.postUserId._id})
+    };
 
-    useEffect(() => {
-        const trackPlayer = setTimeout(() => setIsPlayingid('0'), 30000);
-        return () => clearTimeout(trackPlayer);
-    },[isPlayingid])
     const onKeyboardDidShow =(e) =>{
         setKeyboardHeight(e.endCoordinates.height);
     }
@@ -67,6 +65,7 @@ const SelectedDaily = ({route}) => {
         Keyboard.removeListener('keyboardWillShow', onKeyboardDidShow);
         Keyboard.removeListener('keyboardWillHide', onKeyboardDidHide);
     }
+
     useFocusEffect(
         useCallback(() => {
             addEventListener()
@@ -74,45 +73,32 @@ const SelectedDaily = ({route}) => {
         }, [])
     )
 
-    const onRefresh = async () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getDaily({id:state.current_daily._id, postUserId:state.current_daily.postUserId._id})
-        setRefreshing(false);
-    };
-
-
- 
     useFocusEffect(
         useCallback(() => {
             setCurrentSongs(state.current_songs)
         }, [])
     )
-
-
    
     useEffect(() => {
         if(state.current_daily != null && state.current_daily._id == Dailyid)    setComments(state.current_comments)
     }, [Dailyid, state.current_comments])
+
     useEffect(() => {
         if(state.current_daily != null && state.current_daily._id == Dailyid)  setCurrentDaily(state.current_daily)
     }, [Dailyid, state.current_daily])
 
-    
     useEffect(() => {
         if(searchState.playList != null && hashtag != '') navigate('SelectedHashtag', {data: searchState.playList, text: hashtag, searchOption : 'Hashtag' });
     }, [searchState.playList])
+
     useEffect(() => {
         if(state.current_daily != null && state.current_daily.length == 0)    setDeletedModal(true);
     },[state.current_daily])
     
+    useEffect(() => {
+        setRefresh(fetchData)
+    }, [])
+
     return (
         <View style={styles.container}>
             {currentDaily == null || currentDaily == undefined ?
@@ -139,8 +125,6 @@ const SelectedDaily = ({route}) => {
                 <DailyProvider>
                         <Comments comments={comments} />
                 </DailyProvider>
-
-
             </ScrollView>
             { isPlayingId === '0' ? 
                 <CommentBar dailyId={Dailyid} /> : 

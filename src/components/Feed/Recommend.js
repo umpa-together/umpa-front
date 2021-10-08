@@ -9,6 +9,7 @@ import {Context as DJContext} from 'context/DJContext';
 import { push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import RepresentSong from 'components/RepresentSong';
+import { useRefresh } from 'providers/refresh';
 
 const Recommend = () => {
     const { getPlaylist } = useContext(PlaylistContext);
@@ -16,26 +17,16 @@ const Recommend = () => {
     const { state: djState, recommendDJ, getSongs } = useContext(DJContext);
     const [representSong, setRepresentSong] = useState(null);
     const [representModal, setRepresentModal] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const [isFollow, setIsFollow] = useState([]);
     const [result, setResult] = useState('playlist');
     const scrollX = useRef(new Animated.Value(0)).current;
+    
     useEffect(()=>{
         recommendDJ();
+        setRefresh(getMyInfo)
     }, []);
 
-    const fetchData = async () => {
-        setRefreshing(true);
-        getMyInfo()
-        setRefreshing(false);
-    };
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
     return (
         <LinearGradient colors={['rgb(219,229,255)', 'rgba(209,218,255,0)']} style={{flex: 1}}>
             <View style={styles.opt}>

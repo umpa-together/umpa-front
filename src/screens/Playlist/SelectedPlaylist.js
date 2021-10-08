@@ -16,6 +16,7 @@ import PlaylistProvider from 'providers/playlist';
 import MusicBar from 'components/MusicBar'
 import { useTrackPlayer } from 'providers/trackPlayer'
 import { tmpWidth } from 'components/FontNormalize'
+import { useRefresh } from 'providers/refresh';
 
 const SelectedPlaylist = ({ route }) => {
     const { state, getPlaylist } = useContext(PlaylistContext);
@@ -29,21 +30,11 @@ const SelectedPlaylist = ({ route }) => {
     const [currentPlaylist, setCurrentPlaylist] = useState(state.current_playlist)
     const [comments, setComments] = useState(state.current_comments);
     const [currentSongs, setCurrentSongs] = useState(state.current_songs)
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const { isPlayingId } = useTrackPlayer()
 
-    const onRefresh = async () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getPlaylist({id:state.current_playlist._id, postUserId:state.current_playlist.postUserId._id})
-        setRefreshing(false);
+    const fetchData = () => {
+        getPlaylist({id:state.current_playlist._id, postUserId:state.current_playlist.postUserId._id})
     };
 
     const recommendedClick = () => {
@@ -81,6 +72,10 @@ const SelectedPlaylist = ({ route }) => {
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist.length == 0)    setDeletedModal(true);
     },[state.current_playlist])
+
+    useEffect(() => {
+        setRefresh(fetchData)
+    }, [])
 
     return (
         <View style={styles.container}>

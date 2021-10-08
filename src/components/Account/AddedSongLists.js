@@ -1,36 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import { Context as UserContext } from '../../context/UserContext';
-import { tmpWidth } from '../FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
+import { tmpWidth } from 'components/FontNormalize';
 import { SongImage } from 'components/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { DeletePlaylistModal } from 'components/PlaylistModal';
 import HarmfulModal from 'components/HarmfulModal';
+import { useRefresh } from 'providers/refresh';
 
 export default AddedSongLists = () => {
     const { state, getMyInfo } = useContext(UserContext);
     const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer()
-
-    const [refreshing, setRefreshing] = useState(false);
+    const { refreshing, onRefresh, setRefresh } = useRefresh()
     const [deletePlaylistModal, setDeletePlaylistModal] = useState(false)
     const [time, setTime] = useState('')
     const [idx, setIdx] = useState('-1')
-
-    const fetchData = async () => {
-        setRefreshing(true);
-        await getMyInfo()
-        setRefreshing(false);
-    }
-
-    const onRefresh = () => {
-        if (refreshing){
-            return;
-        }else{
-            fetchData();
-        }
-    }
 
     const onClickSong = (index) => {
         if(idx == '-1' || idx != index){
@@ -57,6 +43,10 @@ export default AddedSongLists = () => {
         if(!deletePlaylistModal)    setIdx('-1')
     },[deletePlaylistModal])
     
+    useEffect(() => {
+        setRefresh(getMyInfo)
+    }, [])
+
     return (
         <View style={styles.container}>
             {state.myPlayList === null ? <LoadingIndicator /> : 
