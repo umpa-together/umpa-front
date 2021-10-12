@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import Hyperlink from 'react-native-hyperlink';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
@@ -32,6 +33,10 @@ export default RecommentBox = ({ recomments }) => {
         setReCommentDeleteModal(true)
     }
 
+    const onClickUrl = (url) => {
+        Linking.openURL(url)
+    }
+
     return (
         <View style={styles.commentBox}>
             <TouchableOpacity onPress={() => onClickProfile(postUser._id)}>
@@ -47,7 +52,12 @@ export default RecommentBox = ({ recomments }) => {
                     </View>
                     <Text style={styles.time}>{time}</Text>
                 </View>
-                <Text style={styles.comment}>{text}</Text>
+                <Hyperlink
+                    linkStyle={styles.link}
+                    onPress={(url) => onClickUrl(url)}
+                >
+                    <Text style={styles.comment}>{text}</Text>
+                </Hyperlink>
                 <View style={styles.flexRow}>
                     <TouchableOpacity
                         onPress={onClickRecommentLike}
@@ -108,6 +118,12 @@ const styles=StyleSheet.create({
         fontSize: 12 * tmpWidth, 
         fontWeight: '400',
         color: 'rgba(0,0,0,0.72)'
+    },
+    link: {
+        fontSize: 14 * tmpWidth,
+        lineHeight: 20 * tmpWidth,
+        fontWeight: '400',
+        color: '#2980b9', 
     },
     comment: {
         fontSize: 14 * tmpWidth, 
