@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { Text, Image, StyleSheet, View, TouchableOpacity,  ScrollView, RefreshControl, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SvgUri from 'react-native-svg-uri';
@@ -10,6 +10,7 @@ import { push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import RepresentSong from 'components/RepresentSong';
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Recommend = () => {
     const { getPlaylist } = useContext(PlaylistContext);
@@ -24,8 +25,13 @@ const Recommend = () => {
     
     useEffect(()=>{
         recommendDJ();
-        setRefresh(getMyInfo)
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(getMyInfo)
+        }, [])
+    )
 
     return (
         <LinearGradient colors={['rgb(219,229,255)', 'rgba(209,218,255,0)']} style={{flex: 1}}>

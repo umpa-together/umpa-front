@@ -53,6 +53,7 @@ const SelectedPlaylist = ({ route }) => {
 
     useFocusEffect(
         useCallback(() => {
+            setRefresh(fetchData)
             setCurrentSongs(state.current_songs)
         }, [])
     )
@@ -72,10 +73,6 @@ const SelectedPlaylist = ({ route }) => {
     useEffect(() => {
         if(state.current_playlist != null && state.current_playlist.length == 0)    setDeletedModal(true);
     },[state.current_playlist])
-
-    useEffect(() => {
-        setRefresh(fetchData)
-    }, [])
 
     return (
         <View style={styles.container}>

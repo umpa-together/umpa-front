@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { push } from 'navigationRef';
 import LoadingIndicator from '../LoadingIndicator'
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AllPlaylistForm = () => {
     const { state, getPlaylist, nextAllPlaylists, getAllPlaylists } = useContext(PlaylistContext)
@@ -29,8 +30,13 @@ const AllPlaylistForm = () => {
 
     useEffect(() => {
         getAllPlaylists()
-        setRefresh(getAllPlaylists)
     }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(getAllPlaylists)
+        }, [])
+    )
 
     return (
         <View style={styles.container}>

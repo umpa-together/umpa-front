@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback, useEffect } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
@@ -41,12 +41,9 @@ const NoticeScreen = () => {
             initOtherUser()
             initMusic()
             initCurrentContent()
+            setRefresh(getnotice)
         }, [])        
     )
-
-    useEffect(() => {
-        setRefresh(getnotice)
-    }, [])
 
     return (
         <View style={styles.container}>

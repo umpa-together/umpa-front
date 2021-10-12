@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as FeedContext } from 'context/FeedContext';
@@ -6,6 +6,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import Playlist from './Playlist'
 import Daily from './Daily';
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default Contents = () => {
     const { state: feedState, getFeeds, nextFeeds } = useContext(FeedContext);
@@ -34,9 +35,11 @@ export default Contents = () => {
         getOtherStory()
     }
 
-    useEffect(() => {
-        setRefresh(fetchData)
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(fetchData)
+        }, [])
+    )
 
     return (
         <View style={styles.flex}>

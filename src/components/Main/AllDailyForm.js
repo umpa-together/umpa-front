@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as DailyContext } from 'context/DailyContext';
@@ -6,6 +6,7 @@ import { push } from 'navigationRef';
 import LoadingIndicator from '../LoadingIndicator'
 import { SongImage } from 'components/SongImage'
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default AllDailyForm = () => {
     const { state, getDaily, nextAllDailys, getAllDailys } = useContext(DailyContext)
@@ -32,6 +33,12 @@ export default AllDailyForm = () => {
         getAllDailys()
         setRefresh(getAllDailys)
     }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(getAllDailys)
+        }, [])
+    )
 
     return (
         <View style={styles.container}>

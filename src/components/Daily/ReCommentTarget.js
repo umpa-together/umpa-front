@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import Hyperlink from 'react-native-hyperlink';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ReportModal from 'components/ReportModal';
@@ -22,6 +23,10 @@ export default RecommentTarget = () => {
         setCommentDeleteModal(true)
     }
 
+    const onClickUrl = (url) => {
+        Linking.openURL(url)
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => onClickProfile(postUser._id)}>
@@ -37,7 +42,12 @@ export default RecommentTarget = () => {
                     </View>
                     <Text style={styles.time}>{time}</Text>
                 </View>
-                <Text style={styles.comment}>{text}</Text>
+                <Hyperlink
+                    linkStyle={styles.link}
+                    onPress={(url) => onClickUrl(url)}
+                >
+                    <Text style={styles.comment}>{text}</Text>
+                </Hyperlink>
                 <View style={styles.flexRow}>
                     <TouchableOpacity
                         onPress={() => onClickCommentLikes(likes, dailyId, id)}
@@ -123,5 +133,11 @@ const styles=StyleSheet.create({
         fontSize: 12 * tmpWidth,
         fontWeight: '400',
         color: '#5d5d5d'
-    }
+    },
+    link: {
+        fontSize: 14 * tmpWidth,
+        lineHeight: 20 * tmpWidth,
+        fontWeight: '400',
+        color: '#2980b9', 
+    },
 })

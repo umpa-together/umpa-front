@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import Hyperlink from 'react-native-hyperlink';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage'
@@ -26,6 +27,10 @@ export default CommentBox = ({ comment }) => {
         setCommentDeleteModal(true)
     }
 
+    const onClickUrl = (url) => {
+        Linking.openURL(url)
+    }
+
     return (
         <TouchableOpacity 
             style={styles.container}
@@ -44,7 +49,12 @@ export default CommentBox = ({ comment }) => {
                     </View>
                     <Text style={styles.time}>{time}</Text>
                 </View>
-                <Text style={styles.content}>{text}</Text>
+                <Hyperlink
+                    linkStyle={styles.link}
+                    onPress={(url) => onClickUrl(url)}
+                >
+                    <Text style={styles.content}>{text}</Text>
+                </Hyperlink>
                 <View style={styles.contentFooter}>
                     <TouchableOpacity onPress={() => onClickCommentLikes(likes, dailyId, id)}>
                         <Text 
@@ -132,5 +142,11 @@ const styles=StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 8 * tmpWidth
-    }
+    },
+    link: {
+        fontSize: 14 * tmpWidth,
+        lineHeight: 20 * tmpWidth,
+        fontWeight: '400',
+        color: '#2980b9', 
+    },
 })

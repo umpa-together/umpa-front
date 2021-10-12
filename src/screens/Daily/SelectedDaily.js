@@ -75,6 +75,7 @@ const SelectedDaily = ({route}) => {
 
     useFocusEffect(
         useCallback(() => {
+            setRefresh(fetchData)
             setCurrentSongs(state.current_songs)
         }, [])
     )
@@ -94,10 +95,6 @@ const SelectedDaily = ({route}) => {
     useEffect(() => {
         if(state.current_daily != null && state.current_daily.length == 0)    setDeletedModal(true);
     },[state.current_daily])
-    
-    useEffect(() => {
-        setRefresh(fetchData)
-    }, [])
 
     return (
         <View style={styles.container}>

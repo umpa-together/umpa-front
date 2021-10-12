@@ -53,13 +53,10 @@ export default ChatList = ({ data }) => {
     useFocusEffect(
         useCallback(() => {
             setResult(data)
+            setRefresh(getChatList)
         })
     )
 
-    useEffect(() => {
-        setRefresh(getChatList)
-    }, [])
-    
     return (
         <View style={styles.flex}>
             <FlatList
