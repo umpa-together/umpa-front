@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { Context as BoardContext } from 'context/BoardContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
@@ -18,6 +18,7 @@ import SimilarTasteUsers from 'components/Main/SimilarTasteUsers';
 import Header from 'components/Main/Header';
 import WeeklyDailies from 'components/Main/WeeklyDailies';
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 const MainSearchScreen = () => {
     const { getMyScrab, getMyBookmark, getMyStory, getOtherStory, getMyInfo } = useContext(UserContext);
@@ -62,9 +63,14 @@ const MainSearchScreen = () => {
 
     useEffect(() => {
         loadingDataFetch()
-        setRefresh(dataFetchinMain)
     }, [])
 
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(dataFetchinMain)
+        }, [])
+    )
+    
     return (
         <ScrollView 
             refreshControl={

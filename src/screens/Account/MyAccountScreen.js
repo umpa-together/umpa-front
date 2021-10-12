@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { RefreshControl, View, ScrollView, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import AccountPlaylist from  'components/Account/AccountPlaylist';
@@ -12,6 +12,7 @@ import Profile from 'components/Account/Profile'
 import { tmpWidth } from 'components/FontNormalize'
 import ProfileButton from 'components/Account/Button'
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 require('date-utils');
 
@@ -34,9 +35,11 @@ const MyAccountScreen = () => {
         }
     }, [userState.myStory]);
 
-    useEffect(() => {
-        setRefresh(fetchData)
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(fetchData)
+        }, [])
+    )
 
     return (
         <View style={styles.container}>

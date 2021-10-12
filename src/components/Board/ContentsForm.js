@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Context as BoardContext } from 'context/BoardContext';
 import { navigate } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
 import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ContentsForm = ({ Contents }) => {
     const { state, getCurrentBoard, getCurrentContent, nextContents } = useContext(BoardContext);
@@ -31,9 +32,11 @@ const ContentsForm = ({ Contents }) => {
         getCurrentBoard({boardId: state.boards._id});
     };
 
-    useEffect(() => {
-        setRefresh(fetchData)
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(fetchData)
+        }, [])
+    )
     
     return (
         <View style={styles.container}>
