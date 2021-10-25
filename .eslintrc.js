@@ -8,6 +8,11 @@ module.exports = {
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
     'import/named': 0,
+    'global-require': 0,
+    'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
+    'react/prop-types': 'off',
+    'no-underscore-dangle': 'off',
+    'no-param-reassign': 0,
   },
   settings: {
     'import/extensions': ['.js', '.jsx'],
@@ -18,4 +23,5 @@ module.exports = {
       },
     },
   },
+  ignorePatterns: ['FCMService.js', 'LocalNotificationService.js'],
 };
