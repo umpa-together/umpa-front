@@ -1,22 +1,21 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as config from 'config'
+import * as env from 'config';
 
 const instance = axios.create({
-  baseURL: config.serverURL,
+  baseURL: env.serverURL,
 });
 
 instance.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('token');
     if (token) {
+      // eslint-disable-next-line no-param-reassign
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
-  },
+  (err) => Promise.reject(err),
 );
 
 export default instance;

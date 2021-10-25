@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {fcmService} from 'FCMService';
-import {localNotificationService} from 'LocalNotificationService';
+import { fcmService } from 'FCMService';
+import { localNotificationService } from 'LocalNotificationService';
 
 import { Provider as AuthProvider } from 'context/AuthContext';
 import { Provider as SearchProvider } from 'context/SearchContext';
@@ -18,81 +18,75 @@ import { Provider as DailyProvider } from 'context/DailyContext';
 import { Provider as ChatProvider } from 'context/ChatContext';
 import { Provider as FeedProvider } from 'context/FeedContext';
 
-import TrackPlayerProvider from 'providers/trackPlayer'
-import ModalProvider from 'providers/modal'
+import TrackPlayerProvider from 'providers/trackPlayer';
+import ModalProvider from 'providers/modal';
 import RefreshProvider from 'providers/refresh';
 import MainNavigator from 'navigator.js';
 
 export default () => {
-    useEffect(()=> {
-        fcmService.registerAppWithFCM();
-        fcmService.register(onRegister, onNotification, onOpenNotification);
-        localNotificationService.configure(onOpenNotification);
+  useEffect(() => {
+    fcmService.registerAppWithFCM();
+    fcmService.register(onRegister, onNotification, onOpenNotification);
+    localNotificationService.configure(onOpenNotification);
 
-        async function onRegister(token){
-            await AsyncStorage.setItem('noticetoken', token);
-            console.log("[APP] onRegsiter: ", token)
-        }
+    async function onRegister(token) {
+      await AsyncStorage.setItem('noticetoken', token);
+      console.log('[APP] onRegsiter: ', token);
+    }
 
-        function onNotification(notify){
-            console.log("[App] onNotificagtion: ", notify)
-            const options = {
-                soundName : 'default',
-                playSound : true
-            };
-            localNotificationService.showNotification(
-                0,
-                notify.title,
-                notify.body,
-                notify,
-                options
-            )
-        }
+    function onNotification(notify) {
+      console.log('[App] onNotificagtion: ', notify);
+      const options = {
+        soundName: 'default',
+        playSound: true,
+      };
+      localNotificationService.showNotification(0, notify.title, notify.body, notify, options);
+    }
 
-        function onOpenNotification(notify){
-            console.log("[App] onOpenNotification: ", notify)
-        }
+    function onOpenNotification(notify) {
+      console.log('[App] onOpenNotification: ', notify);
+    }
 
-        return() => {
-            console.log("[App] unRegsiter")
-            fcmService.unRegister()
-            localNotificationService.unregister()
-        }
-    }, []);
+    return () => {
+      console.log('[App] unRegsiter');
+      fcmService.unRegister();
+      localNotificationService.unregister();
+    };
+  }, []);
 
-    return (
-        <RefreshProvider>
-            <FeedProvider>
-                <ModalProvider>
-                    <TrackPlayerProvider>
-                        <ReportProvider>
-                            <WeeklyProvider>
-                                <NoticeProvider>
-                                    <DailyProvider>
-                                            <ChatProvider>
-                                                <DJProvider>
-                                                    <UserProvider>
-                                                        <SearchPlaylistProvider>
-                                                            <PlaylistProvider>
-                                                                <BoardProvider>
-                                                                    <SearchProvider>
-                                                                        <AuthProvider>
-                                                                            <MainNavigator/>
-                                                                        </AuthProvider>
-                                                                    </SearchProvider>
-                                                                </BoardProvider>
-                                                            </PlaylistProvider>
-                                                        </SearchPlaylistProvider>
-                                                    </UserProvider>
-                                                </DJProvider>
-                                            </ChatProvider>
-                                    </DailyProvider>
-                                </NoticeProvider>
-                            </WeeklyProvider>
-                        </ReportProvider>
-                    </TrackPlayerProvider>
-                </ModalProvider>
-            </FeedProvider>
-        </RefreshProvider>
-    )
-}
+  return (
+    <RefreshProvider>
+      <FeedProvider>
+        <ModalProvider>
+          <TrackPlayerProvider>
+            <ReportProvider>
+              <WeeklyProvider>
+                <NoticeProvider>
+                  <DailyProvider>
+                    <ChatProvider>
+                      <DJProvider>
+                        <UserProvider>
+                          <SearchPlaylistProvider>
+                            <PlaylistProvider>
+                              <BoardProvider>
+                                <SearchProvider>
+                                  <AuthProvider>
+                                    <MainNavigator />
+                                  </AuthProvider>
+                                </SearchProvider>
+                              </BoardProvider>
+                            </PlaylistProvider>
+                          </SearchPlaylistProvider>
+                        </UserProvider>
+                      </DJProvider>
+                    </ChatProvider>
+                  </DailyProvider>
+                </NoticeProvider>
+              </WeeklyProvider>
+            </ReportProvider>
+          </TrackPlayerProvider>
+        </ModalProvider>
+      </FeedProvider>
+    </RefreshProvider>
+  );
+};
