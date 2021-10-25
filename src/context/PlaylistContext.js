@@ -1,271 +1,326 @@
-import createDataContext from './createDataContext';
 import serverApi from 'api/serverApi';
 import { navigate, goBack } from 'navigationRef';
+import createDataContext from './createDataContext';
 
 const playlistReducer = (state, action) => {
-    switch(action.type) {
-        case 'init_playlist':
-            return { ...state, current_playlist: null, current_comments:null, current_songs:[] };
-        case 'init_recomment':
-            return { ...state, current_recomments: null }
-        case 'getAllPlaylists':
-            return { ...state, allPlaylists: action.payload, notAllPlaylistsNext: false, currentAllPlaylistsPage: 1 }
-        case 'nextAllPlaylists':
-            return { ...state, allPlaylists: state.allPlaylists.concat(action.payload), currentAllPlaylistsPage: state.currentAllPlaylistsPage + 1 }
-        case 'notAllPlaylistsNext':
-            return { ...state, notAllPlaylistsNext: true}
-        case 'get_playlist':
-            return { ...state, current_playlist:action.payload[0],  current_comments:action.payload[1], current_songs: action.payload[0].songs };
-        case 'deleted_playlist':
-            return { ...state, current_playlist: [] };
-        case 'get_comment':
-            return { ...state, current_comments:action.payload}
-        case 'add_comment':
-            return { ...state, current_playlist:action.payload[0],  current_comments: action.payload[1], current_songs: action.payload[0].songs }
-        case 'get_recomment' :
-            return { ...state , current_recomments:action.payload}
-        case 'like' :
-            return { ...state, current_playlist:action.payload };
-        case 'error':
-            return { ...state, errorMessage: action.payload };    
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case 'init_playlist':
+      return { ...state, current_playlist: null, current_comments: null, current_songs: [] };
+    case 'init_recomment':
+      return { ...state, current_recomments: null };
+    case 'getAllPlaylists':
+      return {
+        ...state,
+        allPlaylists: action.payload,
+        notAllPlaylistsNext: false,
+        currentAllPlaylistsPage: 1,
+      };
+    case 'nextAllPlaylists':
+      return {
+        ...state,
+        allPlaylists: state.allPlaylists.concat(action.payload),
+        currentAllPlaylistsPage: state.currentAllPlaylistsPage + 1,
+      };
+    case 'notAllPlaylistsNext':
+      return { ...state, notAllPlaylistsNext: true };
+    case 'get_playlist':
+      return {
+        ...state,
+        current_playlist: action.payload[0],
+        current_comments: action.payload[1],
+        current_songs: action.payload[0].songs,
+      };
+    case 'deleted_playlist':
+      return { ...state, current_playlist: [] };
+    case 'get_comment':
+      return { ...state, current_comments: action.payload };
+    case 'add_comment':
+      return {
+        ...state,
+        current_playlist: action.payload[0],
+        current_comments: action.payload[1],
+        current_songs: action.payload[0].songs,
+      };
+    case 'get_recomment':
+      return { ...state, current_recomments: action.payload };
+    case 'like':
+      return { ...state, current_playlist: action.payload };
+    case 'error':
+      return { ...state, errorMessage: action.payload };
+    default:
+      return state;
+  }
 };
 
 // Playlist
 
 const initPlaylist = (dispatch) => () => {
-    try {
-        dispatch({ type: 'init_playlist' });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with initPlaylist' });
-    }
-}
+  try {
+    dispatch({ type: 'init_playlist' });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with initPlaylist' });
+  }
+};
 
 const initRecomment = (dispatch) => () => {
-    try {
-        dispatch({ type: 'init_recomment' });
-    } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with initRecomment' });
-    }
-}
+  try {
+    dispatch({ type: 'init_recomment' });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with initRecomment' });
+  }
+};
 
 const getAllPlaylists = (dispatch) => async () => {
+  try {
+    const response = await serverApi.get('/allPlaylists');
+    dispatch({ type: 'getAllPlaylists', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
+  }
+};
+
+const nextAllPlaylists =
+  (dispatch) =>
+  async ({ page }) => {
     try {
-        const response = await serverApi.get('/allPlaylists');
-        dispatch({ type: 'getAllPlaylists' , payload: response.data});
+      const response = await serverApi.get(`/allPlaylists/${page}`);
+      if (response.data.length !== 0) {
+        dispatch({ type: 'nextAllPlaylists', payload: response.data });
+      } else {
+        dispatch({ type: 'notAllPlaylistsNext' });
+      }
     } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
+      dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
     }
-}
+  };
 
-const nextAllPlaylists = (dispatch) => async ({page}) => {
+const addPlaylist =
+  (dispatch) =>
+  async ({ title, songs, hashtag, fd }, callback) => {
     try {
-        const response = await serverApi.get('/allPlaylists/'+page)
-        if(response.data.length != 0){
-            dispatch({ type: 'nextAllPlaylists', payload: response.data });
-        }else{
-            dispatch({ type: 'notAllPlaylistsNext'});
-        }
+      const response = await serverApi.post('/playlist', { title, songs, hashtag });
+      goBack();
+      fd.append('playlistId', response.data);
+      await serverApi.post('/imgUpload', fd, { header: { 'content-type': 'multipart/form-data' } });
     } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with getAllPlaylists' });
+      dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }
-}
+    if (callback) {
+      callback();
+    }
+  };
 
-
-const addPlaylist = dispatch => async({ title, songs, hashtag, fd } ,  callback) =>{
+const editPlaylist =
+  (dispatch) =>
+  async ({ title, songs, hashtag, playlistId }, callback) => {
     try {
-        const response = await serverApi.post('/playlist', { title, songs, hashtag });
-        goBack()
-        fd.append('playlistId', response.data);
-        await serverApi.post('/imgUpload', fd, { header: {"content-type": "multipart/form-data"}});
+      await serverApi.post('/editPlaylist', { title, songs, hashtag, playlistId });
+      navigate('Account');
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }
-    catch(err){
-        dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
+    if (callback) {
+      callback();
     }
-    if(callback) {
-        callback();
-    }
-};
+  };
 
-const editPlaylist = dispatch => async({ title, songs, hashtag, playlistId }, callback) => {
+const deletePlaylist =
+  () =>
+  async ({ id }) => {
+    await serverApi.delete(`/playlist/${id}`);
+  };
+
+const likesPlaylist =
+  (dispatch) =>
+  async ({ id }) => {
     try {
-        await serverApi.post('/editPlaylist', { title, songs, hashtag, playlistId });
-        navigate('Account')
+      const response = await serverApi.post(`/like/${id}`);
+      dispatch({ type: 'like', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likes' });
     }
-    catch(err){
-        dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
-    }
-    if(callback) {
-        callback();
-    }
-}
+  };
 
-const deletePlaylist= dispatch => {
-    return async ({ id }) => {
-        await serverApi.delete('/playlist/'+id);
-    };
-};
-
-const likesPlaylist = dispatch => {
-    return async ({ id }) => {
-        try{
-            const response =await serverApi.post('/like/'+id);
-            dispatch({type:'like', payload:response.data});
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with likes' });
-        }
+const unlikesPlaylist =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      const response = await serverApi.delete(`/like/${id}`);
+      dispatch({ type: 'like', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unlikes' });
     }
-};
+  };
 
-const unlikesPlaylist = dispatch => {
-    return async ({ id }) => {
-        try{
-            const response = await serverApi.delete('/like/'+id);
-            dispatch({type:'like', payload:response.data})
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with unlikes' });
-        }
+const getPlaylist =
+  (dispatch) =>
+  async ({ id, postUserId }) => {
+    try {
+      const response = await serverApi.get(`/playlist/${id}/${postUserId}`);
+      if (response.data[0] == null) {
+        dispatch({ type: 'deleted_playlist' });
+      } else {
+        dispatch({ type: 'get_playlist', payload: response.data });
+      }
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getPlaylist' });
     }
-};
-
-const getPlaylist = dispatch =>{
-    return async ({ id, postUserId })=>{
-        try {
-            const response = await serverApi.get('/playlist/'+id+'/'+postUserId);
-            if(response.data[0] == null ){
-                dispatch({type: 'deleted_playlist'})
-            }else{
-                dispatch({type: 'get_playlist', payload: response.data});
-            }
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getPlaylist' });
-        }
-    };
-};
+  };
 
 // Comment
 
-const addComment = dispatch => {
-    return async ({ id, text }) => {
-        try{
-            const response = await serverApi.post('/comment/'+id, { text });
-            dispatch({ type:'add_comment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
-        }
-    }
-};
-
-const deleteComment = dispatch => {
-    return async ({ id, commentid }) => {
-        try {
-            const response = await serverApi.delete('/comment/'+id+'/'+commentid);
-            dispatch({ type:'get_playlist', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
-        }
-    }
-};
-
-const addreComment = dispatch => {
-    return async ({ id, commentid, text }) => {
-        try{
-            const response = await serverApi.post('/recomment/'+id+'/'+commentid, { text });
-            dispatch({ type:'get_recomment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
-        }
-    }
-};
-
-const deletereComment = dispatch => {
-    return async ({ commentid }) => {
-        try{
-            const response = await serverApi.delete('/recomment/'+commentid);
-            dispatch({ type:'get_recomment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
-        }
-    }
-};
-
-const getreComment = dispatch => {
-    return async ({ commentid }) => {
-        try{
-            const response = await serverApi.get('/recomment/'+commentid);
-            dispatch({ type:'get_recomment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with getreComment' });
-        }
-    }
-};
-
-const likescomment = dispatch => {
-    return async ({ playlistid, id }) => {
-        try{
-            const response =await serverApi.post('/likecomment/'+playlistid+'/'+id);
-            dispatch({ type:'get_comment', payload:response.data });
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
-        }
-    }
-};
-
-const unlikescomment = dispatch => {
-    return async ({ playlistid, id }) => {
-        try{
-            const response = await serverApi.delete('/likecomment/'+playlistid+'/'+id);
-            dispatch({ type:'get_comment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
-        }
-    }
-};
-
-const likesrecomment = dispatch => {
-    return async ({ commentid, id }) => {
-        try{
-            const response =await serverApi.post('/likerecomment/'+commentid+'/'+id);
-            dispatch({ type:'get_recomment', payload:response.data });
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
-        }
-    }
-};
-
-const unlikesrecomment = dispatch => {
-    return async ({ commentid, id }) => {
-        try{
-            const response = await serverApi.delete('/likerecomment/'+commentid+'/'+id);
-            dispatch({ type:'get_recomment', payload:response.data })
-        }catch(err){
-            dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
-        }
-    }
-};
-
-const postUserSong = (dispatch) => async ({ playlistId, song }) => {
+const addComment =
+  (dispatch) =>
+  async ({ id, text }) => {
     try {
-        const response = await serverApi.post('/userSong/' + playlistId, { song })
+      const response = await serverApi.post(`/comment/${id}`, { text });
+      dispatch({ type: 'add_comment', payload: response.data });
     } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with postUserSong' });
+      dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
     }
-}
+  };
 
-const deleteUserSong = (dispatch) => async ({ playlistId, userSongId }) => {
+const deleteComment =
+  (dispatch) =>
+  async ({ id, commentid }) => {
     try {
-        const response = await serverApi.delete('/userSong/' + playlistId + '/' + userSongId)
+      const response = await serverApi.delete(`/comment/${id}/${commentid}`);
+      dispatch({ type: 'get_playlist', payload: response.data });
     } catch (err) {
-        dispatch({ type: 'error', payload: 'Something went wrong with deleteUserSong' });
+      dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
     }
-}
+  };
+
+const addreComment =
+  (dispatch) =>
+  async ({ id, commentid, text }) => {
+    try {
+      const response = await serverApi.post(`/recomment/${id}/${commentid}`, { text });
+      dispatch({ type: 'get_recomment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
+    }
+  };
+
+const deletereComment =
+  (dispatch) =>
+  async ({ commentid }) => {
+    try {
+      const response = await serverApi.delete(`/recomment/${commentid}`);
+      dispatch({ type: 'get_recomment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
+    }
+  };
+
+const getreComment =
+  (dispatch) =>
+  async ({ commentid }) => {
+    try {
+      const response = await serverApi.get(`/recomment/${commentid}`);
+      dispatch({ type: 'get_recomment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getreComment' });
+    }
+  };
+
+const likescomment =
+  (dispatch) =>
+  async ({ playlistid, id }) => {
+    try {
+      const response = await serverApi.post(`/likecomment/${playlistid}/${id}`);
+      dispatch({ type: 'get_comment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
+    }
+  };
+
+const unlikescomment =
+  (dispatch) =>
+  async ({ playlistid, id }) => {
+    try {
+      const response = await serverApi.delete(`/likecomment/${playlistid}/${id}`);
+      dispatch({ type: 'get_comment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
+    }
+  };
+
+const likesrecomment =
+  (dispatch) =>
+  async ({ commentid, id }) => {
+    try {
+      const response = await serverApi.post(`/likerecomment/${commentid}/${id}`);
+      dispatch({ type: 'get_recomment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
+    }
+  };
+
+const unlikesrecomment =
+  (dispatch) =>
+  async ({ commentid, id }) => {
+    try {
+      const response = await serverApi.delete(`/likerecomment/${commentid}/${id}`);
+      dispatch({ type: 'get_recomment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
+    }
+  };
+
+const postUserSong =
+  (dispatch) =>
+  async ({ playlistId, song }) => {
+    try {
+      const response = await serverApi.post(`/userSong/${playlistId}`, { song });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with postUserSong' });
+    }
+  };
+
+const deleteUserSong =
+  (dispatch) =>
+  async ({ playlistId, userSongId }) => {
+    try {
+      const response = await serverApi.delete(`/userSong/${playlistId}/${userSongId}`);
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with deleteUserSong' });
+    }
+  };
 
 export const { Provider, Context } = createDataContext(
-    playlistReducer,
-    { initPlaylist, getAllPlaylists, nextAllPlaylists, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylist, 
-        addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment,
-    postUserSong, deleteUserSong },
-    { allPlaylists: null, notAllPlaylistsNext: false, currentAllPlaylistsPage: 1, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, errorMessage: '' }
-)
+  playlistReducer,
+  {
+    initPlaylist,
+    getAllPlaylists,
+    nextAllPlaylists,
+    addPlaylist,
+    editPlaylist,
+    deletePlaylist,
+    likesPlaylist,
+    unlikesPlaylist,
+    getPlaylist,
+    addComment,
+    deleteComment,
+    addreComment,
+    deletereComment,
+    getreComment,
+    likescomment,
+    unlikescomment,
+    likesrecomment,
+    unlikesrecomment,
+    initRecomment,
+    postUserSong,
+    deleteUserSong,
+  },
+  {
+    allPlaylists: null,
+    notAllPlaylistsNext: false,
+    currentAllPlaylistsPage: 1,
+    current_playlist: null,
+    current_comments: null,
+    current_songs: [],
+    current_recomments: null,
+    errorMessage: '',
+  },
+);
