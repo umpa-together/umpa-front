@@ -246,9 +246,26 @@ const unlikesrecomment = dispatch => {
     }
 };
 
+const postUserSong = (dispatch) => async ({ playlistId, song }) => {
+    try {
+        const response = await serverApi.post('/userSong/' + playlistId, { song })
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with postUserSong' });
+    }
+}
+
+const deleteUserSong = (dispatch) => async ({ playlistId, userSongId }) => {
+    try {
+        const response = await serverApi.delete('/userSong/' + playlistId + '/' + userSongId)
+    } catch (err) {
+        dispatch({ type: 'error', payload: 'Something went wrong with deleteUserSong' });
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     playlistReducer,
     { initPlaylist, getAllPlaylists, nextAllPlaylists, addPlaylist, editPlaylist, deletePlaylist, likesPlaylist, unlikesPlaylist, getPlaylist, 
-        addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment },
+        addComment, deleteComment, addreComment,deletereComment, getreComment, likescomment, unlikescomment, likesrecomment, unlikesrecomment, initRecomment,
+    postUserSong, deleteUserSong },
     { allPlaylists: null, notAllPlaylistsNext: false, currentAllPlaylistsPage: 1, current_playlist: null, current_comments:null, current_songs: [], current_recomments:null, errorMessage: '' }
 )
