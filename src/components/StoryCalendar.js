@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-plusplus */
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
@@ -14,8 +16,8 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
 
   const monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
   const [currentDate, setCurrentDate] = useState(new Date());
-  const storyDate = [];
-  const [selectedStory, setSelectedStory] = useState(undefined);
+  const [storyDate, setStoryDate] = useState([]);
+  const [selectedStory, setSelectedStory] = useState(null);
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [monthName, setMonthName] = useState(monthFormatter.format(currentDate));
   const year = currentDate.getFullYear();
@@ -31,9 +33,6 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
       weekday: 'narrow',
     });
     weekdays.push(weekDay);
-  }
-  for (const key in state.storyCalendar) {
-    storyDate.push(state.storyCalendar[key].time);
   }
   const onClose = () => {
     setCalendarModal(false);
@@ -97,6 +96,14 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
     setCalendarDates([...prevDates, ...dates, ...nextDates]);
   }, []);
 
+  useEffect(() => {
+    if (state.storyCalendar) {
+      Object.values(state.storyCalendar).forEach((calendar) => {
+        setStoryDate((prev) => [...prev, calendar.time]);
+      });
+    }
+  }, [state.storyCalendar]);
+
   return (
     <Modal
       isVisible={calendarModal}
@@ -151,14 +158,15 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
                 <TouchableOpacity
                   onPress={() => {
                     setSelectedIdx(index);
-                    setSelectedStory(state.storyCalendar.filter((story) => story.time == item)[0]);
+                    setSelectedStory(state.storyCalendar.filter((story) => story.time === item)[0]);
                   }}
                 >
                   <View style={index === selectedIdx ? styles.selectedView : styles.defaultView}>
                     <Text
                       style={
+                        // eslint-disable-next-line no-nested-ternary
                         storyDate.includes(calendarDates[index])
-                          ? index == selectedIdx
+                          ? index === selectedIdx
                             ? styles.whiteText
                             : styles.activeText
                           : styles.notActiveText
@@ -173,7 +181,7 @@ const StoryCalendar = ({ calendarModal, setCalendarModal }) => {
             />
           </View>
         </View>
-        {selectedStory !== undefined ? (
+        {selectedStory !== null ? (
           <View
             style={{ flexDirection: 'row', paddingLeft: 24 * tmpWidth, paddingTop: 12 * tmpWidth }}
           >
