@@ -1,274 +1,257 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState, useContext } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
 import Modal from 'react-native-modal';
-import { SongImageBack } from 'components/SongImage'
+import { SongImageBack } from 'components/SongImage';
 import HarmfulModal from 'components/HarmfulModal';
-import { tmpWidth } from 'components/FontNormalize'
-import { StatusBarHeight } from 'components/StatusBarHeight'
+import { tmpWidth } from 'components/FontNormalize';
+import StatusBarHeight from 'components/StatusBarHeight';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from 'navigationRef';
-import MoveText from 'components/MoveText'
+import MoveText from 'components/MoveText';
 
-export default SongStory = ({ setArchiveModal, archive }) => {
-    const { state } = useContext(UserContext)
-    const { likeSong, unlikeSong, addSongView } = useContext(BoardContext);
-    const [idx, setIdx] = useState(0)
-    const { addtracksong, stoptracksong, isPlayingId, isMute, onClickVolume } = useTrackPlayer()
-    const { songs, _id: board } = archive
-    const [currentSong, setCurrentSong] = useState(songs[0])
-    const [likeCheck, setLikeCheck] = useState(songs[0].likes.includes(state.myInfo._id))
+const SongStory = ({ setArchiveModal, archive }) => {
+  const { state } = useContext(UserContext);
+  const { likeSong, unlikeSong, addSongView } = useContext(BoardContext);
+  const [idx, setIdx] = useState(0);
+  const { addtracksong, stoptracksong, isPlayingId, isMute, onClickVolume } = useTrackPlayer();
+  const { songs, _id: board } = archive;
+  const [currentSong, setCurrentSong] = useState(songs[0]);
+  const [likeCheck, setLikeCheck] = useState(songs[0].likes.includes(state.myInfo._id));
 
-    const onClose = () => {
-        setArchiveModal(false)
-        stoptracksong()
+  const onClose = () => {
+    setArchiveModal(false);
+    stoptracksong();
+  };
+
+  const onClickPrevious = () => {
+    if (idx === 0) return;
+    setCurrentSong(songs[idx - 1]);
+    setIdx((prev) => prev - 1);
+    addtracksong({ data: songs[idx - 1].song });
+  };
+
+  const onClickNext = () => {
+    if (idx === songs.length - 1) return;
+    setCurrentSong(songs[idx + 1]);
+    setIdx((prev) => prev + 1);
+    addtracksong({ data: songs[idx + 1].song });
+  };
+
+  const onClickLikes = () => {
+    if (likeCheck) {
+      unlikeSong({ id: currentSong.id, boardId: board._id });
+      setLikeCheck(false);
+    } else {
+      likeSong({ id: currentSong.id, boardName: board.name, boardId: board._id });
+      setLikeCheck(true);
     }
+  };
 
-    const onClickPrevious = () => {
-        if(idx === 0) return
-        setCurrentSong(songs[idx-1])
-        setIdx((prev) => prev-1)
-        addtracksong({ data: songs[idx-1].song })
-    }
+  const onClickAddSong = () => {
+    setArchiveModal(false);
+    navigate('SearchMusic', { isMusicArchive: true, boardId: board._id });
+  };
 
-    const onClickNext = () => {
-        if(idx === songs.length - 1)  return
-        setCurrentSong(songs[idx+1])
-        setIdx((prev) => prev+1)
-        addtracksong({ data: songs[idx+1].song })
-    }
+  useEffect(() => {
+    addtracksong({ data: currentSong.song });
+  }, []);
 
-    const onClickLikes = () => {
-        if(likeCheck) {
-            unlikeSong({id: currentSong.id, boardId: board._id})
-            setLikeCheck(false)
-        } else {
-            likeSong({id: currentSong.id, boardName: board.name, boardId: board._id})
-            setLikeCheck(true)
-        }
-    }
+  useEffect(() => {
+    setLikeCheck(currentSong.likes.includes(state.myInfo._id));
+    addSongView({ id: currentSong.id, boardId: board._id, postUserId: currentSong.postUser });
+  }, [currentSong]);
 
-    const onClickAddSong = () => {
-        setArchiveModal(false)
-        navigate('SearchMusic', {isMusicArchive: true, boardId: board._id})
-    }
+  return (
+    <Modal
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      isVisible
+      backdropOpacity={1}
+      style={styles.container}
+    >
+      <View style={styles.flex}>
+        <View style={styles.header}>
+          {songs.map((item, index) => (
+            <View
+              style={[
+                styles.songBar,
+                { width: `${100 / songs.length}%` },
+                idx >= index && styles.active,
+              ]}
+              key={item.id}
+            />
+          ))}
+        </View>
+        <TouchableOpacity style={styles.exit} onPress={onClose}>
+          <SvgUri width="15" height="15" source={require('assets/icons/storyExit.svg')} />
+        </TouchableOpacity>
+        <View style={[styles.box, styles.songBox, styles.flexRow]}>
+          <SvgUri
+            style={styles.songIcon}
+            width="22"
+            height="22"
+            source={require('assets/icons/storySong.svg')}
+          />
+          <MoveText
+            container={styles.songArea}
+            text={`${currentSong.song.attributes.artistName} - ${currentSong.song.attributes.name}`}
+            isMove={isPlayingId !== '0'}
+            isExplicit={false}
+            textStyles={styles.name}
+          />
+        </View>
+        <SongImageBack
+          url={currentSong.song.attributes.artwork.url}
+          width={375}
+          height={812}
+          opac={0.8}
+          border={0}
+          imgStyle={styles.backgroundImg}
+        />
+        <View style={[styles.flexRow, styles.flex]}>
+          <TouchableOpacity style={styles.flex} onPress={onClickPrevious} />
+          <TouchableOpacity style={styles.flex} onPress={onClickNext} />
+        </View>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.icon} onPress={onClickVolume}>
+            <SvgUri
+              width="40"
+              height="40"
+              source={
+                !isMute
+                  ? require('assets/icons/storyPlay.svg')
+                  : require('assets/icons/storyStop.svg')
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.plusBox} onPress={onClickAddSong}>
+            <SvgUri width="15" height="15" source={require('assets/icons/storyPlus.svg')} />
+          </TouchableOpacity>
+          <View style={styles.flexRow}>
+            <TouchableOpacity style={styles.icon} onPress={onClickLikes}>
+              <SvgUri
+                width="40"
+                height="40"
+                source={
+                  likeCheck
+                    ? require('assets/icons/storyHearto.svg')
+                    : require('assets/icons/storyHeart.svg')
+                }
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+      <HarmfulModal />
+    </Modal>
+  );
+};
 
-    useEffect(() => {
-        addtracksong({ data: currentSong.song })
-    }, [])
+const styles = StyleSheet.create({
+  container: {
+    margin: 0,
+  },
+  header: {
+    width: '100%',
+    paddingTop: StatusBarHeight * tmpWidth,
+    height: (30 + StatusBarHeight) * tmpWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  songBar: {
+    height: 3 * tmpWidth,
+    borderRadius: 100 * tmpWidth,
+    backgroundColor: 'rgba(139, 192, 255, 0.3)',
+  },
+  active: {
+    backgroundColor: '#ffffff',
+  },
+  box: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 100 * tmpWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4 * tmpWidth,
+    marginLeft: 18 * tmpWidth,
+  },
+  name: {
+    color: '#ffffff',
+    fontSize: 14 * tmpWidth,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  boardName: {
+    paddingLeft: 23 * tmpWidth,
+    paddingRight: 23 * tmpWidth,
+    paddingTop: 7 * tmpWidth,
+    paddingBottom: 7 * tmpWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundImg: {
+    position: 'absolute',
+    zIndex: -1,
+  },
+  icon: {
+    width: 40 * tmpWidth,
+    height: 40 * tmpWidth,
+  },
+  footer: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 35 * tmpWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 24 * tmpWidth,
+    paddingRight: 24 * tmpWidth,
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  plusBox: {
+    width: 88 * tmpWidth,
+    height: 34 * tmpWidth,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 100 * tmpWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 15 * tmpWidth,
+    position: 'absolute',
+    left: 144 * tmpWidth,
+  },
+  flex: {
+    flex: 1,
+  },
+  exit: {
+    width: 40 * tmpWidth,
+    height: 40 * tmpWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 0,
+    top: 60 * tmpWidth,
+  },
+  songBox: {
+    width: 240 * tmpWidth,
+    height: 33 * tmpWidth,
+  },
+  songArea: {
+    width: 180 * tmpWidth,
+  },
+  songIcon: {
+    marginLeft: 8 * tmpWidth,
+    marginRight: 8 * tmpWidth,
+  },
+  boardBox: {
+    width: 132 * tmpWidth,
+    height: 33 * tmpWidth,
+  },
+  boardArea: {
+    width: 100 * tmpWidth,
+  },
+});
 
-    useEffect(() => {
-        setLikeCheck(currentSong.likes.includes(state.myInfo._id))
-        addSongView({id: currentSong.id, boardId: board._id, postUserId: currentSong.postUser})
-    }, [currentSong])
-
-    return (
-        <Modal
-            animationIn="fadeIn"
-            animationOut="fadeOut"
-            isVisible={true}
-            backdropOpacity={1}
-            style={styles.container}
-        >
-            <View style={styles.flex}>
-                <View style={styles.header}>
-                    {songs.map((item, index) => {
-                        return (
-                            <View 
-                                style={[
-                                    styles.songBar,
-                                    { width: `${100 / songs.length}%` },
-                                    idx >= index && styles.active,
-                                ]}
-                                key={index}
-                            />
-                        )
-                    })}
-                </View>
-                <TouchableOpacity
-                    style={styles.exit}
-                    onPress={onClose}
-                >
-                    <SvgUri 
-                        width='15' 
-                        height='15' 
-                        source={require('assets/icons/storyExit.svg')} 
-                    /> 
-                </TouchableOpacity>
-                <View style={[styles.box, styles.songBox, styles.flexRow]}>
-                    <SvgUri 
-                        style={styles.songIcon}
-                        width='22' 
-                        height='22' 
-                        source={require('assets/icons/storySong.svg')} 
-                    />
-                    <MoveText 
-                        container={styles.songArea}
-                        text={`${currentSong.song.attributes.artistName} - ${currentSong.song.attributes.name}`}
-                        isMove={isPlayingId !== '0'}
-                        isExplicit={false}
-                        textStyles={styles.name}
-                    />
-                </View>
-                <SongImageBack 
-                    url={currentSong.song.attributes.artwork.url} 
-                    width={375} height={812} opac={0.8} border={0} 
-                    imgStyle={styles.backgroundImg} 
-                />
-                <View style={[styles.flexRow, styles.flex]}>
-                    <TouchableOpacity
-                        style={styles.flex}
-                        onPress={onClickPrevious}
-                    />
-                    <TouchableOpacity
-                        style={styles.flex}
-                        onPress={onClickNext}
-                    />
-                </View>
-                <View style={styles.footer}>
-                    <TouchableOpacity
-                        style={styles.icon}
-                        onPress={onClickVolume}
-                    >
-                        <SvgUri 
-                            width='40' 
-                            height='40' 
-                            source={!isMute ? require('assets/icons/storyPlay.svg') 
-                            : require('assets/icons/storyStop.svg')} 
-                        /> 
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.plusBox}
-                        onPress={onClickAddSong}
-                    >
-                        <SvgUri 
-                            width='15' 
-                            height='15' 
-                            source={require('assets/icons/storyPlus.svg')} 
-                        /> 
-                    </TouchableOpacity>
-                    <View style={styles.flexRow}>
-                        <TouchableOpacity
-                            style={styles.icon}
-                            onPress={onClickLikes}
-                        >
-                            <SvgUri 
-                                width='40' 
-                                height='40' 
-                                source={likeCheck ? require('assets/icons/storyHearto.svg') 
-                                : require('assets/icons/storyHeart.svg')} 
-                            /> 
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-            <HarmfulModal />
-        </Modal>
-    )
-}
-
-const styles=StyleSheet.create({
-    container: {
-        margin: 0
-    },
-    header: {
-        width: '100%',
-        paddingTop: StatusBarHeight * tmpWidth,
-        height: (30 + StatusBarHeight) * tmpWidth,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    songBar: {
-        height: 3 * tmpWidth,
-        borderRadius: 100 * tmpWidth,
-        backgroundColor: 'rgba(139, 192, 255, 0.3)',
-    },
-    active: {
-        backgroundColor: '#ffffff',
-    },
-    box: {
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: 100 * tmpWidth,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 4 * tmpWidth,
-        marginLeft: 18 * tmpWidth,
-    },
-    name: {
-        color: '#ffffff',
-        fontSize: 14 * tmpWidth,
-        fontWeight: '500',
-        textAlign: 'center',
-    },
-    boardName: {
-        paddingLeft: 23 * tmpWidth,
-        paddingRight: 23 * tmpWidth,
-        paddingTop: 7 * tmpWidth,
-        paddingBottom: 7 * tmpWidth,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    backgroundImg: {
-        position: 'absolute',
-        zIndex: -1
-    },
-    icon: {
-        width: 40 * tmpWidth,
-        height: 40 * tmpWidth,
-    },
-    footer: {
-        width: '100%', 
-        position: 'absolute', 
-        bottom: 35 * tmpWidth,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 24 * tmpWidth,
-        paddingRight: 24 * tmpWidth
-    },
-    flexRow: {
-        flexDirection: 'row',
-    },
-    plusBox: {
-        width: 88 * tmpWidth,
-        height: 34 * tmpWidth,
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 100 * tmpWidth,
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 15 * tmpWidth,
-        position: 'absolute',
-        left: 144 * tmpWidth
-    },
-    flex: {
-        flex: 1,
-    },
-    exit: {
-        width: 40 * tmpWidth,
-        height: 40 * tmpWidth,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        right: 0,
-        top: 60 * tmpWidth
-    },
-    songBox: {
-        width: 240 * tmpWidth,
-        height: 33 * tmpWidth,
-    },
-    songArea: {
-        width: 180 * tmpWidth
-    },
-    songIcon: {
-        marginLeft: 8 * tmpWidth,
-        marginRight: 8 * tmpWidth
-    },
-    boardBox: {
-        width: 132 * tmpWidth,
-        height: 33 * tmpWidth,
-    },
-    boardArea: {
-        width: 100 * tmpWidth,
-    }
-})
+export default SongStory;
