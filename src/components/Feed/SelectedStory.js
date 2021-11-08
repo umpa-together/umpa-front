@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
-import { SongImageBack } from 'components/SongImage';
+import { SongImageBackStory } from 'components/SongImage';
 import HarmfulModal from 'components/HarmfulModal';
 import { tmpWidth } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
@@ -11,6 +11,7 @@ import SvgUri from 'react-native-svg-uri';
 import MoveText from 'components/MoveText';
 import { useStory } from 'providers/story';
 import ProfileImage from 'components/ProfileImage';
+import StoryDm from 'components/Feed/StoryDm';
 
 const SelectedStory = () => {
   const { state } = useContext(UserContext);
@@ -101,7 +102,18 @@ const SelectedStory = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <SongImageBack
+            <TouchableOpacity style={styles.icon} onPress={onClickPlay}>
+              <SvgUri
+                width="40"
+                height="40"
+                source={
+                  isPlayingId !== '0'
+                    ? require('assets/icons/storyPlay.svg')
+                    : require('assets/icons/storyStop.svg')
+                }
+              />
+            </TouchableOpacity>
+            <SongImageBackStory
               url={song.attributes.artwork.url}
               width={375}
               height={812}
@@ -118,17 +130,7 @@ const SelectedStory = () => {
           </View>
         )}
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.icon} onPress={onClickPlay}>
-            <SvgUri
-              width="40"
-              height="40"
-              source={
-                isPlayingId !== '0'
-                  ? require('assets/icons/storyPlay.svg')
-                  : require('assets/icons/storyStop.svg')
-              }
-            />
-          </TouchableOpacity>
+          <StoryDm targetuser={user.id} />
         </View>
       </View>
       <HarmfulModal />
@@ -181,6 +183,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: '100%',
+    height: 100 * tmpWidth,
     position: 'absolute',
     bottom: 35 * tmpWidth,
     flexDirection: 'row',
