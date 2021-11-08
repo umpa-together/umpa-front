@@ -130,7 +130,7 @@ const SelectedStory = () => {
           </View>
         )}
         <View style={styles.footer}>
-          <StoryDm targetuser={user != null && user.id} />
+          { !isMyStory && user && <StoryDm targetuser={user.id} /> }
         </View>
       </View>
       <HarmfulModal />
