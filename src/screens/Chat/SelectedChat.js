@@ -6,6 +6,7 @@ import { ChatHeader } from 'components/Header';
 import ChatText from 'components/Chat/ChatText';
 import ReportBar from 'components/Chat/ReportBar';
 import ChatInput from 'components/Chat/ChatInput';
+import SearchSong from 'components/Chat/SearchSong';
 import ChatProvider from 'providers/chat';
 import * as config from 'config';
 
@@ -42,6 +43,7 @@ const SelectedChat = ({ route }) => {
           </View>
         )}
         <ReportBar user={target} />
+        <SearchSong user={target} chatroom={state.chatroom} socket={socket} />
       </View>
     </ChatProvider>
   );

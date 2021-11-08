@@ -10,7 +10,11 @@ const ChatInput = ({ chatroom, socket }) => {
   const { state: userState } = useContext(UserContext);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { _id: id, participate } = chatroom;
-  const { onMove } = useChat();
+  const { onMove, setSearchSongModal } = useChat();
+
+  const onClickSearch = () => {
+    setSearchSongModal(true);
+  };
 
   const onKeyboardDidShow = (e) => {
     setKeyboardHeight(e.endCoordinates.height);
@@ -71,6 +75,9 @@ const ChatInput = ({ chatroom, socket }) => {
           ref={commentRef}
           multiline
         />
+        <TouchableOpacity onPress={onClickSearch}>
+          <Text style={styles.send}>음악</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={onClickSend}>
           <Text style={styles.send}>보내기</Text>
         </TouchableOpacity>
