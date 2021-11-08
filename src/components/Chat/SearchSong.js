@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import { useChat } from 'providers/chat';
 import SearchProvider from 'providers/search';
 import SearchInput from 'components/Chat/SearchInput';
-import Searchopt from 'components/Chat/Searchopt';
+import SearchOpt from 'components/Chat/SearchOpt';
 import SearchResult from 'components/Chat/SearchResult';
 
 const SearchSong = ({ socket, chatroom }) => {
@@ -27,7 +27,7 @@ const SearchSong = ({ socket, chatroom }) => {
       <View style={styles.modal}>
         <SearchProvider>
           <SearchInput />
-          <Searchopt />
+          <SearchOpt />
           <SearchResult socket={socket} chatroom={chatroom} />
         </SearchProvider>
       </View>

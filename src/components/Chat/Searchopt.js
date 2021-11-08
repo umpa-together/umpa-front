@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { useChat } from 'providers/chat';
 
-const Searchopt = () => {
+const SearchOpt = () => {
   const { isArchive, setIsArchive } = useChat();
 
   const onClickButton = () => {
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Searchopt;
+export default SearchOpt;
