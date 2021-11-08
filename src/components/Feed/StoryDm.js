@@ -1,20 +1,15 @@
-import React, { useCallback, useRef, useContext, useState, useEffect } from 'react';
+import React, { useCallback, useRef, useContext, useState } from 'react';
 import { View, Text, StyleSheet, Keyboard, TouchableOpacity, TextInput } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
-import { Context as UserContext } from 'context/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
-import { useChat } from 'providers/chat';
+import { Context as ChatContext } from 'context/ChatContext';
+import { useStory } from 'providers/story';
 
-const ChatInput = ({ chatroom, socket }) => {
+const StoryDm = ({ targetuser }) => {
+  const { sendMsg } = useContext(ChatContext);
+  const { onClose } = useStory();
   const commentRef = useRef();
-  const { state: userState } = useContext(UserContext);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const { _id: id, participate } = chatroom;
-  const { onMove, setSearchSongModal } = useChat();
-
-  const onClickSearch = () => {
-    setSearchSongModal(true);
-  };
 
   const onKeyboardDidShow = (e) => {
     setKeyboardHeight(e.endCoordinates.height);
@@ -35,30 +30,22 @@ const ChatInput = ({ chatroom, socket }) => {
   };
 
   const onClickSend = async () => {
-    await socket.emit('chat message', {
-      room: id,
+    await sendMsg({
       text: commentRef.current.value,
-      msg: commentRef.current.value,
-      type: 'text',
-      sender: userState.myInfo._id,
-      receiver: participate[0] === userState.myInfo._id ? participate[1] : participate[0],
+      receiver: targetuser,
     });
     commentRef.current.value = '';
     commentRef.current.clear();
     Keyboard.dismiss();
     setKeyboardHeight(0);
+    onClose();
   };
-
   useFocusEffect(
     useCallback(() => {
       addEventListener();
       return () => removeEventListener();
     }, []),
   );
-
-  useEffect(() => {
-    if (keyboardHeight !== 0) onMove();
-  }, [keyboardHeight]);
 
   return (
     <View style={[styles.container, { marginBottom: keyboardHeight }]}>
@@ -75,9 +62,6 @@ const ChatInput = ({ chatroom, socket }) => {
           ref={commentRef}
           multiline
         />
-        <TouchableOpacity onPress={onClickSearch}>
-          <Text style={styles.send}>음악</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={onClickSend}>
           <Text style={styles.send}>보내기</Text>
         </TouchableOpacity>
@@ -118,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatInput;
+export default StoryDm;

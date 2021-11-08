@@ -87,6 +87,16 @@ const receiveMsg =
     }
   };
 
+const sendMsg =
+  (dispatch) =>
+  async ({ text, receiver }) => {
+    try {
+      await serverApi.post('/messages', { text, receiver });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with blockchat' });
+    }
+  };
+
 const blockchat =
   (dispatch) =>
   async ({ chatid }) => {
@@ -124,6 +134,7 @@ export const { Provider, Context } = createDataContext(
     profileChat,
     getSelectedChat,
     getChatList,
+    sendMsg,
     receiveMsg,
     blockchat,
     unblockchat,

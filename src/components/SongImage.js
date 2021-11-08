@@ -31,4 +31,17 @@ const SongImageBack = ({ url, opac, width, height, border, imgStyle }) => {
   );
 };
 
-export { SongImage, SongImageBack };
+const SongImageBackStory = ({ url, opac, width, height, border, imgStyle }) => {
+  url = url.replace('{w}', '300');
+  url = url.replace('{h}', '300');
+  return (
+    <ImageBackground
+      style={[{ opacity: opac, height: height * tmpWidth, width: width * tmpWidth }, imgStyle]}
+      resizeMode="contain"
+      source={{ url }}
+      imageStyle={{ borderRadius: border * tmpWidth }}
+    />
+  );
+};
+
+export { SongImage, SongImageBack, SongImageBackStory };

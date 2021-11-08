@@ -12,6 +12,8 @@ const ChatProvider = ({ children }) => {
   const { getSongs } = useContext(DJContext);
   const [text, setText] = useState(false);
   const [optionModal, setOptionModal] = useState(false);
+  const [searchSongModal, setSearchSongModal] = useState(false);
+  const [isArchive, setIsArchive] = useState(false);
   const textRef = useRef();
   const chatRef = useRef();
 
@@ -35,9 +37,13 @@ const ChatProvider = ({ children }) => {
     textRef,
     optionModal,
     chatRef,
+    searchSongModal,
+    isArchive,
     onMove,
     setText,
     setOptionModal,
+    setSearchSongModal,
+    setIsArchive,
     onClickProfile,
   };
 
