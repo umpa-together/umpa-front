@@ -15,13 +15,7 @@ const SearchResult = ({ socket, chatroom }) => {
       {isArchive ? (
         <MyArchiveLists socket={socket} chatroom={chatroom} />
       ) : (
-        <>
-          {isHint ? (
-            <SongHint socket={socket} chatroom={chatroom} />
-          ) : (
-            <SongResult socket={socket} chatroom={chatroom} />
-          )}
-        </>
+        <>{isHint ? <SongHint /> : <SongResult socket={socket} chatroom={chatroom} />}</>
       )}
     </View>
   );
