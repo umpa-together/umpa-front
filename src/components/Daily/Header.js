@@ -9,7 +9,7 @@ import { goBack, navigate } from 'navigationRef';
 import { useDaily } from 'providers/daily';
 
 const Header = ({ title, click, setIsSearch, isEdit }) => {
-  const { state, addDaily, editDaily, getDailys } = useContext(DailyContext);
+  const { state, addDaily, editDaily } = useContext(DailyContext);
   const { getMyInfo } = useContext(UserContext);
   const { songs, informationRef, setValidity, image, title: dailyTitle } = useDaily();
   const [isClick, setIsClick] = useState(false);
@@ -57,7 +57,6 @@ const Header = ({ title, click, setIsSearch, isEdit }) => {
         });
       }
       getMyInfo();
-      getDailys();
     } else {
       if (informationRef.current.title.length === 0) {
         setValidity((prev) => ({
