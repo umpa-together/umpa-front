@@ -41,7 +41,7 @@ const signup =
   (dispatch) =>
   async ({ email, password, name, informationagree, songs }) => {
     try {
-      const response = await serverApi.post('/signup', {
+      const response = await serverApi.post('/signUp', {
         email,
         password,
         name,
@@ -59,7 +59,7 @@ const signin =
   (dispatch) =>
   async ({ email, password }) => {
     try {
-      const response = await serverApi.post('/signin', { email, password });
+      const response = await serverApi.post('/signIn', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
       dispatch({ type: 'signin', payload: response.data.token });
     } catch (err) {
@@ -88,11 +88,11 @@ const getGoogleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await serverApi.get(`/googleIdToken/${email}/${id}`);
+      const response = await serverApi.get(`/social/google/${email}/${id}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signin', {
+        const res = await serverApi.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -108,11 +108,11 @@ const getAppleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await serverApi.get(`/appleIdToken/${email}/${id}`);
+      const response = await serverApi.get(`/social/apple/${email}/${id}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signin', {
+        const res = await serverApi.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -129,11 +129,11 @@ const getKakaoInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await serverApi.get(`kakaoInfo/${token}`);
+      const response = await serverApi.get(`/social/kakao/${token}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signin', {
+        const res = await serverApi.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -150,11 +150,11 @@ const getNaverInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await serverApi.get(`naverInfo/${token}`);
+      const response = await serverApi.get(`/social/naver/${token}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signin', {
+        const res = await serverApi.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -171,7 +171,7 @@ const checkName =
   (dispatch) =>
   async ({ name }) => {
     try {
-      const response = await serverApi.get(`/checkName/${name}`);
+      const response = await serverApi.get(`/nickName/${name}`);
       dispatch({ type: 'doubleCheck', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with checkName' });

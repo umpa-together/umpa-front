@@ -46,7 +46,7 @@ const getSelectedChat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.get(`/selectedChat/${chatid}`);
+      const response = await serverApi.get(`/chat/${chatid}`);
       dispatch({ type: 'post_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getSelectedChat' });
@@ -55,7 +55,7 @@ const getSelectedChat =
 
 const getChatList = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/chatList');
+    const response = await serverApi.get('/chat/chatList');
     dispatch({ type: 'get_list', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getChatList' });
@@ -66,7 +66,7 @@ const nextChatList =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/chatList/${page}`);
+      const response = await serverApi.get(`/chat/chatList/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextChatLists', payload: response.data });
       } else {
@@ -91,7 +91,7 @@ const sendMsg =
   (dispatch) =>
   async ({ text, receiver }) => {
     try {
-      await serverApi.post('/messages', { text, receiver });
+      await serverApi.post('/chat/messages', { text, receiver });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with blockchat' });
     }
@@ -101,7 +101,7 @@ const blockchat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.post('/blockchat', { chatid });
+      const response = await serverApi.post('/chat/block', { chatid });
       dispatch({ type: 'block_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with blockchat' });
@@ -112,7 +112,7 @@ const unblockchat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.post('/unblockchat', { chatid });
+      const response = await serverApi.post('/chat/unblock', { chatid });
       dispatch({ type: 'block_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unblockchat' });
@@ -121,9 +121,10 @@ const unblockchat =
 
 const getMessagesNum = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/messages');
+    const response = await serverApi.get('/chat/messages');
     dispatch({ type: 'getMessagesNum', payload: response.data });
   } catch (err) {
+    console.log(err, 'here')
     dispatch({ type: 'error', payload: 'Something went wrong with unblgetMessagesNumockchat' });
   }
 };

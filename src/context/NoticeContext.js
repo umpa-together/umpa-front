@@ -36,7 +36,7 @@ const nextNotice =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/nextNotice/${page}`);
+      const response = await serverApi.get(`/notice/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextNotice', payload: response.data });
       } else {
@@ -60,7 +60,7 @@ const readNotice =
 const setnoticetoken = (dispatch) => async () => {
   try {
     const noticetoken = await AsyncStorage.getItem('noticetoken');
-    await serverApi.put(`/setnotice/${noticetoken}`);
+    await serverApi.put(`/notice/setnotice/${noticetoken}`);
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
   }
@@ -68,7 +68,7 @@ const setnoticetoken = (dispatch) => async () => {
 
 const deletenoticetoken = (dispatch) => async () => {
   try {
-    await serverApi.put('/deletenotice');
+    await serverApi.delete('/notice');
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
   }

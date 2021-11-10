@@ -46,7 +46,7 @@ const getWeekly = (dispatch) => async () => {
 
 const getRecentPlaylists = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/recent');
+    const response = await serverApi.get('/main/recent');
     dispatch({ type: 'getRecentPlaylists', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getRecentPlaylists' });
@@ -55,7 +55,7 @@ const getRecentPlaylists = (dispatch) => async () => {
 
 const getMusicArchive = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/musicArchive');
+    const response = await serverApi.get('/main/musicArchive');
     dispatch({ type: 'getMusicArchive', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMusicArchive' });
