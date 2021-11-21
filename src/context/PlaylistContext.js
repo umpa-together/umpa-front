@@ -1,6 +1,6 @@
 import server from 'lib/api/server';
 import { navigate, goBack } from 'lib/utils/navigation';
-import createDataContext from './createDataContext';
+import createDataContext from 'lib/utils/createDataContext';
 
 const playlistReducer = (state, action) => {
   switch (action.type) {

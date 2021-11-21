@@ -1,6 +1,6 @@
 import { navigate, goBack } from 'lib/utils/navigation';
 import server from 'lib/api/server';
-import createDataContext from './createDataContext';
+import createDataContext from 'lib/utils/createDataContext';
 
 const dailyReducer = (state, action) => {
   switch (action.type) {

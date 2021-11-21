@@ -1,5 +1,5 @@
 import server from 'lib/api/server';
-import createDataContext from './createDataContext';
+import createDataContext from 'lib/utils/createDataContext';
 
 const userReducer = (state, action) => {
   switch (action.type) {

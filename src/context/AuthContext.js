@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import server from 'lib/api/server';
 import { navigate } from 'lib/utils/navigation';
-import createDataContext from './createDataContext';
+import createDataContext from 'lib/utils/createDataContext';
 
 const authReducer = (state, action) => {
   switch (action.type) {

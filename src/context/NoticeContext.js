@@ -1,6 +1,6 @@
 import server from 'lib/api/server';
 import AsyncStorage from '@react-native-community/async-storage';
-import createDataContext from './createDataContext';
+import createDataContext from 'lib/utils/createDataContext';
 
 const NoticeReducer = (state, action) => {
   switch (action.type) {
