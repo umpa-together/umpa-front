@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['airbnb', 'prettier'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
     'no-use-before-define': 'off',
