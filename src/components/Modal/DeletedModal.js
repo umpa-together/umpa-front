@@ -7,9 +7,7 @@ import { goBack } from 'lib/utils/navigation';
 const DeletedModal = ({ deletedModal, setDeletedModal, type }) => {
   const [title, setTitle] = useState('');
   useEffect(() => {
-    if (type === 'board') {
-      setTitle('게시글');
-    } else if (type === 'playlist') {
+    if (type === 'playlist') {
       setTitle('플레이리스트');
     }
   }, []);

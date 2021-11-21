@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useCallback } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
-import { Context as BoardContext } from 'context/BoardContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { Context as SearchContext } from 'context/SearchContext';
 import { Context as WeeklyContext } from 'context/WeeklyContext';
@@ -23,7 +22,6 @@ import { useFocusEffect } from '@react-navigation/native';
 const MainSearchScreen = () => {
   const { getMyScrab, getMyBookmark, getMyStory, getOtherStory, getMyInfo } =
     useContext(UserContext);
-  const { getGenreBoard } = useContext(BoardContext);
   const { getnotice, setnoticetoken } = useContext(NoticeContext);
   const { state, currentHashtag } = useContext(SearchContext);
   const {
@@ -60,7 +58,6 @@ const MainSearchScreen = () => {
       getRecentPlaylists(),
       getMyStory(),
       getOtherStory(),
-      getGenreBoard(),
       getMyBookmark(),
       getMyScrab(),
       setnoticetoken(),
@@ -85,7 +82,7 @@ const MainSearchScreen = () => {
       stickyHeaderIndices={[0]}
     >
       <Header />
-      <MusicArchive archive={WeeklyState.musicArchive} />
+      {/*<MusicArchive archive={WeeklyState.musicArchive} />*/}
       <SearchBox />
       <CurrentHashtag hashtag={state.currentHashtag} />
       <RecentPlaylists playlists={WeeklyState.recentPlaylists} />

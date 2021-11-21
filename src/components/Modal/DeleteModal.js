@@ -4,7 +4,6 @@ import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
-import { Context as BoardContext } from 'context/BoardContext';
 import { Context as DailyContext } from 'context/DailyContext';
 import { Context as FeedContext } from 'context/FeedContext';
 import { goBack } from 'lib/utils/navigation';
@@ -13,12 +12,6 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId,
   const [title, setTitle] = useState('');
   const { state, deletePlaylist, deleteComment, deletereComment } = useContext(PlaylistContext);
   const { getMyInfo, deleteStory } = useContext(UserContext);
-  const {
-    state: boardState,
-    deleteContent,
-    deleteComment: deleteBoardComment,
-    deleteRecomment,
-  } = useContext(BoardContext);
   const {
     state: daily,
     deleteDaily,
@@ -50,28 +43,13 @@ const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId,
       await dailydeleteComment({ id: dailyId, commentid: subjectId });
     } else if (type === 'dailyReComment') {
       dailydeletereComment({ commentid: subjectId });
-    } else if (type === 'boardContent') {
-      await deleteContent({
-        contentId: boardState.currentContent._id,
-        boardId: boardState.currentContent.boardId,
-      });
-      getMyInfo();
-      goBack();
-    } else if (type === 'boardComment') {
-      deleteBoardComment({ contentId: boardState.currentContent._id, commentId: subjectId });
-    } else if (type === 'boardReComment') {
-      deleteRecomment({ contentId: boardState.currentContent._id, commentId: subjectId });
     } else if (type === 'todaySong') {
       deleteStory();
     }
   };
 
   useEffect(() => {
-    if (type === 'boardContent') {
-      setTitle('게시글을');
-    } else if (
-      type === 'boardComment' ||
-      type === 'boardReComment' ||
+    if (
       type === 'playlistComment' ||
       type === 'playlistReComment' ||
       type === 'dailyComment' ||

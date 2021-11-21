@@ -2,7 +2,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import PlaylistNoticeForm from 'components/Notice/PlaylistNoticeForm';
-import BoardNoticeForm from 'components/Notice/BoardNoticeForm';
 import UserNoticeForm from 'components/Notice/UserNoticeForm';
 import DailyNoticeForm from 'components/Notice/DailyNoticeForm';
 
@@ -22,13 +21,6 @@ const ReadNotice = ({ notice }) => {
         type === 'drecom' ||
         type === 'drecomlike' ? (
         <DailyNoticeForm notice={notice} />
-      ) : type === 'blike' ||
-        type === 'bcom' ||
-        type === 'bcomlike' ||
-        type === 'brecom' ||
-        type === 'brecomlike' ||
-        type === 'bsonglike' ? (
-        <BoardNoticeForm notice={notice} />
       ) : type === 'follow' ? (
         <UserNoticeForm notice={notice} />
       ) : null}
