@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import serverApi from 'api/serverApi';
-import { navigate } from 'navigationRef';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import { navigate } from 'lib/utils/navigation';
+import createDataContext from 'lib/utils/createDataContext';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -41,7 +41,7 @@ const signup =
   (dispatch) =>
   async ({ email, password, name, informationagree, songs }) => {
     try {
-      const response = await serverApi.post('/signUp', {
+      const response = await server.post('/signUp', {
         email,
         password,
         name,
@@ -59,7 +59,7 @@ const signin =
   (dispatch) =>
   async ({ email, password }) => {
     try {
-      const response = await serverApi.post('/signIn', { email, password });
+      const response = await server.post('/signIn', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
       dispatch({ type: 'signin', payload: response.data.token });
     } catch (err) {
@@ -88,11 +88,11 @@ const getGoogleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await serverApi.get(`/social/google/${email}/${id}`);
+      const response = await server.get(`/social/google/${email}/${id}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signIn', {
+        const res = await server.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -108,11 +108,11 @@ const getAppleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await serverApi.get(`/social/apple/${email}/${id}`);
+      const response = await server.get(`/social/apple/${email}/${id}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signIn', {
+        const res = await server.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -129,11 +129,11 @@ const getKakaoInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await serverApi.get(`/social/kakao/${token}`);
+      const response = await server.get(`/social/kakao/${token}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signIn', {
+        const res = await server.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -150,11 +150,11 @@ const getNaverInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await serverApi.get(`/social/naver/${token}`);
+      const response = await server.get(`/social/naver/${token}`);
       if (response.data[0] === false) {
         navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
       } else {
-        const res = await serverApi.post('/signIn', {
+        const res = await server.post('/signIn', {
           email: response.data[1],
           password: response.data[2],
         });
@@ -171,7 +171,7 @@ const checkName =
   (dispatch) =>
   async ({ name }) => {
     try {
-      const response = await serverApi.get(`/nickName/${name}`);
+      const response = await server.get(`/nickName/${name}`);
       dispatch({ type: 'doubleCheck', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with checkName' });

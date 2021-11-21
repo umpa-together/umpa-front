@@ -1,5 +1,5 @@
-import createDataContext from './createDataContext';
-import serverApi from '../api/serverApi';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const chatReducer = (state, action) => {
   switch (action.type) {
@@ -35,7 +35,7 @@ const profileChat =
   (dispatch) =>
   async ({ participate }) => {
     try {
-      const response = await serverApi.post('/chat', { participate });
+      const response = await server.post('/chat', { participate });
       dispatch({ type: 'post_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with postChat' });
@@ -46,7 +46,7 @@ const getSelectedChat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.get(`/chat/${chatid}`);
+      const response = await server.get(`/chat/${chatid}`);
       dispatch({ type: 'post_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getSelectedChat' });
@@ -55,7 +55,7 @@ const getSelectedChat =
 
 const getChatList = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/chat/chatList');
+    const response = await server.get('/chat/chatList');
     dispatch({ type: 'get_list', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getChatList' });
@@ -66,7 +66,7 @@ const nextChatList =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/chat/chatList/${page}`);
+      const response = await server.get(`/chat/chatList/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextChatLists', payload: response.data });
       } else {
@@ -91,7 +91,7 @@ const sendMsg =
   (dispatch) =>
   async ({ text, receiver }) => {
     try {
-      await serverApi.post('/chat/messages', { text, receiver });
+      await server.post('/chat/messages', { text, receiver });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with blockchat' });
     }
@@ -101,7 +101,7 @@ const blockchat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.post('/chat/block', { chatid });
+      const response = await server.post('/chat/block', { chatid });
       dispatch({ type: 'block_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with blockchat' });
@@ -112,7 +112,7 @@ const unblockchat =
   (dispatch) =>
   async ({ chatid }) => {
     try {
-      const response = await serverApi.post('/chat/unblock', { chatid });
+      const response = await server.post('/chat/unblock', { chatid });
       dispatch({ type: 'block_Chat', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unblockchat' });
@@ -121,10 +121,10 @@ const unblockchat =
 
 const getMessagesNum = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/chat/messages');
+    const response = await server.get('/chat/messages');
     dispatch({ type: 'getMessagesNum', payload: response.data });
   } catch (err) {
-    console.log(err, 'here')
+    console.log(err, 'here');
     dispatch({ type: 'error', payload: 'Something went wrong with unblgetMessagesNumockchat' });
   }
 };

@@ -1,5 +1,5 @@
-import serverApi from 'api/serverApi';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -56,7 +56,7 @@ const initOtherUser = (dispatch) => () => {
 
 const getMyInfo = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user');
+    const response = await server.get('/user');
     dispatch({ type: 'getMyInfo', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyInfo' });
@@ -67,7 +67,7 @@ const getOtheruser =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.get(`/user/other/${id}`);
+      const response = await server.get(`/user/other/${id}`);
       dispatch({ type: 'get_otheruser', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getOtheruser' });
@@ -78,7 +78,7 @@ const editProfile =
   (dispatch) =>
   async ({ nickName, name, introduction }) => {
     try {
-      const response = await serverApi.post('/user/editProfile', { nickName, name, introduction });
+      const response = await server.post('/user/editProfile', { nickName, name, introduction });
       dispatch({ type: 'getMyInfo', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editProfile' });
@@ -89,7 +89,7 @@ const editProfileImage =
   (dispatch) =>
   async ({ fd }) => {
     try {
-      const response = await serverApi.post('/user/editProfileImage', fd, {
+      const response = await server.post('/user/editProfileImage', fd, {
         header: { 'content-type': 'multipart/form-data' },
       });
       dispatch({ type: 'getMyInfo', payload: response.data });
@@ -102,7 +102,7 @@ const follow =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.post(`/user/follow/${id}`);
+      const response = await server.post(`/user/follow/${id}`);
       dispatch({ type: 'get_otheruser', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with follow' });
@@ -113,7 +113,7 @@ const unfollow =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.delete(`/user/follow/${id}`);
+      const response = await server.delete(`/user/follow/${id}`);
       dispatch({ type: 'get_otheruser', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unfollow' });
@@ -122,7 +122,7 @@ const unfollow =
 
 const getMyBookmark = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/bookmark');
+    const response = await server.get('/user/bookmark');
     dispatch({ type: 'getMyBookmark', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyBookmark' });
@@ -131,7 +131,7 @@ const getMyBookmark = (dispatch) => async () => {
 
 const getMyContent = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/content');
+    const response = await server.get('/user/content');
     dispatch({ type: 'getMyContent', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyContent' });
@@ -140,7 +140,7 @@ const getMyContent = (dispatch) => async () => {
 
 const getMyComment = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/comment');
+    const response = await server.get('/user/comment');
     dispatch({ type: 'getMyContent', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyComment' });
@@ -149,7 +149,7 @@ const getMyComment = (dispatch) => async () => {
 
 const getMyScrab = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/scrab');
+    const response = await server.get('/user/scrab');
     dispatch({ type: 'getMyContent', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyScrab' });
@@ -158,7 +158,7 @@ const getMyScrab = (dispatch) => async () => {
 
 const getMyBoardSongs = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/boardSongs');
+    const response = await server.get('/user/boardSongs');
     dispatch({ type: 'getMyBoardSongs', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyBoardSongs' });
@@ -167,7 +167,7 @@ const getMyBoardSongs = (dispatch) => async () => {
 
 const getLikePlaylists = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/likePlaylists');
+    const response = await server.get('/user/likePlaylists');
     dispatch({ type: 'getLikePlaylists', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getLikePlaylists' });
@@ -178,7 +178,7 @@ const addSonginPlaylists =
   (dispatch) =>
   async ({ song }) => {
     try {
-      const response = await serverApi.post('/user/songinPlaylists', { song });
+      const response = await server.post('/user/songinPlaylists', { song });
       dispatch({ type: 'myPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
@@ -189,7 +189,7 @@ const deleteSonginPlaylists =
   (dispatch) =>
   async ({ time }) => {
     try {
-      const response = await serverApi.get(`/user/songinPlaylists/${time}`);
+      const response = await server.get(`/user/songinPlaylists/${time}`);
       dispatch({ type: 'myPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
@@ -200,7 +200,7 @@ const postStory =
   (dispatch) =>
   async ({ song }) => {
     try {
-      const response = await serverApi.post('/user/story', { song });
+      const response = await server.post('/user/story', { song });
       dispatch({ type: 'myStory', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with postStory' });
@@ -209,7 +209,7 @@ const postStory =
 
 const deleteStory = (dispatch) => async () => {
   try {
-    const response = await serverApi.delete('/user/story');
+    const response = await server.delete('/user/story');
     dispatch({ type: 'myStory', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with postStory' });
@@ -218,7 +218,7 @@ const deleteStory = (dispatch) => async () => {
 
 const getMyStory = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/myStory');
+    const response = await server.get('/user/myStory');
     dispatch({ type: 'getMyStory', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyStory' });
@@ -227,7 +227,7 @@ const getMyStory = (dispatch) => async () => {
 
 const getOtherStory = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/user/otherStory');
+    const response = await server.get('/user/otherStory');
     dispatch({ type: 'otherStory', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getOtherStory' });
@@ -238,7 +238,7 @@ const storyView =
   (dispatch) =>
   async ({ id }) => {
     try {
-      await serverApi.get(`/user/storyView/${id}`);
+      await server.get(`/user/storyView/${id}`);
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with storyView' });
     }
@@ -248,7 +248,7 @@ const storyCalendar =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.get(`/user/storyCalendar/${id}`);
+      const response = await server.get(`/user/storyCalendar/${id}`);
       dispatch({ type: 'storyCalendar', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with storyCalendar' });

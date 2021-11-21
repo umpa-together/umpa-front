@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as DailyContext } from 'context/DailyContext';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 import { SongImage } from 'components/SongImage';
 
 const AccountDaily = ({ daily, isMyAccount }) => {

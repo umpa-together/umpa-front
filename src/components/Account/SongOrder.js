@@ -6,7 +6,7 @@ import SvgUri from 'react-native-svg-uri';
 import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
 import { SongImage } from 'components/SongImage';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 
 const SongOrder = ({ setOrderModal, songs }) => {
   const { getMyInfo } = useContext(UserContext);

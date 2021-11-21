@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 
 const DeletedModal = ({ deletedModal, setDeletedModal, type }) => {
   const [title, setTitle] = useState('');

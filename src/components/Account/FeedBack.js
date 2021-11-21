@@ -11,7 +11,7 @@ import {
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as ReportContext } from 'context/ReportContext';
 import { Context as UserContext } from 'context/UserContext';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 
 const Feedback = () => {
   const feedbackRef = useRef();

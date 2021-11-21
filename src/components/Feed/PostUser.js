@@ -4,7 +4,7 @@ import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
 import ProfileImage from 'components/ProfileImage';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 
 const PostUser = ({ user }) => {
   const { state, getOtheruser } = useContext(UserContext);

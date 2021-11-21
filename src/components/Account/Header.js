@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { navigate, goBack } from 'navigationRef';
+import { navigate, goBack } from 'lib/utils/navigation';
 import ReportModal from 'components/ReportModal';
 import MusicBoxModal from 'components/MusicBoxModal';
 import StatusBarHeight from 'components/StatusBarHeight';

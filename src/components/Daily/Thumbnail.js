@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 

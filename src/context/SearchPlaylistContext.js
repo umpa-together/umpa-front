@@ -1,5 +1,5 @@
-import serverApi from 'api/serverApi';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const SearchPlaylistReducer = (state, action) => {
   switch (action.type) {
@@ -35,7 +35,7 @@ const SearchHashtag =
   (dispatch) =>
   async ({ object }) => {
     try {
-      const response = await serverApi.get(`/search/hashtag/${object}`);
+      const response = await server.get(`/search/hashtag/${object}`);
       dispatch({ type: 'searchHashtag', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
@@ -46,7 +46,7 @@ const SearchAll =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.get(`/search/all/${id}`);
+      const response = await server.get(`/search/all/${id}`);
       dispatch({ type: 'searchAll', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with SearchAll' });
@@ -57,7 +57,7 @@ const SearchHashtagAll =
   (dispatch) =>
   async ({ term }) => {
     try {
-      const response = await serverApi.get(`/search/hashtagAll/${term}`);
+      const response = await server.get(`/search/hashtagAll/${term}`);
       dispatch({ type: 'searchHashtagAll', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtagAll' });

@@ -14,7 +14,7 @@ import SvgUri from 'react-native-svg-uri';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import RepresentSong from 'components/RepresentSong';
 import { useRefresh } from 'providers/refresh';

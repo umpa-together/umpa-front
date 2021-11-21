@@ -1,6 +1,6 @@
-import { navigate, goBack } from 'navigationRef';
-import createDataContext from './createDataContext';
-import serverApi from '../api/serverApi';
+import { navigate, goBack } from 'lib/utils/navigation';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const dailyReducer = (state, action) => {
   switch (action.type) {
@@ -82,7 +82,7 @@ const initRecomment = (dispatch) => () => {
 
 const getAllDailys = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/daily/all');
+    const response = await server.get('/daily/all');
     dispatch({ type: 'getAllDailys', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getAllDailys' });
@@ -93,7 +93,7 @@ const nextAllDailys =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/daily/all/${page}`);
+      const response = await server.get(`/daily/all/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextAllDailys', payload: response.data });
       } else {
@@ -108,10 +108,10 @@ const addDaily =
   (dispatch) =>
   async ({ textcontent, songs, hashtag, fd }, callback) => {
     try {
-      const response = await serverApi.post('/daily', { textcontent, songs, hashtag });
+      const response = await server.post('/daily', { textcontent, songs, hashtag });
       goBack();
-      if(fd._parts.length != 0) {
-        await serverApi.post(`/daily/imgUpload/${response.data}`, fd, {
+      if (fd._parts.length !== 0) {
+        await server.post(`/daily/imgUpload/${response.data}`, fd, {
           header: { 'content-type': 'multipart/form-data' },
         });
       }
@@ -127,7 +127,7 @@ const editDaily =
   (dispatch) =>
   async ({ textcontent, songs, hashtag, DailyId }, callback) => {
     try {
-      await serverApi.post('/daily/edit', { textcontent, songs, hashtag, DailyId });
+      await server.post('/daily/edit', { textcontent, songs, hashtag, DailyId });
       navigate('Account');
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
@@ -140,14 +140,14 @@ const editDaily =
 const deleteDaily =
   () =>
   async ({ id }) => {
-    await serverApi.delete(`/daily/${id}`);
+    await server.delete(`/daily/${id}`);
   };
 
 const likesDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.post(`/daily/like/${id}`);
+      const response = await server.post(`/daily/like/${id}`);
       dispatch({ type: 'like', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likes' });
@@ -158,7 +158,7 @@ const unlikesDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.delete(`/daily/like/${id}`);
+      const response = await server.delete(`/daily/like/${id}`);
       dispatch({ type: 'like', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikes' });
@@ -167,7 +167,7 @@ const unlikesDaily =
 
 const getDailys = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/daily/Dailys');
+    const response = await server.get('/daily/Dailys');
     dispatch({ type: 'get_Dailys', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getDailys' });
@@ -178,7 +178,7 @@ const nextDailys =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/Dailys/${page}`);
+      const response = await server.get(`/Dailys/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextDailys', payload: response.data });
       } else {
@@ -193,7 +193,7 @@ const getDaily =
   (dispatch) =>
   async ({ id, postUserId }) => {
     try {
-      const response = await serverApi.get(`/daily/${id}/${postUserId}`);
+      const response = await server.get(`/daily/${id}/${postUserId}`);
       if (response.data[0] == null) {
         dispatch({ type: 'deleted_Daily' });
       } else {
@@ -210,7 +210,7 @@ const addComment =
   (dispatch) =>
   async ({ id, text, noticieduser, noticieduseremail, noticetype, thirdid }) => {
     try {
-      const response = await serverApi.post(`/daily/comment/${id}`, {
+      const response = await server.post(`/daily/comment/${id}`, {
         text,
         noticieduser,
         noticieduseremail,
@@ -227,7 +227,7 @@ const deleteComment =
   (dispatch) =>
   async ({ id, commentid }) => {
     try {
-      const response = await serverApi.delete(`/daily/comment/${id}/${commentid}`);
+      const response = await server.delete(`/daily/comment/${id}/${commentid}`);
       dispatch({ type: 'get_Daily', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
@@ -238,7 +238,7 @@ const addreComment =
   (dispatch) =>
   async ({ id, commentid, text }) => {
     try {
-      const response = await serverApi.post(`/daily/recomment/${id}/${commentid}`, { text });
+      const response = await server.post(`/daily/recomment/${id}/${commentid}`, { text });
       dispatch({ type: 'get_recomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
@@ -249,7 +249,7 @@ const deletereComment =
   (dispatch) =>
   async ({ commentid }) => {
     try {
-      const response = await serverApi.delete(`/daily/recomment/${commentid}`);
+      const response = await server.delete(`/daily/recomment/${commentid}`);
       dispatch({ type: 'get_recomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
@@ -260,7 +260,7 @@ const getreComment =
   (dispatch) =>
   async ({ commentid }) => {
     try {
-      const response = await serverApi.get(`/daily/recomment/${commentid}`);
+      const response = await server.get(`/daily/recomment/${commentid}`);
       dispatch({ type: 'get_recomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getreComment' });
@@ -271,7 +271,7 @@ const likescomment =
   (dispatch) =>
   async ({ dailyid, id }) => {
     try {
-      const response = await serverApi.post(`/daily/likecomment/${dailyid}/${id}`);
+      const response = await server.post(`/daily/likecomment/${dailyid}/${id}`);
       dispatch({ type: 'get_comment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
@@ -282,7 +282,7 @@ const unlikescomment =
   (dispatch) =>
   async ({ dailyid, id }) => {
     try {
-      const response = await serverApi.delete(`/daily/likecomment/${dailyid}/${id}`);
+      const response = await server.delete(`/daily/likecomment/${dailyid}/${id}`);
       dispatch({ type: 'get_comment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
@@ -293,7 +293,7 @@ const likesrecomment =
   (dispatch) =>
   async ({ commentid, id }) => {
     try {
-      const response = await serverApi.post(`/daily/likerecomment/${commentid}/${id}`);
+      const response = await server.post(`/daily/likerecomment/${commentid}/${id}`);
       dispatch({ type: 'get_recomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
@@ -304,7 +304,7 @@ const unlikesrecomment =
   (dispatch) =>
   async ({ commentid, id }) => {
     try {
-      const response = await serverApi.delete(`/daily/likerecomment/${commentid}/${id}`);
+      const response = await server.delete(`/daily/likerecomment/${commentid}/${id}`);
       dispatch({ type: 'get_recomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });

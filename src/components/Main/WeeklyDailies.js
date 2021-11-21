@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Context as DailyContext } from 'context/DailyContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 import { SongImage } from 'components/SongImage';
 import ProfileImage from 'components/ProfileImage';
 

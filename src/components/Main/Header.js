@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import StatusBarHeight from 'components/StatusBarHeight';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
 import { Context as ChatContext } from 'context/ChatContext';
 

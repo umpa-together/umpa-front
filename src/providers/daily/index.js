@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useRef } from 'react';
 import { Context } from 'context/DailyContext';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 
 const DailyContext = createContext(null);
 export const useDaily = () => useContext(DailyContext);

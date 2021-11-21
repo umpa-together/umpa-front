@@ -1,5 +1,5 @@
-import serverApi from 'api/serverApi';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const BoardReducer = (state, action) => {
   switch (action.type) {
@@ -127,7 +127,7 @@ const createBoard =
   (dispatch) =>
   async ({ name, introduction, genre }) => {
     try {
-      await serverApi.post('/createBoard', { name, introduction, genre });
+      await server.post('/createBoard', { name, introduction, genre });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with createBoard' });
     }
@@ -137,7 +137,7 @@ const pushBookmark =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.post('/pushBookmark', { id });
+      const response = await server.post('/pushBookmark', { id });
       dispatch({ type: 'getBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with pushBookmark' });
@@ -148,7 +148,7 @@ const deleteBookmark =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.delete(`/deleteBookmark/${id}`);
+      const response = await server.delete(`/deleteBookmark/${id}`);
       dispatch({ type: 'getBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteBookmark' });
@@ -159,7 +159,7 @@ const getBoard =
   (dispatch) =>
   async ({ name }) => {
     try {
-      const response = await serverApi.get(`/getBoard/${name}`);
+      const response = await server.get(`/getBoard/${name}`);
       dispatch({ type: 'getBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getBoard' });
@@ -170,7 +170,7 @@ const getSelectedBoard =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.get(`/getSelectedBoard/${id}`);
+      const response = await server.get(`/getSelectedBoard/${id}`);
       dispatch({ type: 'getBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getSelectedBoard' });
@@ -179,7 +179,7 @@ const getSelectedBoard =
 
 const getGenreBoard = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/getPopularBoard');
+    const response = await server.get('/getPopularBoard');
     dispatch({ type: 'getGenreBoard', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getPopularBoard' });
@@ -190,7 +190,7 @@ const getCurrentBoard =
   (dispatch) =>
   async ({ boardId }) => {
     try {
-      const response = await serverApi.get(`/getCurrentBoard/${boardId}`);
+      const response = await server.get(`/getCurrentBoard/${boardId}`);
       dispatch({ type: 'getCurrentBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getCurrentBoard' });
@@ -201,7 +201,7 @@ const nextContents =
   (dispatch) =>
   async ({ boardId, page }) => {
     try {
-      const response = await serverApi.get(`/nextContents/${boardId}/${page}`);
+      const response = await server.get(`/nextContents/${boardId}/${page}`);
       if (response.data.length != 0) {
         dispatch({ type: 'nextContents', payload: response.data });
       } else {
@@ -218,10 +218,10 @@ const createContent =
   (dispatch) =>
   async ({ title, content, boardId, fd, song }) => {
     try {
-      const response = await serverApi.post('/createContent', { title, content, boardId, song });
+      const response = await server.post('/createContent', { title, content, boardId, song });
       fd.append('contentId', response.data._id);
       fd.append('boardId', boardId);
-      const res = await serverApi.post('/boardImgUpload', fd, {
+      const res = await server.post('/boardImgUpload', fd, {
         header: { 'content-type': 'multipart/form-data' },
       });
       dispatch({ type: 'createContent', payload: res.data });
@@ -234,7 +234,7 @@ const deleteContent =
   (dispatch) =>
   async ({ contentId, boardId }) => {
     try {
-      const response = await serverApi.delete(`/deleteContent/${contentId}/${boardId}`);
+      const response = await server.delete(`/deleteContent/${contentId}/${boardId}`);
       dispatch({ type: 'getCurrentBoard', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteContent' });
@@ -245,7 +245,7 @@ const likeContent =
   (dispatch) =>
   async ({ contentId }) => {
     try {
-      const response = await serverApi.post('/likeContent', { contentId });
+      const response = await server.post('/likeContent', { contentId });
       dispatch({ type: 'likeContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likeContent' });
@@ -256,7 +256,7 @@ const unlikeContent =
   (dispatch) =>
   async ({ contentId }) => {
     try {
-      const response = await serverApi.post('/unlikeContent', { contentId });
+      const response = await server.post('/unlikeContent', { contentId });
       dispatch({ type: 'likeContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikeContent' });
@@ -267,7 +267,7 @@ const scrabContent =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.post('/scrabContent', { id });
+      const response = await server.post('/scrabContent', { id });
       dispatch({ type: 'likeContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with scrabContent' });
@@ -278,7 +278,7 @@ const deleteScrabContent =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.delete(`/deleteScrabContent/${id}`);
+      const response = await server.delete(`/deleteScrabContent/${id}`);
       dispatch({ type: 'likeContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteScrabContent' });
@@ -289,7 +289,7 @@ const getCurrentContent =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await serverApi.get(`/getCurrentContent/${id}`);
+      const response = await server.get(`/getCurrentContent/${id}`);
       dispatch({ type: 'getCurrentContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getCurrentContent' });
@@ -300,7 +300,7 @@ const nextComments =
   (dispatch) =>
   async ({ id, page }) => {
     try {
-      const response = await serverApi.get(`/nextComments/${id}/${page}`);
+      const response = await server.get(`/nextComments/${id}/${page}`);
       dispatch({ type: 'nextComments', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with nextComments' });
@@ -311,7 +311,7 @@ const getSearchContent =
   (dispatch) =>
   async ({ id, text }) => {
     try {
-      const response = await serverApi.get(`/getSearchContent/${id}/${text}`);
+      const response = await server.get(`/getSearchContent/${id}/${text}`);
       dispatch({ type: 'searchContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getSearchContent' });
@@ -324,7 +324,7 @@ const createComment =
   (dispatch) =>
   async ({ comment, contentId }) => {
     try {
-      const response = await serverApi.post('/createComment', { comment, contentId });
+      const response = await server.post('/createComment', { comment, contentId });
       dispatch({ type: 'createComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with createComment' });
@@ -335,7 +335,7 @@ const deleteComment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.delete(`/deleteComment/${contentId}/${commentId}`);
+      const response = await server.delete(`/deleteComment/${contentId}/${commentId}`);
       dispatch({ type: 'getCurrentContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
@@ -346,7 +346,7 @@ const createReComment =
   (dispatch) =>
   async ({ comment, contentId, commentId }) => {
     try {
-      const response = await serverApi.post('/createReComment', { comment, contentId, commentId });
+      const response = await server.post('/createReComment', { comment, contentId, commentId });
       dispatch({ type: 'getCurrentContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with createReComment' });
@@ -357,7 +357,7 @@ const deleteRecomment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.delete(`/deleteRecomment/${contentId}/${commentId}`);
+      const response = await server.delete(`/deleteRecomment/${contentId}/${commentId}`);
       dispatch({ type: 'getCurrentContent', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteReComment' });
@@ -368,7 +368,7 @@ const likeComment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.post('/likeComment', { contentId, commentId });
+      const response = await server.post('/likeComment', { contentId, commentId });
       dispatch({ type: 'likeComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likeComment' });
@@ -379,7 +379,7 @@ const unlikeComment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.post('/unlikeComment', { contentId, commentId });
+      const response = await server.post('/unlikeComment', { contentId, commentId });
       dispatch({ type: 'likeComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikeComment' });
@@ -389,7 +389,7 @@ const likeRecomment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.post('/likeRecomment', { contentId, commentId });
+      const response = await server.post('/likeRecomment', { contentId, commentId });
       dispatch({ type: 'likeComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likeRecomment' });
@@ -399,7 +399,7 @@ const unlikeRecomment =
   (dispatch) =>
   async ({ contentId, commentId }) => {
     try {
-      const response = await serverApi.post('/unlikeRecomment', { contentId, commentId });
+      const response = await server.post('/unlikeRecomment', { contentId, commentId });
       dispatch({ type: 'likeComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikeRecomment' });
@@ -412,7 +412,7 @@ const addSong =
   (dispatch) =>
   async ({ boardId, song }) => {
     try {
-      const response = await serverApi.post('/addSong', { boardId, song });
+      const response = await server.post('/addSong', { boardId, song });
       dispatch({ type: 'addSong', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addSong' });
@@ -423,7 +423,7 @@ const likeSong =
   (dispatch) =>
   async ({ id, boardName, boardId }) => {
     try {
-      const response = await serverApi.post('/likeSong', { id, boardName, boardId });
+      const response = await server.post('/likeSong', { id, boardName, boardId });
       dispatch({ type: 'likeSong', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likeSong' });
@@ -434,7 +434,7 @@ const unlikeSong =
   (dispatch) =>
   async ({ id, boardId }) => {
     try {
-      const response = await serverApi.delete(`/unlikeSong/${id}/${boardId}`);
+      const response = await server.delete(`/unlikeSong/${id}/${boardId}`);
       dispatch({ type: 'likeSong', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikeSong' });
@@ -445,7 +445,7 @@ const addSongView =
   (dispatch) =>
   async ({ id, boardId, postUserId }) => {
     try {
-      const response = await serverApi.post('/addSongView', { id, boardId, postUserId });
+      const response = await server.post('/addSongView', { id, boardId, postUserId });
       dispatch({ type: 'getMusicChart', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addSongView' });
@@ -456,7 +456,7 @@ const getMusicArchive =
   (dispatch) =>
   async ({ boardId }) => {
     try {
-      const response = await serverApi.get(`/getMusicArchive/${boardId}`);
+      const response = await server.get(`/getMusicArchive/${boardId}`);
       dispatch({ type: 'getMusicArchive', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getMusicArchive' });
@@ -467,7 +467,7 @@ const getMusicChart =
   (dispatch) =>
   async ({ boardId }) => {
     try {
-      const response = await serverApi.get(`/getMusicChart/${boardId}`);
+      const response = await server.get(`/getMusicChart/${boardId}`);
       dispatch({ type: 'getMusicChart', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getMusicChart' });

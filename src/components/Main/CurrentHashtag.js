@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
 
 const CurrentHashtag = ({ hashtag }) => {

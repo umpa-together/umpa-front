@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { useRefresh } from 'providers/refresh';
 import { useFocusEffect } from '@react-navigation/native';
 import LoadingIndicator from '../LoadingIndicator';

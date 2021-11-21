@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import LoadingIndicator from '../LoadingIndicator';
 import Playlists from './Playlists';
 import Daily from './Daily';

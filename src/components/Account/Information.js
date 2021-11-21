@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 
 const Information = ({ user, followerNum }) => {
   const { name, introduction, following, follower, realName } = user;

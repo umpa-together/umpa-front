@@ -3,7 +3,7 @@ import { Text, FlatList, TouchableOpacity, Image, StyleSheet, View } from 'react
 import { Context as DailyContext } from 'context/DailyContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { SongImage } from 'components/SongImage';
 
 const Playlists = ({ daily, isDaily }) => {

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import LoadingIndicator from '../LoadingIndicator';
 import DJ from './DJ';
 import Playlists from './Playlists';

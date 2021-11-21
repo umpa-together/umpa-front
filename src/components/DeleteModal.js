@@ -7,7 +7,7 @@ import { Context as UserContext } from 'context/UserContext';
 import { Context as BoardContext } from 'context/BoardContext';
 import { Context as DailyContext } from 'context/DailyContext';
 import { Context as FeedContext } from 'context/FeedContext';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 
 const DeleteModal = ({ deleteModal, setDeleteModal, type, subjectId, playlistId, dailyId }) => {
   const [title, setTitle] = useState('');

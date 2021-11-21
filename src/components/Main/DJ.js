@@ -3,7 +3,7 @@ import { Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-nativ
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 
 const DJ = ({ dj }) => {
   const { state, getOtheruser } = useContext(UserContext);

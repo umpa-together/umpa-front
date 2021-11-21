@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 const StoryContext = createContext(null);

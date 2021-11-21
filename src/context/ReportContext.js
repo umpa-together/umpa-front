@@ -1,5 +1,5 @@
-import serverApi from 'api/serverApi';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const reportReducer = (state, action) => {
   switch (action.type) {
@@ -12,7 +12,7 @@ const postReport =
   (dispatch) =>
   async ({ type, reason, subjectId }) => {
     try {
-      await serverApi.post('/report', { type, reason, subjectId });
+      await server.post('/report', { type, reason, subjectId });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with report' });
     }

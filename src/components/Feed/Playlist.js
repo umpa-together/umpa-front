@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import SongsLists from 'components/Playlist/SongsLists';
 import PostUser from './PostUser';
 import Footer from './Footer';

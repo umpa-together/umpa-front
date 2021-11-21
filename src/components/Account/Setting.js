@@ -4,7 +4,7 @@ import { Context as AuthContext } from 'context/AuthContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { NaverLogin } from '@react-native-seoul/naver-login';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 
 const Setting = () => {
   const { signout } = useContext(AuthContext);

@@ -1,5 +1,5 @@
-import serverApi from 'api/serverApi';
-import createDataContext from './createDataContext';
+import server from 'lib/api/server';
+import createDataContext from 'lib/utils/createDataContext';
 
 const feedReducer = (state, action) => {
   switch (action.type) {
@@ -20,7 +20,7 @@ const feedReducer = (state, action) => {
 
 const getFeeds = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/feeds');
+    const response = await server.get('/feeds');
     dispatch({ type: 'getFeeds', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getFeeds' });
@@ -31,7 +31,7 @@ const nextFeeds =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/feeds/${page}`);
+      const response = await server.get(`/feeds/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextFeeds', payload: response.data });
       } else {

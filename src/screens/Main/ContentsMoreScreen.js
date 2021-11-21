@@ -6,7 +6,7 @@ import { Context as DJContext } from 'context/DJContext';
 import { Context as DailyContext } from 'context/DailyContext';
 import Header from 'components/Header';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { SongImage } from 'components/SongImage';
 
 const ContentsMoreScreen = ({ route }) => {

@@ -6,7 +6,7 @@ import { Context as FeedContext } from 'context/FeedContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
-import { goBack, navigate } from 'navigationRef';
+import { goBack, navigate } from 'lib/utils/navigation';
 import { usePlaylist } from 'providers/playlist';
 
 const Header = ({ title, click, setIsSearch, isEdit }) => {

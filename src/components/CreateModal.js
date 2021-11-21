@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { goBack, navigate } from 'navigationRef';
+import { goBack, navigate } from 'lib/utils/navigation';
 
 const CreateModal = () => (
   <View style={{ flex: 1 }}>
