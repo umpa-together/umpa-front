@@ -5,7 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 
 import AccountScreen from 'screens/Account/MyAccountScreen';
 import MainFeedPage from 'screens/Feed/MainFeed';
-import NoticeScreen from 'screens/NoticeScreen';
+import NoticeScreen from 'screens/Notice';
 import MainSearchScreen from 'screens/Main/MainSearchScreen';
 
 const Tab = createBottomTabNavigator();

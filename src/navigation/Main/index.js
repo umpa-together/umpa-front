@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import NoticeScreen from 'screens/NoticeScreen';
+import NoticeScreen from 'screens/Notice';
 
 import OtherAccount from 'screens/Account/OtherAccount';
 import FollowPage from 'screens/Account/FollowPage';
