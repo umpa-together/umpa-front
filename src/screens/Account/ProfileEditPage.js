@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 import ProfilePreview from 'components/Account/ProfilePreview';
 import ProfileEdit from 'components/Account/ProfileEdit';
 import { EditHeader } from 'components/Account/Header';

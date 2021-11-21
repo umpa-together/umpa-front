@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { RefreshControl, View, StyleSheet, ScrollView } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { useFocusEffect } from '@react-navigation/native';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { PlaylistHeader } from 'components/Header';

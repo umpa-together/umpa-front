@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as DailyContext } from 'context/DailyContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import PostUser from './PostUser';
 import Footer from './Footer';
 import DailyImage from './DailyImage';

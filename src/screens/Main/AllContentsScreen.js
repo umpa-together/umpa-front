@@ -6,7 +6,7 @@ import SvgUri from 'react-native-svg-uri';
 import AllPlaylistForm from 'components/Main/AllPlaylistForm';
 import AllUsersForm from 'components/Main/AllUsersForm';
 import AllDailyForm from 'components/Main/AllDailyForm';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 
 const AllContentsScreen = ({ route }) => {
   const { type } = route.params;

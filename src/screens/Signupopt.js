@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Context as AuthContext } from 'context/AuthContext';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';

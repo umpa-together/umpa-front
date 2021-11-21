@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as DailyContext } from 'context/DailyContext';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { SongImage } from 'components/SongImage';
 import { useRefresh } from 'providers/refresh';
 import { useFocusEffect } from '@react-navigation/native';

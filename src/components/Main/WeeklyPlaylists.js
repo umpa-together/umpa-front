@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage';
 

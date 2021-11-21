@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 
 import DailyProvider from 'providers/daily';

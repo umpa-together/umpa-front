@@ -5,7 +5,7 @@ import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext'
 import StatusBarHeight from 'components/StatusBarHeight';
 import { useSearch } from 'providers/search';
 import { tmpWidth } from 'components/FontNormalize';
-import { goBack } from 'navigationRef';
+import { goBack } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
 
 const SearchBar = () => {

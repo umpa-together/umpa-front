@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import navigationRef from 'navigationRef';
+import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/AuthContext';
 import LoadingPage from 'screens/LoadingPage';
 import MainStackScreen from './Main';

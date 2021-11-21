@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 
 const MusicBoxModal = ({ musicBoxModal, setMusicBoxModal }) => {
   const { getLikePlaylists } = useContext(UserContext);

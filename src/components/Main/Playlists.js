@@ -3,7 +3,7 @@ import { Text, FlatList, TouchableOpacity, Image, StyleSheet, View } from 'react
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 
 const Playlists = ({ playlists, isPlaylist }) => {
   const { getPlaylist } = useContext(PlaylistContext);

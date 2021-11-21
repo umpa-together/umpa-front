@@ -1,4 +1,4 @@
-import { navigate, goBack } from 'navigationRef';
+import { navigate, goBack } from 'lib/utils/navigation';
 import server from 'lib/api/server';
 import createDataContext from './createDataContext';
 

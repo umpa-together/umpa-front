@@ -7,7 +7,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import { useChat } from 'providers/chat';
 import { Context as ChatContext } from 'context/ChatContext';

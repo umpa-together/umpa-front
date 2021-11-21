@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import { Context as AuthContext } from 'context/AuthContext';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
 import { NaverLogin } from '@react-native-seoul/naver-login';

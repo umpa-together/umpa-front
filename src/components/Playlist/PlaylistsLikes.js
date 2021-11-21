@@ -9,7 +9,7 @@ import { usePlaylist } from 'providers/playlist';
 import DeleteModal from 'components/DeleteModal';
 import Modal from 'react-native-modal';
 import ReportModal from 'components/ReportModal';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import SendList from 'components/KaKaoShare';
 
 const PlaylistsLikes = ({ playlist }) => {

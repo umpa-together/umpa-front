@@ -4,7 +4,7 @@ import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import ProfileImage from 'components/ProfileImage';
 
 const UserNoticeForm = ({ notice }) => {

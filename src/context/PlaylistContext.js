@@ -1,5 +1,5 @@
 import server from 'lib/api/server';
-import { navigate, goBack } from 'navigationRef';
+import { navigate, goBack } from 'lib/utils/navigation';
 import createDataContext from './createDataContext';
 
 const playlistReducer = (state, action) => {

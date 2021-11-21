@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { tmpWidth, tmpHeight } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
 import SvgUri from 'react-native-svg-uri';
-import { goBack, navigate } from 'navigationRef';
+import { goBack, navigate } from 'lib/utils/navigation';
 import TextTicker from 'react-native-text-ticker';
 import { useChat } from 'providers/chat';
 

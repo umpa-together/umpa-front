@@ -5,7 +5,7 @@ import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
 import ProfileImage from '../ProfileImage';
 

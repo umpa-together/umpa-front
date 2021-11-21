@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
 
 const ProfileButton = ({ user, isMyAccount, setFollowerNum }) => {

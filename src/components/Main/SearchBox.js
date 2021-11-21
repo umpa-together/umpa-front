@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 
 const SearchBox = () => (

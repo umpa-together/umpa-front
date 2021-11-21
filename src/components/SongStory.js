@@ -9,7 +9,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import MoveText from 'components/MoveText';
 
 const SongStory = ({ setArchiveModal, archive }) => {

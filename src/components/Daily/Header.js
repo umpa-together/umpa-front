@@ -5,7 +5,7 @@ import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
-import { goBack, navigate } from 'navigationRef';
+import { goBack, navigate } from 'lib/utils/navigation';
 import { useDaily } from 'providers/daily';
 
 const Header = ({ title, click, setIsSearch, isEdit }) => {

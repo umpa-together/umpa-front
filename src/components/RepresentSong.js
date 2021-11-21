@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import HarmfulModal from 'components/HarmfulModal';
 import { SongImage } from 'components/SongImage';

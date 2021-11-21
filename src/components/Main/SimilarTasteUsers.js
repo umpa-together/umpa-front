@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
-import { navigate } from 'navigationRef';
+import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import { SongImage } from 'components/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';

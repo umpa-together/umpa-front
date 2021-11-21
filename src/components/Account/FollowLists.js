@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
-import { navigate, push } from 'navigationRef';
+import { navigate, push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage';
 import SvgUri from 'react-native-svg-uri';

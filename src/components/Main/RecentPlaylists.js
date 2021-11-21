@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState, useCallback, useContext } from 'rea
 import { Text, FlatList, Image, View, Animated, TouchableOpacity, StyleSheet } from 'react-native';
 import { Directions, FlingGestureHandler, State } from 'react-native-gesture-handler';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
-import { push } from 'navigationRef';
+import { push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import ProfileImage from 'components/ProfileImage';
 
