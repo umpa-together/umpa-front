@@ -16,8 +16,8 @@ import { tmpWidth } from 'components/FontNormalize';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as SearchContext } from 'context/SearchContext';
 import LoadingIndicator from 'components/LoadingIndicator';
-import { SongImage } from 'components/SongImage';
-import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'widgets/SongImage';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { useSearch } from 'providers/search';
 

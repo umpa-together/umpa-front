@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PlaylistProvider from 'providers/playlist';
 import CreateMain from 'components/Playlist/CreateMain';
 import SearchSong from 'components/Playlist/SearchSong';
-import HarmfulModal from 'components/HarmfulModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 const PlaylistCreatePage = ({ route }) => {
   const { data: playList, isEdit } = route.params;

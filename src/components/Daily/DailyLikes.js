@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as DailyContext } from 'context/DailyContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import SvgUri from 'react-native-svg-uri';
 import { useDaily } from 'providers/daily';
-import DeleteModal from 'components/DeleteModal';
+import DeleteModal from 'components/Modal/DeleteModal';
 import Modal from 'react-native-modal';
-import ReportModal from 'components/ReportModal';
+import ReportModal from 'components/Modal/ReportModal';
 import { navigate } from 'lib/utils/navigation';
-import { SendFeed } from 'components/KaKaoShare';
+import { SendFeed } from 'lib/utils/kakaoShare';
 
 const DailysLikes = ({ daily }) => {
   const { likesDaily, unlikesDaily } = useContext(DailyContext);

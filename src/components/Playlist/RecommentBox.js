@@ -4,9 +4,9 @@ import Hyperlink from 'react-native-hyperlink';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ReportModal from 'components/ReportModal';
-import DeleteModal from 'components/DeleteModal';
-import ProfileImage from 'components/ProfileImage';
+import ReportModal from 'components/Modal/ReportModal';
+import DeleteModal from 'components/Modal/DeleteModal';
+import ProfileImage from 'widgets/ProfileImage';
 import { usePlaylist } from 'providers/playlist';
 
 const RecommentBox = ({ recomments }) => {

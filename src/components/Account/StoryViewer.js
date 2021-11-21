@@ -5,7 +5,7 @@ import { Context as DJContext } from 'context/DJContext';
 import { tmpWidth } from 'components/FontNormalize';
 import Modal from 'react-native-modal';
 import { push } from 'lib/utils/navigation';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const StoryViewer = ({ viewerModal, setViewerModal, setStoryModal }) => {
   const { state: userState, getOtheruser } = useContext(UserContext);

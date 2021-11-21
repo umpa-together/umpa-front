@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
 import { useSearch } from 'providers/search';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
 import { useTrackPlayer } from 'providers/trackPlayer';

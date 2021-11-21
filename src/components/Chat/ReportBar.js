@@ -5,8 +5,8 @@ import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as ChatContext } from 'context/ChatContext';
 import { Context as UserContext } from 'context/UserContext';
-import ProfileImage from 'components/ProfileImage';
-import ReportModal from 'components/ReportModal';
+import ProfileImage from 'widgets/ProfileImage';
+import ReportModal from 'components/Modal/ReportModal';
 import { useChat } from 'providers/chat';
 
 const ReportBar = ({ user }) => {

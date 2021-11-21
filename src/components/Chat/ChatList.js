@@ -12,7 +12,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import { useChat } from 'providers/chat';
 import { Context as ChatContext } from 'context/ChatContext';
 import { Context as UserContext } from 'context/UserContext';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRefresh } from 'providers/refresh';
 

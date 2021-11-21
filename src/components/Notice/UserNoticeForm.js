@@ -5,7 +5,7 @@ import { Context as DJContext } from 'context/DJContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'lib/utils/navigation';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const UserNoticeForm = ({ notice }) => {
   const { noticinguser: user, time, _id: id, isRead } = notice;

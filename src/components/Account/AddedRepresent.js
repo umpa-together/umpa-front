@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { Context as SearchContext } from 'context/SearchContext';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 
 const AddedRepresent = ({ isEdit, songs, setSong, setIsEdit, setOrderModal }) => {

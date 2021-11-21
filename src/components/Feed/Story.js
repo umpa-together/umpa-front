@@ -8,8 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
-
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { useStory } from 'providers/story';

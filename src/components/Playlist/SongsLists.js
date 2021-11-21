@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
-import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'widgets/SongImage';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
 import MoveText from 'components/MoveText';

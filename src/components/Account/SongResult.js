@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Context as SearchContext } from 'context/SearchContext';
-import HarmfulModal from 'components/HarmfulModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useTrackPlayer } from 'providers/trackPlayer';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
 import { useSearch } from 'providers/search';

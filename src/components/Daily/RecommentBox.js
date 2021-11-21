@@ -4,9 +4,9 @@ import Hyperlink from 'react-native-hyperlink';
 import { Context as DailyContext } from 'context/DailyContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ReportModal from 'components/ReportModal';
-import DeleteModal from 'components/DeleteModal';
-import ProfileImage from 'components/ProfileImage';
+import ReportModal from 'components/Modal/ReportModal';
+import DeleteModal from 'components/Modal/DeleteModal';
+import ProfileImage from 'widgets/ProfileImage';
 import { useDaily } from 'providers/daily';
 
 const RecommentBox = ({ recomments }) => {

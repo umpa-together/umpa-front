@@ -4,7 +4,7 @@ import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
 import { navigate, push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import SvgUri from 'react-native-svg-uri';
 
 const FollowLists = ({ result }) => {

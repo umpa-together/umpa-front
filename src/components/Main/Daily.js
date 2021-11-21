@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { Text, FlatList, TouchableOpacity, Image, StyleSheet, View } from 'react-native';
 import { Context as DailyContext } from 'context/DailyContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { push } from 'lib/utils/navigation';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 
 const Playlists = ({ daily, isDaily }) => {
   const { getDaily } = useContext(DailyContext);

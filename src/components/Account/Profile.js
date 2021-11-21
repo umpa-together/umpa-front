@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, ImageBackground, View } from 'react-nativ
 import { Context as UserContext } from 'context/UserContext';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import SearchProvider from 'providers/search';
 import NewStory from './NewStory';
 import Story from './Story';

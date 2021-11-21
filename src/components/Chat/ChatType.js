@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
 import Hyperlink from 'react-native-hyperlink';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import SvgUri from 'react-native-svg-uri';

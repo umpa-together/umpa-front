@@ -7,7 +7,7 @@ import { tmpWidth } from 'components/FontNormalize';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { push } from 'lib/utils/navigation';
 import SvgUri from 'react-native-svg-uri';
-import ProfileImage from '../ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const AllUsersForm = () => {
   const { state, getSongs } = useContext(DJContext);

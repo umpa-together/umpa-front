@@ -5,7 +5,7 @@ import { Context as SearchContext } from 'context/SearchContext';
 import { Context as DJContext } from 'context/DJContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { navigate, push } from 'lib/utils/navigation';
-import ProfileImage from '../ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const DJHint = () => {
   const { state: searchState } = useContext(SearchContext);
