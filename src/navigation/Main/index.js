@@ -30,7 +30,7 @@ import SearchScreen from 'screens/Main/SearchScreen';
 import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
 import AllContentsScreen from 'screens/Main/AllContentsScreen';
 import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
-import CreateModal from 'components/CreateModal';
+import CreateModal from 'components/Modal/CreateModal';
 
 import Chat from 'screens/Chat/Chat';
 import SelectedChat from 'screens/Chat/SelectedChat';

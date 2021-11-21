@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { Context as DailyContext } from 'context/DailyContext';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { tmpWidth } from 'components/FontNormalize';
 import { useFocusEffect } from '@react-navigation/native';
 

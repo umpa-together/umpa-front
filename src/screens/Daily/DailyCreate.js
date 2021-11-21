@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DailyProvider from 'providers/daily';
 import CreateMain from 'components/Daily/CreateMain';
 import SearchSong from 'components/Daily/SearchSong';
-import HarmfulModal from 'components/HarmfulModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 const DailyCreatePage = ({ route }) => {
   const { data: daily, isEdit } = route.params;

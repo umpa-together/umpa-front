@@ -7,7 +7,7 @@ import { Context as DailyContext } from 'context/DailyContext';
 import Header from 'components/Header';
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'lib/utils/navigation';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 
 const ContentsMoreScreen = ({ route }) => {
   const { getPlaylist } = useContext(PlaylistContext);

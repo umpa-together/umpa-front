@@ -2,12 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { useTrackPlayer } from 'providers/trackPlayer';
-import { DeletePlaylistModal } from 'components/PlaylistModal';
-import HarmfulModal from 'components/HarmfulModal';
+import { DeletePlaylistModal } from 'components/Modal/PlaylistModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useRefresh } from 'providers/refresh';
 
 const AddedSongLists = () => {

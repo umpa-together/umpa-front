@@ -5,7 +5,7 @@ import { Context as DJContext } from 'context/DJContext';
 import SvgUri from 'react-native-svg-uri';
 import Modal from 'react-native-modal';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import { goBack } from 'lib/utils/navigation';
 
 const SongOrder = ({ setOrderModal, songs }) => {

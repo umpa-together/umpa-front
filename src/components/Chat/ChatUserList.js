@@ -4,7 +4,7 @@ import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
 import { useChat } from 'providers/chat';
 import { Context as ChatContext } from 'context/ChatContext';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import SvgUri from 'react-native-svg-uri';
 
 const ChatUserList = ({ data }) => {

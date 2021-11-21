@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { usePlaylist } from 'providers/playlist';

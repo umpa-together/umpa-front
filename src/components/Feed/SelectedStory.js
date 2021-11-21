@@ -2,15 +2,15 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
-import { SongImageBackStory } from 'components/SongImage';
-import HarmfulModal from 'components/HarmfulModal';
+import { SongImageBackStory } from 'widgets/SongImage';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { tmpWidth } from 'components/FontNormalize';
 import StatusBarHeight from 'components/StatusBarHeight';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import SvgUri from 'react-native-svg-uri';
 import MoveText from 'components/MoveText';
 import { useStory } from 'providers/story';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import StoryDm from 'components/Feed/StoryDm';
 
 const SelectedStory = () => {
@@ -129,9 +129,7 @@ const SelectedStory = () => {
             <TouchableOpacity style={styles.flex} onPress={onClickNextStory} />
           </View>
         )}
-        <View style={styles.footer}>
-          { !isMyStory && user && <StoryDm targetuser={user.id} /> }
-        </View>
+        <View style={styles.footer}>{!isMyStory && user && <StoryDm targetuser={user.id} />}</View>
       </View>
       <HarmfulModal />
     </Modal>

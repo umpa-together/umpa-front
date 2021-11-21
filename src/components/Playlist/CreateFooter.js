@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { getQuickPhoto, onClickSingle } from 'components/ImageEditor';
+import { getQuickPhoto, onClickSingle } from 'lib/utils/imageEditor';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { usePlaylist } from 'providers/playlist';

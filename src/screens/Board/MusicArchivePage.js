@@ -7,7 +7,7 @@ import { Context as UserContext } from 'context/UserContext';
 import { Context as DJContext } from 'context/DJContext';
 import { navigate, push } from 'navigationRef';
 import { tmpWidth } from 'components/FontNormalize';
-import HarmfulModal from 'components/HarmfulModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { SongImage } from 'components/SongImage'
 import Header from 'components/Header';
 import { useFocusEffect } from '@react-navigation/native';

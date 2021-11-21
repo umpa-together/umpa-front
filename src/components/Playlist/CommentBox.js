@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import Hyperlink from 'react-native-hyperlink';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
-import ReportModal from 'components/ReportModal';
-import DeleteModal from 'components/DeleteModal';
+import ProfileImage from 'widgets/ProfileImage';
+import ReportModal from 'components/Modal/ReportModal';
+import DeleteModal from 'components/Modal/DeleteModal';
 import { usePlaylist } from 'providers/playlist';
 
 const CommentBox = ({ comment }) => {

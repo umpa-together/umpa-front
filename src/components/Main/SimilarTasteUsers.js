@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { Context as UserContext } from 'context/UserContext';
 import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import RepresentSong from 'components/RepresentSong';
 import SvgUri from 'react-native-svg-uri';

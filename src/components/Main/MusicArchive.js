@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text } from 'react-native';
-import { SongImageBack } from 'components/SongImage';
+import { SongImageBack } from 'widgets/SongImage';
 import { tmpWidth } from 'components/FontNormalize';
 import SongStory from 'components/SongStory';
 

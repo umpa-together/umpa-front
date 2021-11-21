@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { useDaily } from 'providers/daily';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import { useTrackPlayer } from 'providers/trackPlayer';
 

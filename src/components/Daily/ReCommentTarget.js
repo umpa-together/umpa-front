@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import Hyperlink from 'react-native-hyperlink';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ReportModal from 'components/ReportModal';
+import ReportModal from 'components/Modal/ReportModal';
 import { useDaily } from 'providers/daily';
-import ProfileImage from 'components/ProfileImage';
-import DeleteModal from 'components/DeleteModal';
+import ProfileImage from 'widgets/ProfileImage';
+import DeleteModal from 'components/Modal/DeleteModal';
 
 const RecommentTarget = () => {
   const { state: userState } = useContext(UserContext);

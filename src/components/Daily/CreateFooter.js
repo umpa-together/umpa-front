@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { getQuickPhoto, onClickMultiple } from 'components/ImageEditor';
+import { getQuickPhoto, onClickMultiple } from 'lib/utils/imageEditor';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { useDaily } from 'providers/daily';

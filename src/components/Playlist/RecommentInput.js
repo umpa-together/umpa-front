@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { usePlaylist } from 'providers/playlist';
 
 const RecommentInput = () => {

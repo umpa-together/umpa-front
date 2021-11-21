@@ -11,7 +11,7 @@ import { Context as SearchContext } from 'context/SearchContext';
 import { Context as SearchPlaylistContext } from 'context/SearchPlaylistContext';
 import { useSearch } from 'providers/search';
 import { useFocusEffect } from '@react-navigation/native';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import SvgUri from 'react-native-svg-uri';
 import { tmpWidth } from 'components/FontNormalize';
 import LoadingIndicator from '../LoadingIndicator';

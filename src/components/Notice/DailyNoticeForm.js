@@ -7,7 +7,7 @@ import { Context as DailyContext } from 'context/DailyContext';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { push } from 'lib/utils/navigation';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const DailyNoticeForm = ({ notice }) => {
   const {

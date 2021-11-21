@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { tmpWidth } from 'components/FontNormalize';
-import { onClickSingle } from 'components/ImageEditor';
+import { onClickSingle } from 'lib/utils/imageEditor';
 
 const ProfilePreview = ({ img }) => {
   const { state } = useContext(UserContext);

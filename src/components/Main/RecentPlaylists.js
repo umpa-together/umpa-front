@@ -5,7 +5,7 @@ import { Directions, FlingGestureHandler, State } from 'react-native-gesture-han
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { push } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const SPACING = 10;
 const VISIBLE_ITEMS = 3;

@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { Context as DailyContext } from 'context/DailyContext';
 import { Context as UserContext } from 'context/UserContext';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import { useDaily } from 'providers/daily';
 
 const RecommentInput = () => {

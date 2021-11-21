@@ -4,12 +4,12 @@ import { Context as UserContext } from 'context/UserContext';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { useTrackPlayer } from 'providers/trackPlayer';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 import StoryCalendar from 'components/StoryCalendar';
-import HarmfulModal from 'components/HarmfulModal';
-import DeleteModal from 'components/DeleteModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
+import DeleteModal from 'components/Modal/DeleteModal';
 import { tmpWidth } from 'components/FontNormalize';
-import ProfileImage from 'components/ProfileImage';
+import ProfileImage from 'widgets/ProfileImage';
 import StoryViewer from './StoryViewer';
 
 require('date-utils');

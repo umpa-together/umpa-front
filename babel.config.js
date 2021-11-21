@@ -13,6 +13,7 @@ module.exports = {
           '@providers': './src/providers',
           '@screens': './src/screens',
           '@lib': './src/lib',
+          '@widgets': './src/widgets',
         },
       },
     ],

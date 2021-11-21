@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import { Context as DailyContext } from 'context/DailyContext';
 import { navigate, push } from 'lib/utils/navigation';
-import { SongImage } from 'components/SongImage';
+import { SongImage } from 'widgets/SongImage';
 
 const AccountDaily = ({ daily, isMyAccount }) => {
   daily.sort((a, b) => {

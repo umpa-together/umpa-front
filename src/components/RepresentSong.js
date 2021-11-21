@@ -4,8 +4,8 @@ import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { navigate } from 'lib/utils/navigation';
 import { tmpWidth } from 'components/FontNormalize';
-import HarmfulModal from 'components/HarmfulModal';
-import { SongImage } from 'components/SongImage';
+import HarmfulModal from 'components/Modal/HarmfulModal';
+import { SongImage } from 'widgets/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 const RepresentSong = ({ representModal, setRepresentModal, song, myAccount }) => {

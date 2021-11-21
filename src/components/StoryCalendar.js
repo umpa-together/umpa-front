@@ -6,8 +6,8 @@ import { tmpWidth } from 'components/FontNormalize';
 import Modal from 'react-native-modal';
 import SvgUri from 'react-native-svg-uri';
 import { Context as UserContext } from 'context/UserContext';
-import { SongImage } from 'components/SongImage';
-import HarmfulModal from 'components/HarmfulModal';
+import { SongImage } from 'widgets/SongImage';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 const StoryCalendar = ({ calendarModal, setCalendarModal }) => {

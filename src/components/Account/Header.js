@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { tmpWidth } from 'components/FontNormalize';
 import SvgUri from 'react-native-svg-uri';
 import { navigate, goBack } from 'lib/utils/navigation';
-import ReportModal from 'components/ReportModal';
-import MusicBoxModal from 'components/MusicBoxModal';
+import ReportModal from 'components/Modal/ReportModal';
+import MusicBoxModal from 'components/Modal/MusicBoxModal';
 import StatusBarHeight from 'components/StatusBarHeight';
 
 const Header = ({ user, isMyAccount }) => {

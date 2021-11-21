@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react
 import { Context as DailyContext } from 'context/DailyContext';
 import { tmpWidth } from 'components/FontNormalize';
 import { navigate, push } from 'lib/utils/navigation';
-import { SongImage } from 'components/SongImage';
-import ProfileImage from 'components/ProfileImage';
+import { SongImage } from 'widgets/SongImage';
+import ProfileImage from 'widgets/ProfileImage';
 
 const WeeklyDailies = ({ dailies }) => {
   const { getDaily } = useContext(DailyContext);
