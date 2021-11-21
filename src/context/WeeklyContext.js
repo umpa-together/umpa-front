@@ -1,4 +1,4 @@
-import serverApi from 'api/serverApi';
+import server from 'lib/api/server';
 import createDataContext from './createDataContext';
 
 const WeeklyReducer = (state, action) => {
@@ -20,7 +20,7 @@ const WeeklyReducer = (state, action) => {
 
 const getWeeklyPlaylist = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/WeekPlaylist');
+    const response = await server.get('/WeekPlaylist');
     dispatch({ type: 'playlist', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getWeekPlaylist' });
@@ -29,7 +29,7 @@ const getWeeklyPlaylist = (dispatch) => async () => {
 
 const postWeekly = (dispatch) => async () => {
   try {
-    await serverApi.post('/Weekly');
+    await server.post('/Weekly');
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with postWeekly' });
   }
@@ -37,7 +37,7 @@ const postWeekly = (dispatch) => async () => {
 
 const getWeekly = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/Weekly');
+    const response = await server.get('/Weekly');
     dispatch({ type: 'getWeekly', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getWeekly' });
@@ -46,7 +46,7 @@ const getWeekly = (dispatch) => async () => {
 
 const getRecentPlaylists = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/main/recent');
+    const response = await server.get('/main/recent');
     dispatch({ type: 'getRecentPlaylists', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getRecentPlaylists' });
@@ -55,7 +55,7 @@ const getRecentPlaylists = (dispatch) => async () => {
 
 const getMusicArchive = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/main/musicArchive');
+    const response = await server.get('/main/musicArchive');
     dispatch({ type: 'getMusicArchive', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMusicArchive' });

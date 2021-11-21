@@ -1,4 +1,4 @@
-import serverApi from 'api/serverApi';
+import server from 'lib/api/server';
 import createDataContext from './createDataContext';
 
 const searchReducer = (state, action) => {
@@ -47,7 +47,7 @@ const searchsong =
   (dispatch) =>
   async ({ songname }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/song/${songname}`);
+      const response = await server.get(`/searchMusic/song/${songname}`);
       dispatch({ type: 'searchsong', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with searchsong' });
@@ -58,7 +58,7 @@ const searchartist =
   (dispatch) =>
   async ({ artistname }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/artist/${artistname}`);
+      const response = await server.get(`/searchMusic/artist/${artistname}`);
       dispatch({ type: 'searchartist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with searchsong' });
@@ -69,7 +69,7 @@ const searchalbum =
   (dispatch) =>
   async ({ albumname }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/album/${albumname}`);
+      const response = await server.get(`/searchMusic/album/${albumname}`);
       dispatch({ type: 'searchalbum', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with searchsong' });
@@ -80,7 +80,7 @@ const songNext =
   (dispatch) =>
   async ({ next }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/next/${next}`);
+      const response = await server.get(`/searchMusic/next/${next}`);
       Object.keys(response.data[0]).forEach((key) => {
         dispatch({ type: 'songNext', payload: response.data[0][key] });
       });
@@ -94,7 +94,7 @@ const artistNext =
   (dispatch) =>
   async ({ next }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/next/${next}`);
+      const response = await server.get(`/searchMusic/next/${next}`);
       Object.keys(response.data[0]).forEach((key) => {
         dispatch({ type: 'artistNext', payload: response.data[0][key] });
       });
@@ -108,7 +108,7 @@ const searchHint =
   (dispatch) =>
   async ({ term }) => {
     try {
-      const response = await serverApi.get(`/searchMusic/hint/${term}`);
+      const response = await server.get(`/searchMusic/hint/${term}`);
       dispatch({ type: 'searchHint', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with searchHint' });
@@ -127,7 +127,7 @@ const hashtagHint =
   (dispatch) =>
   async ({ term }) => {
     try {
-      const response = await serverApi.get(`/search/hashtagHint/${term}`);
+      const response = await server.get(`/search/hashtagHint/${term}`);
       dispatch({ type: 'hashtagHint', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with hashtagHint' });
@@ -138,7 +138,7 @@ const djHint =
   (dispatch) =>
   async ({ term }) => {
     try {
-      const response = await serverApi.get(`/search/djHint/${term}`);
+      const response = await server.get(`/search/djHint/${term}`);
       dispatch({ type: 'djHint', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with djHint' });
@@ -147,7 +147,7 @@ const djHint =
 
 const currentHashtag = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/search/currentHashtag');
+    const response = await server.get('/search/currentHashtag');
     dispatch({ type: 'currentHashtag', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with currentHashtag' });

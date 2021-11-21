@@ -1,4 +1,4 @@
-import serverApi from 'api/serverApi';
+import server from 'lib/api/server';
 import AsyncStorage from '@react-native-community/async-storage';
 import createDataContext from './createDataContext';
 
@@ -25,7 +25,7 @@ const NoticeReducer = (state, action) => {
 
 const getnotice = (dispatch) => async () => {
   try {
-    const response = await serverApi.get('/notice');
+    const response = await server.get('/notice');
     dispatch({ type: 'get_notice', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
@@ -36,7 +36,7 @@ const nextNotice =
   (dispatch) =>
   async ({ page }) => {
     try {
-      const response = await serverApi.get(`/notice/${page}`);
+      const response = await server.get(`/notice/${page}`);
       if (response.data.length !== 0) {
         dispatch({ type: 'nextNotice', payload: response.data });
       } else {
@@ -51,7 +51,7 @@ const readNotice =
   (dispatch) =>
   async ({ id }) => {
     try {
-      await serverApi.put(`/notice/${id}`);
+      await server.put(`/notice/${id}`);
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
     }
@@ -60,7 +60,7 @@ const readNotice =
 const setnoticetoken = (dispatch) => async () => {
   try {
     const noticetoken = await AsyncStorage.getItem('noticetoken');
-    await serverApi.put(`/notice/setnotice/${noticetoken}`);
+    await server.put(`/notice/setnotice/${noticetoken}`);
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
   }
@@ -68,7 +68,7 @@ const setnoticetoken = (dispatch) => async () => {
 
 const deletenoticetoken = (dispatch) => async () => {
   try {
-    await serverApi.delete('/notice');
+    await server.delete('/notice');
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
   }
