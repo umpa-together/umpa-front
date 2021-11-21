@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
@@ -22,9 +23,8 @@ import { SongImage } from 'components/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Header from 'components/Header';
 
-const SignupPage =
-  ({ route }) =>
-  /*
+const SignUp = ({ route }) => null;
+/*
   const { state, checkName, signup } = useContext(AuthContext);
   const { addtracksong, stoptracksong, isPlayingId } = useTrackPlayer();
   const [email, setEmail] = useState(route.params.email);
@@ -64,7 +64,7 @@ const SignupPage =
     initHint,
   } = useContext(SearchContext);
   const nextCheck = () => {
-    if (email != '' && password != '' && name != '') setModalVisible(true);
+    if (email !== '' && password !== '' && name !== '') setModalVisible(true);
   };
   const getData = async () => {
     setLoading(true);
@@ -72,12 +72,11 @@ const SignupPage =
     setLoading(false);
   };
   const onEndReached = () => {
-        if (loading) {
-            
-        } else {
-            getData();
-        }
-    };
+    if (loading) {
+    } else {
+      getData();
+    }
+  };
 
   const doubleCheck = async (name) => {
     await checkName({ name });
@@ -86,7 +85,7 @@ const SignupPage =
   };
   const addItem = ({ data }) => {
     let tok = false;
-    for (let key in songs) {
+    for (const key in songs) {
       if (data.id == songs[key].id) {
         tok = true;
         break;
@@ -94,7 +93,7 @@ const SignupPage =
     }
     if (songs.length > 6) {
       console.log('7개를 넘길수 없습니다');
-    } else if(!tok)    setSong([...songs, data]);
+    } else if (!tok) setSong([...songs, data]);
   };
 
   const passwordval = () => {
@@ -107,7 +106,7 @@ const SignupPage =
   };
 
   const deleteItem = ({ data }) => {
-    setSong(songs.filter((item) => item != data));
+    setSong(songs.filter((item) => item !== data));
   };
   useEffect(() => {
     setPassworderr(false);
@@ -123,66 +122,75 @@ const SignupPage =
   }, [name]);
 
   const singupfun = async () => {
-        if(email == undefined || email.length == 0){
-            setEmailerr(true);
-            return;
-        }
-            setEmailerr(false);
-        
-        if(password == undefined || password.length == 0){
-            setPassworderr(true);
-            return;
-        }else{
-            if(passwordval()){
-                setPassworderr(false);
-            }else{
-                setPassworderr(true);
-                return;
-            }
-        }
-        if(passwordcheck == undefined || passwordcheck.length == 0){
-            setPasswordcheckerr(true);
-            return;
-        }else{
-            setPasswordcheckerr(false);
-        }
-        if(name == undefined || name.length == 0 || !state.doubleCheck){
-            setNameerr(true);
-            setNameErrMsg('아이디를 입력해주세요.')
-            if(!state.doubleCheck){
-                setDouble(false)
-                setNameErrMsg('중복 체크를 해주세요.')
-            }
-            return;
-        }else{
-            setNameerr(false);
-        }
-        if(!double){
-            setNameerr(true)
-            setNameErrMsg('중복 체크를 해주세요.')
-            return;
-        }else{
-            setNameerr(false)
-        }
-        if(!agree1) {
-            setAgree1Err(true);
-            return;
-        }else{
-            setAgree1Err(false);
-        }
-        if(!agree2) {
-            setAgree2Err(true);
-            return;
-        }else{
-            setAgree2Err(false);
-        }
-
-        if( !emailerr && !passworderr && password==passwordcheck&&!passwordcheckerr && !nameerr && passwordcheck && agree1 && agree2 && double){
-            nextCheck();
-        }
+    if (email === undefined || email.length === 0) {
+      setEmailerr(true);
+      return;
     }
+    setEmailerr(false);
+
+    if (password === undefined || password.length === 0) {
+      setPassworderr(true);
+      return;
+    }
+    if (passwordval()) {
+      setPassworderr(false);
+    } else {
+      setPassworderr(true);
+      return;
+    }
+
+    if (passwordcheck === undefined || passwordcheck.length === 0) {
+      setPasswordcheckerr(true);
+      return;
+    }
+    setPasswordcheckerr(false);
+
+    if (name === undefined || name.length === 0 || !state.doubleCheck) {
+      setNameerr(true);
+      setNameErrMsg('아이디를 입력해주세요.');
+      if (!state.doubleCheck) {
+        setDouble(false);
+        setNameErrMsg('중복 체크를 해주세요.');
+      }
+      return;
+    }
+    setNameerr(false);
+
+    if (!double) {
+      setNameerr(true);
+      setNameErrMsg('중복 체크를 해주세요.');
+      return;
+    }
+    setNameerr(false);
+
+    if (!agree1) {
+      setAgree1Err(true);
+      return;
+    }
+    setAgree1Err(false);
+
+    if (!agree2) {
+      setAgree2Err(true);
+      return;
+    }
+    setAgree2Err(false);
+
+    if (
+      !emailerr &&
+      !passworderr &&
+      password === passwordcheck &&
+      !passwordcheckerr &&
+      !nameerr &&
+      passwordcheck &&
+      agree1 &&
+      agree2 &&
+      double
+    ) {
+      nextCheck();
+    }
+  };
   useEffect(() => {
-    if (text == '') {
+    if (text === '') {
       initHint();
     } else {
       searchHint({ term: text });
@@ -264,8 +272,8 @@ const SignupPage =
                   style={{ fontSize: 14 * tmpWidth, marginLeft: 15 * tmpWidth }}
                 />
               </View>
-              {password != passwordcheck &&
-              passwordcheck != undefined &&
+              {password !== passwordcheck &&
+              passwordcheck !== undefined &&
               passwordcheck.length > 0 &&
               !passwordcheckerr ? (
                 <View style={styles.warningContainer}>
@@ -354,7 +362,7 @@ const SignupPage =
                   setAgree1(true);
                   setAgree2(true);
                 }}
-              ></TouchableOpacity>
+              />
             )}
             <Text
               style={{ fontSize: 16 * tmpWidth, color: 'rgb(0,0,0)', marginLeft: 8 * tmpWidth }}
@@ -391,7 +399,7 @@ const SignupPage =
                   onPress={() => {
                     setAgree1(true);
                   }}
-                ></TouchableOpacity>
+                />
               )}
               <Text style={!agree1Err ? styles.agreeText : styles.agreeWarning}>
                 이용약관 동의 (필수)
@@ -451,7 +459,7 @@ const SignupPage =
                   onPress={() => {
                     setAgree2(true);
                   }}
-                ></TouchableOpacity>
+                />
               )}
               <Text style={!agree2Err ? styles.agreeText : styles.agreeWarning}>
                 개인정보 수집 및 이용 동의 (필수)
@@ -489,6 +497,7 @@ const SignupPage =
           </TouchableOpacity>
         </View>
       </ScrollView>
+
       <Modal
         animationIn="fadeIn"
         animationOut="fadeOut"
@@ -727,9 +736,8 @@ const SignupPage =
       </Modal>
     </View>
   );
-  */
-  () =>
-    null;
+};
+*/
 const styles = StyleSheet.create({
   Songs: {
     width: 50 * tmpWidth,
@@ -912,4 +920,4 @@ const styles = StyleSheet.create({
     paddingBottom: 2 * tmpWidth,
   },
 });
-export default SignupPage;
+export default SignUp;
