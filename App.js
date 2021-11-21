@@ -21,7 +21,7 @@ import { Provider as FeedProvider } from 'context/FeedContext';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import ModalProvider from 'providers/modal';
 import RefreshProvider from 'providers/refresh';
-import MainNavigator from 'navigator.js';
+import MainNavigator from './src/navigation';
 
 export default () => {
   useEffect(() => {
