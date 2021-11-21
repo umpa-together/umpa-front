@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/AuthContext';
-import LoadingPage from 'screens/LoadingPage';
+import Splash from 'screens/Splash';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 
@@ -15,7 +15,7 @@ const MainNavigator = () => {
   }, []);
 
   if (isSplash) {
-    return <LoadingPage setIsSplash={setIsSplash} />;
+    return <Splash setIsSplash={setIsSplash} />;
   }
 
   return (

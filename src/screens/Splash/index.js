@@ -4,7 +4,7 @@ import TrackPlayer from 'react-native-track-player';
 import LinearGradient from 'react-native-linear-gradient';
 import { tmpWidth } from 'components/FontNormalize';
 
-const LoadingPage = ({ setIsSplash }) => {
+const Splash = ({ setIsSplash }) => {
   const opacity = useState(new Animated.Value(0))[0];
 
   const fadeIn = () => {
@@ -64,4 +64,4 @@ const LoadingPage = ({ setIsSplash }) => {
   );
 };
 
-export default LoadingPage;
+export default Splash;
