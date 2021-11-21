@@ -8,12 +8,12 @@ import ReportBar from 'components/Chat/ReportBar';
 import ChatInput from 'components/Chat/ChatInput';
 import SearchSong from 'components/Chat/SearchSong';
 import ChatProvider from 'providers/chat';
-import * as config from 'config';
+import * as env from 'constants/app';
 
 const SelectedChat = ({ route }) => {
   const { state, receiveMsg, getChatList } = useContext(ChatContext);
   const { target } = route.params;
-  const [socket] = useState(io(`${config.serverURL}/chat`));
+  const [socket] = useState(io(`${env.serverURL}/chat`));
   const [data, setData] = useState(state.chatroom.messages);
 
   const back = async () => {

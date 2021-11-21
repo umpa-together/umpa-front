@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/AuthContext';
-import Splash from 'screens/Splash';
+import Splash from 'screens/Main/Splash';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 

@@ -1,31 +1,31 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import NoticeScreen from 'screens/Notice';
+import NoticeScreen from 'screens/Main/Notice';
 
-import OtherAccount from 'screens/Account/OtherAccount';
-import FollowPage from 'screens/Account/FollowPage';
-import ProfileEditPage from 'screens/Account/ProfileEditPage';
-import SettingPage from 'screens/Account/SettingPage';
-import SongEditPage from 'screens/Account/SongEditPage';
-import FeedBackPage from 'screens/Account/FeedbackPage';
-import InformationUsePage from 'screens/Account/InformationUsePage';
-import MusicBoxScreen from 'screens/Account/MusicBoxScreen';
+import OtherAccount from 'screens/Main/Account/OtherAccount';
+import FollowPage from 'screens/Main/Account/FollowPage';
+import ProfileEditPage from 'screens/Main/Account/ProfileEditPage';
+import SettingPage from 'screens/Main/Account/SettingPage';
+import SongEditPage from 'screens/Main/Account/SongEditPage';
+import FeedBackPage from 'screens/Main/Account/FeedbackPage';
+import InformationUsePage from 'screens/Main/Account/InformationUsePage';
+import MusicBoxScreen from 'screens/Main/Account/MusicBoxScreen';
 
-import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
-import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
+import CreatePlayListPage from 'screens/Main/Playlist/CreatePlayListPage';
+import SelectedPlaylist from 'screens/Main/Playlist/SelectedPlaylist';
 
-import SearchScreen from 'screens/Main/SearchScreen';
-import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
-import AllContentsScreen from 'screens/Main/AllContentsScreen';
-import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
+import SearchScreen from 'screens/Main/Home/SearchScreen';
+import SelectedHashtagScreen from 'screens/Main/Home/SelectedHashtagScreen';
+import AllContentsScreen from 'screens/Main/Home/AllContentsScreen';
+import ContentsMoreScreen from 'screens/Main/Home/ContentsMoreScreen';
 
-import Chat from 'screens/Chat/Chat';
-import CreateChat from 'screens/Chat/CreateChat';
-import SelectedChat from 'screens/Chat/SelectedChat';
+import Chat from 'screens/Main/Chat/Chat';
+import CreateChat from 'screens/Main/Chat/CreateChat';
+import SelectedChat from 'screens/Main/Chat/SelectedChat';
 
-import SelectedDaily from 'screens/Daily/SelectedDaily';
-import DailyCreate from 'screens/Daily/DailyCreate';
+import SelectedDaily from 'screens/Main/Daily/SelectedDaily';
+import DailyCreate from 'screens/Main/Daily/DailyCreate';
 
 import CreateModal from 'components/Modal/CreateModal';
 
