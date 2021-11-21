@@ -27,8 +27,8 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRefresh } from 'providers/refresh';
-import { tmpWidth } from '../../components/FontNormalize';
-import { Context as DailyContext } from '../../context/DailyContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { Context as DailyContext } from 'context/DailyContext';
 
 const SelectedDaily = ({ route }) => {
   const { state, getDaily } = useContext(DailyContext);

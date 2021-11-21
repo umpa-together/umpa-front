@@ -67,11 +67,11 @@ export default () => {
                         <UserProvider>
                           <SearchPlaylistProvider>
                             <PlaylistProvider>
-                                <SearchProvider>
-                                  <AuthProvider>
-                                    <MainNavigator />
-                                  </AuthProvider>
-                                </SearchProvider>
+                              <SearchProvider>
+                                <AuthProvider>
+                                  <MainNavigator />
+                                </AuthProvider>
+                              </SearchProvider>
                             </PlaylistProvider>
                           </SearchPlaylistProvider>
                         </UserProvider>

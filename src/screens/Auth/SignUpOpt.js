@@ -9,20 +9,20 @@ import { NaverLogin } from '@react-native-seoul/naver-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import SvgUri from 'react-native-svg-uri';
 import jwtDecode from 'jwt-decode';
-import * as config from 'config';
+import * as env from 'constants/app';
 import Header from 'components/Header';
 
 const SignUpOpt = () => {
   const { getGoogleInfo, getKakaoInfo, getNaverInfo, getAppleInfo } = useContext(AuthContext);
   const iosKeys = {
-    kConsumerKey: config.kConsumerKey,
-    kConsumerSecret: config.kConsumerSecret,
+    kConsumerKey: env.kConsumerKey,
+    kConsumerSecret: env.kConsumerSecret,
     kServiceAppName: 'umpa',
     kServiceAppUrlScheme: 'naverlogin', // only for iOS
   };
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: config.webClientId,
+      webClientId: env.webClientId,
       offlineAccess: true,
       hostedDomain: '',
       forceConsentPrompt: true,

@@ -3,10 +3,10 @@ import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SvgUri from 'react-native-svg-uri';
 
-import AccountScreen from 'screens/Account/MyAccountScreen';
-import MainFeedPage from 'screens/Feed/MainFeed';
-import NoticeScreen from 'screens/Notice';
-import MainSearchScreen from 'screens/Main/MainSearchScreen';
+import AccountScreen from 'screens/Main/Account/MyAccountScreen';
+import MainFeedPage from 'screens/Main/Feed/MainFeed';
+import NoticeScreen from 'screens/Main/Notice';
+import MainSearchScreen from 'screens/Main/Home/MainSearchScreen';
 
 const Tab = createBottomTabNavigator();
 
