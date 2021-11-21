@@ -5,7 +5,7 @@ import SvgUri from 'react-native-svg-uri';
 
 import AccountScreen from 'screens/Account/MyAccountScreen';
 import MainFeedPage from 'screens/Feed/MainFeed';
-import FreeBoardPage from 'screens/Board/FreeBoardPage';
+import NoticeScreen from 'screens/NoticeScreen';
 import MainSearchScreen from 'screens/Main/MainSearchScreen';
 
 const Tab = createBottomTabNavigator();
@@ -50,17 +50,17 @@ const TabScreen = () => (
         if (route.name === 'CreateModal') {
           return <Text>+</Text>;
         }
-        if (route.name === 'Board') {
+        if (route.name === 'Notice') {
           return (
             <View>
               {focused ? (
                 <SvgUri
                   width="40"
                   height="40"
-                  source={require('assets/icons/tabFocusedBoard.svg')}
+                  source={require('assets/icons/tabFocusedNotice.svg')}
                 />
               ) : (
-                <SvgUri width="40" height="40" source={require('assets/icons/tabBoard.svg')} />
+                <SvgUri width="40" height="40" source={require('assets/icons/tabNotice.svg')} />
               )}
             </View>
           );
@@ -107,7 +107,7 @@ const TabScreen = () => (
         },
       })}
     />
-    <Tab.Screen name="Board" component={FreeBoardPage} />
+    <Tab.Screen name="Notice" component={NoticeScreen} />
     <Tab.Screen name="Account" component={AccountScreen} />
   </Tab.Navigator>
 );

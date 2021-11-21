@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Context as UserContext } from 'context/UserContext';
-import { Context as BoardContext } from 'context/BoardContext';
 import Modal from 'react-native-modal';
 import { SongImageBack } from 'widgets/SongImage';
 import HarmfulModal from 'components/Modal/HarmfulModal';
@@ -14,7 +13,6 @@ import MoveText from 'components/MoveText';
 
 const SongStory = ({ setArchiveModal, archive }) => {
   const { state } = useContext(UserContext);
-  const { likeSong, unlikeSong, addSongView } = useContext(BoardContext);
   const [idx, setIdx] = useState(0);
   const { addtracksong, stoptracksong, isPlayingId, isMute, onClickVolume } = useTrackPlayer();
   const { songs, _id: board } = archive;
@@ -42,10 +40,8 @@ const SongStory = ({ setArchiveModal, archive }) => {
 
   const onClickLikes = () => {
     if (likeCheck) {
-      unlikeSong({ id: currentSong.id, boardId: board._id });
       setLikeCheck(false);
     } else {
-      likeSong({ id: currentSong.id, boardName: board.name, boardId: board._id });
       setLikeCheck(true);
     }
   };
@@ -61,7 +57,6 @@ const SongStory = ({ setArchiveModal, archive }) => {
 
   useEffect(() => {
     setLikeCheck(currentSong.likes.includes(state.myInfo._id));
-    addSongView({ id: currentSong.id, boardId: board._id, postUserId: currentSong.postUser });
   }, [currentSong]);
 
   return (

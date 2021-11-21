@@ -3,7 +3,6 @@ import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/NoticeContext';
 import { Context as PlaylistContext } from 'context/PlaylistContext';
 import { Context as UserContext } from 'context/UserContext';
-import { Context as BoardContext } from 'context/BoardContext';
 import { useFocusEffect } from '@react-navigation/native';
 import Header from 'components/Header';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -15,7 +14,6 @@ const NoticeScreen = () => {
   const { state, getnotice, nextNotice } = useContext(NoticeContext);
   const { initPlaylist } = useContext(PlaylistContext);
   const { initOtherUser } = useContext(UserContext);
-  const { initMusic, initCurrentContent } = useContext(BoardContext);
   const [loading, setLoading] = useState(false);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
 
@@ -37,8 +35,6 @@ const NoticeScreen = () => {
     useCallback(() => {
       initPlaylist();
       initOtherUser();
-      initMusic();
-      initCurrentContent();
       setRefresh(getnotice);
     }, []),
   );

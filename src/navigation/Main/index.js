@@ -15,29 +15,19 @@ import MusicBoxScreen from 'screens/Account/MusicBoxScreen';
 import CreatePlayListPage from 'screens/Playlist/CreatePlayListPage';
 import SelectedPlaylist from 'screens/Playlist/SelectedPlaylist';
 
-import SearchBoardPage from 'screens/Board/SearchBoardPage';
-import CreateBoardPage from 'screens/Board/CreateBoardPage';
-import SelectedBoardPage from 'screens/Board/SelectedBoardPage';
-import CreateContentPage from 'screens/Board/CreateContentPage';
-import SelectedContentPage from 'screens/Board/SelectedContentPage';
-import MyContentsPage from 'screens/Board/MyContentsPage';
-import SearchContentPage from 'screens/Board/SearchContentPage';
-import MusicArchivePage from 'screens/Board/MusicArchivePage';
-import SearchMusicPage from 'screens/Board/SearchMusicPage';
-import MySharedSongsPage from 'screens/Board/MySharedSongsPage';
-
 import SearchScreen from 'screens/Main/SearchScreen';
 import SelectedHashtagScreen from 'screens/Main/SelectedHashtagScreen';
 import AllContentsScreen from 'screens/Main/AllContentsScreen';
 import ContentsMoreScreen from 'screens/Main/ContentsMoreScreen';
-import CreateModal from 'components/Modal/CreateModal';
 
 import Chat from 'screens/Chat/Chat';
-import SelectedChat from 'screens/Chat/SelectedChat';
 import CreateChat from 'screens/Chat/CreateChat';
+import SelectedChat from 'screens/Chat/SelectedChat';
 
-import DailyCreate from 'screens/Daily/DailyCreate';
 import SelectedDaily from 'screens/Daily/SelectedDaily';
+import DailyCreate from 'screens/Daily/DailyCreate';
+
+import CreateModal from 'components/Modal/CreateModal';
 
 import TabScreen from './Tab';
 
@@ -58,22 +48,9 @@ const MainStackScreen = () => (
     <MainStack.Screen name="Chat" component={Chat} />
     <MainStack.Screen name="SelectedChat" component={SelectedChat} />
     <MainStack.Screen name="CreateChat" component={CreateChat} />
-
     <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
     <MainStack.Screen name="SelectedHashtag" component={SelectedHashtagScreen} />
-    <MainStack.Screen name="SearchBoard" component={SearchBoardPage} />
-    <MainStack.Screen name="CreateBoard" component={CreateBoardPage} />
-    <MainStack.Screen name="SelectedBoard" component={SelectedBoardPage} />
     <MainStack.Screen name="CreateDaily" component={DailyCreate} />
-
-    <MainStack.Screen name="CreateContent" component={CreateContentPage} />
-    <MainStack.Screen name="SelectedContent" component={SelectedContentPage} />
-    <MainStack.Screen name="MyContents" component={MyContentsPage} />
-    <MainStack.Screen name="SearchContent" component={SearchContentPage} />
-    <MainStack.Screen name="MusicArchive" component={MusicArchivePage} />
-    <MainStack.Screen name="SearchMusic" component={SearchMusicPage} />
-
-    <MainStack.Screen name="MySharedSongs" component={MySharedSongsPage} />
     <MainStack.Screen name="OtherAccount" component={OtherAccount} />
     <MainStack.Screen name="Follow" component={FollowPage} />
     <MainStack.Screen name="ProfileEdit" component={ProfileEditPage} />

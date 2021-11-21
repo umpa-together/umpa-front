@@ -6,7 +6,6 @@ import { localNotificationService } from 'LocalNotificationService';
 
 import { Provider as AuthProvider } from 'context/AuthContext';
 import { Provider as SearchProvider } from 'context/SearchContext';
-import { Provider as BoardProvider } from 'context/BoardContext';
 import { Provider as PlaylistProvider } from 'context/PlaylistContext';
 import { Provider as SearchPlaylistProvider } from 'context/SearchPlaylistContext';
 import { Provider as UserProvider } from 'context/UserContext';
@@ -68,13 +67,11 @@ export default () => {
                         <UserProvider>
                           <SearchPlaylistProvider>
                             <PlaylistProvider>
-                              <BoardProvider>
                                 <SearchProvider>
                                   <AuthProvider>
                                     <MainNavigator />
                                   </AuthProvider>
                                 </SearchProvider>
-                              </BoardProvider>
                             </PlaylistProvider>
                           </SearchPlaylistProvider>
                         </UserProvider>
