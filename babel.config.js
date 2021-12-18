@@ -14,6 +14,7 @@ module.exports = {
           '@screens': './src/screens',
           '@lib': './src/lib',
           '@widgets': './src/widgets',
+          '@constants': './src/constants',
         },
       },
     ],

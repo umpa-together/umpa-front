@@ -8,6 +8,7 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'react/prop-types': 0,
     'no-undef': 0,
+    'react/jsx-no-constructed-context-values': 0,
   },
   settings: {
     'import/extensions': ['.js', '.jsx'],
