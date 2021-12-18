@@ -12,6 +12,7 @@ module.exports = {
     'import/no-import-module-exports': 0,
     'global-require': 0,
     'no-param-reassign': 0,
+    'react/jsx-no-useless-fragment': 0,
   },
   settings: {
     'import/extensions': ['.js', '.jsx'],
