@@ -1,6 +1,11 @@
 import React from 'react';
 import MainNavigator from './src/navigation';
+import TrackPlayerProvider from './src/providers/trackPlayer';
 
 export default () => {
-  return <MainNavigator />;
+  return (
+    <TrackPlayerProvider>
+      <MainNavigator />
+    </TrackPlayerProvider>
+  );
 };
