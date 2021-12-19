@@ -5,13 +5,13 @@ const searchReducer = (state, action) => {
   switch (action.type) {
     case 'initSearch':
       return {
-        songData: [],
+        songData: null,
         nextSongUrl: null,
         notNextSong: false,
-        artistData: [],
+        artistData: null,
         nextArtistUrl: null,
         notNextArtist: false,
-        albumData: [],
+        albumData: null,
         nextAlbumUrl: null,
         notNextAlbum: false,
         hint: null,
