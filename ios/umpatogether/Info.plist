@@ -59,6 +59,7 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>kakao7c1b48e5eb809fe6e923f3006e57c6f0</string>
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
 		<string>kakaokompassauth</string>

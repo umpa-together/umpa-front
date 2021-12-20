@@ -14,10 +14,10 @@ import {
 import { Context as AuthContext } from 'context/Auth';
 import { navigate } from 'lib/utils/navigation';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
+import { login } from '@react-native-seoul/kakao-login';
 import { NaverLogin } from '@react-native-seoul/naver-login';
-//import appleAuth from '@invertase/react-native-apple-authentication';
-//import jwtDecode from 'jwt-decode';
+import appleAuth from '@invertase/react-native-apple-authentication';
+import jwtDecode from 'jwt-decode';
 import * as env from 'constants/app';
 
 const webclientid = Platform.select({
@@ -40,10 +40,9 @@ const naverid = Platform.select({
 });
   
 const SignIn = () => {
-  const { state, signin, getGoogleInfo, getNaverInfo, getKakaoInfo} = useContext(AuthContext);
+  const { state, signin, getGoogleInfo, getNaverInfo, getKakaoInfo, getAppleInfo} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: webclientid,
@@ -80,10 +79,9 @@ const SignIn = () => {
     });
   };
   
-  const kakaoLogin = () => {
-    KakaoLogins.login([KAKAO_AUTH_TYPES.Talk, KAKAO_AUTH_TYPES.Account]).then(async (result) => {
-      await getKakaoInfo({ token: result.accessToken });
-    });
+  const kakaoLogin = async () => {
+    const token = await login();
+    await getKakaoInfo({ token: token.accessToken });
   };
   const googleLogin = async () => {
     await GoogleSignin.hasPlayServices();
@@ -94,7 +92,7 @@ const SignIn = () => {
     await getGoogleInfo({ email: userInfo.user.email, id: userInfo.user.id });
   };
 
-  /*
+  
   const appleLogin = async () => {
     try {
       // performs login request
@@ -102,11 +100,8 @@ const SignIn = () => {
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
       });
-
       // get current authentication state for user
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
+      const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
 
       // use credentialState response to ensure the user is authenticated
       if (credentialState === appleAuth.State.AUTHORIZED) {
@@ -120,7 +115,7 @@ const SignIn = () => {
         // login error
       }
     }
-  };*/ 
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(254,254,254)' }}>
       <View
@@ -222,7 +217,7 @@ const SignIn = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ width: 60 , height: 60  }}
-              //onPress={() => appleLogin()}
+              onPress={() => appleLogin()}
             >
               <Image
                 style={{ width: '100%', height: '100%' }}

@@ -50,11 +50,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "217008100787-rhupluus48pt30cdgdu5fvelpr8ieb7e.apps.googleusercontent.com",
+          "client_id": "217008100787-ppqb10l1b7qhpb8mp5cc5l0s2f8fpklg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.umpatogether",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "b5402d5664caf59d44fb75c9389343a06458e2a3"
           }
         },
         {
