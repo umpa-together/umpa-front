@@ -85,10 +85,7 @@ const SignIn = () => {
   };
   const googleLogin = async () => {
     await GoogleSignin.hasPlayServices();
-    console.log('1');
     const userInfo = await GoogleSignin.signIn();
-    console.log('2');
-
     await getGoogleInfo({ email: userInfo.user.email, id: userInfo.user.id });
   };
 
