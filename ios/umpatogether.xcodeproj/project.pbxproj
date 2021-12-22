@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D3B9F45E940AE91BBCD721B /* libPods-umpatogether.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 725E9DA1B85E104CCE8DE997 /* libPods-umpatogether.a */; };
 		4BEA7C277FBD50A6AF57E174 /* libPods-umpatogether-umpatogetherTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4266420900224E0310F8CAE /* libPods-umpatogether-umpatogetherTests.a */; };
+		7DE4643A276F4C3D005A90FD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DE46439276F4C3D005A90FD /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = umpatogether/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = umpatogether/main.m; sourceTree = "<group>"; };
 		725E9DA1B85E104CCE8DE997 /* libPods-umpatogether.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-umpatogether.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DE46439276F4C3D005A90FD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/umpatogether/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7DE4643B276F97EC005A90FD /* umpatogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpatogether.entitlements; path = umpatogether/umpatogether.entitlements; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = umpatogether/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0DEC614FE4B3BDF88BE40A3 /* Pods-umpatogether-umpatogetherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpatogether-umpatogetherTests.release.xcconfig"; path = "Target Support Files/Pods-umpatogether-umpatogetherTests/Pods-umpatogether-umpatogetherTests.release.xcconfig"; sourceTree = "<group>"; };
 		C4266420900224E0310F8CAE /* libPods-umpatogether-umpatogetherTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-umpatogether-umpatogetherTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,10 +89,12 @@
 		13B07FAE1A68108700A75B9A /* umpatogether */ = {
 			isa = PBXGroup;
 			children = (
+				7DE4643B276F97EC005A90FD /* umpatogether.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				7DE46439276F4C3D005A90FD /* GoogleService-Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -114,7 +119,6 @@
 				CC8438644AACBF0533EA3154 /* Pods-umpatogether-umpatogetherTests.debug.xcconfig */,
 				C0DEC614FE4B3BDF88BE40A3 /* Pods-umpatogether-umpatogetherTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -245,6 +249,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				7DE4643A276F4C3D005A90FD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,7 +489,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = umpatogether/umpatogether.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 668Y6744MR;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = umpatogether/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -510,7 +517,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = umpatogether/umpatogether.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 668Y6744MR;
 				INFOPLIST_FILE = umpatogether/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

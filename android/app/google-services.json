@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "217008100787",
+    "project_id": "umpa-4bdbc",
+    "storage_bucket": "umpa-4bdbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217008100787:android:212a6965bf5bfad285a7c6",
+        "android_client_info": {
+          "package_name": "com.umpa8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqaKyT2qmapga5Hzq3HjhV8Saz6q3c8UA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "217008100787-fe5u8u3ejdp73d73rabbqefjctdgbvto.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.umpa8"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217008100787:android:3aeb2a51e875a59985a7c6",
+        "android_client_info": {
+          "package_name": "com.umpatogether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217008100787-ppqb10l1b7qhpb8mp5cc5l0s2f8fpklg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.umpatogether",
+            "certificate_hash": "b5402d5664caf59d44fb75c9389343a06458e2a3"
+          }
+        },
+        {
+          "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqaKyT2qmapga5Hzq3HjhV8Saz6q3c8UA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "217008100787-fe5u8u3ejdp73d73rabbqefjctdgbvto.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.umpa8"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
