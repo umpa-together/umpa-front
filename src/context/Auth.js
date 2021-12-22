@@ -5,11 +5,11 @@ import createDataContext from 'lib/utils/createDataContext';
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case 'signin':
+    case 'signIn':
       return { errorMessage: '', token: action.payload };
-    case 'signup':
+    case 'signUp':
       return { errorMessage: '', token: action.payload };
-    case 'signout':
+    case 'signOut':
       return {
         errorMessage: '',
         token: null,
@@ -17,9 +17,9 @@ const authReducer = (state, action) => {
         kakaoSignup: null,
         naverSignup: null,
       };
-    case 'clearError':
+    case 'clearErrorMessage':
       return { ...state, errorMessage: '' };
-    case 'doubleCheck':
+    case 'checkName':
       return { ...state, doubleCheck: action.payload };
     case 'add_error':
       return { ...state, errorMessage: action.payload };
@@ -28,16 +28,16 @@ const authReducer = (state, action) => {
   }
 };
 
-const tryLocalSignin = (dispatch) => async () => {
+const tryLocalSignIn = (dispatch) => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
-    dispatch({ type: 'signin', payload: token });
+    dispatch({ type: 'signIn', payload: token });
   } else {
     navigate('Signin');
   }
 };
 
-const signup =
+const signUp =
   (dispatch) =>
   async ({ email, password, name, informationagree, songs }) => {
     try {
@@ -49,28 +49,28 @@ const signup =
         songs,
       });
       await AsyncStorage.setItem('token', response.data.token);
-      dispatch({ type: 'signup', payload: response.data.token });
+      dispatch({ type: 'signUp', payload: response.data.token });
     } catch (err) {
       dispatch({ type: 'add_error', payload: 'Something went wrong with sign up' });
     }
   };
 
-const signin =
+const signIn =
   (dispatch) =>
   async ({ email, password }) => {
     try {
       const response = await server.post('/signIn', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
-      dispatch({ type: 'signin', payload: response.data.token });
+      dispatch({ type: 'signIn', payload: response.data.token });
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
     }
   };
 
-const signout = (dispatch) => async () => {
+const signOut = (dispatch) => async () => {
   try {
     await AsyncStorage.removeItem('token');
-    dispatch({ type: 'signout' });
+    dispatch({ type: 'signOut' });
   } catch (err) {
     dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
   }
@@ -78,7 +78,7 @@ const signout = (dispatch) => async () => {
 
 const clearErrorMessage = (dispatch) => async () => {
   try {
-    dispatch({ type: 'clearError' });
+    dispatch({ type: 'clearErrorMessage' });
   } catch (err) {
     dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
   }
@@ -97,7 +97,7 @@ const getGoogleInfo =
           password: response.data[2],
         });
         await AsyncStorage.setItem('token', res.data.token);
-        dispatch({ type: 'signin', payload: res.data.token });
+        dispatch({ type: 'signIn', payload: res.data.token });
       }
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -117,7 +117,7 @@ const getAppleInfo =
           password: response.data[2],
         });
         await AsyncStorage.setItem('token', res.data.token);
-        dispatch({ type: 'signin', payload: res.data.token });
+        dispatch({ type: 'signIn', payload: res.data.token });
         // navigate('Main');
       }
     } catch (err) {
@@ -138,7 +138,7 @@ const getKakaoInfo =
           password: response.data[2],
         });
         await AsyncStorage.setItem('token', res.data.token);
-        dispatch({ type: 'signin', payload: res.data.token });
+        dispatch({ type: 'signIn', payload: res.data.token });
         // navigate('Main');
       }
     } catch (err) {
@@ -159,7 +159,8 @@ const getNaverInfo =
           password: response.data[2],
         });
         await AsyncStorage.setItem('token', res.data.token);
-        dispatch({ type: 'signin', payload: res.data.token });
+        dispatch({ type: 'signIn', payload: res.data.token });
+        // navigate('Main');
       }
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -171,7 +172,7 @@ const checkName =
   async ({ name }) => {
     try {
       const response = await server.get(`/nickName/${name}`);
-      dispatch({ type: 'doubleCheck', payload: response.data });
+      dispatch({ type: 'checkName', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with checkName' });
     }
@@ -180,10 +181,10 @@ const checkName =
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
-    signin,
-    signup,
-    signout,
-    tryLocalSignin,
+    signIn,
+    signUp,
+    signOut,
+    tryLocalSignIn,
     getGoogleInfo,
     getAppleInfo,
     getKakaoInfo,
@@ -191,5 +192,5 @@ export const { Provider, Context } = createDataContext(
     clearErrorMessage,
     checkName,
   },
-  { token: null, errorMessage: '', email: '', password: '', firstLogin: false, doubleCheck: true },
+  { token: null, errorMessage: '', email: '', password: '', doubleCheck: true },
 );
