@@ -1,21 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import SignIn from 'templates/Auth/SignIn';
 
-export default function SignIn() {
+export default () => {
   return (
-    <>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-      <Text>zz</Text>
-    </>
+    <SignIn/>
   );
 }
