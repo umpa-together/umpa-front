@@ -1,17 +1,20 @@
 import React from 'react';
+import { Provider as UserProvider } from 'context/User';
+import { Provider as AuthProvider } from 'context/Auth';
+import TrackPlayerProvider from 'providers/trackPlayer';
+import { Provider as AppleMusicProvider } from 'context/AppleMusic';
 import MainNavigator from './src/navigation';
-import TrackPlayerProvider from './src/providers/trackPlayer';
-import { Provider as AuthProvider } from './src/context/Auth';
-import { Provider as SearchSongProvider } from './src/context/SearchSong';
 
 export default () => {
   return (
     <TrackPlayerProvider>
-      <SearchSongProvider>
-        <AuthProvider>
-          <MainNavigator />
-        </AuthProvider>
-      </SearchSongProvider>
+      <AppleMusicProvider>
+        <UserProvider>
+          <AuthProvider>
+            <MainNavigator />
+          </AuthProvider>
+        </UserProvider>
+      </AppleMusicProvider>
     </TrackPlayerProvider>
   );
 };
