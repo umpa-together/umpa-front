@@ -1,0 +1,109 @@
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { RefreshControl, View, ScrollView, StyleSheet } from 'react-native';
+import { Context as UserContext } from 'context/UserContext';
+import AccountPlaylist from 'components/Account/AccountPlaylist';
+import AccountDaily from 'components/Account/AccountDaily';
+import Header from 'components/Account/Header';
+import LoadingIndicator from 'components/LoadingIndicator';
+import Menu from 'components/Account/Menu';
+import Information from 'components/Account/Information';
+import ProfileSong from 'components/Account/ProfileSong';
+import Profile from 'components/Account/Profile';
+import { tmpWidth } from 'components/FontNormalize';
+import ProfileButton from 'components/Account/Button';
+import { useRefresh } from 'providers/refresh';
+import { useFocusEffect } from '@react-navigation/native';
+
+require('date-utils');
+
+const MyAccountScreen = () => {
+  const { state: userState, getMyInfo, getMyStory } = useContext(UserContext);
+  const [menu, setMenu] = useState('playlist');
+  const [url, setUrl] = useState('');
+  const { refreshing, onRefresh, setRefresh } = useRefresh();
+
+  const fetchData = async () => {
+    getMyInfo();
+    getMyStory();
+  };
+
+  useEffect(() => {
+    if (userState.myStory != null) {
+      setUrl(userState.myStory.song.attributes.artwork.url);
+    } else {
+      setUrl('');
+    }
+  }, [userState.myStory]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setRefresh(fetchData);
+    }, []),
+  );
+
+  return (
+    <View style={styles.container}>
+      {userState.myInfo == null ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.flex}>
+          <Header user={userState.myInfo} isMyAccount />
+          <ScrollView
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            showsVerticalScrollIndicator={false}
+            stickyHeaderIndices={[1]}
+          >
+            <View>
+              <View style={styles.profile}>
+                <View style={styles.column}>
+                  <Profile
+                    user={userState.myInfo}
+                    isMyAccount
+                    url={url}
+                    story={userState.myStory}
+                  />
+                  <ProfileButton isMyAccount />
+                </View>
+                <Information user={userState.myInfo} />
+              </View>
+              <ProfileSong song={userState.myInfo.songs} isMyAccount />
+            </View>
+            <View>
+              <Menu menu={menu} setMenu={setMenu} />
+            </View>
+            <View style={styles.background}>
+              {menu === 'playlist' ? (
+                <AccountPlaylist playList={userState.myInfo.playlists} isMyAccount />
+              ) : (
+                <AccountDaily daily={userState.myInfo.dailys} isMyAccount />
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#ffffff',
+    flex: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  profile: {
+    flexDirection: 'row',
+    marginLeft: 22 * tmpWidth,
+  },
+  column: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  background: {
+    backgroundColor: '#ffffff',
+  },
+});
+
+export default MyAccountScreen;

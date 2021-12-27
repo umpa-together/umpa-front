@@ -1,129 +1,134 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from '../../context/UserContext'
-import { Context as DJContext } from '../../context/DJContext'
-import SvgUri from 'react-native-svg-uri';
-import { tmpWidth } from '../FontNormalize';
+import { Context as UserContext } from 'context/UserContext';
+import { Context as DJContext } from 'context/DJContext';
+import { Context as PlaylistContext } from 'context/PlaylistContext';
+import { Context as NoticeContext } from 'context/NoticeContext';
+import { tmpWidth } from 'components/FontNormalize';
+import { push } from 'lib/utils/navigation';
+import ProfileImage from 'widgets/ProfileImage';
 
-const PlaylistNoticeForm = ({ navigation, notice }) => {
-    const { getOtheruser } = useContext(UserContext);
-    const { getSongs } = useContext(DJContext);
-    return (
-        <View style={styles.container}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity style={styles.img} onPress={async () =>{
-                    await Promise.all([getOtheruser({id:notice.noticinguser._id}),
-                    getSongs({id:notice.noticinguser._id})]);
-                    navigation.push('OtherAccount', {otherUserId:notice.noticinguser._id})
-                }}>
-                    { notice.noticinguser.profileImage == undefined ?
-                    <SvgUri width='100%' height='100%' source={require('../../assets/icons/noprofile.svg')} />
-                    : <Image style={styles.img} source={{uri: notice.noticinguser.profileImage}} /> }
-                </TouchableOpacity> 
-                { notice.noticetype == 'plike'&& notice.playlist != null ?
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={styles.content}>
-                        <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
-                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                                <Text style={styles.innerText}> 님이 플레이리스트를 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
-                            </Text>
-                        </View>
-                    </View>
-                    <Image style={styles.playlistImg} source={{uri: notice.playlist.image}} />
-                </View>
-                : notice.noticetype == 'pcom'&& notice.playlist != null && notice.playlistcomment != null ?
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={styles.content}>
-                        <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
-                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                                <Text style={styles.innerText}> 님이 댓글을 달았습니다: {notice.playlistcomment.text} <Text style={styles.playlistName}>{notice.time}</Text></Text>
-                            </Text>
-                        </View>
-                    </View>
-                    <Image style={styles.playlistImg} source={{uri: notice.playlist.image}} />
-                </View>
-                : notice.noticetype == 'pcomlike' && notice.playlist != null&& notice.playlistcomment != null ?
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={styles.content}>
-                        <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
-                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                                <Text style={styles.innerText}> 님이 댓글: {notice.playlistcomment.text}를 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
-                            </Text>
-                        </View>
-                    </View>
-                    <Image style={styles.playlistImg} source={{uri: notice.playlist.image}} />
-                </View>
-                : notice.noticetype == 'precom'&& notice.playlist != null&& notice.playlistrecomment != null ?
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={styles.content}>
-                        <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
-                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                                <Text style={styles.innerText}> 님이 대댓글을 달았습니다: {notice.playlistrecomment.text} <Text style={styles.playlistName}>{notice.time}</Text></Text>
-                            </Text>
-                        </View>
-                    </View>
-                    <Image style={styles.playlistImg} source={{uri: notice.playlist.image}} />
-                </View>
-                : notice.noticetype == 'precomlike' && notice.playlist != null && notice.playlistrecomment != null  ?
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={styles.content}>
-                        <View style={{width: 200 * tmpWidth}}>
-                            <Text style={styles.playlistName} numberOfLines={1}>{notice.playlist.title}</Text>
-                            <Text style={styles.outerText} numberOfLines={2}>{notice.noticinguser.name} 
-                                <Text style={styles.innerText}> 님이 대댓글: {notice.playlistrecomment.text}을 좋아합니다. <Text style={styles.playlistName}>{notice.time}</Text></Text>
-                            </Text>
-                        </View>
-                    </View>
-                    <Image style={styles.playlistImg} source={{uri: notice.playlist.image}} />
-                </View>
-                :
-                    <View style={styles.content}>
-                        <Text>삭제된 알람입니다</Text>
-                    </View>
-                    }
-            </View>
-        </View>
-    )
+const PlaylistNoticeForm = ({ notice }) => {
+  const {
+    noticinguser: user,
+    noticetype: type,
+    playlist,
+    playlistcomment,
+    playlistrecomment,
+    time,
+    _id: id,
+    isRead,
+  } = notice;
+  const { getOtheruser } = useContext(UserContext);
+  const { getSongs } = useContext(DJContext);
+  const { getPlaylist } = useContext(PlaylistContext);
+  const { readNotice } = useContext(NoticeContext);
+
+  const onClickProfile = async () => {
+    await Promise.all([getOtheruser({ id: user._id }), getSongs({ id: user._id })]);
+    push('OtherAccount', { otherUserId: user._id });
+  };
+
+  const onClickNotice = async () => {
+    if (!isRead) readNotice({ id });
+    await getPlaylist({ id: playlist._id, postUserId: playlist.postUserId });
+    push('SelectedPlaylist', { id: playlist._id, postUser: playlist.postUserId });
+  };
+
+  return (
+    <TouchableOpacity style={[styles.container, styles.flexRow]} onPress={onClickNotice}>
+      <TouchableOpacity onPress={onClickProfile}>
+        <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
+      </TouchableOpacity>
+      <View style={styles.content}>
+        <Text style={styles.title} numberOfLines={1}>
+          {playlist.title}
+        </Text>
+        <Text style={styles.name} numberOfLines={2}>
+          {user.name}
+          {type === 'plike' ? (
+            <Text style={styles.contentText}>
+              {' '}
+              님이 플레이리스트를 좋아합니다. <Text style={styles.time}>{time}</Text>
+            </Text>
+          ) : type === 'pcom' ? (
+            <Text style={styles.contentText}>
+              {' '}
+              님이 댓글을 달았습니다: {playlistcomment.text} <Text style={styles.time}>{time}</Text>
+            </Text>
+          ) : type === 'pcomlike' ? (
+            <Text style={styles.contentText}>
+              {' '}
+              님이 댓글: {playlistcomment.text}를 좋아합니다.{' '}
+              <Text style={styles.time}>{time}</Text>
+            </Text>
+          ) : type === 'precom' ? (
+            <Text style={styles.contentText}>
+              {' '}
+              님이 대댓글을 달았습니다: {playlistrecomment.text}{' '}
+              <Text style={styles.time}>{time}</Text>
+            </Text>
+          ) : type === 'precomlike' ? (
+            <Text style={styles.contentText}>
+              {' '}
+              님이 대댓글: {playlistrecomment.text}을 좋아합니다.{' '}
+              <Text style={styles.time}>{time}</Text>
+            </Text>
+          ) : null}
+        </Text>
+      </View>
+      <Image style={styles.playlistImg} source={{ uri: playlist.image }} />
+    </TouchableOpacity>
+  );
 };
 
-const styles=StyleSheet.create({
-    container: {
-        marginLeft: 20 * tmpWidth, 
-        marginRight: 20 * tmpWidth, 
-        flex: 1
-    },
-    img: {
-        height: 48 * tmpWidth, 
-        width: 48 * tmpWidth, 
-        borderRadius: 48 * tmpWidth,
-    },
-    playlistImg: {
-        height: 48 * tmpWidth, 
-        width: 48 * tmpWidth, 
-    },
-    content: {
-        marginLeft: 14 * tmpWidth, 
-        flex: 1,
-        flexDirection: 'row'
-    },
-    playlistName: {
-        fontSize: 12 * tmpWidth,
-        color: 'rgba(0,0,0,0.61)',
-        lineHeight: 18 * tmpWidth,
-    },
-    outerText: {
-        fontSize: 14 * tmpWidth, 
-        fontWeight: '500',
-        lineHeight: 18 * tmpWidth,
-    },
-    innerText: {
-        fontWeight:'400',
-        lineHeight: 18 * tmpWidth,
-    }
+const styles = StyleSheet.create({
+  container: {
+    paddingLeft: 18 * tmpWidth,
+    paddingRight: 18 * tmpWidth,
+    marginBottom: 7 * tmpWidth,
+    marginTop: 7 * tmpWidth,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    paddingLeft: 12 * tmpWidth,
+    paddingRight: 12 * tmpWidth,
+  },
+  profileImg: {
+    height: 48 * tmpWidth,
+    width: 48 * tmpWidth,
+    borderRadius: 48 * tmpWidth,
+  },
+  playlistImg: {
+    height: 48 * tmpWidth,
+    width: 48 * tmpWidth,
+  },
+  title: {
+    fontSize: 12 * tmpWidth,
+    color: '#5d5d5d',
+    fontWeight: '400',
+    lineHeight: 14 * tmpWidth,
+  },
+  name: {
+    fontSize: 14 * tmpWidth,
+    fontWeight: '500',
+    lineHeight: 18 * tmpWidth,
+  },
+  contentText: {
+    fontSize: 14 * tmpWidth,
+    fontWeight: '400',
+    lineHeight: 18 * tmpWidth,
+  },
+  time: {
+    fontSize: 12 * tmpWidth,
+    fontWeight: '400',
+    color: '#9499a3',
+  },
 });
 
 export default PlaylistNoticeForm;
