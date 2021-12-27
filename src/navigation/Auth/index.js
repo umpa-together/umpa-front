@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SignIn from 'screens/Auth/SignInScreen';
 import Swipe from 'screens/SwipeScreen';
+
 const AuthStack = createNativeStackNavigator();
 
 const AuthStackScreen = () => (
