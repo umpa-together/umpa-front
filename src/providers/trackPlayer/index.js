@@ -7,7 +7,7 @@ const TrackPlayerContext = createContext(null);
 export const useTrackPlayer = () => useContext(TrackPlayerContext);
 
 const TrackPlayerProvider = ({ children }) => {
-  const [isPlayingId, setIsPlayingId] = useState(1);
+  const [isPlayingId, setIsPlayingId] = useState('0');
   const [currentSong, setCurrentSong] = useState(null);
   const [isMute, setIsMute] = useState(false);
   // const { setHarmfulModal } = useModal();
@@ -16,19 +16,28 @@ const TrackPlayerProvider = ({ children }) => {
   const addtracksong = async ({ data }) => {
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300');
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{h}', '300');
-
+    const { attributes } = data;
+    const {
+      previews,
+      name,
+      artistName,
+      releaseDate,
+      albumName,
+      durationInMillis,
+      artwork,
+      contentRating,
+    } = attributes;
     const track = {
       id: data.id,
-      url: data.attributes.previews[0].url,
-      title: data.attributes.name,
-      artist: data.attributes.artistName,
-      date: data.attributes.releaseDate,
-      album: data.attributes.albumName,
-      duration: data.attributes.durationInMillis,
-      artwork: data.attributes.artwork.url,
+      url: previews[0].url,
+      title: name,
+      artist: artistName,
+      date: releaseDate,
+      album: albumName,
+      duration: durationInMillis,
+      artwork: artwork.url,
     };
-
-    if (data.attributes.contentRating !== 'explicit') {
+    if (contentRating !== 'explicit') {
       setIsPlayingId(data.id);
       await TrackPlayer.reset();
       await TrackPlayer.add(track);
@@ -43,6 +52,14 @@ const TrackPlayerProvider = ({ children }) => {
     setIsPlayingId('0');
     setCurrentSong(null);
     TrackPlayer.reset();
+  };
+
+  const onClickSong = (data) => {
+    if (isPlayingId !== data.id) {
+      addtracksong({ data });
+    } else {
+      stoptracksong();
+    }
   };
 
   const onClickVolume = () => {
@@ -63,10 +80,11 @@ const TrackPlayerProvider = ({ children }) => {
     addtracksong,
     stoptracksong,
     onClickVolume,
+    onClickSong,
   };
 
   useEffect(() => {
-    if (duration - position <= 1) {
+    if (duration !== 0 && position !== 0 && duration - position <= 1) {
       stoptracksong();
     }
   }, [isPlayingId, duration, position]);

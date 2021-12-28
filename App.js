@@ -4,6 +4,7 @@ import { Provider as AuthProvider } from 'context/Auth';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import { Provider as AppleMusicProvider } from 'context/AppleMusic';
 import MainNavigator from './src/navigation';
+import { Provider as RelayProvider } from './src/context/Relay';
 
 export default () => {
   return (
@@ -11,7 +12,9 @@ export default () => {
       <AppleMusicProvider>
         <UserProvider>
           <AuthProvider>
-            <MainNavigator />
+            <RelayProvider>
+              <MainNavigator />
+            </RelayProvider>
           </AuthProvider>
         </UserProvider>
       </AppleMusicProvider>

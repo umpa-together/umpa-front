@@ -13,6 +13,7 @@ module.exports = {
     'global-require': 0,
     'no-param-reassign': 0,
     'react/jsx-no-useless-fragment': 0,
+    'no-underscore-dangle': 0,
   },
   settings: {
     'import/extensions': ['.js', '.jsx'],
