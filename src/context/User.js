@@ -6,7 +6,11 @@ const userReducer = (state, action) => {
     case 'initOtherUser':
       return { ...state, otherUser: null };
     case 'getMyInformation':
-      return { ...state, user: action.payload, myPlayList: action.payload.myPlaylists.reverse() };
+      return {
+        ...state,
+        user: action.payload,
+        myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
+      };
     case 'getOtherInformation':
       return { ...state, otherUser: action.payload };
     case 'getLikePlaylists':
@@ -170,7 +174,6 @@ export const { Provider, Context } = createDataContext(
     getRepresentSongs,
     postRepresentSongs,
     editRepresentSongs,
-
     getLikePlaylists,
     addSonginPlaylists,
     deleteSonginPlaylists,
