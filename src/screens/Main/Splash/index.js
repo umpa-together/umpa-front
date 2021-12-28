@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TrackPlayerInitializer from 'lib/utils/trackPlayer';
 
 export default function Splash({ setIsSplash }) {
-  const opacity = useState(new Animated.Value(0))[0];
+  const opacity = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
     Animated.timing(opacity, {
