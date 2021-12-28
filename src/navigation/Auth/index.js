@@ -12,8 +12,8 @@ const AuthStackScreen = () => (
       headerShown: false,
     }}
   >
-    <AuthStack.Screen name="Swipe" component={Swipe} />
     <AuthStack.Screen name="Signin" component={SignIn} />
+    <AuthStack.Screen name="Swipe" component={Swipe} />
   </AuthStack.Navigator>
 );
 
