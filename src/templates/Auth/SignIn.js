@@ -40,7 +40,7 @@ const naverid = Platform.select({
 });
   
 const SignIn = () => {
-  const { state, signin, getGoogleInfo, getNaverInfo, getKakaoInfo, getAppleInfo} = useContext(AuthContext);
+  const { state, signIn, getGoogleInfo, getNaverInfo, getKakaoInfo, getAppleInfo} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   useEffect(() => {
@@ -157,7 +157,7 @@ const SignIn = () => {
               secureTextEntry
             />
           </View>
-          <TouchableOpacity style={styles.login} onPress={() => signin({ email, password })}>
+          <TouchableOpacity style={styles.login} onPress={() => signIn({ email, password })}>
             <Text style={{ fontSize: 16 , color: 'rgb(255,255,255)' }}>로그인</Text>
           </TouchableOpacity>
           <View style={{ height: 22 , justifyContent: 'center' }}>
