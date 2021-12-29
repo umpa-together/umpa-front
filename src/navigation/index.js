@@ -5,6 +5,7 @@ import { Context as AuthContext } from 'context/Auth';
 import Splash from 'screens/Main/Splash';
 // import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
+import MainStackScreen from './Main';
 
 const MainNavigator = () => {
   const { state: authState, tryLocalSignIn } = useContext(AuthContext);
@@ -20,7 +21,7 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <AuthStackScreen />
+      {authState.token ? <MainStackScreen /> : <AuthStackScreen />}
     </NavigationContainer>
   );
 };
