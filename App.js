@@ -1,23 +1,29 @@
 import React from 'react';
 import { Provider as UserProvider } from 'context/User';
 import { Provider as AuthProvider } from 'context/Auth';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import { Provider as AppleMusicProvider } from 'context/AppleMusic';
+import { Provider as RelayProvider } from 'context/Relay';
+import { Provider as PlaylistProvider } from 'context/Playlist';
+import { Provider as DailyProvider } from 'context/Daily';
+import ModalProvider from 'providers/modal';
 import MainNavigator from './src/navigation';
-import { Provider as RelayProvider } from './src/context/Relay';
 
 export default () => {
   return (
-    <TrackPlayerProvider>
+    <ModalProvider>
       <AppleMusicProvider>
         <UserProvider>
           <AuthProvider>
-            <RelayProvider>
-              <MainNavigator />
-            </RelayProvider>
+            <DailyProvider>
+              <PlaylistProvider>
+                <RelayProvider>
+                  <MainNavigator />
+                </RelayProvider>
+              </PlaylistProvider>
+            </DailyProvider>
           </AuthProvider>
         </UserProvider>
       </AppleMusicProvider>
-    </TrackPlayerProvider>
+    </ModalProvider>
   );
 };
