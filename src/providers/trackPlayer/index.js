@@ -1,18 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// import { useModal } from 'providers/modal';
+import { useModal } from 'providers/modal';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
 
 const TrackPlayerContext = createContext(null);
 
 export const useTrackPlayer = () => useContext(TrackPlayerContext);
 
-const TrackPlayerProvider = ({ children }) => {
+export default function TrackPlayerProvider({ children }) {
   const [isPlayingId, setIsPlayingId] = useState('0');
   const [currentSong, setCurrentSong] = useState(null);
   const [isMute, setIsMute] = useState(false);
-  // const { setHarmfulModal } = useModal();
+  const { setIsModal } = useModal();
   const { position, duration } = useProgress();
-
   const addtracksong = async ({ data }) => {
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300');
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{h}', '300');
@@ -43,7 +42,7 @@ const TrackPlayerProvider = ({ children }) => {
       await TrackPlayer.add(track);
       TrackPlayer.play();
     } else {
-      // setHarmfulModal(true);
+      setIsModal(true);
     }
     setCurrentSong(data);
   };
@@ -90,6 +89,4 @@ const TrackPlayerProvider = ({ children }) => {
   }, [isPlayingId, duration, position]);
 
   return <TrackPlayerContext.Provider value={value}>{children}</TrackPlayerContext.Provider>;
-};
-
-export default TrackPlayerProvider;
+}
