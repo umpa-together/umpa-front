@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import Relay from 'screens/Main/Relay';
+import MyAccount from 'screens/Main/Account';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,7 +10,10 @@ const TabScreen = () => (
       headerShown: false,
     })}
   >
-    <Tab.Screen name="Relay" component={Relay} />
+    <Tab.Screen name="MyAccount" component={MyAccount} />
+    {
+    //Tab.Screen name="Relay" component={Relay} />
+    }
     {/*
     <Tab.Screen name="Feed" component={MainFeedPage} />
     <Tab.Screen
