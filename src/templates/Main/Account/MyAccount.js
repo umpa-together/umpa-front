@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet, ScrollView, Button } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
@@ -16,11 +16,8 @@ import { SongImage } from 'widgets/SongImage';
 import { useModal } from 'providers/modal';
 
 export default function MyAccount() {
-  const { state, getMyInformation } = useContext(UserContext);
+  const { state } = useContext(UserContext);
   const { user } = state;
-  useEffect(() => {
-    getMyInformation();
-  }, [1]);
   const postingCount = user && user.playlists.length + user.dailys.length + user.relaysongs.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   const playlistData =
