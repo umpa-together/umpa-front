@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import Divider from 'widgets/Divider';
 import { useModal } from 'providers/modal';

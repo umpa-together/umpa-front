@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { push } from 'lib/utils/navigation';
 

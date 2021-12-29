@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function SideMenu({ title, onClick }) {
   return (

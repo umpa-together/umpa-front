@@ -1,8 +1,8 @@
 /* eslint-disable no-nested-ternary */
-import React, {useContext, useEffect, useState} from 'react';
-import { View, Text, StyleSheet,  Image, ScrollView, Button } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView, Button } from 'react-native';
 import { Context as UserContext } from 'context/User';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
@@ -17,7 +17,6 @@ import { useModal } from 'providers/modal';
 
 export default function MyAccount() {
   const { state, getMyInformation } = useContext(UserContext);
-  const [modal, setModal] = useState(false);
   const { user } = state;
   useEffect(() => {
     getMyInformation();

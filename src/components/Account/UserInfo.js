@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import ProfileImage from 'widgets/ProfileImage';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function UserInfo({ info }) {
   const { songs, name, introduction, genre, profileimage } = info;

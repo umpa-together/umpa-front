@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
-import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function ResultOpt({ resultOpt, setResultOpt }) {
   const onPressOpt = (index) => {
