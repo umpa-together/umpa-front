@@ -4,10 +4,11 @@ import { Provider as AuthProvider } from 'context/Auth';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import { Provider as AppleMusicProvider } from 'context/AppleMusic';
 import MainNavigator from './src/navigation';
+import ModalProvider from 'providers/modal';
 
 export default () => {
   return (
-    <TrackPlayerProvider>
+    <ModalProvider>
       <AppleMusicProvider>
         <UserProvider>
           <AuthProvider>
@@ -15,6 +16,6 @@ export default () => {
           </AuthProvider>
         </UserProvider>
       </AppleMusicProvider>
-    </TrackPlayerProvider>
+    </ModalProvider>
   );
 };
