@@ -5,7 +5,7 @@ import { SCALE_HEIGHT } from 'lib/utils/normalize';
 const SongImage = ({ url, imgStyle }) => {
   url = url.replace('{w}', '300');
   url = url.replace('{h}', '300');
-  return <Image style={imgStyle} source={{ url }} />;
+  return <Image style={imgStyle} source={{ uri: url }} />;
 };
 
 const SongImageBack = ({ url, imgStyle, border }) => {
@@ -15,7 +15,7 @@ const SongImageBack = ({ url, imgStyle, border }) => {
     <ImageBackground
       style={imgStyle}
       resizeMode="stretch"
-      source={{ url }}
+      source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
     />
   );
@@ -28,7 +28,7 @@ const SongImageBackStory = ({ url, imgStyle, border }) => {
     <ImageBackground
       style={imgStyle}
       resizeMode="contain"
-      source={{ url }}
+      source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
     />
   );
