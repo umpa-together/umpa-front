@@ -86,7 +86,7 @@ export default function MyAccount() {
                 ? playlistData
                 : resultOpt === 'daily'
                 ? dailyData
-                : resultOpt === 'relayplaylist' && relayData
+                : relayData
             }
           />
           <SideModal />

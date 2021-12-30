@@ -87,7 +87,7 @@ export default function OtherAccount({ id }) {
                 ? playlistData
                 : resultOpt === 'daily'
                 ? dailyData
-                : resultOpt === 'relayplaylist' && relayData
+                : relayData
             }
           />
         </ScrollView>
