@@ -6,25 +6,25 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  spaceBetween: {
-    justifyContent: 'space-between',
-  },
   spaceEven: {
     justifyContent: 'space-evenly',
   },
   alignCenter: {
     alignItems: 'center',
   },
+  space_between: {
+    justifyContent: 'space-between',
+  },
   icons: {
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,
   },
-  headerTitle: {
+  headertitle: {
     fontSize: FS(20),
   },
-  whiteBack: {
+  background: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
 });
 

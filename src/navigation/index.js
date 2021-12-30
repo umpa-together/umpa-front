@@ -3,7 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/Auth';
 import Splash from 'screens/Main/Splash';
-// import MainStackScreen from './Main';
+import { StatusBar } from 'react-native';
+import HarmfulModal from 'components/Modal/HarmfulModal';
+import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 import MainStackScreen from './Main';
 
@@ -18,10 +20,11 @@ const MainNavigator = () => {
   if (isSplash) {
     return <Splash setIsSplash={setIsSplash} />;
   }
-
   return (
     <NavigationContainer ref={navigationRef}>
+      <StatusBar />
       {authState.token ? <MainStackScreen /> : <AuthStackScreen />}
+      <HarmfulModal />
     </NavigationContainer>
   );
 };
