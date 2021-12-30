@@ -6,13 +6,13 @@ import { push } from 'lib/utils/navigation';
 import { Context as UserContext } from 'context/User';
 
 export default function PostingInfo({ userId, posting, follower, following }) {
-  const { getFollower, getFollowing } = useContext(UserContext);
+  const { getFollow } = useContext(UserContext);
   const onClickFollowing = async () => {
-    await getFollowing({ id: userId });
+    await getFollow({ id: userId, opt: 'following' });
     push('Follow', { opt: 'following' });
   };
   const onClickFollower = async () => {
-    await getFollower({ id: userId });
+    await getFollow({ id: userId, opt: 'follower' });
     push('Follow', { opt: 'follower' });
   };
   const optionLists = [
@@ -35,10 +35,11 @@ export default function PostingInfo({ userId, posting, follower, following }) {
   return (
     <View style={[style.flexRow, style.spaceEven]}>
       {optionLists.map((item) => {
+        const { count, title } = item;
         return (
           <TouchableOpacity onPress={item.onClick} key={item.title} style={styles.elementContainer}>
-            <Text>{item.count}</Text>
-            <Text>{item.title}</Text>
+            <Text>{count}</Text>
+            <Text>{title}</Text>
           </TouchableOpacity>
         );
       })}

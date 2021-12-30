@@ -15,10 +15,8 @@ const userReducer = (state, action) => {
       return { ...state, otherUser: action.payload };
     case 'getLikePlaylists':
       return { ...state, likePlaylists: action.payload };
-    case 'getFollower':
-      return { ...state, follow: action.payload.follower };
-    case 'getFollowing':
-      return { ...state, follow: action.payload.following };
+    case 'getFollow':
+      return { ...state, follow: action.payload };
     case 'myPlaylist':
       return { ...state, myPlayList: action.payload.reverse() };
     case 'error':
@@ -80,22 +78,16 @@ const editProfileImage =
     }
   };
 
-const getFollower =
+const getFollow =
   (dispatch) =>
-  async ({ id }) => {
+  async ({ opt, id }) => {
     try {
       const response = await server.get(`user/follow/${id}`);
-      dispatch({ type: 'getFollower', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with getfollower' });
-    }
-  };
-const getFollowing =
-  (dispatch) =>
-  async ({ id }) => {
-    try {
-      const response = await server.get(`user/follow/${id}`);
-      dispatch({ type: 'getFollowing', payload: response.data });
+      if (opt === 'follower') {
+        dispatch({ type: 'getFollow', payload: response.data.follower });
+      } else {
+        dispatch({ type: 'getFollow', payload: response.data.following });
+      }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getfollower' });
     }
@@ -193,8 +185,7 @@ export const { Provider, Context } = createDataContext(
     getOtherInformation,
     editProfile,
     editProfileImage,
-    getFollower,
-    getFollowing,
+    getFollow,
     follow,
     unfollow,
     getRepresentSongs,
