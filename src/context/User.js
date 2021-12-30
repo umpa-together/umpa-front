@@ -42,7 +42,6 @@ const initOtherUser = (dispatch) => () => {
 const getMyInformation = (dispatch) => async () => {
   try {
     const response = await server.get('/user');
-    console.log(response.data);
     dispatch({ type: 'getMyInformation', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyInformation' });

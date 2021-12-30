@@ -17,7 +17,8 @@ export default function OtherAccount({ id }) {
   const { state } = useContext(UserContext);
   const [otherUser, setOtherUser] = useState();
   const [contents, setContents] = useState();
-  const postingCount = contents && contents.playlist.length + contents.daily.length;
+  const postingCount =
+    contents && contents.playlist.length + contents.daily.length + contents.relay.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   useEffect(() => {
     setOtherUser(state.otherUser);
@@ -50,10 +51,10 @@ export default function OtherAccount({ id }) {
         time,
       };
     });
-  /*
+
   const relayData =
-    otherUser &&
-    otherUser.relaysongs.map((item) => {
+    contents &&
+    contents.relay.map((item) => {
       const title = '플리제목';
       const { _id, song, time } = item;
       const { artwork, name } = song.attributes;
@@ -64,7 +65,7 @@ export default function OtherAccount({ id }) {
         content: name,
         time,
       };
-    }); */
+    });
 
   const onClickBack = () => {
     goBack();
@@ -88,7 +89,7 @@ export default function OtherAccount({ id }) {
                 ? playlistData
                 : resultOpt === 'daily'
                 ? dailyData
-                : dailyData
+                : relayData
             }
           />
         </ScrollView>
