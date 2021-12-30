@@ -17,12 +17,13 @@ import { useModal } from 'providers/modal';
 
 export default function MyAccount() {
   const { state } = useContext(UserContext);
-  const { user } = state;
-  const postingCount = user && user.playlists.length + user.dailys.length + user.relaysongs.length;
+  const { user, myContents } = state;
+  const postingCount =
+    myContents && myContents.playlist.length + myContents.daily.length + myContents.relay.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   const playlistData =
-    user &&
-    user.playlists.map((item) => {
+    myContents &&
+    myContents.playlist.map((item) => {
       const { title, time, _id } = item;
       return {
         _id,
@@ -33,8 +34,8 @@ export default function MyAccount() {
       };
     });
   const dailyData =
-    user &&
-    user.dailys.map((item) => {
+    myContents &&
+    myContents.daily.map((item) => {
       const { _id, textcontent, time, song, image } = item;
       const { artwork, name } = song.attributes;
       return {
@@ -45,9 +46,10 @@ export default function MyAccount() {
         time,
       };
     });
+
   const relayData =
-    user &&
-    user.relaysongs.map((item) => {
+    myContents &&
+    myContents.relay.map((item) => {
       const title = '플리제목';
       const { _id, song, time } = item;
       const { artwork, name } = song.attributes;

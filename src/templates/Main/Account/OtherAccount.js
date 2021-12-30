@@ -16,17 +16,18 @@ import { goBack } from 'lib/utils/navigation';
 export default function OtherAccount({ id }) {
   const { state } = useContext(UserContext);
   const [otherUser, setOtherUser] = useState();
-
+  const [contents, setContents] = useState();
   const postingCount =
-    otherUser && otherUser.playlists.length + otherUser.dailys.length + otherUser.relaysongs.length;
+    contents && contents.playlist.length + contents.daily.length + contents.relay.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   useEffect(() => {
     setOtherUser(state.otherUser);
+    setContents(state.otherContents);
   }, [id]);
 
   const playlistData =
-    otherUser &&
-    otherUser.playlists.map((item) => {
+    contents &&
+    contents.playlist.map((item) => {
       const { title, time, _id } = item;
       return {
         _id,
@@ -38,8 +39,8 @@ export default function OtherAccount({ id }) {
     });
 
   const dailyData =
-    otherUser &&
-    otherUser.dailys.map((item) => {
+    contents &&
+    contents.daily.map((item) => {
       const { _id, textcontent, time, song, image } = item;
       const { artwork, name } = song.attributes;
       return {
@@ -50,9 +51,10 @@ export default function OtherAccount({ id }) {
         time,
       };
     });
+
   const relayData =
-    otherUser &&
-    otherUser.relaysongs.map((item) => {
+    contents &&
+    contents.relay.map((item) => {
       const title = '플리제목';
       const { _id, song, time } = item;
       const { artwork, name } = song.attributes;

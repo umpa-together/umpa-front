@@ -8,11 +8,16 @@ const userReducer = (state, action) => {
     case 'getMyInformation':
       return {
         ...state,
-        user: action.payload,
+        user: action.payload[0],
+        myContents: action.payload[1],
         myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
       };
     case 'getOtherInformation':
-      return { ...state, otherUser: action.payload };
+      return {
+        ...state,
+        otherUser: action.payload[0],
+        otherContents: action.payload[1],
+      };
     case 'getLikePlaylists':
       return { ...state, likePlaylists: action.payload };
     case 'getFollow':
@@ -197,8 +202,10 @@ export const { Provider, Context } = createDataContext(
   },
   {
     user: null,
+    myContents: null,
     follow: null,
     otherUser: null,
+    otherContents: null,
     representSongs: null,
     myPlayList: null,
     likePlaylists: null,
