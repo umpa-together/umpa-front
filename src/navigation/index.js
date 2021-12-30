@@ -7,7 +7,6 @@ import { StatusBar } from 'react-native';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
-import MainStackScreen from './Main';
 
 const MainNavigator = () => {
   const { state: authState, tryLocalSignIn } = useContext(AuthContext);
