@@ -6,14 +6,21 @@ export const useModal = () => useContext(ModalContext);
 
 export default function ModalProvider({ children }) {
   const [isModal, setIsModal] = useState(false);
+  const [isSearchModal, setIsSearchModal] = useState(false);
 
   const onCloseModal = () => {
-    setIsModal(false);
+    if (isModal) {
+      setIsModal(false);
+    } else {
+      setIsSearchModal(false);
+    }
   };
 
   const value = {
     isModal,
+    isSearchModal,
     setIsModal,
+    setIsSearchModal,
     onCloseModal,
   };
 
