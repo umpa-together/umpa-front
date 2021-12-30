@@ -79,6 +79,7 @@ export default function MyAccount() {
             following={user.following}
           />
           <ResultOpt resultOpt={resultOpt} setResultOpt={setResultOpt} />
+          {(resultOpt === 'playlist' || resultOpt === 'daily') && <CreateButton opt={resultOpt} />}
           <PostingResult
             data={
               resultOpt === 'playlist'
@@ -88,7 +89,6 @@ export default function MyAccount() {
                 : resultOpt === 'relayplaylist' && relayData
             }
           />
-          {(resultOpt === 'playlist' || resultOpt === 'daily') && <CreateButton opt={resultOpt} />}
           <SideModal />
         </ScrollView>
       ) : null}
