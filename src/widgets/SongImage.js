@@ -18,7 +18,7 @@ const SongImageBack = ({ url, opac, width, height, border, imgStyle }) => {
         imgStyle,
       ]}
       resizeMode="stretch"
-      source={{ url }}
+      source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
     />
   );
@@ -34,7 +34,7 @@ const SongImageBackStory = ({ url, opac, width, height, border, imgStyle }) => {
         imgStyle,
       ]}
       resizeMode="contain"
-      source={{ url }}
+      source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
     />
   );

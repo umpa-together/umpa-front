@@ -31,15 +31,9 @@ export default function UserView({ user }) {
         <Text>{name}</Text>
         {genre && <Text>{genre}</Text>}
       </View>
-      {!isFollow ? (
-        <TouchableOpacity onPress={onClickFollow}>
-          <Text>팔로잉</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={onClickFollow}>
-          <Text>팔로잉 취소</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity onPress={onClickFollow}>
+        <Text>{isFollow ? '팔로잉취소' : '팔로잉'}</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }

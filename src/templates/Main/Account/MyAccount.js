@@ -9,8 +9,8 @@ import PostingInfo from 'components/Account/PostingInfo';
 import ResultOpt from 'components/Account/ResultOpt';
 import PostingResult from 'components/Account/PostingResult';
 import CreateButton from 'components/Account/CreateButton';
-import PlaylistImage from 'components/PlaylistImage';
-import DailyImage from 'components/DailyImage';
+import PlaylistImage from 'components/Account/PlaylistImage';
+import DailyImage from 'components/Account/DailyImage';
 import SideModal from 'components/Modal/SideModal';
 import { SongImage } from 'widgets/SongImage';
 import { useModal } from 'providers/modal';
@@ -32,7 +32,6 @@ export default function MyAccount() {
         time,
       };
     });
-
   const dailyData =
     user &&
     user.dailys.map((item) => {
@@ -80,14 +79,16 @@ export default function MyAccount() {
             following={user.following}
           />
           <ResultOpt resultOpt={resultOpt} setResultOpt={setResultOpt} />
+          <PostingResult
+            data={
+              resultOpt === 'playlist'
+                ? playlistData
+                : resultOpt === 'daily'
+                ? dailyData
+                : resultOpt === 'relayplaylist' && relayData
+            }
+          />
           {(resultOpt === 'playlist' || resultOpt === 'daily') && <CreateButton opt={resultOpt} />}
-          {resultOpt === 'playlist' ? (
-            <PostingResult data={playlistData} />
-          ) : resultOpt === 'daily' ? (
-            <PostingResult data={dailyData} />
-          ) : (
-            resultOpt === 'relayplaylist' && <PostingResult data={relayData} />
-          )}
           <SideModal />
         </ScrollView>
       ) : null}

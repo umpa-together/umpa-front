@@ -55,11 +55,13 @@ const SideModalView = () => {
         <Text>프로필 편집</Text>
       </TouchableOpacity>
       {menuListsTop.map((item) => {
-        return <SideMenu key={item.title} title={item.title} onClick={item.onClick} />;
+        const { title, onClick } = item;
+        return <SideMenu key={title} title={title} onClick={onClick} />;
       })}
       <Divider />
       {menuListsBottom.map((item) => {
-        return <SideMenu key={item.title} title={item.title} onClick={item.onClick} />;
+        const { title, onClick } = item;
+        return <SideMenu key={title} title={title} onClick={onClick} />;
       })}
       <TouchableOpacity>
         <Text>회원탈퇴</Text>

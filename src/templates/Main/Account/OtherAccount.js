@@ -8,8 +8,8 @@ import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import ResultOpt from 'components/Account/ResultOpt';
 import PostingResult from 'components/Account/PostingResult';
-import PlaylistImage from 'components/PlaylistImage';
-import DailyImage from 'components/DailyImage';
+import PlaylistImage from 'components/Account/PlaylistImage';
+import DailyImage from 'components/Account/DailyImage';
 import { SongImage } from 'widgets/SongImage';
 import { goBack } from 'lib/utils/navigation';
 
@@ -75,20 +75,21 @@ export default function OtherAccount({ id }) {
         <ScrollView>
           <UserInfo info={otherUser} />
           <PostingInfo
-            // eslint-disable-next-line no-underscore-dangle
             userId={otherUser._id}
             posting={postingCount}
             follower={otherUser.follower}
             following={otherUser.following}
           />
           <ResultOpt resultOpt={resultOpt} setResultOpt={setResultOpt} />
-          {resultOpt === 'playlist' ? (
-            <PostingResult data={playlistData} />
-          ) : resultOpt === 'daily' ? (
-            <PostingResult data={dailyData} />
-          ) : (
-            resultOpt === 'relayplaylist' && <PostingResult data={relayData} />
-          )}
+          <PostingResult
+            data={
+              resultOpt === 'playlist'
+                ? playlistData
+                : resultOpt === 'daily'
+                ? dailyData
+                : resultOpt === 'relayplaylist' && relayData
+            }
+          />
         </ScrollView>
       ) : null}
     </View>

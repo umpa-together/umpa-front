@@ -14,16 +14,8 @@ export default function UserInfo({ info }) {
       </View>
       <ProfileImage img={profileimage} imgStyle={styles.profileImage} />
       <Text style={styles.name}>{name}</Text>
-      {genre !== undefined && (
-        <>
-          <Text style={styles.smallText}>{genre}</Text>
-        </>
-      )}
-      {introduction !== undefined && (
-        <>
-          <Text style={styles.smallText}>{introduction}</Text>
-        </>
-      )}
+      {genre !== undefined && <Text style={styles.smallText}>{genre}</Text>}
+      {introduction !== undefined && <Text style={styles.smallText}>{introduction}</Text>}
     </View>
   );
 }
