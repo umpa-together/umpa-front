@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { View } from 'react-native';
-import PostingCard from '../PostingCard';
+import PostingCard from './PostingCard';
 
 export default function PostingResult({ data }) {
   return (
