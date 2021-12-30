@@ -9,16 +9,14 @@ const userReducer = (state, action) => {
       return {
         ...state,
         user: action.payload[0],
-        myplaylists: action.payload[1].playlist,
-        mydailys: action.payload[1].daily,
+        myContents: action.payload[1],
         myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
       };
     case 'getOtherInformation':
       return {
         ...state,
         otherUser: action.payload[0],
-        otherPlaylists: action.payload[1].playlist,
-        otherDailys: action.payload[1].daily,
+        otherContents: action.payload[1],
       };
     case 'getLikePlaylists':
       return { ...state, likePlaylists: action.payload };
@@ -205,12 +203,10 @@ export const { Provider, Context } = createDataContext(
   },
   {
     user: null,
-    myplaylists: null,
-    mydailys: null,
+    myContents: null,
     follow: null,
     otherUser: null,
-    otherPlaylists: null,
-    otherDailys: null,
+    otherContents: null,
     representSongs: null,
     myPlayList: null,
     likePlaylists: null,

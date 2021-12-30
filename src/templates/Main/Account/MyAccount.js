@@ -17,12 +17,12 @@ import { useModal } from 'providers/modal';
 
 export default function MyAccount() {
   const { state } = useContext(UserContext);
-  const { user, myplaylists, mydailys } = state;
-  const postingCount = myplaylists && myplaylists.length + mydailys && mydailys.length;
+  const { user, myContents } = state;
+  const postingCount = myContents && myContents.playlist.length + myContents.daily.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   const playlistData =
-    myplaylists &&
-    myplaylists.map((item) => {
+    myContents &&
+    myContents.playlist.map((item) => {
       const { title, time, _id } = item;
       return {
         _id,
@@ -33,8 +33,8 @@ export default function MyAccount() {
       };
     });
   const dailyData =
-    mydailys &&
-    mydailys.map((item) => {
+    myContents &&
+    myContents.daily.map((item) => {
       const { _id, textcontent, time, song, image } = item;
       const { artwork, name } = song.attributes;
       return {
