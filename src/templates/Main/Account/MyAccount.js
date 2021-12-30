@@ -46,19 +46,18 @@ export default function MyAccount() {
         time,
       };
     });
-
   const relayData =
     myContents &&
     myContents.relay.map((item) => {
-      const title = '플리제목';
-      const { _id, song, time } = item;
+      const { playlist, song } = item;
+      const { _id, title, createdTime } = playlist;
       const { artwork, name } = song.attributes;
       return {
         _id,
         image: <SongImage url={artwork.url} imgStyle={styles.imagePlaylist} />,
         title,
         content: name,
-        time,
+        time: createdTime,
       };
     });
   const { setSideModal } = useModal();
