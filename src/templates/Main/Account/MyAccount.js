@@ -17,12 +17,12 @@ import { useModal } from 'providers/modal';
 
 export default function MyAccount() {
   const { state } = useContext(UserContext);
-  const { user } = state;
-  const postingCount = user && user.playlists.length + user.dailys.length + user.relaysongs.length;
+  const { user, myplaylists, mydailys } = state;
+  const postingCount = myplaylists && myplaylists.length + mydailys && mydailys.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   const playlistData =
-    user &&
-    user.playlists.map((item) => {
+    myplaylists &&
+    myplaylists.map((item) => {
       const { title, time, _id } = item;
       return {
         _id,
@@ -33,8 +33,8 @@ export default function MyAccount() {
       };
     });
   const dailyData =
-    user &&
-    user.dailys.map((item) => {
+    mydailys &&
+    mydailys.map((item) => {
       const { _id, textcontent, time, song, image } = item;
       const { artwork, name } = song.attributes;
       return {
@@ -45,6 +45,7 @@ export default function MyAccount() {
         time,
       };
     });
+  /*
   const relayData =
     user &&
     user.relaysongs.map((item) => {
@@ -58,7 +59,7 @@ export default function MyAccount() {
         content: name,
         time,
       };
-    });
+    });*/
   const { setSideModal } = useModal();
 
   const onPressMenu = () => {
@@ -86,7 +87,7 @@ export default function MyAccount() {
                 ? playlistData
                 : resultOpt === 'daily'
                 ? dailyData
-                : relayData
+                : dailyData
             }
           />
           <SideModal />

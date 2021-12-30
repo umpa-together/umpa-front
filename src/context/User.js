@@ -8,11 +8,18 @@ const userReducer = (state, action) => {
     case 'getMyInformation':
       return {
         ...state,
-        user: action.payload,
+        user: action.payload[0],
+        myplaylists: action.payload[1].playlist,
+        mydailys: action.payload[1].daily,
         myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
       };
     case 'getOtherInformation':
-      return { ...state, otherUser: action.payload };
+      return {
+        ...state,
+        otherUser: action.payload[0],
+        otherPlaylists: action.payload[1].playlist,
+        otherDailys: action.payload[1].daily,
+      };
     case 'getLikePlaylists':
       return { ...state, likePlaylists: action.payload };
     case 'getFollow':
@@ -37,6 +44,7 @@ const initOtherUser = (dispatch) => () => {
 const getMyInformation = (dispatch) => async () => {
   try {
     const response = await server.get('/user');
+    console.log(response.data);
     dispatch({ type: 'getMyInformation', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMyInformation' });
@@ -197,8 +205,12 @@ export const { Provider, Context } = createDataContext(
   },
   {
     user: null,
+    myplaylists: null,
+    mydailys: null,
     follow: null,
     otherUser: null,
+    otherPlaylists: null,
+    otherDailys: null,
     representSongs: null,
     myPlayList: null,
     likePlaylists: null,

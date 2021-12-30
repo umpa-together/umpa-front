@@ -16,17 +16,19 @@ import { goBack } from 'lib/utils/navigation';
 export default function OtherAccount({ id }) {
   const { state } = useContext(UserContext);
   const [otherUser, setOtherUser] = useState();
-
-  const postingCount =
-    otherUser && otherUser.playlists.length + otherUser.dailys.length + otherUser.relaysongs.length;
+  const [playlists, setPlaylists] = useState();
+  const [dailys, setDailys] = useState();
+  const postingCount = playlists && playlists.length + dailys && dailys.length;
   const [resultOpt, setResultOpt] = useState('playlist');
   useEffect(() => {
     setOtherUser(state.otherUser);
+    setPlaylists(state.otherPlaylists);
+    setDailys(state.otherDailys);
   }, [id]);
 
   const playlistData =
-    otherUser &&
-    otherUser.playlists.map((item) => {
+    playlists &&
+    playlists.map((item) => {
       const { title, time, _id } = item;
       return {
         _id,
@@ -38,8 +40,8 @@ export default function OtherAccount({ id }) {
     });
 
   const dailyData =
-    otherUser &&
-    otherUser.dailys.map((item) => {
+    dailys &&
+    dailys.map((item) => {
       const { _id, textcontent, time, song, image } = item;
       const { artwork, name } = song.attributes;
       return {
@@ -50,6 +52,7 @@ export default function OtherAccount({ id }) {
         time,
       };
     });
+  /*
   const relayData =
     otherUser &&
     otherUser.relaysongs.map((item) => {
@@ -63,7 +66,7 @@ export default function OtherAccount({ id }) {
         content: name,
         time,
       };
-    });
+    }); */
 
   const onClickBack = () => {
     goBack();
@@ -87,7 +90,7 @@ export default function OtherAccount({ id }) {
                 ? playlistData
                 : resultOpt === 'daily'
                 ? dailyData
-                : relayData
+                : dailyData
             }
           />
         </ScrollView>
