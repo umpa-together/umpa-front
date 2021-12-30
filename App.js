@@ -7,7 +7,6 @@ import { Provider as PlaylistProvider } from 'context/Playlist';
 import { Provider as DailyProvider } from 'context/Daily';
 import ModalProvider from 'providers/modal';
 import MainNavigator from './src/navigation';
-import ModalProvider from 'providers/modal';
 
 export default () => {
   return (
