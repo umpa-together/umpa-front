@@ -8,6 +8,7 @@ import HarmfulModal from 'components/Modal/HarmfulModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
+import MainStackScreen from './Main';
 
 const MainNavigator = () => {
   const { state: authState, tryLocalSignIn } = useContext(AuthContext);
