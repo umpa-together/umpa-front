@@ -6,11 +6,17 @@ const userReducer = (state, action) => {
     case 'initOtherUser':
       return { ...state, otherUser: null };
     case 'getMyInformation':
-      return { ...state, user: action.payload, myPlayList: action.payload.myPlaylists.reverse() };
+      return {
+        ...state,
+        user: action.payload,
+        myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
+      };
     case 'getOtherInformation':
       return { ...state, otherUser: action.payload };
     case 'getLikePlaylists':
       return { ...state, likePlaylists: action.payload };
+    case 'getFollow':
+      return { ...state, follow: action.payload };
     case 'myPlaylist':
       return { ...state, myPlayList: action.payload.reverse() };
     case 'error':
@@ -72,6 +78,20 @@ const editProfileImage =
     }
   };
 
+const getFollow =
+  (dispatch) =>
+  async ({ opt, id }) => {
+    try {
+      const response = await server.get(`user/follow/${id}`);
+      if (opt === 'follower') {
+        dispatch({ type: 'getFollow', payload: response.data.follower });
+      } else {
+        dispatch({ type: 'getFollow', payload: response.data.following });
+      }
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getfollower' });
+    }
+  };
 const follow =
   (dispatch) =>
   async ({ id }) => {
@@ -165,18 +185,19 @@ export const { Provider, Context } = createDataContext(
     getOtherInformation,
     editProfile,
     editProfileImage,
+    getFollow,
     follow,
     unfollow,
     getRepresentSongs,
     postRepresentSongs,
     editRepresentSongs,
-
     getLikePlaylists,
     addSonginPlaylists,
     deleteSonginPlaylists,
   },
   {
     user: null,
+    follow: null,
     otherUser: null,
     representSongs: null,
     myPlayList: null,

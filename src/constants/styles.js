@@ -6,6 +6,12 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  spaceEven: {
+    justifyContent: 'space-evenly',
+  },
+  alignCenter: {
+    alignItems: 'center',
+  },
   space_between: {
     justifyContent: 'space-between',
   },
