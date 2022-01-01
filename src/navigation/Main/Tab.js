@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyAccount from 'screens/Main/Account';
 import Relay from 'screens/Main/Relay';
 import Feed from 'screens/Main/Feed';
+import Search from 'screens/Main/Search';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,6 +15,7 @@ const TabScreen = () => (
   >
     <Tab.Screen name="Relay" component={Relay} />
     <Tab.Screen name="Feed" component={Feed} />
+    <Tab.Screen name="Search" component={Search} />
     <Tab.Screen name="MyAccount" component={MyAccount} />
     {/*
     <Tab.Screen name="Feed" component={MainFeedPage} />
@@ -27,7 +29,6 @@ const TabScreen = () => (
         },
       })}
     />
-    <Tab.Screen name="Notice" component={NoticeScreen} />
     <Tab.Screen name="Account" component={AccountScreen} />
     */}
   </Tab.Navigator>

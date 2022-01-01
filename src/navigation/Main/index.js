@@ -5,6 +5,7 @@ import FollowScreen from 'screens/Main/Account/FollowScreen';
 import OtherAccountScreen from 'screens/Main/Account/OtherAccountScreen';
 import SelectedRelay from 'screens/Main/Relay/SelectedRelayScreen';
 import Swipe from 'screens/Main/Relay/SwipeScreen';
+import SearchDetail from 'screens/Main/Search/SearchDetailScreen';
 import TabScreen from './Tab';
 
 const MainStack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ const MainStackScreen = () => (
     <MainStack.Screen name="Swipe" component={Swipe} />
     <MainStack.Screen name="Follow" component={FollowScreen} />
     <MainStack.Screen name="OtherAccount" component={OtherAccountScreen} />
+    <MainStack.Screen name="SearchDetail" component={SearchDetail} />
   </MainStack.Navigator>
 );
 
