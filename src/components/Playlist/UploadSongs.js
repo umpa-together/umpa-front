@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import SongViewPlaylist from './SongViewPlaylist';
+import SongView from 'components/SongView';
+import { useSongActions } from 'providers/songActions';
 
 export default function UploadSongs({ songs }) {
+  const { getActionComponent } = useSongActions();
+
   return (
-    <View>
-      <Text>{songs.length}</Text>
-      {songs.map((item) => {
-        return <SongViewPlaylist key={item._id} song={item} />;
+    <View style={{ borderWidth: 1 }}>
+      <Text>총 {songs.length}</Text>
+      {songs.map((song) => {
+        return <SongView key={song.id} song={song} actions={getActionComponent({ data: song })} />;
       })}
     </View>
   );

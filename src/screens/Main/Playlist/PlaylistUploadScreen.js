@@ -2,14 +2,18 @@ import React from 'react';
 import PlaylistUpload from 'templates/Main/Playlist/PlaylistUpload';
 import PlaylistCreateProvider from 'providers/playlistCreate';
 import TrackPlayerProvider from 'providers/trackPlayer';
+import StatusBar from 'components/StatusBar';
 
-export default function PlaylistUploadScreen({ route }) {
+export default function ({ route }) {
   const { data } = route.params;
   return (
-    <PlaylistCreateProvider>
-      <TrackPlayerProvider>
-        <PlaylistUpload data={data} />
-      </TrackPlayerProvider>
-    </PlaylistCreateProvider>
+    <>
+      <StatusBar />
+      <PlaylistCreateProvider>
+        <TrackPlayerProvider>
+          <PlaylistUpload data={data} />
+        </TrackPlayerProvider>
+      </PlaylistCreateProvider>
+    </>
   );
 }

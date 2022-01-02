@@ -1,32 +1,56 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { goBack, navigate } from 'lib/utils/navigation';
+import React, { useCallback, useEffect } from 'react';
+import { View, ScrollView, Button } from 'react-native';
+import { navigate } from 'lib/utils/navigation';
 import CreateInput from 'components/Playlist/CreateInput';
 import CreateSongList from 'components/Playlist/CreateSongList';
-import SearchSongModal from 'components/Modal/SearchSongModal';
-import CreateSongAdd from 'components/Playlist/CreateSongAdd';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import CreateHashtag from 'components/Playlist/CreateHashtag';
+import Header from 'components/Header';
+import style from 'constants/styles';
+import { useSongActions } from 'providers/songActions';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function PlaylistCreate() {
-  const { information, songs, hashtags } = usePlaylistCreate();
-  const { title, content } = information;
+const NextActions = () => {
+  const { information, songs, image } = usePlaylistCreate();
+
   const onPressNext = () => {
     navigate('PlaylistUpload', {
-      data: { title, content, songs, hashtags },
+      data: { information, songs, image },
     });
   };
 
+  return <Button title="next" onPress={onPressNext} />;
+};
+
+export default function PlaylistCreate({ data }) {
+  const { setParams, songs, setSongs } = usePlaylistCreate();
+  const { setActionType, songsRef, actionsRef } = useSongActions();
+
+  useEffect(() => {
+    if (data) {
+      setParams(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    songsRef.current = songs;
+  }, [songs]);
+
+  useFocusEffect(
+    useCallback(() => {
+      actionsRef.current = setSongs;
+      setActionType('playlistAddSong');
+    }, []),
+  );
+
   return (
-    <View style={{ marginTop: 50 }}>
-      <Button title="back" onPress={goBack} />
-      <Button title="next" onPress={onPressNext} />
-      <Text>playlistcreate</Text>
-      <CreateInput />
-      <CreateSongAdd />
-      <CreateSongList />
-      <CreateHashtag />
-      <SearchSongModal />
+    <View style={style.background}>
+      <Header title="새 플레이리스트 추가" back actions={[<NextActions />]} />
+      <ScrollView>
+        <CreateInput />
+        <CreateSongList />
+        <CreateHashtag />
+      </ScrollView>
     </View>
   );
 }

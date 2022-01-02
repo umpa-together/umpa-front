@@ -1,19 +1,13 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import TrackPlayerProvider from 'providers/trackPlayer';
-
-const AddActions = () => {
-  return (
-    <TouchableOpacity>
-      <Text>담기</Text>
-    </TouchableOpacity>
-  );
-};
+import { useSongActions } from 'providers/songActions';
 
 export default function AddedSongLists() {
   const { getAddedSong, state } = useContext(AddedContext);
+  const { getActionComponent } = useSongActions();
 
   useEffect(() => {
     getAddedSong();
@@ -28,7 +22,7 @@ export default function AddedSongLists() {
           keyExtractor={(_) => _._id}
           renderItem={({ item }) => {
             const { song } = item;
-            return <SongView song={song} actions={<AddActions />} />;
+            return <SongView song={song} actions={getActionComponent({ data: song })} />;
           }}
         />
       </TrackPlayerProvider>

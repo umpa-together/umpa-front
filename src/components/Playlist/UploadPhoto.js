@@ -5,9 +5,9 @@ import { usePlaylistCreate } from 'providers/playlistCreate';
 
 export default function UploadPhoto() {
   const { image, setImage } = usePlaylistCreate();
+
   return (
     <View>
-      <Text>UploadPhoto</Text>
       <TouchableOpacity
         onPress={() => onClickSingle(setImage)}
         style={{ width: 100, height: 100, borderWidth: 1 }}

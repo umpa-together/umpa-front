@@ -3,25 +3,19 @@ import { View, StyleSheet } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 
 export default function PlaylistAlbumImage({ songs, size }) {
-  const styles = StyleSheet.create({
-    container: {
-      width: size,
-      height: size,
-      backgroundColor: '#222',
-      flexWrap: 'wrap',
-    },
-    img: {
-      width: size / 2,
-      height: size / 2,
-    },
-  });
-
   return (
-    <View style={styles.container}>
-      {songs.map((item, index) => {
+    <View style={[styles.container, { width: size, height: size }]}>
+      {songs.slice(0, 4).map((item) => {
         const { url } = item.attributes.artwork;
-        return index < 4 && <SongImage url={url} imgStyle={styles.img} />;
+        return <SongImage url={url} imgStyle={{ width: size / 2, height: size / 2 }} />;
       })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#222',
+    flexWrap: 'wrap',
+  },
+});

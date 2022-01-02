@@ -7,14 +7,13 @@ export const usePlaylistCreate = () => useContext(PlaylistCreateContext);
 
 export default function PlaylistCreateProvider({ children }) {
   const { addPlaylist } = useContext(PlaylistContext);
-
   const [information, setInformation] = useState({
     title: '',
     content: '',
+    hashtags: [],
   });
   const [songs, setSongs] = useState([]);
   const [image, setImage] = useState(null);
-  const [hashtags, setHashtags] = useState([]);
 
   const patternSpc = /[~!@#$%^&*()_+|<>?:{}]/;
   const patternNum = /[0-9]/;
@@ -22,9 +21,13 @@ export default function PlaylistCreateProvider({ children }) {
   const patternKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
   const setParams = (data) => {
-    setSongs(data.songs);
-    setHashtags(data.hashtags);
-    setInformation({ title: data.title, content: data.content });
+    // eslint-disable-next-line no-shadow
+    const { information, songs, image } = data;
+    if (image) {
+      setImage(image);
+    }
+    setSongs(songs);
+    setInformation(information);
   };
 
   const onChangeValue = (type, value) => {
@@ -41,26 +44,13 @@ export default function PlaylistCreateProvider({ children }) {
     }
   };
 
-  const onClickAddSong = (song) => {
-    let tok = false;
-    Object.values(songs).forEach((item) => {
-      if (song.id === item.id) {
-        tok = true;
-      }
-    });
-    if (songs.length < 7 && !tok) {
-      setSongs([...songs, song]);
-    }
-  };
-
-  const onClickDeleteSong = (song) => {
-    setSongs(songs.filter((item) => item.id !== song.id));
-  };
-
   const onClickAddHashtag = (text, setText) => {
     const addhashtag = (txt) => {
-      if (txt !== '' && !hashtags.includes(txt)) {
-        setHashtags([...hashtags, txt]);
+      if (txt !== '' && !information.hashtags.includes(txt)) {
+        setInformation({
+          ...information,
+          hashtags: [...information.hashtags, txt],
+        });
         return true;
       }
       return false;
@@ -71,12 +61,16 @@ export default function PlaylistCreateProvider({ children }) {
       (patternEng.test(text) || patternKor.test(text) || patternNum.test(text))
     ) {
       if (addhashtag(text)) {
-        setText();
+        setText('');
       }
     }
   };
+
   const onClickDeleteHashtag = (text) => {
-    setHashtags(hashtags.filter((item) => item !== text));
+    setInformation({
+      ...information,
+      hashtags: information.hashtags.filter((item) => item !== text),
+    });
   };
 
   const onClickUpload = async () => {
@@ -93,7 +87,7 @@ export default function PlaylistCreateProvider({ children }) {
     await addPlaylist({
       title: information.title,
       content: information.content,
-      hashtag: hashtags,
+      hashtag: information.hashtags,
       songs,
       fd,
     });
@@ -103,15 +97,13 @@ export default function PlaylistCreateProvider({ children }) {
     information,
     songs,
     image,
-    hashtags,
     onChangeValue,
-    onClickAddSong,
-    onClickDeleteSong,
     onClickUpload,
     onClickAddHashtag,
     onClickDeleteHashtag,
     setImage,
     setParams,
+    setSongs,
   };
 
   return <PlaylistCreateContext.Provider value={value}>{children}</PlaylistCreateContext.Provider>;

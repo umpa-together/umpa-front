@@ -3,12 +3,11 @@ import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
 import { usePlaylistCreate } from 'providers/playlistCreate';
 
 export default function CreateHashtag() {
-  const { hashtags, onClickAddHashtag, onClickDeleteHashtag } = usePlaylistCreate();
+  const { information, onClickAddHashtag, onClickDeleteHashtag } = usePlaylistCreate();
   const [text, setText] = useState('');
 
   return (
     <View>
-      <Text>createhastag</Text>
       <TextInput
         value={text}
         onChangeText={(txt) => setText(txt)}
@@ -20,7 +19,7 @@ export default function CreateHashtag() {
         maxLength={9}
       />
       <FlatList
-        data={hashtags}
+        data={information.hashtags}
         keyExtractor={(el) => el}
         horizontal
         renderItem={({ item }) => (
