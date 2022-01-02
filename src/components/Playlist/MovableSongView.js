@@ -1,7 +1,7 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedReaction,
@@ -93,22 +93,16 @@ export default function MovableSongView({ id, song, positions, scrollY, topOffse
       runOnJS(setMoving)(false);
     },
   });
-  const animatedStyle = useAnimatedStyle(() => {
+
+  const animatedStyled = useAnimatedStyle(() => {
     return {
-      position: 'absolute',
       top: top.value,
       zIndex: moving ? 1 : 0,
-      shadowColor: 'black',
-      shadowOffset: {
-        height: 0,
-        width: 0,
-      },
       shadowOpacity: withSpring(moving ? 0.2 : 0),
-      shadowRadius: 10,
     };
   }, [moving]);
   return (
-    <Animated.View style={animatedStyle}>
+    <Animated.View style={[styles.container, animatedStyled]}>
       <View style={{ flexDirection: 'row' }}>
         <View style={{ width: '80%' }}>
           <SongViewPlaylist key={id} song={song} />
@@ -120,3 +114,15 @@ export default function MovableSongView({ id, song, positions, scrollY, topOffse
     </Animated.View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    shadowColor: 'black',
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowRadius: 10,
+  },
+});
