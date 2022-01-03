@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 
 const SearchContext = createContext(null);
@@ -8,9 +8,10 @@ export const useSearch = () => useContext(SearchContext);
 export default function SearchProvider({ children }) {
   const { state, searchSong, searchNext, searchHint, initSearch } = useContext(AppleMusicContext);
   const [text, setText] = useState('');
-  const [searchOption, setSearchOption] = useState('Song');
   const [loading, setLoading] = useState(false);
   const [isResultClick, setIsResultClick] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const textInputRef = useRef();
 
   const getData = async () => {
     if (state.songData.length >= 20 && !state.notNextSong) {
@@ -32,36 +33,42 @@ export default function SearchProvider({ children }) {
 
   const onSearchKeyword = (input) => {
     searchSong({ songname: input });
+    setText(input);
     setIsResultClick(true);
+    setSearching(false);
+  };
+
+  const onFocus = () => {
+    if (isResultClick) {
+      setSearching(true);
+    }
+    setIsResultClick(false);
   };
 
   useEffect(() => {
     if (text === '') {
-      // setIsResultClick(false);
-    } else if (searchOption === 'Song') {
-      searchHint({ term: text });
-    } else if (searchOption === 'Hashtag') {
-      hashtagHint({ term: text });
-    } else if (searchOption === 'DJ') {
-      djHint({ term: text });
-    }
-    if (isResultClick) {
-      setIsResultClick(false);
       initSearch();
+    } else if (!isResultClick) {
+      setSearching(true);
+      searchHint({ term: text });
+    }
+    if (searching && text === '') {
+      setSearching(false);
     }
   }, [text]);
 
   const value = {
     text,
-    searchOption,
     loading,
     isResultClick,
+    searching,
+    textInputRef,
     onChangeText,
     onSearchKeyword,
     onEndReached,
     setIsResultClick,
     setText,
-    setSearchOption,
+    onFocus,
   };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

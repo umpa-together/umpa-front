@@ -4,30 +4,15 @@ import createDataContext from 'lib/utils/createDataContext';
 const searchReducer = (state, action) => {
   switch (action.type) {
     case 'initSearch':
-      return {
-        ...state,
-        playList: null,
-        dj: null,
-        daily: null,
-        hashtag: null,
-        hashtagHint: null,
-        djHint: null,
-      };
+      return { result: null, selected: null, errorMessage: null };
     case 'getAllContents':
-      return {
-        ...state,
-        playList: action.payload.playlists,
-        dj: action.payload.dj,
-        daily: action.payload.daily,
-      };
+      return { ...state, result: action.payload };
+    case 'getSelectedContents':
+      return { ...state, selected: action.payload };
     case 'getAllContentsWithHashatg':
-      return { ...state, playList: action.payload.playlists, daily: action.payload.daily };
-    case 'hashtagHint':
-      return { ...state, hashtagHint: action.payload };
-    case 'djHint':
-      return { ...state, djHint: action.payload };
-    case 'searchHashtag':
-      return { ...state, hashtag: action.payload };
+      return { ...state, selected: action.payload };
+    case 'getRecentKeywords':
+      return { ...state, recentKeyword: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -45,76 +30,58 @@ const initSearch = (dispatch) => async () => {
 
 const getAllContents =
   (dispatch) =>
-  async ({ id }) => {
+  async ({ term }) => {
     try {
-      const response = await server.get(`/search/${id}`);
+      const response = await server.get(`/search/${term}`);
       dispatch({ type: 'getAllContents', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getAllContents' });
     }
   };
 
+const getSelectedContents =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      const response = await server.get(`/search/song/${id}`);
+      dispatch({ type: 'getSelectedContents', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getSelectedContents' });
+    }
+  };
+
 const getAllContentsWithHashatg =
   (dispatch) =>
-  async ({ term }) => {
+  async ({ id }) => {
     try {
-      const response = await server.get(`/search/hashtag/${term}`);
+      const response = await server.get(`/search/hashtag/${id}`);
       dispatch({ type: 'getAllContentsWithHashatg', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getAllContentsWithHashatg' });
     }
   };
 
-const getHashtagHint =
-  (dispatch) =>
-  async ({ term }) => {
-    try {
-      const response = await server.get(`/search/hashtagHint/${term}`);
-      dispatch({ type: 'hashtagHint', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with getHashtagHint' });
-    }
-  };
-
-const getDJHint =
-  (dispatch) =>
-  async ({ term }) => {
-    try {
-      const response = await server.get(`/search/djHint/${term}`);
-      dispatch({ type: 'djHint', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with getDJHint' });
-    }
-  };
-
-const SearchHashtag =
-  (dispatch) =>
-  async ({ term }) => {
-    try {
-      const response = await server.get(`/search/hashtag/${term}`);
-      dispatch({ type: 'searchHashtag', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with SearchHashtag' });
-    }
-  };
-
+const getRecentKeywords = (dispatch) => async () => {
+  try {
+    const response = await server.get('/search/keyword');
+    dispatch({ type: 'getRecentKeywords', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with getRecentKeywords' });
+  }
+};
 export const { Provider, Context } = createDataContext(
   searchReducer,
   {
     initSearch,
     getAllContents,
+    getSelectedContents,
     getAllContentsWithHashatg,
-    getHashtagHint,
-    getDJHint,
-    SearchHashtag,
+    getRecentKeywords,
   },
   {
-    playList: null,
-    dj: null,
-    daily: null,
-    hashtag: null,
-    hashtagHint: null,
-    djHint: null,
+    result: null,
+    selected: null,
+    recentKeyword: null,
     errorMessage: '',
   },
 );
