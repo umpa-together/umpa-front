@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 import { goBack } from 'lib/utils/navigation';
-import UserView from 'components/UserView';
+import UserView from 'components/Account/UserView';
 import { Context as UserContext } from 'context/User';
 
 export default function Follow({ opt }) {

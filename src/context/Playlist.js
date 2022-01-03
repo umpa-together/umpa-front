@@ -1,5 +1,5 @@
 import server from 'lib/api/server';
-import { navigate, goBack } from 'lib/utils/navigation';
+import { navigate } from 'lib/utils/navigation';
 import createDataContext from 'lib/utils/createDataContext';
 
 const playlistReducer = (state, action) => {
@@ -39,14 +39,15 @@ const playlistReducer = (state, action) => {
 
 const addPlaylist =
   (dispatch) =>
-  async ({ title, songs, hashtag, fd }) => {
+  async ({ title, content, songs, hashtag, fd }) => {
     try {
-      const response = await server.post('/playlist', { title, songs, hashtag });
-      goBack();
-      fd.append('playlistId', response.data);
-      await server.post('/playlist/imgUpload', fd, {
-        header: { 'content-type': 'multipart/form-data' },
-      });
+      const response = await server.post('/playlist', { title, content, songs, hashtag });
+      if (fd) {
+        fd.append('playlistId', response.data);
+        await server.post('/playlist/imgUpload', fd, {
+          header: { 'content-type': 'multipart/form-data' },
+        });
+      }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }

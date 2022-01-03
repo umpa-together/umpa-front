@@ -8,6 +8,7 @@ export default function ModalProvider({ children }) {
   const [isModal, setIsModal] = useState(false);
   const [isSearchModal, setIsSearchModal] = useState(false);
   const [sideModal, setSideModal] = useState(false);
+
   const onCloseModal = () => {
     if (isModal) {
       setIsModal(false);
@@ -15,6 +16,7 @@ export default function ModalProvider({ children }) {
       setIsSearchModal(false);
     }
   };
+
   const onCloseSideModal = () => {
     setSideModal(false);
   };

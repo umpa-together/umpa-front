@@ -6,24 +6,27 @@ import { Provider as RelayProvider } from 'context/Relay';
 import { Provider as PlaylistProvider } from 'context/Playlist';
 import { Provider as DailyProvider } from 'context/Daily';
 import ModalProvider from 'providers/modal';
+import SongActionsProvider from 'providers/songActions';
 import MainNavigator from './src/navigation';
 
 export default () => {
   return (
-    <ModalProvider>
-      <AppleMusicProvider>
-        <UserProvider>
-          <AuthProvider>
-            <DailyProvider>
-              <PlaylistProvider>
-                <RelayProvider>
-                  <MainNavigator />
-                </RelayProvider>
-              </PlaylistProvider>
-            </DailyProvider>
-          </AuthProvider>
-        </UserProvider>
-      </AppleMusicProvider>
-    </ModalProvider>
+    <AppleMusicProvider>
+      <UserProvider>
+        <AuthProvider>
+          <DailyProvider>
+            <PlaylistProvider>
+              <RelayProvider>
+                <ModalProvider>
+                  <SongActionsProvider>
+                    <MainNavigator />
+                  </SongActionsProvider>
+                </ModalProvider>
+              </RelayProvider>
+            </PlaylistProvider>
+          </DailyProvider>
+        </AuthProvider>
+      </UserProvider>
+    </AppleMusicProvider>
   );
 };
