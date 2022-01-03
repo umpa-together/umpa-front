@@ -2,18 +2,23 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
+import { navigate } from 'lib/utils/navigation';
 
 export default function CreateButton({ opt }) {
-  const title = {
-    playlist: '새 플레이리스트 추가',
-    daily: '새 데일리 추가',
+  const onClickPlaylist = () => {
+    navigate('PlaylistCreate');
+  };
+  const createOpt = {
+    playlist: { title: '새 플레이리스트 추가', onClick: onClickPlaylist },
+    daily: { title: '새 데일리 추가' },
   };
   return (
     <View style={style.flexRow}>
       <TouchableOpacity
+        onPress={createOpt[opt].onClick}
         style={opt === 'playlist' ? styles.buttonBoxPlaylist : styles.buttonBoxDaily}
       />
-      <Text>{title[opt]}</Text>
+      <Text>{createOpt[opt].title}</Text>
     </View>
   );
 }
