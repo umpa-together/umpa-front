@@ -1,21 +1,20 @@
 import React, { useContext } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
-import UserCard from 'components/MainContents/UserCard';
+import PlaylistCard from 'components/Search/PlaylistCard';
 
-export default function RecommendAcocunt() {
+export default function recentPlaylist() {
   const { state } = useContext(MainContentsContext);
-
   return (
     <View>
-      <Text>계정</Text>
+      <Text>최근</Text>
       <FlatList
-        data={state.mainDJ}
-        keyExtractor={(user) => user._id}
+        data={state.recentPlaylists}
+        keyExtractor={(playlist) => playlist._id}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
-          return <UserCard user={item} />;
+          return <PlaylistCard info={item} />;
         }}
       />
     </View>

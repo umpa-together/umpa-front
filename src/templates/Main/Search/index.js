@@ -3,9 +3,9 @@ import { ScrollView } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as MainContentsContext } from 'context/MainContents';
-import RecentPlaylist from 'components/MainContents/RecentPlaylist';
-import RecommendAcocunt from 'components/MainContents/RecommendAccount';
-import SearchBarView from 'components/MainContents/SearchBarView';
+import RecentPlaylist from 'components/Search/RecentPlaylist';
+import RecommendAcocunt from 'components/Search/RecommendAccount';
+import SearchBarView from 'components/Search/SearchBarView';
 
 export default function Search() {
   const { getRecentPlaylists, getMainRecommendDJ } = useContext(MainContentsContext);
