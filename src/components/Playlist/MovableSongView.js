@@ -1,7 +1,7 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedReaction,
@@ -12,8 +12,9 @@ import Animated, {
   withTiming,
   cancelAnimation,
 } from 'react-native-reanimated';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
 import SongView from 'components/SongView';
+import { usePlaylistCreate } from 'providers/playlistCreate';
 
 const SONG_HEIGHT = 60;
 const SCROLL_HEIGHT_THRESHOLD = 10;
@@ -42,13 +43,22 @@ function objectMove(object, from, to) {
   return newObject;
 }
 
-export default function MovableSongView({ id, song, positions, scrollY, topOffset, songsCount }) {
+export default function MovableSongView({
+  id,
+  song,
+  positions,
+  scrollY,
+  topOffset,
+  songsCount,
+  setSongs,
+}) {
   const [moving, setMoving] = useState(false);
-  const top = useSharedValue(positions.value[id] * SONG_HEIGHT);
+  const top = useSharedValue(positions.current.value[id] * SONG_HEIGHT);
+  const { onClickDeleteSong } = usePlaylistCreate();
   const DEVICE_HEIGHT = 400;
   // update location other song, not moving
   useAnimatedReaction(
-    () => positions.value[id],
+    () => positions.current.value[id],
     (currentPosition, previousPosition) => {
       if (currentPosition !== previousPosition) {
         if (!moving) {
@@ -84,12 +94,17 @@ export default function MovableSongView({ id, song, positions, scrollY, topOffse
       // get new position
       const newPostion = clamp(Math.floor(positionY / SONG_HEIGHT), 0, songsCount - 1);
       // update position if moving song move to other position
-      if (newPostion !== positions.value[id]) {
-        positions.value = objectMove(positions.value, positions.value[id], newPostion);
+      if (newPostion !== positions.current.value[id]) {
+        positions.current.value = objectMove(
+          positions.current.value,
+          positions.current.value[id],
+          newPostion,
+          setSongs,
+        );
       }
     },
     onEnd: () => {
-      top.value = positions.value[id] * SONG_HEIGHT;
+      top.value = positions.current.value[id] * SONG_HEIGHT;
       runOnJS(setMoving)(false);
     },
   });
@@ -105,12 +120,15 @@ export default function MovableSongView({ id, song, positions, scrollY, topOffse
   return (
     <Animated.View style={[styles.container, animatedStyled]}>
       <View style={{ flexDirection: 'row' }}>
-        <View style={{ width: '80%' }}>
+        <PanGestureHandler onGestureEvent={gestureHandler}>
+          <Animated.View style={{ width: '15%', backgroundColor: '#444' }} />
+        </PanGestureHandler>
+        <View style={{ width: '70%' }}>
           <SongView key={id} song={song} />
         </View>
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={{ width: '20%', backgroundColor: '#444' }} />
-        </PanGestureHandler>
+        <TouchableOpacity onPress={() => onClickDeleteSong(song)}>
+          <Text>지우기</Text>
+        </TouchableOpacity>
       </View>
     </Animated.View>
   );
