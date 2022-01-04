@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Button } from 'react-native';
 import Animated, {
   useAnimatedRef,
@@ -19,17 +19,17 @@ const listToObject = (list) => {
   Object.values(list).forEach((song, index) => {
     object[song.id] = index;
   });
-
   return object;
 };
 
-export default function CreateSongList() {
+export default function CreateSongList({ positions }) {
   const { setIsSearchModal } = useModal();
   const { songs } = usePlaylistCreate();
   const onClickAdd = () => {
     setIsSearchModal(true);
   };
-  const positions = useSharedValue(listToObject(songs));
+
+  const [position, setPosition] = useState(listToObject(songs));
   const scrollY = useSharedValue(0);
   const scrollViewRef = useAnimatedRef();
   const [topOffset, setTopOffset] = useState(0);
@@ -42,19 +42,15 @@ export default function CreateSongList() {
   const handleScroll = useAnimatedScrollHandler((event) => {
     scrollY.value = event.contentOffset.y;
   });
-
-  // change array accroding to position
-  // const arrayCheck = () => {
-  //  const result = new Object([]);
-  //  for (const i in positions.value) {
-  //    result[positions.value[i]] = songs[songs.findIndex((item) => item.id == i)];
-  //  }
-  // };
+  useEffect(() => {
+    positions.current.value = listToObject(songs);
+    setPosition(listToObject(songs));
+  }, [songs]);
 
   return (
     <>
       <Button title="song add" onPress={onClickAdd} />
-      {songs && (
+      {songs.length === Object.keys(position).length && (
         <View>
           <Animated.ScrollView
             ref={scrollViewRef}
@@ -71,19 +67,15 @@ export default function CreateSongList() {
           >
             {songs.map((item) => {
               return (
-                <>
-                  {/* 
                 <MovableSongView
-                key={item.id}
-                id={item.id}
-                song={item}
-                positions={positions}
-                scrollY={scrollY}
-                topOffset={topOffset}
-                songsCount={songs.length}
-              />
-              */}
-                </>
+                  key={item.id}
+                  id={item.id}
+                  song={item}
+                  positions={positions}
+                  scrollY={scrollY}
+                  topOffset={topOffset}
+                  songsCount={songs.length}
+                />
               );
             })}
           </Animated.ScrollView>

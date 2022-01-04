@@ -1,6 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-new-object */
+import React, { useCallback, useEffect, useRef } from 'react';
 import { View, ScrollView, Button } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
+import { useSharedValue } from 'react-native-reanimated';
 import CreateInput from 'components/Playlist/CreateInput';
 import CreateSongList from 'components/Playlist/CreateSongList';
 import { usePlaylistCreate } from 'providers/playlistCreate';
@@ -10,12 +14,28 @@ import style from 'constants/styles';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
 
-const NextActions = () => {
-  const { information, songs, image } = usePlaylistCreate();
+const listToObject = (list) => {
+  const object = {};
 
-  const onPressNext = () => {
+  Object.values(list).forEach((song, index) => {
+    object[song.id] = index;
+  });
+  return object;
+};
+const NextActions = ({ positions }) => {
+  const { information, setSongs, songs, image } = usePlaylistCreate();
+  const arrayCheck = () => {
+    const result = new Object([]);
+    for (const i in positions.current.value) {
+      result[positions.current.value[i]] = songs[songs.findIndex((item) => item.id === i)];
+    }
+    setSongs(result);
+    return result;
+  };
+  const onPressNext = async () => {
+    const songsChange = arrayCheck();
     navigate('PlaylistUpload', {
-      data: { information, songs, image },
+      data: { information, songs: songsChange, image },
     });
   };
 
@@ -25,6 +45,7 @@ const NextActions = () => {
 export default function PlaylistCreate({ data }) {
   const { setParams, songs, setSongs } = usePlaylistCreate();
   const { setActionType, songsRef, actionsRef } = useSongActions();
+  const positions = useRef(useSharedValue(listToObject(songs)));
 
   useEffect(() => {
     if (data) {
@@ -45,10 +66,10 @@ export default function PlaylistCreate({ data }) {
 
   return (
     <View style={style.background}>
-      <Header title="새 플레이리스트 추가" back actions={[<NextActions />]} />
+      <Header title="새 플레이리스트 추가" back actions={[<NextActions positions={positions} />]} />
       <ScrollView>
         <CreateInput />
-        <CreateSongList />
+        <CreateSongList positions={positions} />
         <CreateHashtag />
       </ScrollView>
     </View>
