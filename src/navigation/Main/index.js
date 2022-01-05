@@ -24,8 +24,8 @@ const MainStackScreen = () => (
     <MainStack.Screen name="Tab" component={TabScreen} />
     <MainStack.Screen name="SelectedRelay" component={SelectedRelay} />
     <MainStack.Screen name="Swipe" component={Swipe} />
-    <MainStack.Screen name="Follow" component={FollowScreen} />
-    <MainStack.Screen name="OtherAccount" component={OtherAccountScreen} />
+    <MainStack.Screen name="Follow" component={Follow} />
+    <MainStack.Screen name="OtherAccount" component={OtherAccount} />
     <MainStack.Screen name="SearchDetail" component={SearchDetail} />
     <MainStack.Screen name="ResultMore" component={ResultMore} />
     <MainStack.Screen name="SelectedSong" component={SelectedSong} />
