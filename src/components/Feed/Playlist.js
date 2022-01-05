@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { push } from 'lib/utils/navigation';
 import { Context as PlaylistContext } from '../../context/Playlist';
 import PostUser from './PostUser';
 import SongsLists from './SongsLists';
@@ -8,11 +9,11 @@ import Footer from './Footer';
 
 export default function Playlist({ playlist, type }) {
   const { _id: id, hashtag, comments, likes, postUserId: postUser, songs, title } = playlist;
-  const { getPlaylist } = useContext(PlaylistContext);
+  const { getSelectedPlaylist } = useContext(PlaylistContext);
 
   const onClickPlaylist = async () => {
-    // await getPlaylist({ id, postUserId: postUser._id });
-    // push('SelectedPlaylist', { id, postUser: postUser._id });
+    await getSelectedPlaylist({ id, postUserId: postUser._id });
+    push('SelectedPlaylist', { id, postUser: postUser._id });
   };
 
   return (
