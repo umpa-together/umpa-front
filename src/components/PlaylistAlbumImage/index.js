@@ -3,7 +3,6 @@ import { View, StyleSheet, Image } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 
 export default function PlaylistAlbumImage({ image, songs, size }) {
-
   const imgStyle = {
     width: size,
     height: size,

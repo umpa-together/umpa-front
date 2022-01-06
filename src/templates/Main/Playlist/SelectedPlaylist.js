@@ -7,9 +7,9 @@ import SelectedSong from 'components/Playlist/SelectedSong';
 import Divider from 'widgets/Divider';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as UserContext } from 'context/User';
-import SelectedComment from 'components/Playlist/SelectedComment';
 import CommentBar from 'components/CommentBar';
 import DeleteModal from 'components/Modal/DeleteMoal';
+import SelectedComment from 'components/SelectedComment';
 import { useModal } from 'providers/modal';
 import PlaylistModal from 'components/Modal/PlaylistModal';
 
@@ -30,7 +30,7 @@ export default function SelectedPlaylist({ playlistId, postUser }) {
         <SelectedInfo playlistinfo={currentPlaylist} />
         <SelectedSong songs={currentSongs} />
         <Divider />
-        <SelectedComment playlistId={playlistId} comments={currentComments} />
+        <SelectedComment opt="playlist" targetId={playlistId} comments={currentComments} />
       </ScrollView>
       <CommentBar targetId={playlistId} action={addComment} />
       <DeleteModal />
