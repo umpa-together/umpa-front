@@ -4,15 +4,21 @@ import { useModal } from 'providers/modal';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as DailyContext } from 'context/Daily';
+
 import Modal from '.';
 
 const ModalView = () => {
   const { deleteParams, onCloseDeleteModal } = useModal();
-  const { deleteComment } = useContext(PlaylistContext);
+  const { deleteComment: deleteCommentPlaylist } = useContext(PlaylistContext);
+  const { deleteComment: deleteCommentDaily } = useContext(DailyContext);
+
   const { targetId, opt, childId } = deleteParams;
   const onPressDelete = () => {
     if (opt === 'playlistcomment') {
-      deleteComment({ id: targetId, commentId: childId });
+      deleteCommentPlaylist({ id: targetId, commentId: childId });
+    } else if (opt === 'dailycomment') {
+      deleteCommentDaily({ id: targetId, commentId: childId });
     }
     onCloseDeleteModal();
   };

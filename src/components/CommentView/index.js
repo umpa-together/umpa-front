@@ -5,6 +5,7 @@ import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
 import timeConverter from 'lib/utils/time';
 import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as DailyContext } from 'context/Daily';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 
@@ -13,15 +14,21 @@ const CommentAction = ({ postUserId, id, targetId, likes, opt }) => {
   const { setDeleteModal, changeDeleteParams } = useModal();
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
   const deleteCheck = postUserId._id === state.user._id;
-  const { likescomment, unlikescomment } = useContext(PlaylistContext);
+  const { likeComment: playlistLike, unLikeComment: playlistUnLike } = useContext(PlaylistContext);
+  const { likeComment: dailyLike, unLikeComment: dailyUnLike } = useContext(DailyContext);
+
   const onPressLike = () => {
     if (isLike) {
       if (opt === 'playlist') {
-        unlikescomment({ playlistId: targetId, id });
+        playlistUnLike({ playlistId: targetId, id });
+      } else if (opt === 'daily') {
+        dailyUnLike({ dailyId: targetId, id });
       }
     } else {
       if (opt === 'playlist') {
-        likescomment({ playlistId: targetId, id });
+        playlistLike({ playlistId: targetId, id });
+      } else if (opt === 'daily') {
+        dailyLike({ dailyId: targetId, id });
       }
     }
     setIsLike(!isLike);
@@ -29,6 +36,8 @@ const CommentAction = ({ postUserId, id, targetId, likes, opt }) => {
   const onPressDelete = () => {
     if (opt === 'playlist') {
       changeDeleteParams({ data: { opt: 'playlistcomment', targetId, childId: id } });
+    } else if (opt === 'daily') {
+      changeDeleteParams({ data: { opt: 'dailycomment', targetId, childId: id } });
     }
     setDeleteModal(true);
   };
