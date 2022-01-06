@@ -5,16 +5,21 @@ const ModalContext = createContext(null);
 export const useModal = () => useContext(ModalContext);
 
 export default function ModalProvider({ children }) {
-  const [isModal, setIsModal] = useState(false);
-  const [isSearchModal, setIsSearchModal] = useState(false);
+  const [harmfulModal, setHarmfulModal] = useState(false);
+  const [representModal, setRepresentModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(false);
   const [sideModal, setSideModal] = useState(false);
 
-  const onCloseModal = () => {
-    if (isModal) {
-      setIsModal(false);
-    } else {
-      setIsSearchModal(false);
-    }
+  const onCloseHarmfulModal = () => {
+    setHarmfulModal(false);
+  };
+
+  const onCloseRepresentModal = () => {
+    setRepresentModal(false);
+  };
+
+  const onCloseSearchModal = () => {
+    setSearchModal(false);
   };
 
   const onCloseSideModal = () => {
@@ -22,13 +27,17 @@ export default function ModalProvider({ children }) {
   };
 
   const value = {
-    isModal,
-    isSearchModal,
+    harmfulModal,
+    representModal,
+    searchModal,
     sideModal,
+    setHarmfulModal,
+    setRepresentModal,
     setSideModal,
-    setIsModal,
-    setIsSearchModal,
-    onCloseModal,
+    setSearchModal,
+    onCloseHarmfulModal,
+    onCloseRepresentModal,
+    onCloseSearchModal,
     onCloseSideModal,
   };
 
