@@ -10,7 +10,6 @@ const userReducer = (state, action) => {
         ...state,
         user: action.payload[0],
         myContents: action.payload[1],
-        myPlayList: action.payload.myPlaylists && action.payload.myPlaylists.reverse(),
       };
     case 'getOtherInformation':
       return {
@@ -18,12 +17,12 @@ const userReducer = (state, action) => {
         otherUser: action.payload[0],
         otherContents: action.payload[1],
       };
-    case 'getLikePlaylists':
-      return { ...state, likePlaylists: action.payload };
+    case 'getProfile':
+      return { ...state, user: action.payload };
     case 'getFollow':
       return { ...state, follow: action.payload };
-    case 'myPlaylist':
-      return { ...state, myPlayList: action.payload.reverse() };
+    case 'getGenreLists':
+      return { ...state, genreLists: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -61,25 +60,23 @@ const getOtherInformation =
 
 const editProfile =
   (dispatch) =>
-  async ({ nickName, name, introduction }) => {
+  async ({ nickName, name, introduction, genre, songs, fd }) => {
     try {
-      const response = await server.post('/user/editProfile', { nickName, name, introduction });
-      dispatch({ type: 'getMyInformation', payload: response.data });
+      const response = await server.post('/user/editProfile', {
+        nickName,
+        name,
+        introduction,
+        genre,
+        songs,
+      });
+      if (fd) {
+        await server.post('/user/editProfileImage', fd, {
+          header: { 'content-type': 'multipart/form-data' },
+        });
+      }
+      dispatch({ type: 'getProfile', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editProfile' });
-    }
-  };
-
-const editProfileImage =
-  (dispatch) =>
-  async ({ fd }) => {
-    try {
-      const response = await server.post('/user/editProfileImage', fd, {
-        header: { 'content-type': 'multipart/form-data' },
-      });
-      dispatch({ type: 'getMyInformation', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with editProfileImage' });
     }
   };
 
@@ -150,35 +147,22 @@ const editRepresentSongs =
     }
   };
 
-/// ///////////
-const getLikePlaylists = (dispatch) => async () => {
+const getGenreLists = (dispatch) => async () => {
   try {
-    const response = await server.get('/user/likePlaylists');
-    dispatch({ type: 'getLikePlaylists', payload: response.data });
+    const response = await server.get('/user/genre');
+    dispatch({ type: 'getGenreLists', payload: response.data });
   } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with getLikePlaylists' });
+    dispatch({ type: 'error', payload: 'Something went wrong with getGenreLists' });
   }
 };
 
-const addSonginPlaylists =
+const postGenre =
   (dispatch) =>
-  async ({ song }) => {
+  async ({ genreLists }) => {
     try {
-      const response = await server.post('/user/songinPlaylists', { song });
-      dispatch({ type: 'myPlaylist', payload: response.data });
+      await server.post('/user/genre', { genreLists });
     } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
-    }
-  };
-
-const deleteSonginPlaylists =
-  (dispatch) =>
-  async ({ time }) => {
-    try {
-      const response = await server.get(`/user/songinPlaylists/${time}`);
-      dispatch({ type: 'myPlaylist', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with addSonginPlaylists' });
+      dispatch({ type: 'error', payload: 'Something went wrong with postGenre' });
     }
   };
 
@@ -189,16 +173,14 @@ export const { Provider, Context } = createDataContext(
     getMyInformation,
     getOtherInformation,
     editProfile,
-    editProfileImage,
     getFollow,
     follow,
     unfollow,
     getRepresentSongs,
     postRepresentSongs,
     editRepresentSongs,
-    getLikePlaylists,
-    addSonginPlaylists,
-    deleteSonginPlaylists,
+    getGenreLists,
+    postGenre,
   },
   {
     user: null,
@@ -207,8 +189,7 @@ export const { Provider, Context } = createDataContext(
     otherUser: null,
     otherContents: null,
     representSongs: null,
-    myPlayList: null,
-    likePlaylists: null,
+    genreLists: null,
     errorMessage: '',
   },
 );

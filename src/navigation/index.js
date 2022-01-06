@@ -6,6 +6,8 @@ import Splash from 'screens/Main/Splash';
 import { StatusBar } from 'react-native';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
+import RepresentModal from 'components/Modal/RepresentModal';
+import { Provider as AddedProvider } from 'context/Added';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 
@@ -26,6 +28,9 @@ const MainNavigator = () => {
       {authState.token ? <MainStackScreen /> : <AuthStackScreen />}
       <HarmfulModal />
       <SearchSongModal />
+      <AddedProvider>
+        <RepresentModal />
+      </AddedProvider>
     </NavigationContainer>
   );
 };

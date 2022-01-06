@@ -1,17 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import ProfileImage from 'widgets/ProfileImage';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { useModal } from 'providers/modal';
 
 export default function UserInfo({ info }) {
   const { songs, name, introduction, genre, profileimage } = info;
+  const { setRepresentModal } = useModal();
+  const onClickRepresentSong = () => {
+    setRepresentModal(true);
+  };
+
   return (
     <View style={[styles.container, style.alignCenter]}>
-      <View style={[styles.representBox, style.flexRow]}>
+      <TouchableOpacity style={[styles.representBox, style.flexRow]} onPress={onClickRepresentSong}>
         <Text>{songs[0].attributes.name}</Text>
         <Text>{` ${songs[0].attributes.artistName}`}</Text>
-      </View>
+      </TouchableOpacity>
       <ProfileImage img={profileimage} imgStyle={styles.profileImage} />
       <Text style={styles.name}>{name}</Text>
       {genre !== undefined && <Text style={styles.smallText}>{genre}</Text>}

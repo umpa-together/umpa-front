@@ -5,20 +5,39 @@ import { Context as UserContext } from 'context/User';
 import Divider from 'widgets/Divider';
 import { useModal } from 'providers/modal';
 import Modal from 'components/Modal';
+import { navigate } from 'lib/utils/navigation';
 import SideMenu from '../Account/SideMenu';
 
 const SideModalView = () => {
   const { state } = useContext(UserContext);
+  const { onCloseSideModal } = useModal();
+
   const { name } = state.user;
   const emptyfunction = () => {};
+
+  const onClickProfileEdit = () => {
+    navigate('ProfileEdit');
+    onCloseSideModal();
+  };
+
+  const onClickAddedSong = () => {
+    navigate('Added', { type: 'Song' });
+    onCloseSideModal();
+  };
+
+  const onClickAddedPlaylist = () => {
+    navigate('Added', { type: 'Playlist' });
+    onCloseSideModal();
+  };
+
   const menuListsTop = [
     {
       title: '담은 곡',
-      onClick: emptyfunction,
+      onClick: onClickAddedSong,
     },
     {
       title: '담은 플레이리스트',
-      onClick: emptyfunction,
+      onClick: onClickAddedPlaylist,
     },
   ];
   const menuListsBottom = [
@@ -49,9 +68,9 @@ const SideModalView = () => {
   ];
 
   return (
-    <View style={[styles.modal, { marginTop: 100 }]}>
+    <View style={[styles.modal, { paddingTop: 100 }]}>
       <Text>{name}</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onClickProfileEdit}>
         <Text>프로필 편집</Text>
       </TouchableOpacity>
       {menuListsTop.map((item) => {

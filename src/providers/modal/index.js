@@ -12,17 +12,20 @@ export default function ModalProvider({ children }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [playlistModal, setPlaylistModal] = useState(false);
 
+  const onCloseHarmfulModal = () => {
+    setHarmfulModal(false);
+  };
+
+  const onCloseRepresentModal = () => {
+    setRepresentModal(false);
+  };
+
   const [deleteParams, setDeleteParams] = useState({
     opt: '',
     targetId: '',
     childId: '',
   });
-  const onCloseHarmfulModal = () => {
-    setHarmfulModal(false);
-  };
-  const onCloseRepresentModal = () => {
-    setRepresentModal(false);
-  };
+
   const onCloseSearchModal = () => {
     setSearchModal(false);
   };
@@ -50,13 +53,13 @@ export default function ModalProvider({ children }) {
     representModal,
     searchModal,
     sideModal,
+    setHarmfulModal,
+    setRepresentModal,
+    setSideModal,
+    setSearchModal,
     deleteModal,
     playlistModal,
     deleteParams,
-    setHarmfulModal,
-    setRepresentModal,
-    setSearchModal,
-    setSideModal,
     setDeleteModal,
     setPlaylistModal,
     setDeleteParams,

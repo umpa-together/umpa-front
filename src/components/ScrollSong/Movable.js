@@ -1,7 +1,5 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedReaction,
@@ -12,50 +10,16 @@ import Animated, {
   withTiming,
   cancelAnimation,
 } from 'react-native-reanimated';
-import { PanGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
-import SongView from 'components/SongView';
-import { usePlaylistCreate } from 'providers/playlistCreate';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import { useScroll } from 'providers/scroll';
 
-const SONG_HEIGHT = 60;
-const SCROLL_HEIGHT_THRESHOLD = 10;
-
-// give position in range song length
-function clamp(value, lowerBound, upperBound) {
-  'worklet';
-
-  return Math.max(lowerBound, Math.min(value, upperBound));
-}
-
-// switch location
-function objectMove(object, from, to) {
-  'worklet';
-
-  const newObject = { ...object };
-
-  for (const id in object) {
-    if (object[id] === from) {
-      newObject[id] = to;
-    }
-    if (object[id] === to) {
-      newObject[id] = from;
-    }
-  }
-  return newObject;
-}
-
-export default function MovableSongView({
-  id,
-  song,
-  positions,
-  scrollY,
-  topOffset,
-  songsCount,
-  setSongs,
-}) {
+export default function Movable({ id, songsCount, children }) {
+  const { positions, scrollY, topOffset, clamp, objectMove, SONG_HEIGHT, SCROLL_HEIGHT_THRESHOLD } =
+    useScroll();
   const [moving, setMoving] = useState(false);
   const top = useSharedValue(positions.current.value[id] * SONG_HEIGHT);
-  const { onClickDeleteSong } = usePlaylistCreate();
   const DEVICE_HEIGHT = 400;
+
   // update location other song, not moving
   useAnimatedReaction(
     () => positions.current.value[id],
@@ -99,7 +63,6 @@ export default function MovableSongView({
           positions.current.value,
           positions.current.value[id],
           newPostion,
-          setSongs,
         );
       }
     },
@@ -123,12 +86,7 @@ export default function MovableSongView({
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={{ width: '15%', backgroundColor: '#444' }} />
         </PanGestureHandler>
-        <View style={{ width: '70%' }}>
-          <SongView key={id} song={song} />
-        </View>
-        <TouchableOpacity onPress={() => onClickDeleteSong(song)}>
-          <Text>지우기</Text>
-        </TouchableOpacity>
+        {children}
       </View>
     </Animated.View>
   );
@@ -143,5 +101,6 @@ const styles = StyleSheet.create({
       width: 0,
     },
     shadowRadius: 10,
+    width: '100%',
   },
 });

@@ -72,9 +72,7 @@ export default function PlaylistCreateProvider({ children }) {
       hashtags: information.hashtags.filter((item) => item !== text),
     });
   };
-  const onClickDeleteSong = (song) => {
-    setSongs(songs.filter((item) => item.id !== song.id));
-  };
+
   const onClickUpload = async () => {
     let fd = null;
     if (image) {
@@ -103,7 +101,6 @@ export default function PlaylistCreateProvider({ children }) {
     onClickUpload,
     onClickAddHashtag,
     onClickDeleteHashtag,
-    onClickDeleteSong,
     setImage,
     setParams,
     setSongs,

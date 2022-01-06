@@ -3,6 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 
 export default function PlaylistAlbumImage({ image, songs, size }) {
+
   const imgStyle = {
     width: size,
     height: size,
@@ -15,7 +16,7 @@ export default function PlaylistAlbumImage({ image, songs, size }) {
 
   return (
     <View style={[styles.container, imgStyle]}>
-      {image ? (
+      {image !== undefined ? (
         <Image source={{ uri: image }} style={imgStyle} />
       ) : (
         songs.slice(0, 4).map((item) => {
