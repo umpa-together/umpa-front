@@ -15,15 +15,11 @@ import { goBack } from 'lib/utils/navigation';
 
 export default function OtherAccount({ id }) {
   const { state } = useContext(UserContext);
-  const [otherUser, setOtherUser] = useState();
-  const [contents, setContents] = useState();
+  const [otherUser] = useState(state.otherUser);
+  const [contents] = useState(state.otherContents);
   const postingCount =
     contents && contents.playlist.length + contents.daily.length + contents.relay.length;
   const [resultOpt, setResultOpt] = useState('playlist');
-  useEffect(() => {
-    setOtherUser(state.otherUser);
-    setContents(state.otherContents);
-  }, [id]);
 
   const playlistData =
     contents &&

@@ -10,10 +10,8 @@ export default function Follow({ opt }) {
   const onClickBack = () => {
     goBack();
   };
-  const [users, setUsers] = useState(state.follow);
-  useEffect(() => {
-    setUsers(state.follow);
-  }, [opt]);
+  const [users] = useState(state.follow);
+
   return (
     users && (
       <View style={{ marginTop: 100 }}>
