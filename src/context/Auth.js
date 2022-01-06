@@ -19,8 +19,6 @@ const authReducer = (state, action) => {
       };
     case 'clearErrorMessage':
       return { ...state, errorMessage: '' };
-    case 'checkName':
-      return { ...state, doubleCheck: action.payload };
     case 'add_error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -167,17 +165,6 @@ const getNaverInfo =
     }
   };
 
-const checkName =
-  (dispatch) =>
-  async ({ name }) => {
-    try {
-      const response = await server.get(`/nickName/${name}`);
-      dispatch({ type: 'checkName', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with checkName' });
-    }
-  };
-
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
@@ -190,7 +177,6 @@ export const { Provider, Context } = createDataContext(
     getKakaoInfo,
     getNaverInfo,
     clearErrorMessage,
-    checkName,
   },
-  { token: null, errorMessage: '', email: '', password: '', doubleCheck: true },
+  { token: null, errorMessage: '', email: '', password: '' },
 );
