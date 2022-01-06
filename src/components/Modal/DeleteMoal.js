@@ -7,21 +7,21 @@ import { Context as PlaylistContext } from 'context/Playlist';
 import Modal from '.';
 
 const ModalView = () => {
-  const { deleteParams, onCloseModal } = useModal();
+  const { deleteParams, onCloseDeleteModal } = useModal();
   const { deleteComment } = useContext(PlaylistContext);
   const { targetId, opt, childId } = deleteParams;
   const onPressDelete = () => {
     if (opt === 'playlistcomment') {
       deleteComment({ id: targetId, commentId: childId });
     }
-    onCloseModal();
+    onCloseDeleteModal();
   };
 
   return (
     <View style={styles.viewContainer}>
       <Text style={styles.title}>{deleteParams.opt}삭제하시겠습니까?</Text>
       <View style={style.flexRow}>
-        <TouchableOpacity onPress={onCloseModal}>
+        <TouchableOpacity onPress={onCloseDeleteModal}>
           <Text style={styles.complete}>취소하기</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onPressDelete}>
@@ -33,10 +33,10 @@ const ModalView = () => {
 };
 
 export default function DeleteModal() {
-  const { isDeleteModal, onCloseModal } = useModal();
+  const { deleteModal, onCloseDeleteModal } = useModal();
 
   return (
-    <Modal isVisible={isDeleteModal} onBackdropPress={onCloseModal} style={styles.container}>
+    <Modal isVisible={deleteModal} onBackdropPress={onCloseDeleteModal} style={styles.container}>
       <ModalView />
     </Modal>
   );

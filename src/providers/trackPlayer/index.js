@@ -10,7 +10,7 @@ export default function TrackPlayerProvider({ children }) {
   const [isPlayingId, setIsPlayingId] = useState('0');
   const [currentSong, setCurrentSong] = useState(null);
   const [isMute, setIsMute] = useState(false);
-  const { setIsModal } = useModal();
+  const { setHarmfulModal } = useModal();
   const { position, duration } = useProgress();
   const addtracksong = async ({ data }) => {
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300');
@@ -42,7 +42,7 @@ export default function TrackPlayerProvider({ children }) {
       await TrackPlayer.add(track);
       TrackPlayer.play();
     } else {
-      setIsModal(true);
+      setHarmfulModal(true);
     }
     setCurrentSong(data);
   };

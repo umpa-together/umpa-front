@@ -21,14 +21,14 @@ const ModalView = () => {
 };
 
 export default function PlaylistModal() {
-  const { isPlaylistModal, onCloseModal } = useModal();
+  const { playlistModal, onClosePlaylistModal } = useModal();
 
   return (
     <Modal
       animationIn="slideInUp"
       animationOut="slideOutDown"
-      isVisible={isPlaylistModal}
-      onBackdropPress={onCloseModal}
+      isVisible={playlistModal}
+      onBackdropPress={onClosePlaylistModal}
       style={styles.container}
     >
       <ModalView />

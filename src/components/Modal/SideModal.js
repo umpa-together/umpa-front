@@ -74,14 +74,14 @@ const SideModalView = () => {
 };
 
 export default function SideModal() {
-  const { isSideModal, onCloseModal } = useModal();
+  const { sideModal, onCloseSideModal } = useModal();
 
   return (
     <Modal
       backdropOpacity={0.4}
-      isVisible={isSideModal}
-      onBackdropPress={onCloseModal} // Android back press
-      onSwipeComplete={onCloseModal} // Swipe to discard
+      isVisible={sideModal}
+      onBackdropPress={onCloseSideModal} // Android back press
+      onSwipeComplete={onCloseSideModal} // Swipe to discard
       animationIn="slideInRight" // Has others, we want slide in from the left
       animationOut="slideOutRight" // When discarding the drawer
       swipeDirection="right" // Discard the drawer with swipe to left

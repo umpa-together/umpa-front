@@ -8,6 +8,11 @@ export default function PlaylistAlbumImage({ image, songs, size }) {
     height: size,
   };
 
+  const smallImgStyle = {
+    width: size / 2,
+    height: size / 2,
+  };
+
   return (
     <View style={[styles.container, imgStyle]}>
       {image ? (
@@ -15,9 +20,7 @@ export default function PlaylistAlbumImage({ image, songs, size }) {
       ) : (
         songs.slice(0, 4).map((item) => {
           const { url } = item.attributes.artwork;
-          return (
-            <SongImage key={item.id} url={url} imgStyle={{ width: size / 2, height: size / 2 }} />
-          );
+          return <SongImage key={item.id} url={url} imgStyle={smallImgStyle} />;
         })
       )}
     </View>

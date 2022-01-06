@@ -5,29 +5,36 @@ const ModalContext = createContext(null);
 export const useModal = () => useContext(ModalContext);
 
 export default function ModalProvider({ children }) {
-  const [isModal, setIsModal] = useState(false);
-  const [isSearchModal, setIsSearchModal] = useState(false);
-  const [isSideModal, setIsSideModal] = useState(false);
-  const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const [isPlaylistModal, setIsPlaylistModal] = useState(false);
+  const [harmfulModal, setHarmfulModal] = useState(false);
+  const [representModal, setRepresentModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(false);
+  const [sideModal, setSideModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [playlistModal, setPlaylistModal] = useState(false);
 
   const [deleteParams, setDeleteParams] = useState({
     opt: '',
     targetId: '',
     childId: '',
   });
-  const onCloseModal = () => {
-    if (isModal) {
-      setIsModal(false);
-    } else if (isSearchModal) {
-      setIsSearchModal(false);
-    } else if (isSideModal) {
-      setIsSideModal(false);
-    } else if (isDeleteModal) {
-      setIsDeleteModal(false);
-    } else if (isPlaylistModal) {
-      setIsPlaylistModal(false);
-    }
+  const onCloseHarmfulModal = () => {
+    setHarmfulModal(false);
+  };
+  const onCloseRepresentModal = () => {
+    setRepresentModal(false);
+  };
+  const onCloseSearchModal = () => {
+    setSearchModal(false);
+  };
+  const onCloseSideModal = () => {
+    setSideModal(false);
+  };
+
+  const onCloseDeleteModal = () => {
+    setDeleteModal(false);
+  };
+  const onClosePlaylistModal = () => {
+    setPlaylistModal(false);
   };
 
   const changeDeleteParams = ({ data }) => {
@@ -39,20 +46,27 @@ export default function ModalProvider({ children }) {
   };
 
   const value = {
-    isModal,
-    isSearchModal,
-    isSideModal,
-    isDeleteModal,
-    isPlaylistModal,
+    harmfulModal,
+    representModal,
+    searchModal,
+    sideModal,
+    deleteModal,
+    playlistModal,
     deleteParams,
-    setIsSideModal,
-    setIsModal,
-    setIsSearchModal,
-    setIsDeleteModal,
-    setIsPlaylistModal,
+    setHarmfulModal,
+    setRepresentModal,
+    setSearchModal,
+    setSideModal,
+    setDeleteModal,
+    setPlaylistModal,
     setDeleteParams,
     changeDeleteParams,
-    onCloseModal,
+    onCloseHarmfulModal,
+    onCloseRepresentModal,
+    onCloseSearchModal,
+    onCloseSideModal,
+    onCloseDeleteModal,
+    onClosePlaylistModal,
   };
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;

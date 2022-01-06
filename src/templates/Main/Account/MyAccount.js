@@ -60,10 +60,10 @@ export default function MyAccount() {
         time: createdTime,
       };
     });
-  const { setIsSideModal } = useModal();
+  const { setSideModal } = useModal();
 
   const onPressMenu = () => {
-    setIsSideModal(true);
+    setSideModal(true);
   };
 
   return (

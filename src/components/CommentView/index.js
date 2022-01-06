@@ -10,7 +10,7 @@ import { useModal } from 'providers/modal';
 
 const CommentAction = ({ postUserId, id, targetId, likes, opt }) => {
   const { state } = useContext(UserContext);
-  const { setIsDeleteModal, changeDeleteParams } = useModal();
+  const { setDeleteModal, changeDeleteParams } = useModal();
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
   const deleteCheck = postUserId._id === state.user._id;
   const { likescomment, unlikescomment } = useContext(PlaylistContext);
@@ -30,7 +30,7 @@ const CommentAction = ({ postUserId, id, targetId, likes, opt }) => {
     if (opt === 'playlist') {
       changeDeleteParams({ data: { opt: 'playlistcomment', targetId, childId: id } });
     }
-    setIsDeleteModal(true);
+    setDeleteModal(true);
   };
 
   return (
