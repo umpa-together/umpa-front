@@ -5,11 +5,11 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Modal from '.';
 
 const ModalView = () => {
-  const { onCloseModal } = useModal();
+  const { onCloseHarmfulModal } = useModal();
   return (
     <View style={styles.viewContainer}>
       <Text style={styles.title}>유해성 컨텐츠는 현재 감상할 수 없습니다.</Text>
-      <TouchableOpacity onPress={onCloseModal}>
+      <TouchableOpacity onPress={onCloseHarmfulModal}>
         <Text style={styles.complete}>확인</Text>
       </TouchableOpacity>
     </View>
@@ -17,10 +17,10 @@ const ModalView = () => {
 };
 
 export default function HarmfulModal() {
-  const { isModal, onCloseModal } = useModal();
+  const { harmfulModal, onCloseHarmfulModal } = useModal();
 
   return (
-    <Modal isVisible={isModal} onBackdropPress={onCloseModal} style={styles.container}>
+    <Modal isVisible={harmfulModal} onBackdropPress={onCloseHarmfulModal} style={styles.container}>
       <ModalView />
     </Modal>
   );

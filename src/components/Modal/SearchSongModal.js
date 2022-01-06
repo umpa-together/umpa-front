@@ -33,14 +33,14 @@ const ModalView = () => {
 };
 
 export default function SearchSongModal() {
-  const { isSearchModal, onCloseModal } = useModal();
+  const { searchModal, onCloseSearchModal } = useModal();
   return (
     <Modal
       animationIn="slideInUp"
       animationOut="slideOutDown"
       backdropOpacity={0.6}
-      isVisible={isSearchModal}
-      onBackdropPress={onCloseModal}
+      isVisible={searchModal}
+      onBackdropPress={onCloseSearchModal}
       style={styles.container}
     >
       <SearchProvider>

@@ -5,31 +5,31 @@ import createDataContext from 'lib/utils/createDataContext';
 const playlistReducer = (state, action) => {
   switch (action.type) {
     case 'init_playlist':
-      return { ...state, current_playlist: null, current_comments: null, current_songs: [] };
+      return { ...state, currentPlaylist: null, currentComments: null, currentSongs: [] };
     case 'init_recomment':
-      return { ...state, current_recomments: null };
+      return { ...state, currentRecomments: null };
 
     case 'getSelectedPlaylist':
       return {
         ...state,
-        current_playlist: action.payload[0],
-        current_comments: action.payload[1],
-        current_songs: action.payload[0].songs,
+        currentPlaylist: action.payload[0],
+        currentComments: action.payload[1],
+        currentSongs: action.payload[0].songs,
       };
     case 'deleted_playlist':
-      return { ...state, current_playlist: [] };
+      return { ...state, currentPlaylist: [] };
     case 'getComment':
-      return { ...state, current_comments: action.payload };
+      return { ...state, currentComments: action.payload };
     case 'addComment':
       return {
         ...state,
-        current_playlist: action.payload[0],
-        current_comments: action.payload[1],
+        currentPlaylist: action.payload[0],
+        currentComments: action.payload[1],
       };
     case 'getreComment':
-      return { ...state, current_recomments: action.payload };
+      return { ...state, currentRecomments: action.payload };
     case 'likesPlaylist':
-      return { ...state, current_playlist: action.payload };
+      return { ...state, currentPlaylist: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -136,9 +136,9 @@ const addComment =
 
 const deleteComment =
   (dispatch) =>
-  async ({ id, commentid }) => {
+  async ({ id, commentId }) => {
     try {
-      const response = await server.delete(`/playlist/comment/${id}/${commentid}`);
+      const response = await server.delete(`/playlist/comment/${id}/${commentId}`);
       dispatch({ type: 'getSelectedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
@@ -147,9 +147,9 @@ const deleteComment =
 
 const addreComment =
   (dispatch) =>
-  async ({ id, commentid, text }) => {
+  async ({ id, commentId, text }) => {
     try {
-      const response = await server.post(`/playlist/recomment/${id}/${commentid}`, { text });
+      const response = await server.post(`/playlist/recomment/${id}/${commentId}`, { text });
       dispatch({ type: 'getreComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
@@ -158,9 +158,9 @@ const addreComment =
 
 const deletereComment =
   (dispatch) =>
-  async ({ commentid }) => {
+  async ({ commentId }) => {
     try {
-      const response = await server.delete(`/playlist/recomment/${commentid}`);
+      const response = await server.delete(`/playlist/recomment/${commentId}`);
       dispatch({ type: 'getreComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
@@ -169,9 +169,9 @@ const deletereComment =
 
 const getreComment =
   (dispatch) =>
-  async ({ commentid }) => {
+  async ({ commentId }) => {
     try {
-      const response = await server.get(`/playlist/recomment/${commentid}`);
+      const response = await server.get(`/playlist/recomment/${commentId}`);
       dispatch({ type: 'getreComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getreComment' });
@@ -180,9 +180,9 @@ const getreComment =
 
 const likescomment =
   (dispatch) =>
-  async ({ playlistid, id }) => {
+  async ({ playlistId, id }) => {
     try {
-      const response = await server.post(`/playlist/likecomment/${playlistid}/${id}`);
+      const response = await server.post(`/playlist/likecomment/${playlistId}/${id}`);
       dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
@@ -191,9 +191,9 @@ const likescomment =
 
 const unlikescomment =
   (dispatch) =>
-  async ({ playlistid, id }) => {
+  async ({ playlistId, id }) => {
     try {
-      const response = await server.delete(`/playlist/likecomment/${playlistid}/${id}`);
+      const response = await server.delete(`/playlist/likecomment/${playlistId}/${id}`);
       dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
@@ -202,9 +202,9 @@ const unlikescomment =
 
 const likesrecomment =
   (dispatch) =>
-  async ({ commentid, id }) => {
+  async ({ commentId, id }) => {
     try {
-      const response = await server.post(`/playlist/likerecomment/${commentid}/${id}`);
+      const response = await server.post(`/playlist/likerecomment/${commentId}/${id}`);
       dispatch({ type: 'getreComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
@@ -213,9 +213,9 @@ const likesrecomment =
 
 const unlikesrecomment =
   (dispatch) =>
-  async ({ commentid, id }) => {
+  async ({ commentId, id }) => {
     try {
-      const response = await server.delete(`/playlist/likerecomment/${commentid}/${id}`);
+      const response = await server.delete(`/playlist/likerecomment/${commentId}/${id}`);
       dispatch({ type: 'getreComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
@@ -266,10 +266,10 @@ export const { Provider, Context } = createDataContext(
     deleteUserSong,
   },
   {
-    current_playlist: null,
-    current_comments: null,
-    current_songs: [],
-    current_recomments: null,
+    currentPlaylist: null,
+    currentComments: null,
+    currentSongs: [],
+    currentRecomments: null,
     errorMessage: '',
   },
 );

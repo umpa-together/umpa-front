@@ -23,10 +23,10 @@ const listToObject = (list) => {
 };
 
 export default function CreateSongList({ positions }) {
-  const { setIsSearchModal } = useModal();
+  const { setSearchModal } = useModal();
   const { songs } = usePlaylistCreate();
   const onClickAdd = () => {
-    setIsSearchModal(true);
+    setSearchModal(true);
   };
 
   const [position, setPosition] = useState(listToObject(songs));

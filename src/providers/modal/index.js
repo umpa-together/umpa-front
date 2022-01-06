@@ -5,31 +5,68 @@ const ModalContext = createContext(null);
 export const useModal = () => useContext(ModalContext);
 
 export default function ModalProvider({ children }) {
-  const [isModal, setIsModal] = useState(false);
-  const [isSearchModal, setIsSearchModal] = useState(false);
+  const [harmfulModal, setHarmfulModal] = useState(false);
+  const [representModal, setRepresentModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(false);
   const [sideModal, setSideModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [playlistModal, setPlaylistModal] = useState(false);
 
-  const onCloseModal = () => {
-    if (isModal) {
-      setIsModal(false);
-    } else {
-      setIsSearchModal(false);
-    }
+  const [deleteParams, setDeleteParams] = useState({
+    opt: '',
+    targetId: '',
+    childId: '',
+  });
+  const onCloseHarmfulModal = () => {
+    setHarmfulModal(false);
   };
-
+  const onCloseRepresentModal = () => {
+    setRepresentModal(false);
+  };
+  const onCloseSearchModal = () => {
+    setSearchModal(false);
+  };
   const onCloseSideModal = () => {
     setSideModal(false);
   };
 
+  const onCloseDeleteModal = () => {
+    setDeleteModal(false);
+  };
+  const onClosePlaylistModal = () => {
+    setPlaylistModal(false);
+  };
+
+  const changeDeleteParams = ({ data }) => {
+    setDeleteParams({
+      opt: data.opt,
+      targetId: data.targetId,
+      childId: data.childId,
+    });
+  };
+
   const value = {
-    isModal,
-    isSearchModal,
+    harmfulModal,
+    representModal,
+    searchModal,
     sideModal,
+    deleteModal,
+    playlistModal,
+    deleteParams,
+    setHarmfulModal,
+    setRepresentModal,
+    setSearchModal,
     setSideModal,
-    setIsModal,
-    setIsSearchModal,
-    onCloseModal,
+    setDeleteModal,
+    setPlaylistModal,
+    setDeleteParams,
+    changeDeleteParams,
+    onCloseHarmfulModal,
+    onCloseRepresentModal,
+    onCloseSearchModal,
     onCloseSideModal,
+    onCloseDeleteModal,
+    onClosePlaylistModal,
   };
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
