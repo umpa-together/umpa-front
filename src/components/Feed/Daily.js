@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import PostUser from './PostUser';
+import { Context as DailyContext } from 'context/Daily';
+import { push } from 'lib/utils/navigation';
+import PostUser from 'components/PostUser';
 import Footer from './Footer';
-import DailyImage from './DailyImage';
+import DailyImage from '../DailyImage';
+
 // import DailySong from './DailySong';
 
 export default function Daily({ daily, type }) {
@@ -17,9 +20,14 @@ export default function Daily({ daily, type }) {
     textcontent: content,
     image,
   } = daily;
+  const { getSelectedDaily } = useContext(DailyContext);
+  const onClickDaily = async () => {
+    await getSelectedDaily({ id, postUserId: postUser._id });
+    push('SelectedDaily', { id, postUser: postUser._id });
+  };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onClickDaily}>
       <PostUser user={postUser} />
       {image.length > 0 && <DailyImage image={image} />}
       <TouchableOpacity style={styles.contentArea}>
@@ -28,7 +36,7 @@ export default function Daily({ daily, type }) {
         </Text>
       </TouchableOpacity>
       <Footer hashtag={hashtag} likes={likes} comments={comments} id={id} type={type} />
-    </View>
+    </TouchableOpacity>
   );
 }
 

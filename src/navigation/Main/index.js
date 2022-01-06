@@ -13,6 +13,8 @@ import PlaylistUpload from 'screens/Main/Playlist/PlaylistUploadScreen';
 import Added from 'screens/Main/Account/AddedScreen';
 import ProfileEdit from 'screens/Main/Account/ProfileEditScreen';
 import SelectedPlaylist from 'screens/Main/Playlist/SelectedPlaylistScreen';
+import SelectedDaily from 'screens/Main/Daily/SelectedDailyScreen';
+
 import TabScreen from './Tab';
 
 const MainStack = createNativeStackNavigator();
@@ -37,6 +39,7 @@ const MainStackScreen = () => (
     <MainStack.Screen name="Added" component={Added} />
     <MainStack.Screen name="ProfileEdit" component={ProfileEdit} />
     <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
+    <MainStack.Screen name="SelectedDaily" component={SelectedDaily} />
   </MainStack.Navigator>
 );
 

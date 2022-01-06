@@ -5,24 +5,24 @@ import createDataContext from 'lib/utils/createDataContext';
 const dailyReducer = (state, action) => {
   switch (action.type) {
     case 'initDaily':
-      return { ...state, current_daily: null, current_comments: null, current_songs: [] };
+      return { ...state, currentDaily: null, currentComments: null, currentSong: [] };
     case 'initRecomment':
-      return { ...state, current_recomments: null };
+      return { ...state, currentRecomments: null };
     case 'getSelectedDaily':
       return {
         ...state,
-        current_daily: action.payload[0],
-        current_comments: action.payload[1],
-        current_songs: action.payload[0].songs,
+        currentDaily: action.payload[0],
+        currentComments: action.payload[1],
+        currentSong: action.payload[0].song,
       };
     case 'deleted_Daily':
-      return { ...state, current_daily: [] };
+      return { ...state, currentDaily: [] };
     case 'getComment':
-      return { ...state, current_comments: action.payload };
+      return { ...state, currentComments: action.payload };
     case 'getRecomment':
-      return { ...state, current_recomments: action.payload };
+      return { ...state, currentRecomments: action.payload };
     case 'likesDaily':
-      return { ...state, current_daily: action.payload };
+      return { ...state, currentDaily: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -49,9 +49,9 @@ const initRecomment = (dispatch) => () => {
 
 const addDaily =
   (dispatch) =>
-  async ({ textcontent, songs, hashtag, fd }) => {
+  async ({ textcontent, song, hashtag, fd }) => {
     try {
-      const response = await server.post('/daily', { textcontent, songs, hashtag });
+      const response = await server.post('/daily', { textcontent, song, hashtag });
       goBack();
       // eslint-disable-next-line no-underscore-dangle
       if (fd._parts.length !== 0) {
@@ -66,9 +66,9 @@ const addDaily =
 
 const editDaily =
   (dispatch) =>
-  async ({ textcontent, songs, hashtag, DailyId }) => {
+  async ({ textcontent, song, hashtag, DailyId }) => {
     try {
-      await server.post('/daily/edit', { textcontent, songs, hashtag, DailyId });
+      await server.post('/daily/edit', { textcontent, song, hashtag, DailyId });
       navigate('Account');
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
@@ -81,7 +81,7 @@ const deleteDaily =
     await server.delete(`/daily/${id}`);
   };
 
-const likesDaily =
+const likeDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -92,7 +92,7 @@ const likesDaily =
     }
   };
 
-const unlikesDaily =
+const unLikeDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -131,9 +131,9 @@ const addComment =
 
 const deleteComment =
   (dispatch) =>
-  async ({ id, commentid }) => {
+  async ({ id, commentId }) => {
     try {
-      const response = await server.delete(`/daily/comment/${id}/${commentid}`);
+      const response = await server.delete(`/daily/comment/${id}/${commentId}`);
       dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
@@ -142,9 +142,9 @@ const deleteComment =
 
 const addreComment =
   (dispatch) =>
-  async ({ id, commentid, text }) => {
+  async ({ id, commentId, text }) => {
     try {
-      const response = await server.post(`/daily/recomment/${id}/${commentid}`, { text });
+      const response = await server.post(`/daily/recomment/${id}/${commentId}`, { text });
       dispatch({ type: 'getRecomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
@@ -153,9 +153,9 @@ const addreComment =
 
 const deletereComment =
   (dispatch) =>
-  async ({ commentid }) => {
+  async ({ commentId }) => {
     try {
-      const response = await server.delete(`/daily/recomment/${commentid}`);
+      const response = await server.delete(`/daily/recomment/${commentId}`);
       dispatch({ type: 'getRecomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
@@ -164,9 +164,9 @@ const deletereComment =
 
 const getRecomment =
   (dispatch) =>
-  async ({ commentid }) => {
+  async ({ commentId }) => {
     try {
-      const response = await server.get(`/daily/recomment/${commentid}`);
+      const response = await server.get(`/daily/recomment/${commentId}`);
       dispatch({ type: 'getRecomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getRecomment' });
@@ -175,9 +175,9 @@ const getRecomment =
 
 const likeComment =
   (dispatch) =>
-  async ({ dailyid, id }) => {
+  async ({ dailyId, id }) => {
     try {
-      const response = await server.post(`/daily/likecomment/${dailyid}/${id}`);
+      const response = await server.post(`/daily/likecomment/${dailyId}/${id}`);
       dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likescomment' });
@@ -186,9 +186,9 @@ const likeComment =
 
 const unLikeComment =
   (dispatch) =>
-  async ({ dailyid, id }) => {
+  async ({ dailyId, id }) => {
     try {
-      const response = await server.delete(`/daily/likecomment/${dailyid}/${id}`);
+      const response = await server.delete(`/daily/likecomment/${dailyId}/${id}`);
       dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikescomment' });
@@ -197,9 +197,9 @@ const unLikeComment =
 
 const likeRecomment =
   (dispatch) =>
-  async ({ commentid, id }) => {
+  async ({ commentId, id }) => {
     try {
-      const response = await server.post(`/daily/likerecomment/${commentid}/${id}`);
+      const response = await server.post(`/daily/likerecomment/${commentId}/${id}`);
       dispatch({ type: 'getRecomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
@@ -208,9 +208,9 @@ const likeRecomment =
 
 const unLikeRecomment =
   (dispatch) =>
-  async ({ commentid, id }) => {
+  async ({ commentId, id }) => {
     try {
-      const response = await server.delete(`/daily/likerecomment/${commentid}/${id}`);
+      const response = await server.delete(`/daily/likerecomment/${commentId}/${id}`);
       dispatch({ type: 'getRecomment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
@@ -225,8 +225,8 @@ export const { Provider, Context } = createDataContext(
     addDaily,
     editDaily,
     deleteDaily,
-    likesDaily,
-    unlikesDaily,
+    likeDaily,
+    unLikeDaily,
     getSelectedDaily,
     addComment,
     deleteComment,
@@ -239,10 +239,10 @@ export const { Provider, Context } = createDataContext(
     unLikeRecomment,
   },
   {
-    current_daily: null,
-    current_comments: null,
-    current_songs: [],
-    current_recomments: null,
+    currentDaily: null,
+    currentComments: null,
+    currentSong: [],
+    currentRecomments: null,
     errorMessage: '',
   },
 );

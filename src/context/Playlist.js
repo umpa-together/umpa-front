@@ -86,7 +86,7 @@ const initPlaylist = (dispatch) => () => {
   }
 };
 
-const likesPlaylist =
+const likePlaylist =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -97,7 +97,7 @@ const likesPlaylist =
     }
   };
 
-const unlikesPlaylist =
+const unLikePlaylist =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -145,7 +145,7 @@ const deleteComment =
     }
   };
 
-const addreComment =
+const addRecomment =
   (dispatch) =>
   async ({ id, commentId, text }) => {
     try {
@@ -156,7 +156,7 @@ const addreComment =
     }
   };
 
-const deletereComment =
+const deleteRecomment =
   (dispatch) =>
   async ({ commentId }) => {
     try {
@@ -167,7 +167,7 @@ const deletereComment =
     }
   };
 
-const getreComment =
+const getRecomment =
   (dispatch) =>
   async ({ commentId }) => {
     try {
@@ -178,7 +178,7 @@ const getreComment =
     }
   };
 
-const likescomment =
+const likeComment =
   (dispatch) =>
   async ({ playlistId, id }) => {
     try {
@@ -189,7 +189,7 @@ const likescomment =
     }
   };
 
-const unlikescomment =
+const unLikeComment =
   (dispatch) =>
   async ({ playlistId, id }) => {
     try {
@@ -200,7 +200,7 @@ const unlikescomment =
     }
   };
 
-const likesrecomment =
+const likeRecomment =
   (dispatch) =>
   async ({ commentId, id }) => {
     try {
@@ -211,7 +211,7 @@ const likesrecomment =
     }
   };
 
-const unlikesrecomment =
+const unLikeRecomment =
   (dispatch) =>
   async ({ commentId, id }) => {
     try {
@@ -249,18 +249,18 @@ export const { Provider, Context } = createDataContext(
     addPlaylist,
     editPlaylist,
     deletePlaylist,
-    likesPlaylist,
-    unlikesPlaylist,
+    likePlaylist,
+    unLikePlaylist,
     getSelectedPlaylist,
     addComment,
     deleteComment,
-    addreComment,
-    deletereComment,
-    getreComment,
-    likescomment,
-    unlikescomment,
-    likesrecomment,
-    unlikesrecomment,
+    addRecomment,
+    deleteRecomment,
+    getRecomment,
+    likeComment,
+    unLikeComment,
+    likeRecomment,
+    unLikeRecomment,
     initRecomment,
     postUserSong,
     deleteUserSong,

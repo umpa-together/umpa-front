@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
+import PostUser from 'components/PostUser';
 import { Context as PlaylistContext } from '../../context/Playlist';
-import PostUser from './PostUser';
 import SongsLists from './SongsLists';
 import Footer from './Footer';
 
