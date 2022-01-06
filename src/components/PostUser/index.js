@@ -4,7 +4,7 @@ import ProfileImage from 'widgets/ProfileImage';
 import { navigate, push } from 'lib/utils/navigation';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
-export default function PostUser({ user }) {
+export default function ({ user, action }) {
   const { _id: id, profileImage: img, name } = user;
 
   const onClickProfile = async () => {
@@ -21,7 +21,10 @@ export default function PostUser({ user }) {
       <TouchableOpacity onPress={onClickProfile}>
         <ProfileImage img={img} imgStyle={styles.profileImg} />
       </TouchableOpacity>
-      <Text style={styles.name}>{name}</Text>
+      <View style={styles.nameContainer}>
+        <Text style={styles.name}>{name}</Text>
+      </View>
+      {action}
     </View>
   );
 }
@@ -38,6 +41,9 @@ const styles = StyleSheet.create({
     height: 40 * SCALE_WIDTH,
     borderRadius: 40 * SCALE_HEIGHT,
     marginRight: 11 * SCALE_WIDTH,
+  },
+  nameContainer: {
+    width: '70%',
   },
   name: {
     fontSize: FS(14),
