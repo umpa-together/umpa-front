@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
-import PostUser from '../PostUser';
+import PostUser from 'components/PostUser';
 import Footer from './Footer';
 import DailyImage from '../DailyImage';
 
