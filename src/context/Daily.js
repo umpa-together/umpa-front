@@ -81,7 +81,7 @@ const deleteDaily =
     await server.delete(`/daily/${id}`);
   };
 
-const likesDaily =
+const likeDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -92,7 +92,7 @@ const likesDaily =
     }
   };
 
-const unlikesDaily =
+const unLikeDaily =
   (dispatch) =>
   async ({ id }) => {
     try {
@@ -225,8 +225,8 @@ export const { Provider, Context } = createDataContext(
     addDaily,
     editDaily,
     deleteDaily,
-    likesDaily,
-    unlikesDaily,
+    likeDaily,
+    unLikeDaily,
     getSelectedDaily,
     addComment,
     deleteComment,
