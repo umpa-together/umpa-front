@@ -1,10 +1,6 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-new-object */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, ScrollView, Button } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
-import { useSharedValue } from 'react-native-reanimated';
 import CreateInput from 'components/Playlist/CreateInput';
 import CreateSongList from 'components/Playlist/CreateSongList';
 import { usePlaylistCreate } from 'providers/playlistCreate';
@@ -13,27 +9,14 @@ import Header from 'components/Header';
 import style from 'constants/styles';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import { useScroll } from 'providers/scroll';
 
-const listToObject = (list) => {
-  const object = {};
-
-  Object.values(list).forEach((song, index) => {
-    object[song.id] = index;
-  });
-  return object;
-};
-const NextActions = ({ positions }) => {
+const NextActions = () => {
   const { information, setSongs, songs, image } = usePlaylistCreate();
-  const arrayCheck = () => {
-    const result = new Object([]);
-    for (const i in positions.current.value) {
-      result[positions.current.value[i]] = songs[songs.findIndex((item) => item.id === i)];
-    }
-    setSongs(result);
-    return result;
-  };
+  const { arraySort } = useScroll();
+
   const onPressNext = async () => {
-    const songsChange = arrayCheck();
+    const songsChange = arraySort(songs, setSongs);
     navigate('PlaylistUpload', {
       data: { information, songs: songsChange, image },
     });
@@ -44,8 +27,7 @@ const NextActions = ({ positions }) => {
 
 export default function PlaylistCreate({ data }) {
   const { setParams, songs, setSongs } = usePlaylistCreate();
-  const { setActionType, songsRef, actionsRef } = useSongActions();
-  const positions = useRef(useSharedValue(listToObject(songs)));
+  const { songsRef, actionsRef } = useSongActions();
 
   useEffect(() => {
     if (data) {
@@ -60,16 +42,15 @@ export default function PlaylistCreate({ data }) {
   useFocusEffect(
     useCallback(() => {
       actionsRef.current = setSongs;
-      setActionType('playlistAddSong');
     }, []),
   );
 
   return (
     <View style={style.background}>
-      <Header title="새 플레이리스트 추가" back actions={[<NextActions positions={positions} />]} />
+      <Header title="새 플레이리스트 추가" back actions={[<NextActions />]} />
       <ScrollView>
         <CreateInput />
-        <CreateSongList positions={positions} />
+        <CreateSongList />
         <CreateHashtag />
       </ScrollView>
     </View>
