@@ -8,22 +8,26 @@ import DailyNoticeForm from 'components/Notice/DailyNoticeForm';
 import UserNoticeForm from 'components/Notice/UserNoticeForm';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
+import { push } from 'lib/utils/navigation';
+import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as DailyContext } from 'context/Daily';
 
 export default function Section({ data }) {
-  const { noticinguser: user, _id: id, isRead, noticetype: type } = data;
+  const { noticinguser: user, _id: id, isRead, noticetype: type, playlist, daily } = data;
   const { readNotice } = useContext(NoticeContext);
   const { getOtherInformation } = useContext(UserContext);
+  const { getSelectedPlaylist } = useContext(PlaylistContext);
+  const { getSelectedDaily } = useContext(DailyContext);
 
   const onClickProfile = async () => {
-    getOtherInformation({ id: user._id });
-    // push('OtherAccount', { otherUserId: user._id });
+    await getOtherInformation({ id: user._id });
+    push('OtherAccount', { otherUserId: user._id });
   };
 
-  const onClickNotice = () => {
+  const onClickNotice = async () => {
     if (!isRead) readNotice({ id });
     if (type === 'follow') {
-      getOtherInformation({ id: user._id });
-      // push('OtherAccount', { otherUserId: user._id });
+      onClickProfile();
     } else if (
       type === 'plike' ||
       type === 'pcom' ||
@@ -31,11 +35,11 @@ export default function Section({ data }) {
       type === 'precom' ||
       type === 'precomlike'
     ) {
-      //  await getPlaylist({ id: playlist._id, postUserId: playlist.postUserId });
-      //  push('SelectedPlaylist', { id: playlist._id, postUser: playlist.postUserId });
+      await getSelectedPlaylist({ id: playlist._id, postUserId: playlist.postUserId });
+      push('SelectedPlaylist', { id: playlist._id, postUser: playlist.postUserId });
     } else {
-      //  await getDaily({ id: daily._id, postUserId: daily.postUserId });
-      //  push('SelectedDaily', { id: daily._id, postUser: daily.postUserId });
+      await getSelectedDaily({ id: daily._id, postUserId: daily.postUserId });
+      push('SelectedDaily', { id: daily._id, postUser: daily.postUserId });
     }
   };
 
