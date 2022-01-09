@@ -16,10 +16,12 @@ export default function () {
 
   const [time, setTime] = useState(1);
 
+  const dataFetch = async () => {
+    await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation()]);
+  };
+
   useEffect(() => {
-    getCurrentRelay();
-    getRelayLists();
-    getMyInformation();
+    dataFetch();
     const autoTimer = setTimeout(() => setTime(8), 1000);
     return () => clearTimeout(autoTimer);
   }, []);

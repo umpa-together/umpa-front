@@ -12,10 +12,12 @@ export default function Feed() {
   const { getFeeds } = useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
 
+  const dataFetch = async () => {
+    await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
+  };
+
   useEffect(() => {
-    getFeeds();
-    getMyStory();
-    getOtherStoryWithAll();
+    dataFetch();
   }, []);
 
   return (
