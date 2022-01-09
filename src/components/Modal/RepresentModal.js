@@ -10,8 +10,9 @@ import Modal from '.';
 
 const ModalView = () => {
   const { state } = useContext(UserContext);
-  const { user } = state;
+  const { representSongs } = state;
   const { postAddedSong } = useContext(AddedContext);
+  const name = state.otherUser ? state.otherUser.name : state.user.name;
 
   const onClickAddActions = (song) => {
     return (
@@ -23,17 +24,21 @@ const ModalView = () => {
 
   return (
     <View style={styles.viewContainer}>
-      <Text>{user.name}님의 대표곡</Text>
-      <Text>총 {user.songs.length}곡</Text>
-      <TrackPlayerProvider>
-        <FlatList
-          data={user.songs}
-          keyExtractor={(song) => song.id}
-          renderItem={({ item }) => {
-            return <SongView song={item} actions={onClickAddActions(item)} />;
-          }}
-        />
-      </TrackPlayerProvider>
+      <Text>{name}님의 대표곡</Text>
+      {representSongs && (
+        <>
+          <Text>총 {representSongs.length}곡</Text>
+          <TrackPlayerProvider>
+            <FlatList
+              data={representSongs}
+              keyExtractor={(song) => song.id}
+              renderItem={({ item }) => {
+                return <SongView song={item} actions={onClickAddActions(item)} />;
+              }}
+            />
+          </TrackPlayerProvider>
+        </>
+      )}
     </View>
   );
 };
