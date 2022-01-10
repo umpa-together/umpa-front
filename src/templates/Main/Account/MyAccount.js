@@ -9,7 +9,7 @@ import PostingInfo from 'components/Account/PostingInfo';
 import ResultOpt from 'components/Account/ResultOpt';
 import PostingResult from 'components/Account/PostingResult';
 import CreateButton from 'components/Account/CreateButton';
-import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
+import PlaylistImage from 'components/Account/PlaylistImage';
 import DailyImage from 'components/Account/DailyImage';
 import SideModal from 'components/Modal/SideModal';
 import { SongImage } from 'widgets/SongImage';
@@ -24,10 +24,10 @@ export default function MyAccount() {
   const playlistData =
     myContents &&
     myContents.playlist.map((item) => {
-      const { songs, title, image, time, _id } = item;
+      const { title, time, _id } = item;
       return {
         _id,
-        image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
+        image: <PlaylistImage url={item.image} imgStyle={styles.imagePlaylist} />,
         title,
         content: item.songs[0].attributes.name,
         time,
