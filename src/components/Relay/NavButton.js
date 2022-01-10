@@ -10,11 +10,11 @@ export default function NavButton({ isSwipe }) {
   const { state: userState } = useContext(UserContext);
   const { playlist } = state.selectedRelay;
   const { postUserId } = playlist;
-  const { setIsSearchModal } = useModal();
+  const { setSearchModal } = useModal();
 
   const onClickAdd = (isValid) => {
     if (isValid) {
-      setIsSearchModal(true);
+      setSearchModal(true);
     }
   };
 

@@ -6,19 +6,18 @@ import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useModal } from 'providers/modal';
 
 export default function UserInfo({ info }) {
-  const { songs, name, introduction, genre, profileimage } = info;
+  const { songs, name, introduction, genre, profileImage } = info;
   const { setRepresentModal } = useModal();
   const onClickRepresentSong = () => {
     setRepresentModal(true);
   };
-
   return (
     <View style={[styles.container, style.alignCenter]}>
       <TouchableOpacity style={[styles.representBox, style.flexRow]} onPress={onClickRepresentSong}>
         <Text>{songs[0].attributes.name}</Text>
         <Text>{` ${songs[0].attributes.artistName}`}</Text>
       </TouchableOpacity>
-      <ProfileImage img={profileimage} imgStyle={styles.profileImage} />
+      <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
       <Text style={styles.name}>{name}</Text>
       {genre !== undefined && <Text style={styles.smallText}>{genre}</Text>}
       {introduction !== undefined && <Text style={styles.smallText}>{introduction}</Text>}
