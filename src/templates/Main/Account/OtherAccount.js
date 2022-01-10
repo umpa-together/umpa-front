@@ -6,7 +6,7 @@ import { SCALE_WIDTH } from 'lib/utils/normalize';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/Account/PostingResult';
-import PlaylistImage from 'components/Account/PlaylistImage';
+import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import DailyImage from 'components/Account/DailyImage';
 import { SongImage } from 'widgets/SongImage';
 import { goBack } from 'lib/utils/navigation';
@@ -24,10 +24,10 @@ export default function OtherAccount() {
   const playlistData =
     contents &&
     contents.playlist.map((item) => {
-      const { title, time, _id } = item;
+      const { image, songs, title, time, _id } = item;
       return {
         _id,
-        image: <PlaylistImage url={item.image} imgStyle={styles.imagePlaylist} />,
+        image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
         title,
         content: item.songs[0].attributes.name,
         time,
