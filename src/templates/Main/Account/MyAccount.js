@@ -1,12 +1,10 @@
-/* eslint-disable no-nested-ternary */
-import React, { useContext, useState } from 'react';
+/* eslint-disable react/no-unstable-nested-components */
+import React, { useContext, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Button } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
-
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
-import ResultOpt from 'components/Account/ResultOpt';
 import PostingResult from 'components/Account/PostingResult';
 import CreateButton from 'components/Account/CreateButton';
 import PlaylistImage from 'components/Account/PlaylistImage';
@@ -14,13 +12,15 @@ import DailyImage from 'components/Account/DailyImage';
 import SideModal from 'components/Modal/SideModal';
 import { SongImage } from 'widgets/SongImage';
 import { useModal } from 'providers/modal';
+import TabView from 'components/TabView';
+import style from 'constants/styles';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function MyAccount() {
-  const { state } = useContext(UserContext);
+  const { state, initRepresentSongs, initOtherInformation } = useContext(UserContext);
   const { user, myContents } = state;
   const postingCount =
     myContents && myContents.playlist.length + myContents.daily.length + myContents.relay.length;
-  const [resultOpt, setResultOpt] = useState('playlist');
   const playlistData =
     myContents &&
     myContents.playlist.map((item) => {
@@ -66,9 +66,16 @@ export default function MyAccount() {
     setSideModal(true);
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      initOtherInformation();
+      initRepresentSongs();
+    }, []),
+  );
+
   return (
-    <View style={{ marginTop: 100 }}>
-      {state.user ? (
+    <View style={style.background}>
+      {state.user && (
         <ScrollView>
           <Button title="햄버거" onPress={onPressMenu} />
           <UserInfo info={user} />
@@ -79,20 +86,31 @@ export default function MyAccount() {
             follower={user.follower}
             following={user.following}
           />
-          <ResultOpt resultOpt={resultOpt} setResultOpt={setResultOpt} />
-          {(resultOpt === 'playlist' || resultOpt === 'daily') && <CreateButton opt={resultOpt} />}
-          <PostingResult
-            data={
-              resultOpt === 'playlist'
-                ? playlistData
-                : resultOpt === 'daily'
-                ? dailyData
-                : relayData
-            }
+          <TabView
+            routesMap={[
+              { key: 'playlist', title: '플레이리스트' },
+              { key: 'daily', title: '데일리' },
+              { key: 'relay', title: '릴레이플리' },
+            ]}
+            sceneMap={{
+              playlist: () => (
+                <>
+                  <CreateButton opt="playlist" />
+                  <PostingResult data={playlistData} />
+                </>
+              ),
+              daily: () => (
+                <>
+                  <CreateButton opt="daily" />
+                  <PostingResult data={dailyData} />
+                </>
+              ),
+              relay: () => <PostingResult data={relayData} />,
+            }}
           />
-          <SideModal />
         </ScrollView>
-      ) : null}
+      )}
+      <SideModal />
     </View>
   );
 }

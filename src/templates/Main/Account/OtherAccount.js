@@ -1,25 +1,25 @@
-/* eslint-disable no-nested-ternary */
-import React, { useContext, useEffect, useState } from 'react';
+/* eslint-disable react/no-unstable-nested-components */
+import React, { useContext, useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Button } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
-
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
-import ResultOpt from 'components/Account/ResultOpt';
 import PostingResult from 'components/Account/PostingResult';
 import PlaylistImage from 'components/Account/PlaylistImage';
 import DailyImage from 'components/Account/DailyImage';
 import { SongImage } from 'widgets/SongImage';
 import { goBack } from 'lib/utils/navigation';
+import TabView from 'components/TabView';
+import style from 'constants/styles';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function OtherAccount({ id }) {
-  const { state } = useContext(UserContext);
+export default function OtherAccount() {
+  const { state, initRepresentSongs } = useContext(UserContext);
   const [otherUser] = useState(state.otherUser);
   const [contents] = useState(state.otherContents);
   const postingCount =
     contents && contents.playlist.length + contents.daily.length + contents.relay.length;
-  const [resultOpt, setResultOpt] = useState('playlist');
 
   const playlistData =
     contents &&
@@ -66,10 +66,17 @@ export default function OtherAccount({ id }) {
   const onClickBack = () => {
     goBack();
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      initRepresentSongs();
+    }, []),
+  );
+
   return (
-    <View style={{ marginTop: 100 }}>
+    <View style={style.background}>
       <Button title="back" onPress={onClickBack} />
-      {otherUser ? (
+      {otherUser && (
         <ScrollView>
           <UserInfo info={otherUser} />
           <PostingInfo
@@ -78,18 +85,20 @@ export default function OtherAccount({ id }) {
             follower={otherUser.follower}
             following={otherUser.following}
           />
-          <ResultOpt resultOpt={resultOpt} setResultOpt={setResultOpt} />
-          <PostingResult
-            data={
-              resultOpt === 'playlist'
-                ? playlistData
-                : resultOpt === 'daily'
-                ? dailyData
-                : relayData
-            }
+          <TabView
+            routesMap={[
+              { key: 'playlist', title: '플레이리스트' },
+              { key: 'daily', title: '데일리' },
+              { key: 'relay', title: '릴레이플리' },
+            ]}
+            sceneMap={{
+              playlist: () => <PostingResult data={playlistData} />,
+              daily: () => <PostingResult data={dailyData} />,
+              relay: () => <PostingResult data={relayData} />,
+            }}
           />
         </ScrollView>
-      ) : null}
+      )}
     </View>
   );
 }

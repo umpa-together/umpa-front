@@ -1,27 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import style from 'constants/styles';
 import Songbackground from 'components/Search/SongBackground';
-import { TabView, SceneMap } from 'react-native-tab-view';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import { Playlist, Daily, DJ } from 'components/Search/SelectedSection';
-
-const renderScene = SceneMap({
-  playlist: Playlist,
-  daily: Daily,
-  dj: DJ,
-});
+import TabView from 'components/TabView';
 
 export default function SelectedSong({ song }) {
   const { state, getSelectedContents } = useContext(SearchContext);
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'playlist', title: '플레이리스트' },
-    { key: 'daily', title: '데일리' },
-    { key: 'dj', title: '대표곡' },
-  ]);
 
   useEffect(() => {
     getSelectedContents({ id: song.id });
@@ -36,10 +23,16 @@ export default function SelectedSong({ song }) {
         <View style={styles.container}>
           {state.selected && (
             <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={{ width: layout.width }}
+              routesMap={[
+                { key: 'playlist', title: '플레이리스트' },
+                { key: 'daily', title: '데일리' },
+                { key: 'dj', title: '대표곡' },
+              ]}
+              sceneMap={{
+                playlist: Playlist,
+                daily: Daily,
+                dj: DJ,
+              }}
             />
           )}
         </View>
@@ -52,6 +45,5 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     flex: 1,
-    height: 800,
   },
 });

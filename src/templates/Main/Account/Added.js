@@ -1,54 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, useWindowDimensions, StyleSheet } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import Header from 'components/Header';
 import style from 'constants/styles';
-import { TabView, SceneMap } from 'react-native-tab-view';
 import { AddedSong, AddedPlaylist } from 'components/Account/AddedSection';
-
-const renderScene = SceneMap({
-  song: AddedSong,
-  playlist: AddedPlaylist,
-});
+import TabView from 'components/TabView';
 
 export default function Added({ type }) {
   const { state, getAddedSong, getAddedPlaylist } = useContext(AddedContext);
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(type === 'Song' ? 0 : 1);
-  const [routes] = useState([
-    { key: 'song', title: '곡' },
-    { key: 'playlist', title: '플레이리스트' },
-  ]);
+
+  const dataFetch = async () => {
+    await Promise.all([getAddedSong(), getAddedPlaylist()]);
+  };
 
   useEffect(() => {
-    if (index === 0 && !state.songLists) {
-      getAddedSong();
-    } else if (index === 1 && !state.playlists) {
-      getAddedPlaylist();
-    }
-  }, [index]);
+    dataFetch();
+  }, []);
 
   return (
-    <View style={[style.background, styles.container]}>
+    <View style={[style.background]}>
       <Header title="담은 목록" back />
-      <View style={styles.container}>
-        {(state.songLists || state.playlists) && (
-          <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-          />
-        )}
-      </View>
+      {(state.songLists || state.playlists) && (
+        <TabView
+          routesMap={[
+            { key: 'song', title: '곡' },
+            { key: 'playlist', title: '플레이리스트' },
+          ]}
+          sceneMap={{
+            song: AddedSong,
+            playlist: AddedPlaylist,
+          }}
+          idx={type === 'Song' ? 0 : 1}
+        />
+      )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    flex: 1,
-    height: 800,
-  },
-});
