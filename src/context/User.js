@@ -3,7 +3,7 @@ import createDataContext from 'lib/utils/createDataContext';
 
 const userReducer = (state, action) => {
   switch (action.type) {
-    case 'initOtherUser':
+    case 'initOtherInformation':
       return { ...state, otherUser: null };
     case 'getMyInformation':
       return {
@@ -23,6 +23,10 @@ const userReducer = (state, action) => {
       return { ...state, follow: action.payload };
     case 'getGenreLists':
       return { ...state, genreLists: action.payload };
+    case 'initRepresentSongs':
+      return { ...state, representSongs: null };
+    case 'getRepresentSongs':
+      return { ...state, representSongs: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -30,11 +34,11 @@ const userReducer = (state, action) => {
   }
 };
 
-const initOtherUser = (dispatch) => () => {
+const initOtherInformation = (dispatch) => () => {
   try {
-    dispatch({ type: 'initOtherUser' });
+    dispatch({ type: 'initOtherInformation' });
   } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with initOtherUser' });
+    dispatch({ type: 'error', payload: 'Something went wrong with initOtherInformation' });
   }
 };
 
@@ -94,6 +98,7 @@ const getFollow =
       dispatch({ type: 'error', payload: 'Something went wrong with getfollower' });
     }
   };
+
 const follow =
   (dispatch) =>
   async ({ id }) => {
@@ -116,12 +121,20 @@ const unfollow =
     }
   };
 
+const initRepresentSongs = (dispatch) => () => {
+  try {
+    dispatch({ type: 'initRepresentSongs' });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with initRepresentSongs' });
+  }
+};
+
 const getRepresentSongs =
   (dispatch) =>
   async ({ id }) => {
     try {
       const response = await server.get(`/user/songs/${id}`);
-      dispatch({ type: 'getSongs', payload: response.data });
+      dispatch({ type: 'getRepresentSongs', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getRepresentSongs' });
     }
@@ -169,13 +182,14 @@ const postGenre =
 export const { Provider, Context } = createDataContext(
   userReducer,
   {
-    initOtherUser,
+    initOtherInformation,
     getMyInformation,
     getOtherInformation,
     editProfile,
     getFollow,
     follow,
     unfollow,
+    initRepresentSongs,
     getRepresentSongs,
     postRepresentSongs,
     editRepresentSongs,

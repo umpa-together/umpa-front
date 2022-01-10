@@ -12,10 +12,12 @@ import TrackPlayerProvider from 'providers/trackPlayer';
 export default function ({ id }) {
   const { getSelectedRelay, getRelaySong, state } = useContext(RelayContext);
 
+  const dataFetch = async () => {
+    await Promise.all([getSelectedRelay({ id }), getRelaySong({ id })]);
+  };
   useFocusEffect(
     useCallback(() => {
-      getSelectedRelay({ id });
-      getRelaySong({ id });
+      dataFetch();
     }, []),
   );
 

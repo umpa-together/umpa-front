@@ -10,9 +10,12 @@ import SearchBarView from 'components/Search/SearchBarView';
 export default function Search() {
   const { getRecentPlaylists, getMainRecommendDJ } = useContext(MainContentsContext);
 
+  const dataFetch = async () => {
+    await Promise.all([getRecentPlaylists(), getMainRecommendDJ()]);
+  };
+
   useEffect(() => {
-    getRecentPlaylists();
-    getMainRecommendDJ();
+    dataFetch();
   }, []);
 
   return (

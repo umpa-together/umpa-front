@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import ProfileImage from 'widgets/ProfileImage';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useModal } from 'providers/modal';
+import { Context as UserContext } from 'context/User';
 
 export default function UserInfo({ info }) {
-  const { songs, name, introduction, genre, profileimage } = info;
+  const { songs, name, introduction, genre, profileimage, _id: id } = info;
   const { setRepresentModal } = useModal();
+  const { getRepresentSongs } = useContext(UserContext);
   const onClickRepresentSong = () => {
+    getRepresentSongs({ id });
     setRepresentModal(true);
   };
 
