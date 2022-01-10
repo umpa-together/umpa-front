@@ -7,7 +7,7 @@ import { useModal } from 'providers/modal';
 import { Context as UserContext } from 'context/User';
 
 export default function UserInfo({ info }) {
-  const { songs, name, introduction, genre, profileimage, _id: id } = info;
+  const { songs, name, introduction, genre, profileImage, _id: id } = info;
   const { setRepresentModal } = useModal();
   const { getRepresentSongs } = useContext(UserContext);
   const onClickRepresentSong = () => {
@@ -21,7 +21,7 @@ export default function UserInfo({ info }) {
         <Text>{songs[0].attributes.name}</Text>
         <Text>{` ${songs[0].attributes.artistName}`}</Text>
       </TouchableOpacity>
-      <ProfileImage img={profileimage} imgStyle={styles.profileImage} />
+      <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
       <Text style={styles.name}>{name}</Text>
       {genre !== undefined && <Text style={styles.smallText}>{genre}</Text>}
       {introduction !== undefined && <Text style={styles.smallText}>{introduction}</Text>}
