@@ -34,7 +34,6 @@ export default function ({ targetId, action }) {
     }, []),
   );
 
-
   return (
     <View style={[keyboardStyle, style.flexRow, styles.container]}>
       <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
