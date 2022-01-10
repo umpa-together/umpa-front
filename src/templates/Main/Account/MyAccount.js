@@ -24,7 +24,7 @@ export default function MyAccount() {
   const playlistData =
     myContents &&
     myContents.playlist.map((item) => {
-      const { title, time, _id } = item;
+      const { image, songs, title, time, _id } = item;
       return {
         _id,
         image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
