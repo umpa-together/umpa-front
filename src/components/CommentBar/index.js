@@ -10,8 +10,8 @@ export default function ({ targetId, action }) {
   const { state } = useContext(UserContext);
   const { profileImage } = state.user;
 
-  const { keyboardStyle, onKeyboardDidShow, onKeyboardDidHide } = useKeyboard();
-
+  const { keyboardStyle, onKeyboardDidShow, onKeyboardDidHide, keyboardShowOpt, keyboardHideOpt } =
+    useKeyboard();
   const commentRef = useRef();
 
   const setCommentRef = (text) => {
@@ -24,8 +24,8 @@ export default function ({ targetId, action }) {
 
   useFocusEffect(
     useCallback(() => {
-      const showSubscription = Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
-      const hideSubscription = Keyboard.addListener('keyboardWillHide', onKeyboardDidHide);
+      const showSubscription = Keyboard.addListener(keyboardShowOpt, onKeyboardDidShow);
+      const hideSubscription = Keyboard.addListener(keyboardHideOpt, onKeyboardDidHide);
 
       return () => {
         showSubscription.remove();
@@ -33,6 +33,7 @@ export default function ({ targetId, action }) {
       };
     }, []),
   );
+
 
   return (
     <View style={[keyboardStyle, style.flexRow, styles.container]}>
