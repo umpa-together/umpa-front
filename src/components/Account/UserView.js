@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     width: 56 * SCALE_WIDTH,
     height: 56 * SCALE_WIDTH,
     borderRadius: 56 * SCALE_HEIGHT,
-    borderWidth: 1 * SCALE_WIDTH,
   },
   infoContainer: {
     marginLeft: 16 * SCALE_WIDTH,
