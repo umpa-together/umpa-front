@@ -8,7 +8,7 @@ import { Context as UserContext } from 'context/User';
 import { push } from 'lib/utils/navigation';
 import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
-import UserRepresentSong from '../UserRepresentSong.js';
+import UserRepresentSong from 'components/UserRepresentSong.js';
 
 export default function UserView({ user }) {
   const { name, profileImage, _id: id, songs } = user;

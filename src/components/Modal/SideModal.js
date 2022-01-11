@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import Divider from 'widgets/Divider';
