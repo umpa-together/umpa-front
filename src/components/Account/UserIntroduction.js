@@ -15,14 +15,12 @@ export default function UserIntroduction({ introduction, song, id }) {
     setRepresentModal(true);
   };
   return (
-    introduction !== undefined && (
-      <View style={[style.flexRow, styles.introductionBox]}>
-        <Text style={styles.introductionText}>{introduction}</Text>
-        <TouchableOpacity style={[style.flexRow]} onPress={onClickRepresentSong}>
-          <UserRepresentSong song={song} />
-        </TouchableOpacity>
-      </View>
-    )
+    <View style={[style.flexRow, styles.introductionBox]}>
+      {introduction !== undefined && <Text style={styles.introductionText}>{introduction}</Text>}
+      <TouchableOpacity style={[style.flexRow]} onPress={onClickRepresentSong}>
+        <UserRepresentSong song={song} />
+      </TouchableOpacity>
+    </View>
   );
 }
 

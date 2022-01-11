@@ -21,7 +21,7 @@ export default function UserInfo({ myaccount, user }) {
 const styles = StyleSheet.create({
   container: {
     widht: '100%',
-    height: 107 * SCALE_HEIGHT,
+    marginBottom: 20 * SCALE_HEIGHT,
     paddingHorizontal: 16 * SCALE_WIDTH,
   },
 });

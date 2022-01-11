@@ -29,11 +29,11 @@ const SideModalView = () => {
 
   const menuListsTop = [
     {
-      title: '좋아요한 곡',
+      title: '저장한 곡',
       onClick: onClickAddedSong,
     },
     {
-      title: '좋아요한 플레이리스트',
+      title: '저장한 플레이리스트',
       onClick: onClickAddedPlaylist,
     },
   ];

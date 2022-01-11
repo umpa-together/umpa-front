@@ -5,7 +5,6 @@ import style from 'constants/styles';
 import { MAIN_COLOR } from 'constants/colors';
 import { useModal } from 'providers/modal';
 import { goBack } from 'lib/utils/navigation';
-import Icon from '../../widgets/Icon';
 
 export default function AccountHeader({ back, hamburger }) {
   const { setSideModal } = useModal();

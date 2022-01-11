@@ -14,7 +14,6 @@ export default function SideMenu({ title, onClick }) {
 }
 const styles = StyleSheet.create({
   container: {
-    height: 20 * SCALE_HEIGHT,
     marginBottom: 17 * SCALE_HEIGHT,
     justifyContent: 'space-between',
     paddingLeft: 26 * SCALE_WIDTH,

@@ -28,10 +28,10 @@ export default function UserName({ id, myaccount, name }) {
 const styles = StyleSheet.create({
   editBox: {
     marginLeft: 7 * SCALE_WIDTH,
-    borderWidth: 1,
+    borderWidth: 1 * SCALE_WIDTH,
     borderColor: COLOR_3,
-    width: 50 * SCALE_WIDTH,
-    height: 22 * SCALE_HEIGHT,
+    paddingHorizontal: 13 * SCALE_WIDTH,
+    paddingVertical: 4 * SCALE_HEIGHT,
     borderRadius: 100 * SCALE_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',

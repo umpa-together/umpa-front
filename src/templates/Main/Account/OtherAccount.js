@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useState, useCallback } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
-import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/Account/PostingResult';
@@ -13,36 +13,7 @@ import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
-import { MAIN_COLOR, COLOR_5, COLOR_1 } from 'constants/colors';
-import { TabBar } from 'react-native-tab-view';
-
-const TabViewHeader = (props) => {
-  const indicatorStyle = {
-    backgroundColor: MAIN_COLOR,
-    height: 3 * SCALE_HEIGHT,
-  };
-  const indicatorContainerStyle = {
-    marginTop: 44 * SCALE_WIDTH,
-    backgroundColor: COLOR_5,
-    height: 3 * SCALE_HEIGHT,
-  };
-  const labelStyle = {
-    fontSize: FS(14),
-    color: COLOR_1,
-  };
-  return (
-    <TabBar
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-      indicatorStyle={indicatorStyle}
-      indicatorContainerStyle={indicatorContainerStyle}
-      style={{
-        backgroundColor: '#fff',
-      }}
-      renderLabel={({ route }) => <Text style={labelStyle}>{route.title}</Text>}
-    />
-  );
-};
+import AccountTabBar from 'components/TabView/AccountTabBar';
 
 export default function OtherAccount() {
   const { state, initRepresentSongs } = useContext(UserContext);
@@ -123,7 +94,7 @@ export default function OtherAccount() {
               daily: () => <PostingResult data={dailyData} />,
               relay: () => <PostingResult data={relayData} />,
             }}
-            renderTabBar={(props) => TabViewHeader(props)}
+            renderTabBar={(props) => <AccountTabBar props={props} />}
           />
         </ScrollView>
       )}

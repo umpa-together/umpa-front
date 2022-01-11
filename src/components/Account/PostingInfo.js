@@ -42,11 +42,7 @@ export default function PostingInfo({ user, posting }) {
         {optionLists.map((item) => {
           const { count, title } = item;
           return (
-            <TouchableOpacity
-              onPress={item.onClick}
-              key={item.title}
-              style={styles.elementContainer}
-            >
+            <TouchableOpacity onPress={item.onClick} key={title} style={styles.elementContainer}>
               <Text style={styles.countText}>{count}</Text>
               <Text style={styles.titleText}>{title}</Text>
             </TouchableOpacity>
@@ -88,6 +84,5 @@ const styles = StyleSheet.create({
     width: 90 * SCALE_WIDTH,
     height: 90 * SCALE_WIDTH,
     borderRadius: 90 * SCALE_HEIGHT,
-    borderWidth: 1 * SCALE_WIDTH,
   },
 });

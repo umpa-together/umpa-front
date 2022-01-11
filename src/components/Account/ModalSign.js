@@ -18,7 +18,9 @@ export default function ModalSign() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 280 * SCALE_HEIGHT,
+    position: 'absolute',
+    bottom: 36 * SCALE_HEIGHT,
+    width: '100%',
     justifyContent: 'space-evenly',
   },
   text: {
