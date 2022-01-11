@@ -1,18 +1,48 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useState, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
-import { SCALE_WIDTH } from 'lib/utils/normalize';
+import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/Account/PostingResult';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import DailyImage from 'components/Account/DailyImage';
 import { SongImage } from 'widgets/SongImage';
-import { goBack } from 'lib/utils/navigation';
 import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
+import AccountHeader from 'components/Account/AccountHeader';
+import { MAIN_COLOR, COLOR_5, COLOR_1 } from 'constants/colors';
+import { TabBar } from 'react-native-tab-view';
+
+const TabViewHeader = (props) => {
+  const indicatorStyle = {
+    backgroundColor: MAIN_COLOR,
+    height: 3 * SCALE_HEIGHT,
+  };
+  const indicatorContainerStyle = {
+    marginTop: 44 * SCALE_WIDTH,
+    backgroundColor: COLOR_5,
+    height: 3 * SCALE_HEIGHT,
+  };
+  const labelStyle = {
+    fontSize: FS(14),
+    color: COLOR_1,
+  };
+  return (
+    <TabBar
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      indicatorStyle={indicatorStyle}
+      indicatorContainerStyle={indicatorContainerStyle}
+      style={{
+        backgroundColor: '#fff',
+      }}
+      renderLabel={({ route }) => <Text style={labelStyle}>{route.title}</Text>}
+    />
+  );
+};
 
 export default function OtherAccount() {
   const { state, initRepresentSongs } = useContext(UserContext);
@@ -25,12 +55,14 @@ export default function OtherAccount() {
     contents &&
     contents.playlist.map((item) => {
       const { image, songs, title, time, _id } = item;
+      const convertTime = time.slice(0, 10).replaceAll('-', '.');
+
       return {
         _id,
         image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
         title,
-        content: item.songs[0].attributes.name,
-        time,
+        content: `${item.songs[0].attributes.name}외 ${item.songs.length} 곡`,
+        time: convertTime,
       };
     });
 
@@ -63,10 +95,6 @@ export default function OtherAccount() {
       };
     });
 
-  const onClickBack = () => {
-    goBack();
-  };
-
   useFocusEffect(
     useCallback(() => {
       initRepresentSongs();
@@ -75,16 +103,15 @@ export default function OtherAccount() {
 
   return (
     <View style={style.background}>
-      <Button title="back" onPress={onClickBack} />
       {otherUser && (
         <ScrollView>
-          <UserInfo info={otherUser} />
+          <AccountHeader back />
           <PostingInfo
-            userId={otherUser._id}
+            // eslint-disable-next-line no-underscore-dangle
             posting={postingCount}
-            follower={otherUser.follower}
-            following={otherUser.following}
+            user={otherUser}
           />
+          <UserInfo user={otherUser} />
           <TabView
             routesMap={[
               { key: 'playlist', title: '플레이리스트' },
@@ -96,6 +123,7 @@ export default function OtherAccount() {
               daily: () => <PostingResult data={dailyData} />,
               relay: () => <PostingResult data={relayData} />,
             }}
+            renderTabBar={(props) => TabViewHeader(props)}
           />
         </ScrollView>
       )}

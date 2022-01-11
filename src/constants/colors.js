@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
-export const MAIN_COLOR = '#fff';
-export const SUB_COLOR = '#73B979';
-export const SUB_COLOR2 = '#5FAF66';
-export const COLOR_1 = '#191919';
-export const COLOR_2 = '#292929';
+export const MAIN_COLOR = '#1B4DFF';
+export const COLOR_1 = '#111111'; // 블랙
+export const COLOR_2 = '#505050'; // 진회색
+export const COLOR_3 = '#767676'; // 회색
+export const COLOR_4 = '#999999'; // 비활성화
+export const COLOR_5 = '#F1F1F1'; // 비활성화 탭뷰

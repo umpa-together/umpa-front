@@ -1,48 +1,53 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
-import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { push } from 'lib/utils/navigation';
+import { COLOR_1 } from 'constants/colors';
+import FollowButton from 'components/FollowButton';
+import UserRepresentSong from '../UserRepresentSong.js';
 
 export default function UserView({ user }) {
-  const { name, genre, profileImage, _id } = user;
-  const { state, follow, unfollow, getOtherInformation } = useContext(UserContext);
-  const [isFollow, setIsFollow] = useState(state.user.following.includes(user._id));
+  const { name, profileImage, _id: id, songs } = user;
+  const { getOtherInformation } = useContext(UserContext);
   const onClickAccount = async () => {
-    await getOtherInformation({ id: _id });
-    push('OtherAccount', { id: _id });
-  };
-
-  const onClickFollow = () => {
-    if (isFollow) {
-      unfollow({ id: _id });
-    } else {
-      follow({ id: _id });
-    }
-    setIsFollow(!isFollow);
+    await getOtherInformation({ id });
+    push('OtherAccount', { id });
   };
   return (
-    <TouchableOpacity onPress={onClickAccount} style={style.flexRow}>
+    <TouchableOpacity onPress={onClickAccount} style={[styles.container, style.flexRow]}>
       <ProfileImage img={profileImage} imgStyle={styles.img} />
-      <View>
-        <Text>{name}</Text>
-        {genre && <Text>{genre}</Text>}
+      <View style={styles.infoContainer}>
+        <Text style={styles.nameText}>{name}</Text>
+        <UserRepresentSong song={songs[0]} />
       </View>
-      <TouchableOpacity onPress={onClickFollow}>
-        <Text>{isFollow ? '팔로잉취소' : '팔로잉'}</Text>
-      </TouchableOpacity>
+      <FollowButton id={id} />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 26 * SCALE_HEIGHT,
+    height: 56 * SCALE_WIDTH,
+  },
   img: {
-    width: 60 * SCALE_WIDTH,
-    height: 60 * SCALE_WIDTH,
-    borderRadius: 60 * SCALE_HEIGHT,
+    width: 56 * SCALE_WIDTH,
+    height: 56 * SCALE_WIDTH,
+    borderRadius: 56 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
+  },
+  infoContainer: {
+    marginLeft: 16 * SCALE_WIDTH,
+    width: 202 * SCALE_WIDTH,
+    marginRight: 10 * SCALE_WIDTH,
+  },
+  nameText: {
+    fontSize: FS(14),
+    color: COLOR_1,
+    marginBottom: 5 * SCALE_HEIGHT,
   },
 });

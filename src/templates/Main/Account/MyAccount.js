@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
-import { SCALE_WIDTH } from 'lib/utils/normalize';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/Account/PostingResult';
@@ -11,11 +11,40 @@ import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import DailyImage from 'components/Account/DailyImage';
 import SideModal from 'components/Modal/SideModal';
 import { SongImage } from 'widgets/SongImage';
-import { useModal } from 'providers/modal';
 import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
+import AccountHeader from 'components/Account/AccountHeader';
+import { MAIN_COLOR, COLOR_5, COLOR_1 } from 'constants/colors';
+import { TabBar } from 'react-native-tab-view';
 
+const TabViewHeader = (props) => {
+  const indicatorStyle = {
+    backgroundColor: MAIN_COLOR,
+    height: 3 * SCALE_HEIGHT,
+  };
+  const indicatorContainerStyle = {
+    marginTop: 44 * SCALE_WIDTH,
+    backgroundColor: COLOR_5,
+    height: 3 * SCALE_HEIGHT,
+  };
+  const labelStyle = {
+    fontSize: FS(14),
+    color: COLOR_1,
+  };
+  return (
+    <TabBar
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      indicatorStyle={indicatorStyle}
+      indicatorContainerStyle={indicatorContainerStyle}
+      style={{
+        backgroundColor: '#fff',
+      }}
+      renderLabel={({ route }) => <Text style={labelStyle}>{route.title}</Text>}
+    />
+  );
+};
 export default function MyAccount() {
   const { state, initRepresentSongs, initOtherInformation } = useContext(UserContext);
   const { user, myContents } = state;
@@ -25,12 +54,13 @@ export default function MyAccount() {
     myContents &&
     myContents.playlist.map((item) => {
       const { image, songs, title, time, _id } = item;
+      const convertTime = time.slice(0, 10).replaceAll('-', '.');
       return {
         _id,
-        image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
+        image: <PlaylistAlbumImage image={image} songs={songs} size={85} />,
         title,
-        content: item.songs[0].attributes.name,
-        time,
+        content: `${item.songs[0].attributes.name}외 ${item.songs.length} 곡`,
+        time: convertTime,
       };
     });
   const dailyData =
@@ -60,11 +90,6 @@ export default function MyAccount() {
         time: createdTime,
       };
     });
-  const { setSideModal } = useModal();
-
-  const onPressMenu = () => {
-    setSideModal(true);
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -77,15 +102,13 @@ export default function MyAccount() {
     <View style={style.background}>
       {state.user && (
         <ScrollView>
-          <Button title="햄버거" onPress={onPressMenu} />
-          <UserInfo info={user} />
+          <AccountHeader hamburger />
           <PostingInfo
             // eslint-disable-next-line no-underscore-dangle
-            userId={user._id}
             posting={postingCount}
-            follower={user.follower}
-            following={user.following}
+            user={user}
           />
+          <UserInfo myaccount user={user} />
           <TabView
             routesMap={[
               { key: 'playlist', title: '플레이리스트' },
@@ -107,6 +130,7 @@ export default function MyAccount() {
               ),
               relay: () => <PostingResult data={relayData} />,
             }}
+            renderTabBar={(props) => TabViewHeader(props)}
           />
         </ScrollView>
       )}

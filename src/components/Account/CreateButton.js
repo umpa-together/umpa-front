@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
-import { SCALE_WIDTH } from 'lib/utils/normalize';
+import { COLOR_2 } from 'constants/colors';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
 
 export default function CreateButton({ opt }) {
@@ -13,25 +14,47 @@ export default function CreateButton({ opt }) {
     daily: { title: '새 데일리 추가' },
   };
   return (
-    <View style={style.flexRow}>
+    <View style={[styles.container, style.flexRow]}>
       <TouchableOpacity
         onPress={createOpt[opt].onClick}
         style={opt === 'playlist' ? styles.buttonBoxPlaylist : styles.buttonBoxDaily}
-      />
-      <Text>{createOpt[opt].title}</Text>
+      >
+        <View style={styles.icon} />
+      </TouchableOpacity>
+      <Text style={styles.text}>{createOpt[opt].title}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    paddingHorizontal: 16 * SCALE_WIDTH,
+    alignItems: 'center',
+    marginTop: 22 * SCALE_HEIGHT,
+  },
   buttonBoxDaily: {
-    width: 60 * SCALE_WIDTH,
-    height: 60 * SCALE_WIDTH,
-    borderWidth: 1 * SCALE_WIDTH,
+    width: 85 * SCALE_WIDTH,
+    height: 85 * SCALE_WIDTH,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#DBDBDB',
   },
   buttonBoxPlaylist: {
-    width: 80 * SCALE_WIDTH,
-    height: 80 * SCALE_WIDTH,
-    borderWidth: 1 * SCALE_WIDTH,
+    width: 85 * SCALE_WIDTH,
+    height: 85 * SCALE_WIDTH,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#DBDBDB',
+  },
+  icon: {
+    height: 25 * SCALE_HEIGHT,
+    width: 10 * SCALE_WIDTH,
+    borderWidth: 1,
+  },
+  text: {
+    fontSize: FS(14),
+    marginLeft: 15 * SCALE_WIDTH,
+    color: COLOR_2,
   },
 });
