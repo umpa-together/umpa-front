@@ -75,7 +75,7 @@ export default function OtherAccount() {
   return (
     <View style={style.background}>
       {otherUser && (
-        <ScrollView>
+        <>
           <AccountHeader back />
           <PostingInfo
             // eslint-disable-next-line no-underscore-dangle
@@ -90,13 +90,25 @@ export default function OtherAccount() {
               { key: 'relay', title: '릴레이플리' },
             ]}
             sceneMap={{
-              playlist: () => <PostingResult data={playlistData} />,
-              daily: () => <PostingResult data={dailyData} />,
-              relay: () => <PostingResult data={relayData} />,
+              playlist: () => (
+                <ScrollView>
+                  <PostingResult data={playlistData} />
+                </ScrollView>
+              ),
+              daily: () => (
+                <ScrollView>
+                  <PostingResult data={dailyData} />
+                </ScrollView>
+              ),
+              relay: () => (
+                <ScrollView>
+                  <PostingResult data={relayData} />
+                </ScrollView>
+              ),
             }}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />
-        </ScrollView>
+        </>
       )}
     </View>
   );

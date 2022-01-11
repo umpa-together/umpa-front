@@ -73,7 +73,7 @@ export default function MyAccount() {
   return (
     <View style={style.background}>
       {state.user && (
-        <ScrollView>
+        <>
           <AccountHeader hamburger />
           <PostingInfo
             // eslint-disable-next-line no-underscore-dangle
@@ -89,22 +89,26 @@ export default function MyAccount() {
             ]}
             sceneMap={{
               playlist: () => (
-                <>
+                <ScrollView>
                   <CreateButton opt="playlist" />
                   <PostingResult data={playlistData} />
-                </>
+                </ScrollView>
               ),
               daily: () => (
-                <>
+                <ScrollView>
                   <CreateButton opt="daily" />
                   <PostingResult data={dailyData} />
-                </>
+                </ScrollView>
               ),
-              relay: () => <PostingResult data={relayData} />,
+              relay: () => (
+                <ScrollView>
+                  <PostingResult data={relayData} />
+                </ScrollView>
+              ),
             }}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />
-        </ScrollView>
+        </>
       )}
       <SideModal />
     </View>
