@@ -1,56 +1,27 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import style from 'constants/styles';
-import ProfileImage from 'widgets/ProfileImage';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
-import { useModal } from 'providers/modal';
-import { Context as UserContext } from 'context/User';
 
-export default function UserInfo({ info }) {
-  const { songs, name, introduction, genre, profileImage, _id: id } = info;
-  const { setRepresentModal } = useModal();
-  const { getRepresentSongs } = useContext(UserContext);
-  const onClickRepresentSong = () => {
-    getRepresentSongs({ id });
-    setRepresentModal(true);
-  };
+import UserName from './UserName';
+import UserGenre from './UserGenre';
+import UserIntroduction from './UserIntroduction';
+
+export default function UserInfo({ myaccount, user }) {
+  const { songs, name, introduction, genre, _id: id } = user;
 
   return (
-    <View style={[styles.container, style.alignCenter]}>
-      <TouchableOpacity style={[styles.representBox, style.flexRow]} onPress={onClickRepresentSong}>
-        <Text>{songs[0].attributes.name}</Text>
-        <Text>{` ${songs[0].attributes.artistName}`}</Text>
-      </TouchableOpacity>
-      <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
-      <Text style={styles.name}>{name}</Text>
-      {genre !== undefined && <Text style={styles.smallText}>{genre}</Text>}
-      {introduction !== undefined && <Text style={styles.smallText}>{introduction}</Text>}
+    <View style={[styles.container]}>
+      <UserName id={id} myaccount={myaccount} name={name} />
+      <UserGenre genre={genre} />
+      <UserIntroduction introduction={introduction} song={songs[0]} id={id} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    widht: 375 * SCALE_WIDTH,
-    height: 313 * SCALE_HEIGHT,
-    borderWidth: 1,
-  },
-  representBox: {
-    borderWidth: 1 * SCALE_WIDTH,
-    paddingHorizontal: 12 * SCALE_WIDTH,
-    borderRadius: 43 * SCALE_HEIGHT,
-  },
-  profileImage: {
-    width: 90 * SCALE_WIDTH,
-    height: 90 * SCALE_WIDTH,
-    borderRadius: 90 * SCALE_WIDTH,
-    marginTop: 12 * SCALE_HEIGHT,
-    borderWidth: 1 * SCALE_WIDTH,
-  },
-  name: {
-    marginTop: 12 * SCALE_HEIGHT,
-  },
-  smallText: {
-    marginTop: 12 * SCALE_HEIGHT,
+    widht: '100%',
+    marginBottom: 20 * SCALE_HEIGHT,
+    paddingHorizontal: 16 * SCALE_WIDTH,
   },
 });

@@ -1,24 +1,21 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { SCALE_WIDTH } from 'lib/utils/normalize';
+import { View, StyleSheet } from 'react-native';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import Divider from 'widgets/Divider';
 import { useModal } from 'providers/modal';
 import Modal from 'components/Modal';
 import { navigate } from 'lib/utils/navigation';
-import SideMenu from '../Account/SideMenu';
+import ModalInfo from 'components/Account/ModalInfo';
+import SideMenu from 'components/Account/SideMenu';
+import ModalSign from 'components/Account/ModalSign';
 
 const SideModalView = () => {
   const { state } = useContext(UserContext);
   const { onCloseSideModal } = useModal();
 
-  const { name } = state.user;
+  const { name, profileImage } = state.user;
   const emptyfunction = () => {};
-
-  const onClickProfileEdit = () => {
-    navigate('ProfileEdit');
-    onCloseSideModal();
-  };
 
   const onClickAddedSong = () => {
     navigate('Added', { type: 'Song' });
@@ -32,11 +29,11 @@ const SideModalView = () => {
 
   const menuListsTop = [
     {
-      title: '담은 곡',
+      title: '저장한 곡',
       onClick: onClickAddedSong,
     },
     {
-      title: '담은 플레이리스트',
+      title: '저장한 플레이리스트',
       onClick: onClickAddedPlaylist,
     },
   ];
@@ -68,26 +65,22 @@ const SideModalView = () => {
   ];
 
   return (
-    <View style={[styles.modal, { paddingTop: 100 }]}>
-      <Text>{name}</Text>
-      <TouchableOpacity onPress={onClickProfileEdit}>
-        <Text>프로필 편집</Text>
-      </TouchableOpacity>
-      {menuListsTop.map((item) => {
-        const { title, onClick } = item;
-        return <SideMenu key={title} title={title} onClick={onClick} />;
-      })}
+    <View style={[styles.modal, styles.modalContainer]}>
+      <ModalInfo name={name} profileImage={profileImage} />
+      <View style={styles.divideContainer}>
+        {menuListsTop.map((item) => {
+          const { title, onClick } = item;
+          return <SideMenu key={title} title={title} onClick={onClick} />;
+        })}
+      </View>
       <Divider />
-      {menuListsBottom.map((item) => {
-        const { title, onClick } = item;
-        return <SideMenu key={title} title={title} onClick={onClick} />;
-      })}
-      <TouchableOpacity>
-        <Text>회원탈퇴</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>로그아웃</Text>
-      </TouchableOpacity>
+      <View style={styles.divideContainer}>
+        {menuListsBottom.map((item) => {
+          const { title, onClick } = item;
+          return <SideMenu key={title} title={title} onClick={onClick} />;
+        })}
+      </View>
+      <ModalSign />
     </View>
   );
 };
@@ -118,11 +111,17 @@ const styles = StyleSheet.create({
   container: {
     margin: 0,
   },
+  modalContainer: {
+    paddingTop: 59 * SCALE_HEIGHT,
+  },
   modal: {
     position: 'absolute',
     right: 0,
-    width: 280 * SCALE_WIDTH,
+    width: 264 * SCALE_WIDTH,
     height: '100%',
     backgroundColor: '#fff',
+  },
+  divideContainer: {
+    marginTop: 29 * SCALE_HEIGHT,
   },
 });

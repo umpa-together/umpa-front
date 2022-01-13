@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
 import UserInfo from 'components/Account/UserInfo';
@@ -11,10 +11,11 @@ import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import DailyImage from 'components/Account/DailyImage';
 import SideModal from 'components/Modal/SideModal';
 import { SongImage } from 'widgets/SongImage';
-import { useModal } from 'providers/modal';
 import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
+import AccountHeader from 'components/Account/AccountHeader';
+import AccountTabBar from 'components/TabView/AccountTabBar';
 
 export default function MyAccount() {
   const { state, initRepresentSongs, initOtherInformation } = useContext(UserContext);
@@ -25,12 +26,13 @@ export default function MyAccount() {
     myContents &&
     myContents.playlist.map((item) => {
       const { image, songs, title, time, _id } = item;
+      const convertTime = time.slice(0, 10).replaceAll('-', '.');
       return {
         _id,
-        image: <PlaylistAlbumImage image={image} songs={songs} size={80} />,
+        image: <PlaylistAlbumImage image={image} songs={songs} size={85} />,
         title,
-        content: item.songs[0].attributes.name,
-        time,
+        content: `${item.songs[0].attributes.name}외 ${item.songs.length} 곡`,
+        time: convertTime,
       };
     });
   const dailyData =
@@ -60,11 +62,6 @@ export default function MyAccount() {
         time: createdTime,
       };
     });
-  const { setSideModal } = useModal();
-
-  const onPressMenu = () => {
-    setSideModal(true);
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -76,16 +73,14 @@ export default function MyAccount() {
   return (
     <View style={style.background}>
       {state.user && (
-        <ScrollView>
-          <Button title="햄버거" onPress={onPressMenu} />
-          <UserInfo info={user} />
+        <>
+          <AccountHeader hamburger />
           <PostingInfo
             // eslint-disable-next-line no-underscore-dangle
-            userId={user._id}
             posting={postingCount}
-            follower={user.follower}
-            following={user.following}
+            user={user}
           />
+          <UserInfo myaccount user={user} />
           <TabView
             routesMap={[
               { key: 'playlist', title: '플레이리스트' },
@@ -94,21 +89,26 @@ export default function MyAccount() {
             ]}
             sceneMap={{
               playlist: () => (
-                <>
+                <ScrollView>
                   <CreateButton opt="playlist" />
                   <PostingResult data={playlistData} />
-                </>
+                </ScrollView>
               ),
               daily: () => (
-                <>
+                <ScrollView>
                   <CreateButton opt="daily" />
                   <PostingResult data={dailyData} />
-                </>
+                </ScrollView>
               ),
-              relay: () => <PostingResult data={relayData} />,
+              relay: () => (
+                <ScrollView>
+                  <PostingResult data={relayData} />
+                </ScrollView>
+              ),
             }}
+            renderTabBar={(props) => <AccountTabBar props={props} />}
           />
-        </ScrollView>
+        </>
       )}
       <SideModal />
     </View>
