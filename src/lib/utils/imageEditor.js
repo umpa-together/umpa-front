@@ -47,16 +47,12 @@ export const onClickMultiple = (setImages) => {
   });
 };
 
-export const onClickCrop = (uri, setImages) => {
-  ImagePicker.openCropper({
-    path: uri,
-    includeBase64: true,
-    width: 500,
-    height: 500,
+export const onClickCrop = (setImages) => {
+  ImagePicker.openPicker({
+    width: 375,
+    height: 120,
+    cropping: true,
   }).then((image) => {
-    setImages((prev) => [
-      ...prev,
-      { name: image.filename, type: image.mime, uri: `file://${image.path}` },
-    ]);
+    setImages({ name: image.filename, type: image.mime, uri: `file://${image.path}` });
   });
 };

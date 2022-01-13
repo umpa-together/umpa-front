@@ -1,17 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as MainContentsContext } from 'context/MainContents';
-import RecentPlaylist from 'components/Search/RecentPlaylist';
-import RecommendAcocunt from 'components/Search/RecommendAccount';
+import RecommendPlaylist from 'components/Search/RecommendPlaylist';
+import RecommendAccount from 'components/Search/RecommendAccount';
 import SearchBarView from 'components/Search/SearchBarView';
+import RecentDailies from 'components/Search/RecentDailies';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function Search() {
-  const { getRecentPlaylists, getMainRecommendDJ } = useContext(MainContentsContext);
+  const { getRecentPlaylists, getMainRecommendDJ, getRecentDailies } =
+    useContext(MainContentsContext);
 
   const dataFetch = async () => {
-    await Promise.all([getRecentPlaylists(), getMainRecommendDJ()]);
+    await Promise.all([getRecentPlaylists(), getMainRecommendDJ(), getRecentDailies()]);
   };
 
   useEffect(() => {
@@ -19,11 +22,23 @@ export default function Search() {
   }, []);
 
   return (
-    <ScrollView style={style.background}>
-      <TabTitle title="검색" />
-      <SearchBarView />
-      <RecentPlaylist />
-      <RecommendAcocunt />
-    </ScrollView>
+    <View style={style.background}>
+      <TabTitle title="검색" titleStyle={styles.title} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <SearchBarView />
+        <RecommendPlaylist />
+        <RecommendAccount />
+        <RecentDailies />
+      </ScrollView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: FS(24),
+    lineHeight: 35 * SCALE_HEIGHT,
+    marginTop: 6 * SCALE_HEIGHT,
+    marginLeft: 16 * SCALE_WIDTH,
+  },
+});

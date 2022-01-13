@@ -1,34 +1,30 @@
 import React, { useContext } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { Text, FlatList, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
-import UserCard from 'components/Search/UserCard';
+import PlaylistCard from 'components/Search/PlaylistCard';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 
-export default function RecommendAcocunt() {
+export default function RecommendPlaylist() {
   const { state } = useContext(MainContentsContext);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>추천 계정</Text>
+    <>
+      <Text style={styles.title}>추천 플레이리스트</Text>
       <FlatList
-        data={state.mainDJ}
-        keyExtractor={(user) => user._id}
+        data={state.recentPlaylists}
+        keyExtractor={(playlist) => playlist._id}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatList}
         renderItem={({ item }) => {
-          return <UserCard user={item} />;
+          return <PlaylistCard info={item} />;
         }}
       />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 34 * SCALE_HEIGHT,
-  },
   title: {
     fontSize: FS(16),
     color: COLOR_1,
