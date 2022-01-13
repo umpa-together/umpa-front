@@ -18,9 +18,14 @@ export default function ProfileEditProvider({ children }) {
     genre: [],
   });
   const [songs, setSongs] = useState(user ? user.songs : []);
-  const [image, setImage] = useState({
+  const [profileImage, setProfileImage] = useState({
     name: '',
     uri: user ? user.profileImage : '',
+    type: 'image/jpeg',
+  });
+  const [backgroundImage, setBackgroundImage] = useState({
+    name: '',
+    uri: user ? user.backgroundImage : '',
     type: 'image/jpeg',
   });
   const { arraySort } = useScroll();
@@ -50,7 +55,7 @@ export default function ProfileEditProvider({ children }) {
         ...profile,
         genre: profile.genre.filter((item) => item !== genre),
       });
-    } else {
+    } else if (profile.genre.length < 5) {
       setProfile({
         ...profile,
         genre: [...profile.genre, genre],
@@ -60,12 +65,12 @@ export default function ProfileEditProvider({ children }) {
 
   const onClickEdit = async () => {
     let fd = null;
-    if (image.name !== '') {
+    if (profileImage.name !== '') {
       fd = new FormData();
       fd.append('img', {
-        name: image.name,
-        type: image.type,
-        uri: image.uri,
+        name: profileImage.name,
+        type: profileImage.type,
+        uri: profileImage.uri,
       });
     }
     const songsChange = arraySort(songs, setSongs);
@@ -99,10 +104,10 @@ export default function ProfileEditProvider({ children }) {
   };
 
   useEffect(() => {
-    if (state.genreLists) {
+    if (state.genreLists && profile.genre.length === 0) {
       setProfile({
         ...profile,
-        genre: state.user.genre,
+        genre: user.genre,
       });
     }
   }, [state.genreLists]);
@@ -110,11 +115,13 @@ export default function ProfileEditProvider({ children }) {
   const value = {
     profile,
     songs,
-    image,
+    profileImage,
+    backgroundImage,
     onChangeValue,
     onClickGenre,
     setSongs,
-    setImage,
+    setProfileImage,
+    setBackgroundImage,
     onClickEdit,
   };
 
