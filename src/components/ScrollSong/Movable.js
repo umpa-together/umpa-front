@@ -8,17 +8,15 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
-  cancelAnimation,
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useScroll } from 'providers/scroll';
 
 export default function Movable({ id, songsCount, children }) {
-  const { positions, scrollY, topOffset, clamp, objectMove, SONG_HEIGHT, SCROLL_HEIGHT_THRESHOLD } =
+  const { positions, scrollY, topOffset, clamp, objectMove, SONG_HEIGHT, scrollOutsideY } =
     useScroll();
   const [moving, setMoving] = useState(false);
   const top = useSharedValue(positions.current.value[id] * SONG_HEIGHT);
-  const DEVICE_HEIGHT = 400;
 
   // update location other song, not moving
   useAnimatedReaction(
@@ -38,19 +36,8 @@ export default function Movable({ id, songsCount, children }) {
       runOnJS(setMoving)(true);
     },
     onActive: (event) => {
-      const positionY = event.absoluteY + scrollY.value - topOffset;
-      if (positionY <= scrollY.value + SCROLL_HEIGHT_THRESHOLD) {
-        // scroll up if item get up limit
-        scrollY.value = withTiming(scrollY.value - 10, { duration: 20 });
-      } else if (
-        positionY >= scrollY.value + DEVICE_HEIGHT - SCROLL_HEIGHT_THRESHOLD &&
-        positionY <= songsCount * SONG_HEIGHT
-      ) {
-        // scroll down if item get down limit
-        scrollY.value = withTiming(scrollY.value + 10, { duration: 20 });
-      } else {
-        cancelAnimation(scrollY);
-      }
+      const positionY = event.absoluteY + scrollY.value - topOffset + scrollOutsideY.value;
+
       // set top value moving song
       top.value = withTiming(positionY - SONG_HEIGHT, {
         duration: 16,
@@ -82,11 +69,11 @@ export default function Movable({ id, songsCount, children }) {
 
   return (
     <Animated.View style={[styles.container, animatedStyled]}>
-      <View style={{ flexDirection: 'row' }}>
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={{ width: '15%', backgroundColor: '#444' }} />
-        </PanGestureHandler>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         {children}
+        <PanGestureHandler onGestureEvent={gestureHandler}>
+          <Animated.View style={{ width: 40, height: 40, borderWidth: 1 }} />
+        </PanGestureHandler>
       </View>
     </Animated.View>
   );

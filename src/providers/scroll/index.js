@@ -7,7 +7,7 @@ import {
   scrollTo,
 } from 'react-native-reanimated';
 
-const SONG_HEIGHT = 60;
+const SONG_HEIGHT = 50;
 const SCROLL_HEIGHT_THRESHOLD = 10;
 
 const ScrollContext = createContext(null);
@@ -25,6 +25,8 @@ export default function ScrollProvider({ children }) {
   const positions = useRef(useSharedValue(listToObject([])));
   const scrollY = useSharedValue(0);
   const scrollViewRef = useAnimatedRef();
+  const outsideScrollViewRef = useAnimatedRef();
+  const scrollOutsideY = useSharedValue(0);
   const [topOffset, setTopOffset] = useState(0);
 
   // update scroll view location by using shared value
@@ -58,6 +60,10 @@ export default function ScrollProvider({ children }) {
     scrollY.value = event.contentOffset.y;
   });
 
+  const handleOutsideScroll = (event) => {
+    scrollOutsideY.value = event.nativeEvent.contentOffset.y;
+  };
+
   // give position in range song length
   const clamp = (value, lowerBound, upperBound) => {
     'worklet';
@@ -86,12 +92,15 @@ export default function ScrollProvider({ children }) {
     SCROLL_HEIGHT_THRESHOLD,
     scrollY,
     scrollViewRef,
+    scrollOutsideY,
+    outsideScrollViewRef,
     topOffset,
     positions,
     listToObject,
     updatePosition,
     handleScroll,
     onLayoutScroll,
+    handleOutsideScroll,
     arraySort,
     clamp,
     objectMove,

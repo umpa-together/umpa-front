@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Platform, StatusBar as RnStatusBar } from 'react-native';
-import { MAIN_COLOR } from 'constants/colors';
 
 const StatusBarHeight = Platform.select({
   ios: 44,
@@ -15,7 +14,7 @@ const StatusBar = () => {
 const styles = StyleSheet.create({
   container: {
     height: StatusBarHeight,
-    backgroundColor: MAIN_COLOR,
+    backgroundColor: '#fff',
   },
 });
 

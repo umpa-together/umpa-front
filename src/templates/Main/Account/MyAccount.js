@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
@@ -62,6 +62,11 @@ export default function MyAccount() {
         time: createdTime,
       };
     });
+  const [sideModal, setSideModal] = useState(false);
+
+  const onPressMenu = () => {
+    setSideModal(true);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -74,12 +79,8 @@ export default function MyAccount() {
     <View style={style.background}>
       {state.user && (
         <>
-          <AccountHeader hamburger />
-          <PostingInfo
-            // eslint-disable-next-line no-underscore-dangle
-            posting={postingCount}
-            user={user}
-          />
+          <AccountHeader hamburger={onPressMenu} />
+          <PostingInfo posting={postingCount} user={user} />
           <UserInfo myaccount user={user} />
           <TabView
             routesMap={[
@@ -110,7 +111,7 @@ export default function MyAccount() {
           />
         </>
       )}
-      <SideModal />
+      <SideModal modal={sideModal} setModal={setSideModal} />
     </View>
   );
 }

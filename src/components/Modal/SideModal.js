@@ -3,28 +3,26 @@ import { View, StyleSheet } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import Divider from 'widgets/Divider';
-import { useModal } from 'providers/modal';
 import Modal from 'components/Modal';
 import { navigate } from 'lib/utils/navigation';
 import ModalInfo from 'components/Account/ModalInfo';
 import SideMenu from 'components/Account/SideMenu';
 import ModalSign from 'components/Account/ModalSign';
 
-const SideModalView = () => {
+const SideModalView = ({ onCloseModal }) => {
   const { state } = useContext(UserContext);
-  const { onCloseSideModal } = useModal();
 
   const { name, profileImage } = state.user;
   const emptyfunction = () => {};
 
   const onClickAddedSong = () => {
     navigate('Added', { type: 'Song' });
-    onCloseSideModal();
+    onCloseModal();
   };
 
   const onClickAddedPlaylist = () => {
     navigate('Added', { type: 'Playlist' });
-    onCloseSideModal();
+    onCloseModal();
   };
 
   const menuListsTop = [
@@ -66,7 +64,7 @@ const SideModalView = () => {
 
   return (
     <View style={[styles.modal, styles.modalContainer]}>
-      <ModalInfo name={name} profileImage={profileImage} />
+      <ModalInfo name={name} profileImage={profileImage} onCloseModal={onCloseModal} />
       <View style={styles.divideContainer}>
         {menuListsTop.map((item) => {
           const { title, onClick } = item;
@@ -85,24 +83,23 @@ const SideModalView = () => {
   );
 };
 
-export default function SideModal() {
-  const { sideModal, onCloseSideModal } = useModal();
+export default function SideModal({ modal, setModal }) {
+  const onBackdropPress = () => {
+    setModal(!modal);
+  };
 
   return (
     <Modal
-      backdropOpacity={0.4}
-      isVisible={sideModal}
-      onBackdropPress={onCloseSideModal} // Android back press
-      onSwipeComplete={onCloseSideModal} // Swipe to discard
+      isVisible={modal}
+      onBackdropPress={onBackdropPress} // Android back press
+      onSwipeComplete={onBackdropPress} // Swipe to discard
       animationIn="slideInRight" // Has others, we want slide in from the left
       animationOut="slideOutRight" // When discarding the drawer
       swipeDirection="right" // Discard the drawer with swipe to left
-      useNativeDriver // Faster animation
-      hideModalContentWhileAnimating // Better performance, try with/without
       propagateSwipe // Allows swipe events to propagate to children components (eg a ScrollView inside a modal)
       style={styles.container} // Needs to contain the width, 75% of screen width in our case
     >
-      <SideModalView />
+      <SideModalView onCloseModal={onBackdropPress} />
     </Modal>
   );
 }

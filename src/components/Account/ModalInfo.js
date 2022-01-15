@@ -4,15 +4,12 @@ import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import ProfileImage from 'widgets/ProfileImage';
 import { navigate } from 'lib/utils/navigation';
-import { useModal } from 'providers/modal';
 import { COLOR_3 } from 'constants/colors';
 
-export default function ModalInfo({ name, profileImage }) {
-  const { onCloseSideModal } = useModal();
-
+export default function ModalInfo({ name, profileImage, onCloseModal }) {
   const onClickProfileEdit = () => {
     navigate('ProfileEdit');
-    onCloseSideModal();
+    onCloseModal();
   };
 
   return (

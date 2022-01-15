@@ -8,7 +8,6 @@ export default function ModalProvider({ children }) {
   const [harmfulModal, setHarmfulModal] = useState(false);
   const [representModal, setRepresentModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
-  const [sideModal, setSideModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [playlistModal, setPlaylistModal] = useState(false);
 
@@ -29,10 +28,6 @@ export default function ModalProvider({ children }) {
   const onCloseSearchModal = () => {
     setSearchModal(false);
   };
-  const onCloseSideModal = () => {
-    setSideModal(false);
-  };
-
   const onCloseDeleteModal = () => {
     setDeleteModal(false);
   };
@@ -52,10 +47,8 @@ export default function ModalProvider({ children }) {
     harmfulModal,
     representModal,
     searchModal,
-    sideModal,
     setHarmfulModal,
     setRepresentModal,
-    setSideModal,
     setSearchModal,
     deleteModal,
     playlistModal,
@@ -67,7 +60,6 @@ export default function ModalProvider({ children }) {
     onCloseHarmfulModal,
     onCloseRepresentModal,
     onCloseSearchModal,
-    onCloseSideModal,
     onCloseDeleteModal,
     onClosePlaylistModal,
   };

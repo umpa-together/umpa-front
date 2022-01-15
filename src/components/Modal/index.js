@@ -1,10 +1,17 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Modal from 'react-native-modal';
 
 export default function ({ children, ...props }) {
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Modal animationIn="fadeIn" animationOut="fadeOut" backdropOpacity={0.4} {...props}>
+    <Modal
+      useNativeDriver // Faster animation
+      hideModalContentWhileAnimating // Better performance, try with/without
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      backdropOpacity={0.4}
+      {...props}
+    >
       {children}
     </Modal>
   );

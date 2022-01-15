@@ -39,14 +39,6 @@ const styles = StyleSheet.create({
   container: {
     height: 48 * SCALE_HEIGHT,
     backgroundColor: '#fff',
-    shadowColor: 'rgb(0, 0, 0)',
-    shadowOffset: {
-      height: 1 * SCALE_HEIGHT,
-      width: 0,
-    },
-    shadowRadius: 1 * SCALE_HEIGHT,
-    shadowOpacity: 0.1,
-    elevation: 3,
   },
   title: {
     textAlign: 'center',

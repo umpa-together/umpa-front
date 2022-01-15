@@ -20,6 +20,8 @@ const mainContentsReducer = (state, action) => {
       return { ...state, notAllPlaylistsNext: true };
     case 'getRecentPlaylists':
       return { ...state, recentPlaylists: action.payload };
+    case 'getRecentDailies':
+      return { ...state, recentDailies: action.payload };
     case 'getWeekly':
       return { ...state, mainPlaylist: action.payload[0], mainDaily: action.payload[1] };
     case 'getMainRecommendDJ':
@@ -59,7 +61,7 @@ const nextAllPlaylists =
 
 const getRecentPlaylists = (dispatch) => async () => {
   try {
-    const response = await server.get('/main/recent');
+    const response = await server.get('/main/recent-playlists');
     dispatch({ type: 'getRecentPlaylists', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getRecentPlaylists' });
@@ -92,6 +94,15 @@ const getMainRecommendDJ = (dispatch) => async () => {
   }
 };
 
+const getRecentDailies = (dispatch) => async () => {
+  try {
+    const response = await server.get('/main/recent-dailies');
+    dispatch({ type: 'getRecentDailies', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with getRecentDailies' });
+  }
+};
+
 const getCurrentHashtag = (dispatch) => async () => {
   try {
     const response = await server.get('/main/hashtag');
@@ -107,6 +118,7 @@ export const { Provider, Context } = createDataContext(
     getAllPlaylists,
     nextAllPlaylists,
     getRecentPlaylists,
+    getRecentDailies,
     getWeekly,
     postWeekly,
     getMainRecommendDJ,
@@ -117,6 +129,7 @@ export const { Provider, Context } = createDataContext(
     notAllPlaylistsNext: false,
     currentAllPlaylistsPage: 1,
     recentPlaylists: null,
+    recentDailies: null,
     mainPlaylist: null,
     mainDaily: null,
     mainDJ: null,

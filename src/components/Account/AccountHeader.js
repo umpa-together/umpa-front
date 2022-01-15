@@ -1,16 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { MAIN_COLOR } from 'constants/colors';
-import { useModal } from 'providers/modal';
 import { goBack } from 'lib/utils/navigation';
 
 export default function AccountHeader({ back, hamburger }) {
-  const { setSideModal } = useModal();
-  const onPressMenu = () => {
-    setSideModal(true);
-  };
   const onPressBack = () => {
     goBack();
   };
@@ -24,7 +19,7 @@ export default function AccountHeader({ back, hamburger }) {
           </TouchableOpacity>
         )}
         {hamburger && (
-          <TouchableOpacity style={styles.hamburger} onPress={onPressMenu}>
+          <TouchableOpacity style={styles.hamburger} onPress={hamburger}>
             <View style={[styles.borderWidth, style.icons]} />
           </TouchableOpacity>
         )}
