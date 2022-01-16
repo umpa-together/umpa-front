@@ -6,9 +6,14 @@ import {
   useAnimatedReaction,
   scrollTo,
 } from 'react-native-reanimated';
+import { SCALE_HEIGHT } from 'lib/utils/normalize';
 
-const SONG_HEIGHT = 50;
+const SONG_HEIGHT = 50 * SCALE_HEIGHT;
 const SCROLL_HEIGHT_THRESHOLD = 10;
+const MARGIN_BOTTOM = 14 * SCALE_HEIGHT;
+const INIT_MARGIN_TOP = 13 * SCALE_HEIGHT;
+const TOTAL_HEIGHT = SONG_HEIGHT + MARGIN_BOTTOM;
+const CORRECTION = 20 * SCALE_HEIGHT;
 
 const ScrollContext = createContext(null);
 
@@ -90,6 +95,9 @@ export default function ScrollProvider({ children }) {
   const value = {
     SONG_HEIGHT,
     SCROLL_HEIGHT_THRESHOLD,
+    INIT_MARGIN_TOP,
+    TOTAL_HEIGHT,
+    CORRECTION,
     scrollY,
     scrollViewRef,
     scrollOutsideY,

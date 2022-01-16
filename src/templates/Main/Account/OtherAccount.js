@@ -76,7 +76,7 @@ export default function OtherAccount() {
     <View style={style.background}>
       {otherUser && (
         <>
-          <AccountHeader back />
+          <AccountHeader user={otherUser} back />
           <PostingInfo
             // eslint-disable-next-line no-underscore-dangle
             posting={postingCount}
