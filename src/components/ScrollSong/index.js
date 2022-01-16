@@ -11,7 +11,7 @@ export default function ScrollSong({ songs, children }) {
   useEffect(() => {
     updatePosition(songs);
     setRender(!render);
-  }, []);
+  }, [songs]);
   return (
     <>
       {songs.length <= Object.keys(positions.current.value).length && (
