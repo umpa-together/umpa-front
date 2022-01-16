@@ -79,7 +79,7 @@ export default function MyAccount() {
     <View style={style.background}>
       {state.user && (
         <>
-          <AccountHeader hamburger={onPressMenu} />
+          <AccountHeader user={user} hamburger={onPressMenu} />
           <PostingInfo posting={postingCount} user={user} />
           <UserInfo myaccount user={user} />
           <TabView
