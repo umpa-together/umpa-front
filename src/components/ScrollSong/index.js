@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Animated from 'react-native-reanimated';
 import { View } from 'react-native';
 import { useScroll } from 'providers/scroll';
 
 export default function ScrollSong({ songs, children }) {
-  const { positions, scrollViewRef, updatePosition, handleScroll, onLayoutScroll, SONG_HEIGHT } =
+  const { positions, scrollViewRef, updatePosition, handleScroll, onLayoutScroll, TOTAL_HEIGHT } =
     useScroll();
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     updatePosition(songs);
-  }, [songs]);
-
+    setRender(!render);
+  }, []);
   return (
     <>
       {songs.length <= Object.keys(positions.current.value).length && (
@@ -20,7 +21,7 @@ export default function ScrollSong({ songs, children }) {
             onLayout={onLayoutScroll}
             onScroll={handleScroll}
             contentContainerStyle={{
-              height: SONG_HEIGHT * songs.length,
+              height: TOTAL_HEIGHT * songs.length,
             }}
           >
             {children}
