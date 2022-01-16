@@ -1,27 +1,26 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
+import style from 'constants/styles';
 
 export default function UserNoticeForm({ notice, onClickProfile }) {
   const { noticinguser: user, time } = notice;
-  const { state } = useContext(UserContext);
 
   return (
-    <>
+    <View style={style.flexRow}>
       <TouchableOpacity onPress={onClickProfile}>
         <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
           {user.name}
-          <Text style={styles.contentText}> 님이 {state.user.name}님을 팔로우 했습니다.</Text>
-          <Text style={styles.time}>{timeConverter(time)}</Text>
+          <Text style={styles.contentText}> 님이 회원님을 팔로우 했습니다.</Text>
+          <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
-    </>
+    </View>
   );
 }
 

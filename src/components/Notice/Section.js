@@ -21,7 +21,7 @@ export default function Section({ data }) {
 
   const onClickProfile = async () => {
     await getOtherInformation({ id: user._id });
-    push('OtherAccount', { otherUserId: user._id });
+    push('OtherAccount', { id: user._id });
   };
 
   const onClickNotice = async () => {
@@ -58,7 +58,7 @@ export default function Section({ data }) {
         type === 'drecomlike' ? (
         <DailyNoticeForm notice={data} onClickProfile={onClickProfile} />
       ) : (
-        <UserNoticeForm notice={data} />
+        <UserNoticeForm notice={data} onClickProfile={onClickProfile} />
       )}
     </TouchableOpacity>
   );
@@ -67,7 +67,6 @@ export default function Section({ data }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 18 * SCALE_WIDTH,
-    marginVertical: 7 * SCALE_HEIGHT,
-    borderWidth: 1,
+    marginTop: 18 * SCALE_HEIGHT,
   },
 });

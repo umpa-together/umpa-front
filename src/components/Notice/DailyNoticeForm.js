@@ -16,13 +16,10 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
   } = notice;
   return (
     <>
-      {/*
       <TouchableOpacity onPress={onClickProfile}>
         <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
       </TouchableOpacity>
-    */}
       <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={1} />
         <Text style={styles.name} numberOfLines={2}>
           {type === 'dlike' ? (
             <Text style={styles.contentText}> 데일리를 좋아합니다.</Text>
@@ -35,7 +32,7 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
           ) : (
             <Text style={styles.contentText}> 대댓글: {dailyrecomment.text}을 좋아합니다.</Text>
           )}
-          <Text style={styles.time}>{timeConverter(time)}</Text>
+          <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
       {daily.image[0] && <Image style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
@@ -56,12 +53,6 @@ const styles = StyleSheet.create({
   dailyImg: {
     height: 48 * SCALE_WIDTH,
     width: 48 * SCALE_WIDTH,
-  },
-  title: {
-    fontSize: FS(12),
-    color: '#5d5d5d',
-    fontWeight: '400',
-    lineHeight: 14 * SCALE_HEIGHT,
   },
   name: {
     fontSize: FS(14),
