@@ -8,17 +8,24 @@ import Story from 'components/Feed/Story';
 import { useRefresh } from 'providers/refresh';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Contents() {
-  const { state, nextFeeds, getFeeds } = useContext(FeedContext);
+  const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
+    useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
+    const feedType = await AsyncStorage.getItem('feed');
     if (state.feed.length >= 20 && !state.notNextFeed) {
       setLoading(true);
-      await nextFeeds({ page: state.currentFeedPage });
+      if (feedType) {
+        await getNextFeedWithFollowing({ page: state.currentFeedPage });
+      } else {
+        await nextFeeds({ page: state.currentFeedPage });
+      }
       setLoading(false);
     }
   };
@@ -30,7 +37,12 @@ export default function Contents() {
   };
 
   const fetchData = async () => {
-    await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
+    const feedType = await AsyncStorage.getItem('feed');
+    if (feedType) {
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
+    } else {
+      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
+    }
   };
 
   useEffect(() => {
@@ -54,11 +66,7 @@ export default function Contents() {
               const { playlist, type, daily } = item;
               return (
                 <>
-                  {type === 'playlist' ? (
-                    <Playlist playlist={playlist} type={type} />
-                  ) : (
-                    <Daily daily={daily} type={type} />
-                  )}
+                  {type === 'playlist' ? <Playlist playlist={playlist} /> : <Daily daily={daily} />}
                 </>
               );
             }}

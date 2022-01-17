@@ -11,6 +11,7 @@ import { Context as UserContext } from 'context/User';
 import { Context as StoryContext } from 'context/Story';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import ProfileImage from 'widgets/ProfileImage';
+import Icon from 'widgets/Icon';
 
 export default function Story() {
   const { state } = useContext(StoryContext);
@@ -25,21 +26,21 @@ export default function Story() {
         contentContainerStyle={styles.scrollContainer}
       >
         <View style={styles.nameArea}>
-          {state.myStory ? (
-            <TouchableOpacity style={styles.story}>
-              {state.storyViewer.includes(user._id) ? (
-                <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
-              ) : (
-                <ImageBackground>
-                  <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
-                </ImageBackground>
-              )}
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.story}>
+          <TouchableOpacity style={styles.story} activeOpacity={0.9}>
+            <ImageBackground
+              style={styles.story}
+              source={
+                state.storyViewer.includes(user._id)
+                  ? require('public/icons/story-read.png')
+                  : require('public/icons/story-unread.png')
+              }
+            >
               <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
-            </TouchableOpacity>
-          )}
+            </ImageBackground>
+            {!state.myStory && (
+              <Icon source={require('public/icons/story-add.png')} style={styles.add} />
+            )}
+          </TouchableOpacity>
           <Text numberOfLines={1} style={styles.name}>
             {user.name}
           </Text>
@@ -50,14 +51,17 @@ export default function Story() {
             const { profileImage, name } = item.postUserId;
             return (
               <View style={styles.nameArea} key={id}>
-                <TouchableOpacity style={styles.story}>
-                  {view.includes(user._id) ? (
+                <TouchableOpacity style={styles.story} activeOpacity={0.9}>
+                  <ImageBackground
+                    style={styles.story}
+                    source={
+                      view.includes(user._id)
+                        ? require('public/icons/story-read.png')
+                        : require('public/icons/story-unread.png')
+                    }
+                  >
                     <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
-                  ) : (
-                    <ImageBackground style={styles.story}>
-                      <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
-                    </ImageBackground>
-                  )}
+                  </ImageBackground>
                 </TouchableOpacity>
                 <Text numberOfLines={1} style={styles.name}>
                   {name}
@@ -77,13 +81,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dcdcdc',
   },
   scrollContainer: {
-    paddingHorizontal: 18 * SCALE_WIDTH,
+    paddingHorizontal: 16 * SCALE_WIDTH,
   },
   story: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60 * SCALE_WIDTH,
-    height: 60 * SCALE_WIDTH,
+    width: 64 * SCALE_WIDTH,
+    height: 64 * SCALE_WIDTH,
   },
   profileImg: {
     width: 56 * SCALE_WIDTH,
@@ -98,11 +102,18 @@ const styles = StyleSheet.create({
   name: {
     fontSize: FS(11),
     fontWeight: '400',
-    marginTop: 8 * SCALE_HEIGHT,
+    marginTop: 4 * SCALE_HEIGHT,
     textAlign: 'center',
   },
   nameArea: {
-    width: 60 * SCALE_WIDTH,
-    marginRight: 16 * SCALE_WIDTH,
+    width: 64 * SCALE_WIDTH,
+    marginRight: 12 * SCALE_WIDTH,
+  },
+  add: {
+    width: 21 * SCALE_WIDTH,
+    height: 21 * SCALE_WIDTH,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 });

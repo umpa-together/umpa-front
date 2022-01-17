@@ -1,31 +1,66 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { push } from 'lib/utils/navigation';
+import { navigate } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
-import { Context as PlaylistContext } from '../../context/Playlist';
+import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as UserContext } from 'context/User';
+import { MAIN_COLOR } from 'constants/colors';
 import SongsLists from './SongsLists';
 import Footer from './Footer';
 
-export default function Playlist({ playlist, type }) {
-  const { _id: id, hashtag, comments, likes, postUserId: postUser, songs, title } = playlist;
+const FollowAction = ({ id }) => {
+  const {
+    state: {
+      user: { following },
+    },
+    follow,
+    unfollow,
+  } = useContext(UserContext);
+  const [isFollow, setIsFollow] = useState(following.includes(id));
+
+  const onClickFollow = () => {
+    if (isFollow) {
+      unfollow({ id });
+    } else {
+      follow({ id });
+    }
+    setIsFollow(!isFollow);
+  };
+
+  return (
+    <>
+      {!isFollow && (
+        <TouchableOpacity onPress={onClickFollow} activeOpacity={0.9}>
+          <Text style={styles.follow}>팔로우</Text>
+        </TouchableOpacity>
+      )}
+    </>
+  );
+};
+
+export default function Playlist({ playlist }) {
+  const { _id: id, comments, likes, postUserId: postUser, songs, title, textcontent } = playlist;
   const { getSelectedPlaylist } = useContext(PlaylistContext);
 
   const onClickPlaylist = async () => {
     await getSelectedPlaylist({ id, postUserId: postUser._id });
-    push('SelectedPlaylist', { id, postUser: postUser._id });
+    navigate('SelectedPlaylist', { id, postUser: postUser._id });
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onClickPlaylist}>
-      <PostUser user={postUser} />
+    <TouchableOpacity style={styles.container} onPress={onClickPlaylist} activeOpacity={0.8}>
+      <PostUser user={postUser} action={<FollowAction id={postUser._id} />} />
       <View style={styles.contentArea}>
-        <Text style={styles.content} numberOfLines={3}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
+        {textcontent !== undefined && (
+          <Text style={styles.content} numberOfLines={3}>
+            {textcontent}
+          </Text>
+        )}
       </View>
       <SongsLists songs={songs} />
-      <Footer hashtag={hashtag} likes={likes} comments={comments} id={id} type={type} />
+      <Footer likes={likes} comments={comments} id={id} type="playlist" />
     </TouchableOpacity>
   );
 }
@@ -37,12 +72,23 @@ const styles = StyleSheet.create({
     paddingBottom: 4 * SCALE_HEIGHT,
   },
   contentArea: {
-    paddingHorizontal: 18 * SCALE_WIDTH,
-    marginTop: 8 * SCALE_HEIGHT,
+    paddingHorizontal: 16 * SCALE_WIDTH,
+    marginTop: 14 * SCALE_HEIGHT,
   },
-  content: {
+  title: {
     fontSize: FS(14),
     fontWeight: '500',
     lineHeight: 24 * SCALE_HEIGHT,
+  },
+  content: {
+    fontSize: FS(13),
+    fontWeight: '400',
+    lineHeight: 24 * SCALE_HEIGHT,
+    color: '#5d5d5d',
+  },
+  follow: {
+    fontSize: FS(12),
+    marginLeft: 12 * SCALE_WIDTH,
+    color: MAIN_COLOR,
   },
 });

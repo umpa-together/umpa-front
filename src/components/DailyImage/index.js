@@ -15,7 +15,7 @@ export default function Dailyimage({ image }) {
 
 const styles = StyleSheet.create({
   img: {
-    marginTop: 10 * SCALE_HEIGHT,
+    marginTop: 8 * SCALE_HEIGHT,
     width: 375 * SCALE_WIDTH,
     height: 375 * SCALE_WIDTH,
   },
