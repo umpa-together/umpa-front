@@ -11,8 +11,8 @@ export default function RecommendPlaylist() {
     <>
       <Text style={styles.title}>추천 플레이리스트</Text>
       <FlatList
-        data={state.recentPlaylists}
-        keyExtractor={(playlist) => playlist._id}
+        data={state.mainPlaylist}
+        keyExtractor={(playlist) => playlist.title}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatList}

@@ -10,11 +10,11 @@ import RecentDailies from 'components/Search/RecentDailies';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function Search() {
-  const { getRecentPlaylists, getMainRecommendDJ, getRecentDailies } =
+  const { getMainRecommendPlaylist, getMainRecommendDJ, getRecentDailies } =
     useContext(MainContentsContext);
 
   const dataFetch = async () => {
-    await Promise.all([getRecentPlaylists(), getMainRecommendDJ(), getRecentDailies()]);
+    await Promise.all([getMainRecommendPlaylist(), getMainRecommendDJ(), getRecentDailies()]);
   };
 
   useEffect(() => {
