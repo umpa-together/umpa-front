@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, memo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
@@ -72,16 +72,36 @@ export default function OtherAccount() {
     }, []),
   );
 
+  const Playlist = () => {
+    return (
+      <ScrollView>
+        <PostingResult data={playlistData} />
+      </ScrollView>
+    );
+  };
+
+  const Daily = () => {
+    return (
+      <ScrollView>
+        <PostingResult data={dailyData} />
+      </ScrollView>
+    );
+  };
+
+  const Relay = () => {
+    return (
+      <ScrollView>
+        <PostingResult data={relayData} />
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={style.background}>
       {otherUser && (
         <>
           <AccountHeader user={otherUser} back />
-          <PostingInfo
-            // eslint-disable-next-line no-underscore-dangle
-            posting={postingCount}
-            user={otherUser}
-          />
+          <PostingInfo posting={postingCount} user={otherUser} />
           <UserInfo user={otherUser} />
           <TabView
             routesMap={[
@@ -90,21 +110,9 @@ export default function OtherAccount() {
               { key: 'relay', title: '릴레이플리' },
             ]}
             sceneMap={{
-              playlist: () => (
-                <ScrollView>
-                  <PostingResult data={playlistData} />
-                </ScrollView>
-              ),
-              daily: () => (
-                <ScrollView>
-                  <PostingResult data={dailyData} />
-                </ScrollView>
-              ),
-              relay: () => (
-                <ScrollView>
-                  <PostingResult data={relayData} />
-                </ScrollView>
-              ),
+              playlist: memo(Playlist),
+              daily: memo(Daily),
+              relay: memo(Relay),
             }}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />

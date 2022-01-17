@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     width: 343 * SCALE_WIDTH,
-    height: 35 * SCALE_HEIGHT,
+    height: 40 * SCALE_HEIGHT,
     backgroundColor: '#eeeeee',
     borderRadius: 6 * SCALE_HEIGHT,
     marginBottom: 41 * SCALE_HEIGHT,

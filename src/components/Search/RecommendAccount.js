@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FS(16),
     color: COLOR_1,
-    marginBottom: 12 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
   },
   flatList: {
     paddingHorizontal: 11.5 * SCALE_WIDTH,
+    paddingVertical: 12 * SCALE_HEIGHT,
   },
 });

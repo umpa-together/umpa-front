@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,12 +8,8 @@ import { useProfileEdit } from 'providers/profileEdit';
 import Modal from '.';
 
 const ModalView = ({ onCloseGenreModal }) => {
-  const { state, getGenreLists } = useContext(UserContext);
+  const { state } = useContext(UserContext);
   const { profile, onClickGenre } = useProfileEdit();
-
-  useEffect(() => {
-    getGenreLists();
-  }, []);
 
   return (
     <View style={styles.viewContainer}>
@@ -32,7 +28,13 @@ const ModalView = ({ onCloseGenreModal }) => {
                 activeOpacity={0.9}
               >
                 <View style={styles.circle}>
-                  {profile.genre.includes(genre) && <View style={styles.activeCircle} />}
+                  {profile.genre.includes(genre) && (
+                    <View style={styles.activeCircle}>
+                      <Text style={styles.number}>
+                        {profile.genre.findIndex((e) => e === genre) + 1}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 <Text style={styles.genre}>{genre}</Text>
               </TouchableOpacity>
@@ -103,15 +105,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeCircle: {
-    width: 12 * SCALE_WIDTH,
-    height: 12 * SCALE_WIDTH,
-    borderRadius: 12 * SCALE_HEIGHT,
+    width: 20 * SCALE_WIDTH,
+    height: 20 * SCALE_WIDTH,
+    borderRadius: 20 * SCALE_HEIGHT,
     backgroundColor: MAIN_COLOR,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   genre: {
     fontSize: FS(15),
     fontWeight: '400',
     color: COLOR_2,
     marginLeft: 20 * SCALE_WIDTH,
+  },
+  number: {
+    fontSize: FS(14),
+    fontWeight: '600',
+    color: '#fff',
   },
 });

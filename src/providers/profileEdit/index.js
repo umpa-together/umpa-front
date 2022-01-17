@@ -13,7 +13,6 @@ export default function ProfileEditProvider({ children }) {
   const { user } = state;
   const [profile, setProfile] = useState({
     nickName: user ? user.name : '',
-    name: user ? user.realName : '',
     introduction: user ? user.introduction : '',
     genre: [],
   });
@@ -31,15 +30,10 @@ export default function ProfileEditProvider({ children }) {
   const { arraySort } = useScroll();
 
   const onChangeValue = (type, value) => {
-    if (type === '닉네임') {
+    if (type === '이름') {
       setProfile({
         ...profile,
         nickName: value,
-      });
-    } else if (type === '이름') {
-      setProfile({
-        ...profile,
-        name: value,
       });
     } else if (type === '소개글') {
       setProfile({
@@ -55,7 +49,7 @@ export default function ProfileEditProvider({ children }) {
         ...profile,
         genre: profile.genre.filter((item) => item !== genre),
       });
-    } else if (profile.genre.length < 5) {
+    } else if (profile.genre.length < 3) {
       setProfile({
         ...profile,
         genre: [...profile.genre, genre],

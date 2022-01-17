@@ -33,12 +33,8 @@ export default function ProfileEdit() {
 
   const sectionLists = [
     {
-      title: '닉네임',
-      placeholder: '닉네임을 입력해주세요.',
-    },
-    {
       title: '이름',
-      placeholder: '이름을 입력해주세요',
+      placeholder: '이름을 입력해주세요.',
     },
     {
       title: '소개글',

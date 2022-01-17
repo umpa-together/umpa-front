@@ -6,14 +6,14 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, COLOR_5 } from 'constants/colors';
-import { push } from 'lib/utils/navigation';
+import { navigate } from 'lib/utils/navigation';
 
 export default function UserCard({ user }) {
   const { getOtherInformation } = useContext(UserContext);
   const { _id: id, genre, name, profileImage } = user;
   const onClickCard = async () => {
     await getOtherInformation({ id });
-    push('OtherAccount', { otherUserId: id });
+    navigate('OtherAccount', { otherUserId: id });
   };
 
   return (
@@ -42,6 +42,15 @@ const styles = StyleSheet.create({
     borderWidth: 1 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
     marginHorizontal: 4.5 * SCALE_WIDTH,
+    backgroundColor: '#fff',
+    shadowColor: 'rgb(103, 103, 103)',
+    shadowOffset: {
+      height: 2 * SCALE_HEIGHT,
+      width: 0,
+    },
+    shadowRadius: 6 * SCALE_HEIGHT,
+    shadowOpacity: 0.1,
+    elevation: 3,
   },
   img: {
     width: 56 * SCALE_WIDTH,

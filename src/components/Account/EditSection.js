@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
+import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 import ScrollSong from 'components/ScrollSong';
 import Movable from 'components/ScrollSong/Movable';
@@ -43,16 +44,37 @@ export function ImageSection() {
   );
 }
 export function GenreSection() {
+  const { getGenreLists } = useContext(UserContext);
+  const { profile } = useProfileEdit();
   const [genreModal, setGenreModal] = useState(false);
   const onClickSelect = () => {
     setGenreModal(true);
   };
 
+  useEffect(() => {
+    getGenreLists();
+  }, []);
+
   return (
     <View>
       <Text style={styles.title}>선호장르</Text>
       <TouchableOpacity style={styles.sectionBox} onPress={onClickSelect}>
-        <Text style={styles.title}>선호 장르 선택</Text>
+        {profile.genre.length === 0 ? (
+          <Text style={styles.title}>선호 장르 선택</Text>
+        ) : (
+          <View style={style.flexRow}>
+            {profile.genre.map((item, index) => {
+              return (
+                <>
+                  <Text style={styles.title} key={item}>
+                    {item}
+                  </Text>
+                  {index !== profile.genre.length - 1 && <Text style={styles.title}>, </Text>}
+                </>
+              );
+            })}
+          </View>
+        )}
       </TouchableOpacity>
       <GenreModal modal={genreModal} setModal={setGenreModal} />
     </View>
@@ -123,22 +145,18 @@ export default function EditSection({ title, placeholder }) {
 
   return (
     <View>
-      <Text style={styles.title}>{title}</Text>
+      <View style={style.flexRow}>
+        <Text style={styles.title}>{title}</Text>
+        {title === '이름' && <Text style={styles.accent}>*</Text>}
+      </View>
       <TextInput
         style={styles.sectionBox}
-        value={
-          // eslint-disable-next-line no-nested-ternary
-          title === '닉네임'
-            ? profile.nickName
-            : title === '이름'
-            ? profile.name
-            : profile.introduction
-        }
+        value={title === '이름' ? profile.nickName : profile.introduction}
         placeholder={placeholder}
         autoCapitalize="none"
         autoCorrect={false}
         placeholderTextColor={COLOR_3}
-        maxLength={title === '닉네임' || title === '이름' ? 10 : null}
+        maxLength={title === '이름' ? 10 : null}
         // multiline={title === '소개글'}
         onChangeText={(text) => onChangeValue(title, text)}
       />
@@ -248,5 +266,9 @@ const styles = StyleSheet.create({
     height: 12 * SCALE_WIDTH,
     borderRadius: 12 * SCALE_HEIGHT,
     backgroundColor: MAIN_COLOR,
+  },
+  accent: {
+    color: MAIN_COLOR,
+    marginLeft: 3 * SCALE_WIDTH,
   },
 });

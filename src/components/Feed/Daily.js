@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
+import DailySong from 'components/Daily/DailySong';
 import Footer from './Footer';
 import DailyImage from '../DailyImage';
 
-// import DailySong from './DailySong';
-
-export default function Daily({ daily, type }) {
+export default function Daily({ daily }) {
   const {
     _id: id,
-    hashtag,
     comments,
     likes,
     postUserId: postUser,
@@ -27,16 +25,17 @@ export default function Daily({ daily, type }) {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onClickDaily}>
+    <View style={styles.container}>
       <PostUser user={postUser} />
       {image.length > 0 && <DailyImage image={image} />}
-      <TouchableOpacity style={styles.contentArea}>
+      <DailySong song={song} containerStyle={styles.dailySongContainer} />
+      <TouchableOpacity style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
       </TouchableOpacity>
-      <Footer hashtag={hashtag} likes={likes} comments={comments} id={id} type={type} />
-    </TouchableOpacity>
+      <Footer likes={likes} comments={comments} id={id} type="daily" />
+    </View>
   );
 }
 
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
   },
   contentArea: {
     paddingHorizontal: 18 * SCALE_WIDTH,
-    paddingTop: 8 * SCALE_HEIGHT,
+    paddingVertical: 8 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(14),
@@ -58,5 +57,9 @@ const styles = StyleSheet.create({
   songsContainer: {
     paddingLeft: 18 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
+  },
+  dailySongContainer: {
+    paddingHorizontal: 16 * SCALE_WIDTH,
+    marginTop: 14 * SCALE_HEIGHT,
   },
 });

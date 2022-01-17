@@ -6,7 +6,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import SongCard from 'components/SongCard';
 import style from 'constants/styles';
-import { push } from 'lib/utils/navigation';
+import { navigate } from 'lib/utils/navigation';
 
 export default function RecentDailies() {
   const { state } = useContext(MainContentsContext);
@@ -14,7 +14,7 @@ export default function RecentDailies() {
 
   const onClickSong = async (id, postUser) => {
     await getSelectedDaily({ id, postUserId: postUser });
-    push('SelectedDaily', { id, postUser });
+    navigate('SelectedDaily', { id, postUser });
   };
 
   return (
@@ -41,7 +41,7 @@ export default function RecentDailies() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 34 * SCALE_HEIGHT,
+    marginTop: 22 * SCALE_HEIGHT,
   },
   title: {
     fontSize: FS(16),

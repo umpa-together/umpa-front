@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import style from 'constants/styles';
 import CurrentSection from 'components/Relay/CurrentSection';
@@ -9,6 +9,15 @@ import Divider from 'widgets/Divider';
 import RelayCardView from 'components/Relay/RelayCardView';
 import { Context as UserContext } from 'context/User';
 import { useFocusEffect } from '@react-navigation/native';
+import OpenYoutube from 'lib/utils/youtube';
+
+const TitleActions = () => {
+  return (
+    <TouchableOpacity onPress={OpenYoutube}>
+      <View style={{ width: 40, height: 40, borderWidth: 1 }} />
+    </TouchableOpacity>
+  );
+};
 
 export default function () {
   const { state, getCurrentRelay, getRelayLists, initRelay } = useContext(RelayContext);
@@ -34,7 +43,7 @@ export default function () {
 
   return (
     <View style={style.background}>
-      <TabTitle title="umpa" />
+      <TabTitle title="umpa" actions={[<TitleActions />]} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {state.currentRelay && (
           <Swiper autoplay showsPagination={false} height={350} autoplayTimeout={time}>

@@ -64,6 +64,7 @@
 		<string>naversearchthirdlogin</string>
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
+		<string>vnd.youtube</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
