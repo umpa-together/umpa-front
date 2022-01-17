@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
@@ -16,6 +16,7 @@ import GenreModal from 'components/Modal/GenreModal';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import SongDeleteModal from 'components/Modal/SongDeleteModal';
+import ProfileBackground from './ProfileBackground';
 
 export function ImageSection() {
   const { profileImage, setProfileImage, backgroundImage, setBackgroundImage } = useProfileEdit();
@@ -29,9 +30,7 @@ export function ImageSection() {
 
   return (
     <View style={styles.background}>
-      {backgroundImage.name !== '' && (
-        <Image source={{ uri: backgroundImage.uri }} style={styles.backgroundImg} />
-      )}
+      <ProfileBackground img={backgroundImage.uri} imgStyle={styles.backgroundImg} />
       <TouchableOpacity style={styles.backgroundContainer} onPress={onClickBackground}>
         <Icon source={require('public/icons/opacity-rectangle.png')} style={styles.changeBox} />
         <Text style={styles.backgroundText}>배경 변경</Text>
@@ -112,7 +111,6 @@ export function RepresentSongSection() {
   const onClickAddSong = () => {
     setSearchModal(true);
   };
-
   useEffect(() => {
     if (searchModal) {
       setActionType('playlistAddSong');
@@ -120,7 +118,7 @@ export function RepresentSongSection() {
   }, [searchModal]);
 
   return (
-    <View style={{ marginBottom: 30 * SCALE_HEIGHT }}>
+    <View style={{ marginBottom: 100 * SCALE_HEIGHT }}>
       <View style={[styles.songHeader, style.flexRow, style.space_between]}>
         <Text style={styles.title}>대표곡 (최대 5곡)</Text>
         <TouchableOpacity style={styles.plusBox} onPress={onClickAddSong}>

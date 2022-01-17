@@ -2,16 +2,17 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
-import { MAIN_COLOR } from 'constants/colors';
 import { goBack } from 'lib/utils/navigation';
+import ProfileBackground from './ProfileBackground';
 
-export default function AccountHeader({ back, hamburger }) {
+export default function AccountHeader({ user, back, hamburger }) {
+  const { backgroundImage } = user;
   const onPressBack = () => {
     goBack();
   };
-
   return (
     <View style={styles.container}>
+      <ProfileBackground img={backgroundImage} imgStyle={styles.backgroundImage} />
       <View style={[styles.menuContainer, style.flexRow]}>
         {back && (
           <TouchableOpacity style={styles.back} onPress={onPressBack}>
@@ -32,10 +33,9 @@ const styles = StyleSheet.create({
   container: {
     height: 122 * SCALE_HEIGHT,
     width: '100%',
-    backgroundColor: MAIN_COLOR,
   },
   menuContainer: {
-    marginTop: 60 * SCALE_HEIGHT,
+    bottom: 54 * SCALE_HEIGHT,
   },
   back: {
     position: 'absolute',
@@ -47,5 +47,9 @@ const styles = StyleSheet.create({
   },
   borderWidth: {
     borderWidth: 1,
+  },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
   },
 });

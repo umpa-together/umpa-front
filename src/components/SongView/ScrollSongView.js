@@ -31,7 +31,7 @@ export default function ScrollSongView({ landings, song }) {
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: 14 * SCALE_HEIGHT,
+    backgroundColor: '#fff',
   },
   img: {
     width: 50 * SCALE_WIDTH,
@@ -57,6 +57,5 @@ const styles = StyleSheet.create({
   },
   textArea: {
     maxWidth: 200 * SCALE_WIDTH,
-    borderWidth: 1,
   },
 });
