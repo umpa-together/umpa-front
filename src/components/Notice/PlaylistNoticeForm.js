@@ -1,9 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
+import PlaylistAlbumImage from '../PlaylistAlbumImage';
 
 export default function PlaylistNoticeForm({ notice, onClickProfile }) {
   const {
@@ -15,15 +16,14 @@ export default function PlaylistNoticeForm({ notice, onClickProfile }) {
     time,
   } = notice;
 
+  const { image, songs } = playlist;
+
   return (
     <>
       <TouchableOpacity onPress={onClickProfile}>
         <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
       </TouchableOpacity>
       <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={1}>
-          {playlist.title}
-        </Text>
         <Text style={styles.name} numberOfLines={2}>
           {user.name} 님이
           {type === 'plike' ? (
@@ -37,10 +37,10 @@ export default function PlaylistNoticeForm({ notice, onClickProfile }) {
           ) : (
             <Text style={styles.contentText}> 대댓글: {playlistrecomment.text}을 좋아합니다.</Text>
           )}
-          <Text style={styles.time}>{timeConverter(time)}</Text>
+          <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
-      <Image style={styles.playlistImg} source={{ uri: playlist.image }} />
+      <PlaylistAlbumImage image={image} songs={songs} size={48} />
     </>
   );
 }
@@ -58,12 +58,6 @@ const styles = StyleSheet.create({
   playlistImg: {
     height: 48 * SCALE_WIDTH,
     width: 48 * SCALE_WIDTH,
-  },
-  title: {
-    fontSize: FS(12),
-    color: '#5d5d5d',
-    fontWeight: '400',
-    lineHeight: 14 * SCALE_HEIGHT,
   },
   name: {
     fontSize: FS(14),

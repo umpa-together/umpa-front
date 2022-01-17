@@ -89,7 +89,6 @@ export function RepresentSongSection() {
   const onClickAddSong = () => {
     setSearchModal(true);
   };
-
   useEffect(() => {
     if (searchModal) {
       setActionType('playlistAddSong');
