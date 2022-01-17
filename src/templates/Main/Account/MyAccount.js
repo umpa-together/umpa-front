@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useCallback, useState } from 'react';
+import React, { useContext, useCallback, useState, memo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
@@ -75,6 +75,32 @@ export default function MyAccount() {
     }, []),
   );
 
+  const Playlist = () => {
+    return (
+      <ScrollView>
+        <CreateButton opt="playlist" />
+        <PostingResult data={playlistData} />
+      </ScrollView>
+    );
+  };
+
+  const Daily = () => {
+    return (
+      <ScrollView>
+        <CreateButton opt="daily" />
+        <PostingResult data={dailyData} />
+      </ScrollView>
+    );
+  };
+
+  const Relay = () => {
+    return (
+      <ScrollView>
+        <PostingResult data={relayData} />
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={style.background}>
       {state.user && (
@@ -89,23 +115,9 @@ export default function MyAccount() {
               { key: 'relay', title: '릴레이플리' },
             ]}
             sceneMap={{
-              playlist: () => (
-                <ScrollView>
-                  <CreateButton opt="playlist" />
-                  <PostingResult data={playlistData} />
-                </ScrollView>
-              ),
-              daily: () => (
-                <ScrollView>
-                  <CreateButton opt="daily" />
-                  <PostingResult data={dailyData} />
-                </ScrollView>
-              ),
-              relay: () => (
-                <ScrollView>
-                  <PostingResult data={relayData} />
-                </ScrollView>
-              ),
+              playlist: memo(Playlist),
+              daily: memo(Daily),
+              relay: memo(Relay),
             }}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />
