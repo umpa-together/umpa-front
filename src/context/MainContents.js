@@ -22,12 +22,10 @@ const mainContentsReducer = (state, action) => {
       return { ...state, recentPlaylists: action.payload };
     case 'getRecentDailies':
       return { ...state, recentDailies: action.payload };
-    case 'getWeekly':
-      return { ...state, mainPlaylist: action.payload[0], mainDaily: action.payload[1] };
     case 'getMainRecommendDJ':
       return { ...state, mainDJ: action.payload };
-    case 'getCurrentHashtag':
-      return { ...state, mainHashtag: action.payload };
+    case 'getMainRecommendPlaylist':
+      return { ...state, mainPlaylist: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -68,26 +66,9 @@ const getRecentPlaylists = (dispatch) => async () => {
   }
 };
 
-const getWeekly = (dispatch) => async () => {
-  try {
-    const response = await server.get('/main/weekly');
-    dispatch({ type: 'getWeekly', payload: response.data });
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with getWeekly' });
-  }
-};
-
-const postWeekly = (dispatch) => async () => {
-  try {
-    await server.post('/main/weekly');
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with postWeekly' });
-  }
-};
-
 const getMainRecommendDJ = (dispatch) => async () => {
   try {
-    const response = await server.get('/main/recommendDJ');
+    const response = await server.get('/main/recommend-dj');
     dispatch({ type: 'getMainRecommendDJ', payload: response.data });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getMainRecommendDJ' });
@@ -103,12 +84,12 @@ const getRecentDailies = (dispatch) => async () => {
   }
 };
 
-const getCurrentHashtag = (dispatch) => async () => {
+const getMainRecommendPlaylist = (dispatch) => async () => {
   try {
-    const response = await server.get('/main/hashtag');
-    dispatch({ type: 'getCurrentHashtag', payload: response.data });
+    const response = await server.get('/main/recommend-playlists');
+    dispatch({ type: 'getMainRecommendPlaylist', payload: response.data });
   } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with getCurrentHashtag' });
+    dispatch({ type: 'error', payload: 'Something went wrong with getMainRecommendPlaylist' });
   }
 };
 
@@ -119,10 +100,8 @@ export const { Provider, Context } = createDataContext(
     nextAllPlaylists,
     getRecentPlaylists,
     getRecentDailies,
-    getWeekly,
-    postWeekly,
     getMainRecommendDJ,
-    getCurrentHashtag,
+    getMainRecommendPlaylist,
   },
   {
     allPlaylists: null,
@@ -130,10 +109,8 @@ export const { Provider, Context } = createDataContext(
     currentAllPlaylistsPage: 1,
     recentPlaylists: null,
     recentDailies: null,
-    mainPlaylist: null,
-    mainDaily: null,
     mainDJ: null,
-    mainHashtag: null,
+    mainPlaylist: null,
     errorMessage: '',
   },
 );

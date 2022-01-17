@@ -44,8 +44,31 @@ const nextFeeds =
     }
   };
 
+const getFeedWithFollowing = (dispatch) => async () => {
+  try {
+    const response = await server.get('/feed/following');
+    dispatch({ type: 'getFeeds', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with getFeedWithFollowing' });
+  }
+};
+const getNextFeedWithFollowing =
+  (dispatch) =>
+  async ({ page }) => {
+    try {
+      const response = await server.get(`/feed/following/${page}`);
+      if (response.data.length !== 0) {
+        dispatch({ type: 'nextFeeds', payload: response.data });
+      } else {
+        dispatch({ type: 'notNext' });
+      }
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getNextFeedWithFollowing' });
+    }
+  };
+
 export const { Provider, Context } = createDataContext(
   feedReducer,
-  { getFeeds, nextFeeds },
+  { getFeeds, nextFeeds, getFeedWithFollowing, getNextFeedWithFollowing },
   { feed: null, currentFeedPage: 1, notNextFeed: false, errorMessage: '' },
 );

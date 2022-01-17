@@ -17,6 +17,8 @@ const userReducer = (state, action) => {
         otherUser: action.payload[0],
         otherContents: action.payload[1],
       };
+    case 'follow':
+      return { ...state, user: action.payload[0], otherUser: action.payload[1] };
     case 'getProfile':
       return { ...state, user: action.payload };
     case 'getFollow':
@@ -104,7 +106,7 @@ const follow =
   async ({ id }) => {
     try {
       const response = await server.post(`/user/follow/${id}`);
-      dispatch({ type: 'getOtherInformation', payload: response.data });
+      dispatch({ type: 'follow', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with follow' });
     }
@@ -115,7 +117,7 @@ const unfollow =
   async ({ id }) => {
     try {
       const response = await server.delete(`/user/follow/${id}`);
-      dispatch({ type: 'getOtherInformation', payload: response.data });
+      dispatch({ type: 'follow', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unfollow' });
     }
