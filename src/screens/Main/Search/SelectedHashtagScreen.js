@@ -4,12 +4,12 @@ import SelectedHashtag from 'templates/Main/Search/SelectedHashtag';
 import StatusBar from 'components/StatusBar';
 
 export default function ({ route }) {
-  const { id, hashtag } = route.params;
+  const { id, info } = route.params;
   return (
     <>
       <StatusBar />
       <SearchProvider>
-        <SelectedHashtag id={id} hashtag={hashtag} />
+        <SelectedHashtag id={id} info={info} />
       </SearchProvider>
     </>
   );

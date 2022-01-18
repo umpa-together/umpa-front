@@ -4,7 +4,7 @@ import { TabBar } from 'react-native-tab-view';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_6, COLOR_1 } from 'constants/colors';
 
-export default function SearchTabBar({ props }) {
+export default function HashtagTabBar({ props }) {
   const indicatorStyle = {
     backgroundColor: MAIN_COLOR,
     height: 2 * SCALE_HEIGHT,
@@ -27,9 +27,6 @@ export default function SearchTabBar({ props }) {
       style={{
         backgroundColor: '#fff',
       }}
-      tabStyle={{ width: 'auto', paddingHorizontal: 20 * SCALE_WIDTH }}
-      scrollEnabled
-      bounces={false}
       renderLabel={({ route, focused }) => (
         <Text style={[labelStyle, focused && styles.focusText]}>{route.title}</Text>
       )}
