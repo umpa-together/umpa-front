@@ -7,7 +7,7 @@ export default function PostingResult({ data, opt }) {
   return (
     <View style={styles.container}>
       {data.map((item) => {
-        return <PostingCard key={data._id} item={item} opt={opt} />;
+        return <PostingCard key={item._id} item={item} opt={opt} />;
       })}
     </View>
   );

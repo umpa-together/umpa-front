@@ -65,12 +65,10 @@ export function GenreSection() {
           <View style={style.flexRow}>
             {profile.genre.map((item, index) => {
               return (
-                <>
-                  <Text style={styles.title} key={item}>
-                    {item}
-                  </Text>
+                <View key={item} style={style.flexRow}>
+                  <Text style={styles.title}>{item}</Text>
                   {index !== profile.genre.length - 1 && <Text style={styles.title}>, </Text>}
-                </>
+                </View>
               );
             })}
           </View>
