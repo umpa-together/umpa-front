@@ -3,9 +3,5 @@ import OtherAccount from 'templates/Main/Account/OtherAccount';
 
 export default function OtherAccountScreen({ route }) {
   const { id } = route.params;
-  return (
-    <>
-      <OtherAccount id={id} />
-    </>
-  );
+  return <OtherAccount id={id} />;
 }

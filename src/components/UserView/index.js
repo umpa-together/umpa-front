@@ -8,7 +8,7 @@ import { Context as UserContext } from 'context/User';
 import { push } from 'lib/utils/navigation';
 import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
-import UserRepresentSong from 'components/UserRepresentSong.js';
+import UserRepresentSong from 'components/UserRepresentSong';
 
 export default function UserView({ user }) {
   const { name, profileImage, _id: id, songs } = user;
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 26 * SCALE_HEIGHT,
     height: 56 * SCALE_WIDTH,
+    paddingHorizontal: 16 * SCALE_WIDTH,
   },
   img: {
     width: 56 * SCALE_WIDTH,
