@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingLeft: 105 * SCALE_WIDTH,
     paddingVertical: 15.5 * SCALE_HEIGHT,
     marginBottom: 0,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1 * SCALE_WIDTH,
     borderColor: 'rgba(220,220,220,0.5)',
   },
   headerStyle: {
