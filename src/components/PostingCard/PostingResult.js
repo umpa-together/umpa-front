@@ -1,5 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -9,7 +7,7 @@ export default function PostingResult({ data, opt }) {
   return (
     <View style={styles.container}>
       {data.map((item) => {
-        return <PostingCard item={item} opt={opt} />;
+        return <PostingCard key={data._id} item={item} opt={opt} />;
       })}
     </View>
   );

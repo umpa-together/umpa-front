@@ -21,7 +21,7 @@ export default function MyAccount() {
     myContents && myContents.playlist.length + myContents.daily.length + myContents.relay.length;
 
   const [sideModal, setSideModal] = useState(false);
-
+  const { playlist, daily, relay } = myContents;
   const onPressMenu = () => {
     setSideModal(true);
   };
@@ -37,7 +37,7 @@ export default function MyAccount() {
     return (
       <ScrollView>
         <CreateButton opt="playlist" />
-        <PostingResult data={myContents.playlist} opt="playlist" />
+        <PostingResult data={playlist} opt="playlist" />
       </ScrollView>
     );
   };
@@ -46,7 +46,7 @@ export default function MyAccount() {
     return (
       <ScrollView>
         <CreateButton opt="daily" />
-        <PostingResult data={myContents.daily} opt="daily" />
+        <PostingResult data={daily} opt="daily" />
       </ScrollView>
     );
   };
@@ -54,7 +54,7 @@ export default function MyAccount() {
   const Relay = () => {
     return (
       <ScrollView>
-        <PostingResult data={myContents.relay} opt="relay" />
+        <PostingResult data={relay} opt="relay" />
       </ScrollView>
     );
   };

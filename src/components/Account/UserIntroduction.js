@@ -5,7 +5,7 @@ import { COLOR_3 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useModal } from 'providers/modal';
 import { Context as UserContext } from 'context/User';
-import UserRepresentSong from 'components/UserRepresentSong.js';
+import UserRepresentSong from 'components/UserRepresentSong';
 
 export default function UserIntroduction({ introduction, song, id }) {
   const { setRepresentModal } = useModal();

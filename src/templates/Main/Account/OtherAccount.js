@@ -22,11 +22,12 @@ export default function OtherAccount() {
       initRepresentSongs();
     }, []),
   );
+  const { playlist, daily, relay } = contents;
 
   const Playlist = () => {
     return (
       <ScrollView>
-        <PostingResult data={contents.playlist} opt="playlist" />
+        <PostingResult data={playlist} opt="playlist" />
       </ScrollView>
     );
   };
@@ -34,7 +35,7 @@ export default function OtherAccount() {
   const Daily = () => {
     return (
       <ScrollView>
-        <PostingResult data={contents.daily} opt="daily" />
+        <PostingResult data={daily} opt="daily" />
       </ScrollView>
     );
   };
@@ -42,7 +43,7 @@ export default function OtherAccount() {
   const Relay = () => {
     return (
       <ScrollView>
-        <PostingResult data={contents.relay} opt="relay" />
+        <PostingResult data={relay} opt="relay" />
       </ScrollView>
     );
   };
