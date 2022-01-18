@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, memo } from 'react';
+import React, { useContext, useCallback, memo } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -61,9 +61,9 @@ export default function ResultLists() {
       <LoadingIndicator />
     );
   };
-  const Song = () => {
+  const Song = useCallback(() => {
     return <MoreLists title={resultLists[0].title} data={resultLists[0].data} />;
-  };
+  }, [state.result && state.result.playlist]);
   const Playlist = () => {
     return (
       <ScrollView style={styles.playlistContainer}>
@@ -106,7 +106,7 @@ export default function ResultLists() {
         ]}
         sceneMap={{
           all: memo(All),
-          song: memo(Song),
+          song: Song,
           playlist: memo(Playlist),
           daily: memo(Daily),
           account: memo(Account),
