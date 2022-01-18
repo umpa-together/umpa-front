@@ -51,9 +51,16 @@ export default function SearchSongView({ info }) {
           </View>
         </View>
       </View>
-      <View style={[style.flexRow, styles.actions]}>
-        <TouchableOpacity onPress={() => onClickSong(info.song)} style={styles.icon}>
-          <Text>{isPlayingId !== id ? '재생' : '정지'}</Text>
+      <View style={style.flexRow}>
+        <TouchableOpacity onPress={() => onClickSong(info.song)}>
+          <Icon
+            source={
+              id === isPlayingId
+                ? require('public/icons/stop.png')
+                : require('public/icons/play.png')
+            }
+            style={styles.icon}
+          />
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.8} onPress={onClickAdd}>
           <Icon source={require('public/icons/add-song.png')} style={styles.add} />
@@ -103,13 +110,10 @@ const styles = StyleSheet.create({
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
   },
-  actions: {
-    marginRight: 4 * SCALE_WIDTH,
-  },
   icon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    borderWidth: 1,
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    marginRight: 5 * SCALE_WIDTH,
   },
   moveArea: {
     maxWidth: 240 * SCALE_WIDTH,
