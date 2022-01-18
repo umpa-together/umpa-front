@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
@@ -8,60 +8,40 @@ import Contents from 'components/Feed/Contents';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
 import Icon from 'widgets/Icon';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FeedActions = () => {
-  const { getFeeds, getFeedWithFollowing } = useContext(FeedContext);
-  const [type, setType] = useState(true);
-
-  const getFeedType = async () => {
-    const feedType = await AsyncStorage.getItem('feed');
-    if (feedType) {
-      setType(false);
-    } else {
-      setType(true);
-    }
-  };
+  const { state, setFeedType } = useContext(FeedContext);
 
   const onClickActions = async () => {
-    const feedType = await AsyncStorage.getItem('feed');
-    if (feedType) {
-      await AsyncStorage.removeItem('feed');
-      getFeeds();
+    setFeedType();
+  };
+
+  return (
+    <TouchableOpacity style={styles.actions} onPress={onClickActions}>
+      <Text>{state.type ? '피드' : '팔로잉'}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default function Feed() {
+  const { state, getFeeds, getFeedWithFollowing, getFeedType } = useContext(FeedContext);
+  const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
+
+  const dataFetch = async () => {
+    if (state.type) {
+      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
     } else {
-      await AsyncStorage.setItem('feed', 'following');
-      getFeedWithFollowing();
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
     }
-    setType(!type);
   };
 
   useEffect(() => {
     getFeedType();
   }, []);
 
-  return (
-    <TouchableOpacity style={styles.actions} onPress={onClickActions}>
-      <Text>{type ? '피드' : '팔로잉'}</Text>
-    </TouchableOpacity>
-  );
-};
-
-export default function Feed() {
-  const { getFeeds, getFeedWithFollowing } = useContext(FeedContext);
-  const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
-
-  const dataFetch = async () => {
-    const feedType = await AsyncStorage.getItem('feed');
-    if (feedType) {
-      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
-    } else {
-      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
-    }
-  };
-
   useEffect(() => {
-    dataFetch();
-  }, []);
+    if (state.type !== null) dataFetch();
+  }, [state.type]);
 
   return (
     <View style={style.background}>

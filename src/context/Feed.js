@@ -1,5 +1,6 @@
 import server from 'lib/api/server';
 import createDataContext from 'lib/utils/createDataContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const feedReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +14,8 @@ const feedReducer = (state, action) => {
       };
     case 'notNext':
       return { ...state, notNextFeed: true };
+    case 'getFeedType':
+      return { ...state, type: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -67,8 +70,33 @@ const getNextFeedWithFollowing =
     }
   };
 
+const getFeedType = (dispatch) => async () => {
+  try {
+    const feedType = await AsyncStorage.getItem('feed');
+    dispatch({ type: 'getFeedType', payload: feedType === null });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with getFeedType' });
+  }
+};
+
+const setFeedType = (dispatch) => async () => {
+  try {
+    const feedType = await AsyncStorage.getItem('feed');
+    if (feedType) {
+      await AsyncStorage.removeItem('feed');
+      getFeeds();
+    } else {
+      await AsyncStorage.setItem('feed', 'following');
+      getFeedWithFollowing();
+    }
+    dispatch({ type: 'getFeedType', payload: feedType !== null });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with setFeedType' });
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   feedReducer,
-  { getFeeds, nextFeeds, getFeedWithFollowing, getNextFeedWithFollowing },
-  { feed: null, currentFeedPage: 1, notNextFeed: false, errorMessage: '' },
+  { getFeeds, nextFeeds, getFeedWithFollowing, getNextFeedWithFollowing, getFeedType, setFeedType },
+  { feed: null, currentFeedPage: 1, notNextFeed: false, type: null, errorMessage: '' },
 );
