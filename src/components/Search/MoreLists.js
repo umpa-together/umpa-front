@@ -3,26 +3,29 @@ import React, { useContext, useState } from 'react';
 import {
   View,
   FlatList,
-  ActivityIndicator,
   TouchableOpacity,
-  Text,
   ScrollView,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
 } from 'react-native';
-import { Context as AppleMusicContext } from 'context/AppleMusic';
-import SongView from 'components/SongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
+import { Provider as AddedProvider } from 'context/Added';
+import { Context as SearchContext } from 'context/Search';
+import SearchSongView from 'components/SongView/SearchSongView';
+import TrackPlayerProvider, { useTrackPlayer } from 'providers/trackPlayer';
 import { navigate } from 'lib/utils/navigation';
 import PostingCard from 'components/PostingCard';
 import UserView from 'components/UserView';
+import HashtagView from 'components/Search/HashtagView';
+import { SCALE_HEIGHT } from 'lib/utils/normalize';
 
 const SongLists = () => {
-  const { state, searchNext } = useContext(AppleMusicContext);
   const [loading, setLoading] = useState(false);
-
+  const { state, getNextSongResult } = useContext(SearchContext);
   const getData = async () => {
-    if (state.songData.length >= 20 && !state.notNextSong) {
+    if (state.result.song.length >= 20 && !state.notNextSong) {
       setLoading(true);
-      await searchNext({ nextUrl: state.nextSongUrl });
+      await getNextSongResult({ nextUrl: state.result.next });
       setLoading(false);
     }
   };
@@ -39,20 +42,23 @@ const SongLists = () => {
 
   return (
     <TrackPlayerProvider>
-      <FlatList
-        data={state.songData}
-        keyExtractor={(song) => song.id}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.6}
-        ListFooterComponent={loading && <ActivityIndicator />}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity onPress={() => onClickSongView(item)}>
-              <SongView song={item} />
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <AddedProvider>
+        <FlatList
+          data={state.result.song}
+          keyExtractor={(item) => item.song.id}
+          contentContainerStyle={styles.songContainer}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.6}
+          ListFooterComponent={loading && <ActivityIndicator />}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity onPress={() => onClickSongView(item.song)}>
+                <SearchSongView info={item} />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </AddedProvider>
     </TrackPlayerProvider>
   );
 };
@@ -61,16 +67,11 @@ const DailyLists = () => {
   return null;
 };
 
-const HashtagLists = ({ item }) => {
-  const { hashtag, _id: id } = item;
-
-  const onClickHashtag = () => {
-    navigate('SelectedHashtag', { id, hashtag });
-  };
-
+const PlayAction = ({ song }) => {
+  const { onClickSong, isPlayingId } = useTrackPlayer();
   return (
-    <TouchableOpacity onPress={onClickHashtag}>
-      <Text>#{hashtag}</Text>
+    <TouchableOpacity onPress={() => onClickSong(song)}>
+      <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
     </TouchableOpacity>
   );
 };
@@ -88,13 +89,18 @@ export default function MoreLists({ title, data }) {
               return (
                 <View key={id}>
                   {title === '플레이리스트' ? (
-                    <PostingCard item={item} opt="playlist" round />
+                    <PostingCard
+                      item={item}
+                      opt="playlist"
+                      round
+                      action={<PlayAction song={item.songs[0]} />}
+                    />
                   ) : title === '데일리' ? (
                     <DailyLists />
                   ) : title === '계정' ? (
                     <UserView user={item} />
                   ) : (
-                    <HashtagLists item={item} />
+                    <HashtagView info={item} />
                   )}
                 </View>
               );
@@ -105,3 +111,9 @@ export default function MoreLists({ title, data }) {
     )
   );
 }
+
+const styles = StyleSheet.create({
+  songContainer: {
+    paddingTop: 20 * SCALE_HEIGHT,
+  },
+});

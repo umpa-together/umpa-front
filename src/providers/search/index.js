@@ -38,6 +38,12 @@ export default function SearchProvider({ children }) {
     setSearching(false);
   };
 
+  const onSearchContents = (input) => {
+    setText(input);
+    setIsResultClick(true);
+    setSearching(false);
+  };
+
   const onFocus = () => {
     if (isResultClick) {
       setSearching(true);
@@ -69,6 +75,7 @@ export default function SearchProvider({ children }) {
     setIsResultClick,
     setText,
     onFocus,
+    onSearchContents,
   };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

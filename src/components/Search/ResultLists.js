@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, memo } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Context as AppleMusicContext } from 'context/AppleMusic';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { Context as SearchContext } from 'context/Search';
@@ -12,40 +11,39 @@ import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import MoreLists from './MoreLists';
 
 export default function ResultLists() {
-  const { state } = useContext(AppleMusicContext);
-  const { state: searchState } = useContext(SearchContext);
+  const { state } = useContext(SearchContext);
   const resultLists = [
     {
       title: '곡',
-      data: state.songData,
+      data: state.result && state.result.song,
       key: 'song',
     },
     {
       title: '플레이리스트',
-      data: searchState.result && searchState.result.playlist,
+      data: state.result && state.result.playlist,
       key: 'playlist',
     },
     {
       title: '데일리',
-      data: searchState.result && searchState.result.daily,
+      data: state.result && state.result.daily,
       key: 'daily',
     },
     {
       title: '계정',
-      data: searchState.result && searchState.result.dj,
+      data: state.result && state.result.dj,
       key: 'account',
     },
     {
       title: '해시태그',
-      data: searchState.result && searchState.result.hashtag,
+      data: state.result && state.result.hashtag,
       key: 'hashtag',
     },
   ];
 
   const All = (props) => {
     const { jumpTo } = props;
-    return state.songData && searchState.result ? (
-      <ScrollView>
+    return state.result ? (
+      <ScrollView contentContainerStyle={styles.container}>
         {resultLists.map((option) => {
           const { title, data, key } = option;
           return (
@@ -89,7 +87,7 @@ export default function ResultLists() {
   };
   const Hashtag = () => {
     return (
-      <ScrollView>
+      <ScrollView style={styles.hashtagContainer}>
         <MoreLists title={resultLists[4].title} data={resultLists[4].data} />
       </ScrollView>
     );
@@ -126,5 +124,12 @@ const styles = StyleSheet.create({
   },
   accountContainer: {
     paddingTop: 16 * SCALE_HEIGHT,
+  },
+  hashtagContainer: {
+    paddingTop: 18 * SCALE_HEIGHT,
+  },
+  container: {
+    marginTop: 13 * SCALE_HEIGHT,
+    paddingBottom: 15 * SCALE_HEIGHT,
   },
 });
