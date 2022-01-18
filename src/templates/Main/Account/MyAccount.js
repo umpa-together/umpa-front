@@ -2,24 +2,24 @@
 import React, { useContext, useCallback, useState, memo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
+import { Provider as AddedProvider } from 'context/Added';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/PostingCard/PostingResult';
 import CreateButton from 'components/Account/CreateButton';
-
 import SideModal from 'components/Modal/SideModal';
 import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
+import RepresentModal from 'components/Modal/RepresentModal';
 
 export default function MyAccount() {
   const { state, initRepresentSongs, initOtherInformation } = useContext(UserContext);
   const { user, myContents } = state;
   const postingCount =
     myContents && myContents.playlist.length + myContents.daily.length + myContents.relay.length;
-
   const [sideModal, setSideModal] = useState(false);
   const { playlist, daily, relay } = myContents;
   const onPressMenu = () => {
@@ -82,6 +82,9 @@ export default function MyAccount() {
         </>
       )}
       <SideModal modal={sideModal} setModal={setSideModal} />
+      <AddedProvider>
+        <RepresentModal />
+      </AddedProvider>
     </View>
   );
 }
