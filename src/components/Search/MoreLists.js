@@ -1,10 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useContext, useState } from 'react';
-import { View, FlatList, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import SongView from 'components/SongView';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import { navigate } from 'lib/utils/navigation';
+import PostingCard from 'components/PostingCard';
+import UserView from 'components/UserView';
 
 const SongLists = () => {
   const { state, searchNext } = useContext(AppleMusicContext);
@@ -48,15 +57,7 @@ const SongLists = () => {
   );
 };
 
-const PlaylistLists = () => {
-  return null;
-};
-
 const DailyLists = () => {
-  return null;
-};
-
-const DJLists = () => {
   return null;
 };
 
@@ -76,29 +77,31 @@ const HashtagLists = ({ item }) => {
 
 export default function MoreLists({ title, data }) {
   return (
-    <>
-      {title === '곡' ? (
-        <SongLists />
-      ) : (
-        <>
-          {data.map((item) => {
-            const { _id: id } = item;
-            return (
-              <View key={id}>
-                {title === '플레이리스트' ? (
-                  <PlaylistLists />
-                ) : title === '데일리' ? (
-                  <DailyLists />
-                ) : title === '계정' ? (
-                  <DJLists />
-                ) : (
-                  <HashtagLists item={item} />
-                )}
-              </View>
-            );
-          })}
-        </>
-      )}
-    </>
+    data && (
+      <>
+        {title === '곡' ? (
+          <SongLists />
+        ) : (
+          <ScrollView>
+            {data.map((item) => {
+              const { _id: id } = item;
+              return (
+                <View key={id}>
+                  {title === '플레이리스트' ? (
+                    <PostingCard item={item} opt="playlist" round />
+                  ) : title === '데일리' ? (
+                    <DailyLists />
+                  ) : title === '계정' ? (
+                    <UserView user={item} />
+                  ) : (
+                    <HashtagLists item={item} />
+                  )}
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
+      </>
+    )
   );
 }
