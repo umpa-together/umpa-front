@@ -11,6 +11,7 @@ import style from 'constants/styles';
 import { COLOR_1 } from 'constants/colors';
 import HashtagView from 'components/Search/HashtagView';
 import { Provider as AddedProvider } from 'context/Added';
+import DailyView from 'components/Search/DailyView';
 
 const Header = ({ title, jumpTo, routeKey }) => {
   const onClickMore = () => {
@@ -55,7 +56,7 @@ export default function ResultSection({ title, data, jumpTo, routeKey }) {
                   action={<PlayAction song={item.songs[0]} />}
                 />
               ) : title === '데일리' ? (
-                <Text>데일리</Text>
+                <DailyView info={item} />
               ) : title === '계정' ? (
                 <UserView user={item} />
               ) : (
