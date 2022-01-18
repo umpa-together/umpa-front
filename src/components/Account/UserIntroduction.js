@@ -17,8 +17,8 @@ export default function UserIntroduction({ introduction, song, id }) {
   return (
     <View style={[style.flexRow, styles.introductionBox]}>
       {introduction !== undefined && <Text style={styles.introductionText}>{introduction}</Text>}
-      <TouchableOpacity style={[style.flexRow]} onPress={onClickRepresentSong}>
-        <UserRepresentSong song={song} />
+      <TouchableOpacity style={[style.flexRow]}>
+        <UserRepresentSong song={song} action={onClickRepresentSong} />
       </TouchableOpacity>
     </View>
   );

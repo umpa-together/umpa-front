@@ -1,14 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
+import { useTrackPlayer } from 'providers/trackPlayer';
 
-export default function UserRepresentSong({ song }) {
+export default function UserRepresentSong({ song, action }) {
+  const { onClickSong, isPlayingId } = useTrackPlayer();
   const { name: songName, artistName } = song.attributes;
+  const onPress = (el) => {
+    if (action) {
+      action();
+    } else {
+      onClickSong(el);
+    }
+  };
   return (
-    <View style={styles.representBox}>
+    <TouchableOpacity onPress={() => onPress(song)} style={styles.representBox}>
       <Text numberOfLines={1} style={styles.representText}>{`${songName} - ${artistName}`}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
