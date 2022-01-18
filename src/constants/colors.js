@@ -6,3 +6,4 @@ export const COLOR_3 = '#767676'; // 회색
 export const COLOR_4 = '#999999'; // 비활성화
 export const COLOR_5 = '#a6a6a6'; // 연한회색
 export const COLOR_6 = '#F1F1F1'; // 비활성화 탭뷰
+export const COLOR_7 = '#3763FF'; // 검색 파랑
