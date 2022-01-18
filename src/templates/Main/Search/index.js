@@ -10,7 +10,7 @@ import RecentDailies from 'components/Search/RecentDailies';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function Search() {
-  const { getMainRecommendPlaylist, getMainRecommendDJ, getRecentDailies } =
+  const { state, getMainRecommendPlaylist, getMainRecommendDJ, getRecentDailies } =
     useContext(MainContentsContext);
 
   const dataFetch = async () => {
@@ -24,12 +24,14 @@ export default function Search() {
   return (
     <View style={style.background}>
       <TabTitle title="검색" titleStyle={styles.title} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <SearchBarView />
-        <RecommendPlaylist />
-        <RecommendAccount />
-        <RecentDailies />
-      </ScrollView>
+      {state.mainPlaylist && state.mainDJ && state.recentDailies && (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <SearchBarView />
+          <RecommendPlaylist />
+          <RecommendAccount />
+          <RecentDailies />
+        </ScrollView>
+      )}
     </View>
   );
 }

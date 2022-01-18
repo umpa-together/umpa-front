@@ -6,8 +6,9 @@ import { useModal } from 'providers/modal';
 import SongView from 'components/SongView';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
-import { COLOR_1 } from 'constants/colors';
+import { COLOR_1, COLOR_3 } from 'constants/colors';
 import LoadingIndicator from 'components/LoadingIndicator';
+import { navigate } from 'lib/utils/navigation';
 import Modal from '.';
 
 const ModalView = () => {
@@ -15,6 +16,7 @@ const ModalView = () => {
   const { representSongs } = state;
   const { postAddedSong } = useContext(AddedContext);
   const name = state.otherUser ? state.otherUser.name : state.user.name;
+  const { onCloseRepresentModal } = useModal();
 
   const onClickAddActions = (song) => {
     return (
@@ -23,8 +25,19 @@ const ModalView = () => {
       </TouchableOpacity>
     );
   };
+
+  const onClickActions = () => {
+    if (!state.otherUser) {
+      navigate('ProfileEdit');
+    }
+    onCloseRepresentModal();
+  };
+
   return (
     <View style={styles.viewContainer}>
+      <TouchableOpacity onPress={onClickActions} style={styles.actions}>
+        <Text style={styles.actionsText}>{state.otherUser ? '닫기' : '편집'}</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>{name}님의 대표곡</Text>
       {representSongs ? (
         <TrackPlayerProvider>
@@ -46,6 +59,7 @@ const ModalView = () => {
 
 export default function RepresentModal() {
   const { representModal, onCloseRepresentModal } = useModal();
+
   return (
     <Modal
       animationIn="slideInUp"
@@ -86,5 +100,15 @@ const styles = StyleSheet.create({
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,
     borderWidth: 1,
+  },
+  actions: {
+    position: 'absolute',
+    top: 29 * SCALE_HEIGHT,
+    right: 14 * SCALE_WIDTH,
+    zIndex: 98,
+  },
+  actionsText: {
+    color: COLOR_3,
+    fontSize: FS(12),
   },
 });

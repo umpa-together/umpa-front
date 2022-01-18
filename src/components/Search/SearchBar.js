@@ -8,11 +8,11 @@ import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { goBack } from 'lib/utils/navigation';
 
 export default function SearchBar() {
-  const { onChangeText, onSearchKeyword, text, onFocus, textInputRef } = useSearch();
+  const { onChangeText, onSearchContents, text, onFocus, textInputRef } = useSearch();
   const { getAllContents } = useContext(SearchContext);
 
   const onSubmitEditing = () => {
-    onSearchKeyword(text);
+    onSearchContents(text);
     getAllContents({ term: text });
   };
 
@@ -21,7 +21,7 @@ export default function SearchBar() {
   };
 
   return (
-    <View style={style.flexRow}>
+    <View style={[style.flexRow, styles.container]}>
       <TouchableOpacity onPress={goBack} activeOpacity={0.9}>
         <Icon source={require('public/icons/search-back.png')} style={styles.back} />
       </TouchableOpacity>
@@ -52,8 +52,7 @@ export default function SearchBar() {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    width: 300,
+    marginTop: 6 * SCALE_HEIGHT,
   },
   back: {
     width: 34 * SCALE_WIDTH,

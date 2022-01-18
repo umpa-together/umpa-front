@@ -4,16 +4,16 @@ import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
 import { Context as SearchContext } from 'context/Search';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { COLOR_1 } from 'constants/colors';
+import { COLOR_1, MAIN_COLOR } from 'constants/colors';
 
 export default function HintLists() {
   const { state } = useContext(AppleMusicContext);
-  const { onSearchKeyword, textInputRef } = useSearch();
+  const { onSearchContents, textInputRef, text } = useSearch();
   const { getAllContents } = useContext(SearchContext);
   const opacity = useRef(new Animated.Value(0)).current;
 
   const onClickHint = (hint) => {
-    onSearchKeyword(hint);
+    onSearchContents(hint);
     getAllContents({ term: hint });
     textInputRef.current.blur();
   };
@@ -24,6 +24,24 @@ export default function HintLists() {
       duration: 1000,
       useNativeDriver: true,
     }).start();
+  };
+
+  const findKeyword = (hint) => {
+    return (
+      <>
+        {hint.indexOf(text) === -1 ? (
+          <Text style={styles.keyword}>{hint}</Text>
+        ) : (
+          <>
+            <Text style={styles.keyword}>
+              {hint.indexOf(text) !== 0 && <Text>{hint.substr(0, hint.indexOf(text))}</Text>}
+              <Text style={styles.active}>{hint.substr(hint.indexOf(text), text.length)}</Text>
+              {hint.substr(hint.indexOf(text) + text.length)}
+            </Text>
+          </>
+        )}
+      </>
+    );
   };
 
   useEffect(() => {
@@ -39,7 +57,7 @@ export default function HintLists() {
           renderItem={({ item }) => {
             return (
               <TouchableOpacity onPress={() => onClickHint(item)}>
-                <Text style={styles.keyword}>{item}</Text>
+                {findKeyword(item)}
               </TouchableOpacity>
             );
           }}
@@ -59,5 +77,8 @@ const styles = StyleSheet.create({
     marginVertical: 14 * SCALE_HEIGHT,
     fontSize: FS(16),
     color: COLOR_1,
+  },
+  active: {
+    color: MAIN_COLOR,
   },
 });

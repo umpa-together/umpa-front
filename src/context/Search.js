@@ -4,11 +4,28 @@ import createDataContext from 'lib/utils/createDataContext';
 const searchReducer = (state, action) => {
   switch (action.type) {
     case 'initSearch':
-      return { result: null, selected: null, errorMessage: null };
+      return {
+        result: null,
+        selected: null,
+        recentKeyword: null,
+        notNextSong: false,
+        errorMessage: null,
+      };
     case 'getAllContents':
-      return { ...state, result: action.payload };
+      return { ...state, result: action.payload, notNextSong: false };
+    case 'getNextSongResult':
+      return {
+        ...state,
+        result: {
+          ...state.result,
+          song: state.result.song.concat(action.payload[0]),
+          next: action.payload[1],
+        },
+      };
     case 'getSelectedContents':
       return { ...state, selected: action.payload };
+    case 'notNextSong':
+      return { ...state, notNextSong: true };
     case 'getAllContentsWithHashatg':
       return { ...state, selected: action.payload };
     case 'getRecentKeywords':
@@ -34,8 +51,26 @@ const getAllContents =
     try {
       const response = await server.get(`/search/${term}`);
       dispatch({ type: 'getAllContents', payload: response.data });
+      if (response.data.next === null) {
+        dispatch({ type: 'notNextSong' });
+      }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getAllContents' });
+    }
+  };
+
+const getNextSongResult =
+  (dispatch) =>
+  async ({ nextUrl }) => {
+    try {
+      const response = await server.get(`/search/next/${nextUrl}`);
+      if (response.data[0].length !== 0) {
+        dispatch({ type: 'getNextSongResult', payload: response.data });
+      } else {
+        dispatch({ type: 'notNextSong' });
+      }
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getNextSongResult' });
     }
   };
 
@@ -74,6 +109,7 @@ export const { Provider, Context } = createDataContext(
   {
     initSearch,
     getAllContents,
+    getNextSongResult,
     getSelectedContents,
     getAllContentsWithHashatg,
     getRecentKeywords,
@@ -82,6 +118,7 @@ export const { Provider, Context } = createDataContext(
     result: null,
     selected: null,
     recentKeyword: null,
+    notNextSong: false,
     errorMessage: '',
   },
 );

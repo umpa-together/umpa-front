@@ -8,7 +8,6 @@ import Story from 'components/Feed/Story';
 import { useRefresh } from 'providers/refresh';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Contents() {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
@@ -18,13 +17,12 @@ export default function Contents() {
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    const feedType = await AsyncStorage.getItem('feed');
     if (state.feed.length >= 20 && !state.notNextFeed) {
       setLoading(true);
-      if (feedType) {
-        await getNextFeedWithFollowing({ page: state.currentFeedPage });
-      } else {
+      if (state.type) {
         await nextFeeds({ page: state.currentFeedPage });
+      } else {
+        await getNextFeedWithFollowing({ page: state.currentFeedPage });
       }
       setLoading(false);
     }
@@ -37,17 +35,20 @@ export default function Contents() {
   };
 
   const fetchData = async () => {
-    const feedType = await AsyncStorage.getItem('feed');
-    if (feedType) {
-      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
-    } else {
+    if (state.type) {
       await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
+    } else {
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
     }
   };
 
   useEffect(() => {
     setRefresh(fetchData);
   }, []);
+
+  useEffect(() => {
+    if (state.type !== null) setRefresh(fetchData);
+  }, [state.type]);
 
   return (
     <View style={styles.container}>

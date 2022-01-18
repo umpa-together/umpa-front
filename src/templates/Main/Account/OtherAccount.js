@@ -2,6 +2,7 @@
 import React, { useContext, useState, useCallback, memo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
+import { Provider as AddedProvider } from 'context/Added';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import PostingResult from 'components/PostingCard/PostingResult';
@@ -10,6 +11,7 @@ import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
+import RepresentModal from 'components/Modal/RepresentModal';
 
 export default function OtherAccount() {
   const { state, initRepresentSongs } = useContext(UserContext);
@@ -17,6 +19,7 @@ export default function OtherAccount() {
   const [contents] = useState(state.otherContents);
   const postingCount =
     contents && contents.playlist.length + contents.daily.length + contents.relay.length;
+
   useFocusEffect(
     useCallback(() => {
       initRepresentSongs();
@@ -70,6 +73,9 @@ export default function OtherAccount() {
           />
         </>
       )}
+      <AddedProvider>
+        <RepresentModal />
+      </AddedProvider>
     </View>
   );
 }

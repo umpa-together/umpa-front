@@ -7,14 +7,14 @@ import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function RecentKeywords() {
   const { state, getRecentKeywords, getAllContents } = useContext(SearchContext);
-  const { onSearchKeyword, textInputRef } = useSearch();
+  const { onSearchContents, textInputRef } = useSearch();
 
   useEffect(() => {
     getRecentKeywords();
   }, []);
 
   const onClickKeyword = (keyword) => {
-    onSearchKeyword(keyword);
+    onSearchContents(keyword);
     getAllContents({ term: keyword });
     textInputRef.current.blur();
   };

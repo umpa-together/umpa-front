@@ -22,7 +22,6 @@ const TitleActions = () => {
 export default function () {
   const { state, getCurrentRelay, getRelayLists, initRelay } = useContext(RelayContext);
   const { getMyInformation } = useContext(UserContext);
-
   const [time, setTime] = useState(1);
 
   const dataFetch = async () => {
@@ -44,21 +43,20 @@ export default function () {
   return (
     <View style={style.background}>
       <TabTitle title="umpa" actions={[<TitleActions />]} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {state.currentRelay && (
+      {state.currentRelay && state.relayLists && (
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Swiper autoplay showsPagination={false} height={350} autoplayTimeout={time}>
             {state.currentRelay.map((relay) => (
               <CurrentSection relay={relay} key={relay._id} />
             ))}
           </Swiper>
-        )}
-        <Divider />
-        <Text>umpa의 릴레이 플레이리스트</Text>
-        {state.relayLists &&
-          state.relayLists.map((relay) => {
+          <Divider />
+          <Text>umpa의 릴레이 플레이리스트</Text>
+          {state.relayLists.map((relay) => {
             return <RelayCardView relay={relay} key={relay._id} />;
           })}
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 }
