@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
+import { Context as DailyContext } from 'context/Daily';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
@@ -8,10 +9,10 @@ import { COLOR_2, COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
-import { navigate } from 'lib/utils/navigation';
+import { navigate, push } from 'lib/utils/navigation';
 
-export default function DailyView({ info, actions }) {
-  const { image, song, textcontent } = info;
+export default function DailyView({ info, actions, isSelected }) {
+  const { image, song, textcontent, _id: id, postUserId } = info;
   const {
     name,
     artistName,
@@ -20,13 +21,18 @@ export default function DailyView({ info, actions }) {
   } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
+  const { getSelectedDaily } = useContext(DailyContext);
 
   const onClickAdd = () => {
     postAddedSong({ song: info.song });
   };
-
-  const onClickSongView = () => {
-    navigate('SelectedSong', { song });
+  const onClickSongView = async () => {
+    if (isSelected) {
+      await getSelectedDaily({ id, postUserId });
+      push('SelectedDaily', { id });
+    } else {
+      navigate('SelectedSong', { song });
+    }
   };
 
   return (
@@ -54,8 +60,15 @@ export default function DailyView({ info, actions }) {
         </View>
         {actions && (
           <View style={[style.flexRow, styles.actions]}>
-            <TouchableOpacity onPress={() => onClickSong(song)} style={styles.icon}>
-              <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
+            <TouchableOpacity onPress={() => onClickSong(song)}>
+              <Icon
+                source={
+                  song.id === isPlayingId
+                    ? require('public/icons/stop.png')
+                    : require('public/icons/play.png')
+                }
+                style={styles.icon}
+              />
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8} onPress={onClickAdd}>
               <Icon source={require('public/icons/add-song.png')} style={styles.add} />
@@ -105,8 +118,8 @@ const styles = StyleSheet.create({
     height: 32 * SCALE_WIDTH,
   },
   icon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    borderWidth: 1,
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    marginRight: 5 * SCALE_WIDTH,
   },
 });

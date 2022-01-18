@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import { Provider as AddedProvider } from 'context/Added';
@@ -17,7 +16,9 @@ import { navigate } from 'lib/utils/navigation';
 import PostingCard from 'components/PostingCard';
 import UserView from 'components/UserView';
 import HashtagView from 'components/Search/HashtagView';
-import { SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import DailyView from 'components/Search/DailyView';
+import Icon from 'widgets/Icon';
 
 const SongLists = () => {
   const [loading, setLoading] = useState(false);
@@ -63,15 +64,18 @@ const SongLists = () => {
   );
 };
 
-const DailyLists = () => {
-  return null;
-};
-
 const PlayAction = ({ song }) => {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   return (
     <TouchableOpacity onPress={() => onClickSong(song)}>
-      <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
+      <Icon
+        source={
+          song.id === isPlayingId
+            ? require('public/icons/stop.png')
+            : require('public/icons/play.png')
+        }
+        style={styles.icon}
+      />
     </TouchableOpacity>
   );
 };
@@ -84,27 +88,29 @@ export default function MoreLists({ title, data }) {
           <SongLists />
         ) : (
           <ScrollView>
-            {data.map((item) => {
-              const { _id: id } = item;
-              return (
-                <View key={id}>
-                  {title === '플레이리스트' ? (
-                    <PostingCard
-                      item={item}
-                      opt="playlist"
-                      round
-                      action={<PlayAction song={item.songs[0]} />}
-                    />
-                  ) : title === '데일리' ? (
-                    <DailyLists />
-                  ) : title === '계정' ? (
-                    <UserView user={item} />
-                  ) : (
-                    <HashtagView info={item} />
-                  )}
-                </View>
-              );
-            })}
+            <AddedProvider>
+              {data.map((item) => {
+                const { _id: id } = item;
+                return (
+                  <View key={id}>
+                    {title === '플레이리스트' ? (
+                      <PostingCard
+                        item={item}
+                        opt="playlist"
+                        round
+                        action={<PlayAction song={item.songs[0]} />}
+                      />
+                    ) : title === '데일리' ? (
+                      <DailyView info={item} actions />
+                    ) : title === '계정' ? (
+                      <UserView user={item} />
+                    ) : (
+                      <HashtagView info={item} />
+                    )}
+                  </View>
+                );
+              })}
+            </AddedProvider>
           </ScrollView>
         )}
       </>
@@ -115,5 +121,9 @@ export default function MoreLists({ title, data }) {
 const styles = StyleSheet.create({
   songContainer: {
     paddingTop: 20 * SCALE_HEIGHT,
+  },
+  icon: {
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
   },
 });

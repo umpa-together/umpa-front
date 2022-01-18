@@ -8,7 +8,8 @@ import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { goBack } from 'lib/utils/navigation';
 
 export default function SearchBar() {
-  const { onChangeText, onSearchContents, text, onFocus, textInputRef } = useSearch();
+  const { onChangeText, onSearchContents, text, onFocus, textInputRef, onClickDelete } =
+    useSearch();
   const { getAllContents } = useContext(SearchContext);
 
   const onSubmitEditing = () => {
@@ -42,7 +43,7 @@ export default function SearchBar() {
             ref={textInputRef}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onClickDelete}>
           <Icon source={require('public/icons/search-cancel.png')} style={styles.cancel} />
         </TouchableOpacity>
       </View>

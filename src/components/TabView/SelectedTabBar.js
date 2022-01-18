@@ -4,7 +4,7 @@ import { TabBar } from 'react-native-tab-view';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_6, COLOR_1 } from 'constants/colors';
 
-export default function HashtagTabBar({ props }) {
+export default function SelectedTabBar({ props }) {
   const indicatorStyle = {
     backgroundColor: MAIN_COLOR,
     height: 2 * SCALE_HEIGHT,
