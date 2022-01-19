@@ -2,35 +2,43 @@ import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Modal from 'components/Modal';
+import Icon from 'widgets/Icon';
+import style from 'constants/styles';
+import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 
-const SortModalView = ({ sortList, sortFunction }) => {
+const ModalView = ({ sortInfo, onClose, actions }) => {
+  const { current, func, list } = sortInfo;
+
   return (
-    <View style={[styles.sortModal]}>
-      {sortList.map((item, index) => {
+    <View style={styles.viewContainer}>
+      {list.map((option) => {
+        const { key, title } = option;
         return (
-          <View key={item.key} style={[index > 0 && styles.divider, styles.elementContainer]}>
-            <TouchableOpacity
-              style={styles.elementContainer}
-              onPress={() => sortFunction(item.key)}
-            >
-              <Text style={styles.textTitle}>{item.title}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[styles.touchArea, style.space_between, style.flexRow]}
+            onPress={() => func(key)}
+            activeOpacity={0.8}
+            key={title}
+          >
+            <Text style={[styles.option, current === title && styles.active]}>{title}</Text>
+            {current === title && (
+              <Icon source={require('public/icons/check.png')} style={styles.icon} />
+            )}
+          </TouchableOpacity>
         );
       })}
+      <View style={style.alignCenter}>
+        <View style={styles.divider} />
+        <TouchableOpacity onPress={onClose} activeOpacity={0.8}>
+          <Text style={styles.exit}>닫기</Text>
+        </TouchableOpacity>
+      </View>
+      {actions}
     </View>
   );
 };
 
-const CancleModalView = ({ onCloseModal }) => {
-  return (
-    <TouchableOpacity style={styles.cancelModal} onPress={onCloseModal}>
-      <Text style={styles.textTitle}>취소</Text>
-    </TouchableOpacity>
-  );
-};
-
-export default function SortModal({ modal, setModal, sortList, sortFunction }) {
+export default function SortModal({ modal, setModal, sortInfo, actions }) {
   const onBackdropPress = () => {
     setModal(!modal);
   };
@@ -42,11 +50,10 @@ export default function SortModal({ modal, setModal, sortList, sortFunction }) {
       onSwipeComplete={onBackdropPress} // Swipe to discard
       animationIn="slideInUp" // Has others, we want slide in from the left
       animationOut="slideOutDown" // When discarding the drawer
-      backdropOpacity={0}
+      backdropOpacity={0.4}
       style={styles.container} // Needs to contain the width, 75% of screen width in our case
     >
-      <SortModalView sortFunction={sortFunction} sortList={sortList} />
-      <CancleModalView onCloseModal={onBackdropPress} />
+      <ModalView sortInfo={sortInfo} onClose={onBackdropPress} actions={actions} />
     </Modal>
   );
 }
@@ -54,43 +61,42 @@ export default function SortModal({ modal, setModal, sortList, sortFunction }) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: 30 * SCALE_HEIGHT,
+    margin: 0,
   },
-  sortModal: {
-    width: 350 * SCALE_WIDTH,
-    height: 100 * SCALE_HEIGHT,
-    borderRadius: 10 * SCALE_HEIGHT,
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  cancelModal: {
-    marginTop: 29 * SCALE_HEIGHT,
-    width: 350 * SCALE_WIDTH,
-    backgroundColor: '#eee',
-    height: 50 * SCALE_HEIGHT,
-    borderRadius: 10 * SCALE_HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  elementContainer: {
+  viewContainer: {
     width: '100%',
-    height: 50 * SCALE_HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#eee',
+    paddingTop: 28 * SCALE_HEIGHT,
+    backgroundColor: '#fff',
+    borderTopRightRadius: 28 * SCALE_HEIGHT,
+    borderTopLeftRadius: 28 * SCALE_HEIGHT,
+  },
+  touchArea: {
+    paddingLeft: 21 * SCALE_WIDTH,
+    paddingRight: 7 * SCALE_WIDTH,
+    height: 40 * SCALE_HEIGHT,
+    marginBottom: 5 * SCALE_HEIGHT,
   },
   divider: {
-    borderTopWidth: 1,
-    borderColor: '#333',
-  },
-  textTitle: {
-    fontSize: FS(16),
-  },
-  dividerContainer: {
-    width: '100%',
+    width: 343 * SCALE_WIDTH,
     height: 1 * SCALE_HEIGHT,
-    backgroundColor: '#000',
+    backgroundColor: '#DCDCDC',
+    marginTop: 25 * SCALE_HEIGHT,
+    marginBottom: 17 * SCALE_HEIGHT,
+  },
+  icon: {
+    width: 40 * SCALE_WIDTH,
+    height: 40 * SCALE_WIDTH,
+  },
+  option: {
+    fontSize: FS(16),
+    color: COLOR_2,
+  },
+  active: {
+    color: MAIN_COLOR,
+  },
+  exit: {
+    fontSize: FS(16),
+    color: COLOR_2,
+    marginBottom: 50 * SCALE_HEIGHT,
   },
 });

@@ -54,8 +54,11 @@ export default function SelectedComment({ opt, targetId, comments }) {
       <SortModal
         modal={sortModal}
         setModal={setSortModal}
-        sortList={sortList}
-        sortFunction={sortFunction}
+        sortInfo={{
+          list: sortList,
+          func: sortFunction,
+          current: sortType,
+        }}
       />
     </View>
   );
