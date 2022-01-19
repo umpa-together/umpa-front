@@ -4,15 +4,23 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import PostingCard from 'components/PostingCard';
 import TrackPlayerProvider, { useTrackPlayer } from 'providers/trackPlayer';
-import { SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Provider as AddedProvider } from 'context/Added';
+import Icon from 'widgets/Icon';
 import DailyView from './DailyView';
 
 const PlayAction = ({ song }) => {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   return (
     <TouchableOpacity onPress={() => onClickSong(song)}>
-      <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
+      <Icon
+        source={
+          song.id === isPlayingId
+            ? require('public/icons/stop.png')
+            : require('public/icons/play.png')
+        }
+        style={styles.icon}
+      />
     </TouchableOpacity>
   );
 };
@@ -43,21 +51,19 @@ export const Playlist = () => {
   );
 };
 
-export const Daily = () => {
+export const Daily = ({ actions }) => {
   const { state } = useContext(SearchContext);
 
   return (
     <View style={styles.dailyContainer}>
-      {state.selected.daily.map((daily) => {
-        const { _id: id } = daily;
-        return (
-          <AddedProvider>
-            <TrackPlayerProvider>
-              <DailyView info={daily} key={id} actions />
-            </TrackPlayerProvider>
-          </AddedProvider>
-        );
-      })}
+      <AddedProvider>
+        <TrackPlayerProvider>
+          {state.selected.daily.map((daily) => {
+            const { _id: id } = daily;
+            return <DailyView info={daily} key={id} actions={actions} isSelected />;
+          })}
+        </TrackPlayerProvider>
+      </AddedProvider>
     </View>
   );
 };
@@ -85,5 +91,9 @@ const styles = StyleSheet.create({
   },
   dailyContainer: {
     marginTop: 18 * SCALE_HEIGHT,
+  },
+  icon: {
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
   },
 });

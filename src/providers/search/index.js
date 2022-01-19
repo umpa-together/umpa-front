@@ -51,6 +51,12 @@ export default function SearchProvider({ children }) {
     setIsResultClick(false);
   };
 
+  const onClickDelete = () => {
+    setText('');
+    setIsResultClick(false);
+    setSearching(true);
+  };
+
   useEffect(() => {
     if (text === '') {
       initSearch();
@@ -76,6 +82,7 @@ export default function SearchProvider({ children }) {
     setText,
     onFocus,
     onSearchContents,
+    onClickDelete,
   };
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

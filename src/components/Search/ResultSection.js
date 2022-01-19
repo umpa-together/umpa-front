@@ -32,7 +32,14 @@ const PlayAction = ({ song }) => {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   return (
     <TouchableOpacity onPress={() => onClickSong(song)}>
-      <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
+      <Icon
+        source={
+          song.id === isPlayingId
+            ? require('public/icons/stop.png')
+            : require('public/icons/play.png')
+        }
+        style={styles.icon}
+      />
     </TouchableOpacity>
   );
 };
@@ -56,7 +63,7 @@ export default function ResultSection({ title, data, jumpTo, routeKey }) {
                   action={<PlayAction song={item.songs[0]} />}
                 />
               ) : title === '데일리' ? (
-                <DailyView info={item} />
+                <DailyView info={item} actions />
               ) : title === '계정' ? (
                 <UserView user={item} />
               ) : (
@@ -84,5 +91,9 @@ const styles = StyleSheet.create({
   },
   container: {
     marginBottom: 12 * SCALE_WIDTH,
+  },
+  icon: {
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
   },
 });

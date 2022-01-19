@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
+import Icon from 'widgets/Icon';
 
 export default function SongView({ song, actions }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
@@ -27,7 +28,14 @@ export default function SongView({ song, actions }) {
       </View>
       <View style={[style.flexRow, styles.actions]}>
         <TouchableOpacity onPress={() => onClickSong(song)} style={styles.icon}>
-          <Text>{isPlayingId !== song.id ? '재생' : '정지'}</Text>
+          <Icon
+            source={
+              song.id === isPlayingId
+                ? require('public/icons/stop.png')
+                : require('public/icons/play.png')
+            }
+            style={styles.icon}
+          />
         </TouchableOpacity>
         {actions}
       </View>
@@ -59,9 +67,9 @@ const styles = StyleSheet.create({
     marginRight: 4 * SCALE_WIDTH,
   },
   icon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    borderWidth: 1,
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    marginRight: 4 * SCALE_WIDTH,
   },
   moveArea: {
     maxWidth: 240 * SCALE_WIDTH,

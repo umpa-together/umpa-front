@@ -73,7 +73,7 @@ export default function ResultLists() {
   };
   const Daily = () => {
     return (
-      <ScrollView>
+      <ScrollView style={styles.dailyContainer}>
         <MoreLists title={resultLists[2].title} data={resultLists[2].data} />
       </ScrollView>
     );
@@ -131,5 +131,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 13 * SCALE_HEIGHT,
     paddingBottom: 15 * SCALE_HEIGHT,
+  },
+  dailyContainer: {
+    paddingTop: 20 * SCALE_HEIGHT,
   },
 });

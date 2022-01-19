@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { goBack } from 'lib/utils/navigation';
 import style from 'constants/styles';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-// import Icon from 'widgets/Icon';
+import Icon from 'widgets/Icon';
 
 const Header = ({ headerStyle, title, titleStyle, back, landings = [], actions = [] }) => {
   const onClickBack = () => {
@@ -17,11 +17,8 @@ const Header = ({ headerStyle, title, titleStyle, back, landings = [], actions =
               return <View key={Math.random()}>{landing}</View>;
             })
           : back && (
-              <TouchableOpacity onPress={onClickBack} style={styles.back}>
-                <Text>BACK</Text>
-                {/* 
-                <Icon source={require('public/icons/back.png')} style={style.icons} />
-                */}
+              <TouchableOpacity onPress={onClickBack} style={styles.back} activeOpacity={0.9}>
+                <Icon source={require('public/icons/back-40.png')} style={style.icons} />
               </TouchableOpacity>
             )}
       </View>

@@ -9,6 +9,7 @@ import { Context as AddedContext } from 'context/Added';
 import { COLOR_1, COLOR_3 } from 'constants/colors';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { navigate } from 'lib/utils/navigation';
+import Icon from 'widgets/Icon';
 import Modal from '.';
 
 const ModalView = () => {
@@ -20,8 +21,8 @@ const ModalView = () => {
 
   const onClickAddActions = (song) => {
     return (
-      <TouchableOpacity onPress={() => postAddedSong({ song })} style={styles.icon}>
-        <Text>담기</Text>
+      <TouchableOpacity onPress={() => postAddedSong({ song })}>
+        <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
       </TouchableOpacity>
     );
   };
@@ -96,11 +97,6 @@ const styles = StyleSheet.create({
     fontSize: FS(16),
     marginTop: 16 * SCALE_HEIGHT,
   },
-  icon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    borderWidth: 1,
-  },
   actions: {
     position: 'absolute',
     top: 29 * SCALE_HEIGHT,
@@ -110,5 +106,10 @@ const styles = StyleSheet.create({
   actionsText: {
     color: COLOR_3,
     fontSize: FS(12),
+  },
+  icon: {
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    marginRight: 4 * SCALE_WIDTH,
   },
 });
