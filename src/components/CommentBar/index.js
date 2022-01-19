@@ -5,6 +5,7 @@ import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { useKeyboard } from 'providers/keyboard';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 export default function ({ targetId, action }) {
   const { state } = useContext(UserContext);
@@ -47,8 +48,8 @@ export default function ({ targetId, action }) {
         ref={commentRef}
         multiline
       />
-      <TouchableOpacity onPress={onPressSubmit}>
-        <Text>등록</Text>
+      <TouchableOpacity style={styles.submitButton} onPress={onPressSubmit}>
+        <Text style={styles.submitText}>등록</Text>
       </TouchableOpacity>
     </View>
   );
@@ -56,16 +57,33 @@ export default function ({ targetId, action }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
-    paddingHorizontal: 20,
-    backgroundColor: '#eee',
+    height: 68 * SCALE_HEIGHT,
+    paddingHorizontal: 13 * SCALE_WIDTH,
+    shadowColor: '#000',
+    shadowOffset: {
+      height: -1 * SCALE_WIDTH,
+      width: 0,
+    },
+    backgroundColor: '#fff',
+    shadowRadius: 10 * SCALE_WIDTH,
+    shadowOpacity: 0.1,
   },
   profileImage: {
-    width: 40,
-    height: 40,
-    borderWidth: 1,
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    borderRadius: 32 * SCALE_HEIGHT,
   },
   textInput: {
-    width: '80%',
+    marginLeft: 18 * SCALE_WIDTH,
+    width: 257 * SCALE_WIDTH,
+  },
+  submitButton: {
+    width: 45 * SCALE_WIDTH,
+    height: 32 * SCALE_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  submitText: {
+    fontSize: FS(16),
   },
 });
