@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
   contentArea: {
     paddingHorizontal: 18 * SCALE_WIDTH,
-    paddingVertical: 8 * SCALE_HEIGHT,
+    paddingTop: 8 * SCALE_HEIGHT,
+    marginBottom: 20 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(14),
