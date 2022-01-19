@@ -9,6 +9,7 @@ import { COLOR_2, COLOR_4, MAIN_COLOR } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
 import { navigate } from 'lib/utils/navigation';
+import { useModal } from 'providers/modal';
 
 export default function SearchSongView({ info }) {
   const { id } = info.song;
@@ -16,9 +17,11 @@ export default function SearchSongView({ info }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { dailyCount, playlistCount } = info;
   const { postAddedSong } = useContext(AddedContext);
+  const { onClickAdded } = useModal();
 
   const onClickAdd = () => {
     postAddedSong({ song: info.song });
+    onClickAdded();
   };
 
   const onClickSongView = () => {

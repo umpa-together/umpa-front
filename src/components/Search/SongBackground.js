@@ -9,11 +9,13 @@ import { goBack } from 'lib/utils/navigation';
 import MoveText from 'components/MoveText';
 import { COLOR_4 } from 'constants/colors';
 import style from 'constants/styles';
+import { useModal } from 'providers/modal';
 
 export default function Songbackground({ song }) {
   const { name, artistName, artwork, contentRating, releaseDate } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
+  const { onClickAdded } = useModal();
 
   const onClickPlay = () => {
     onClickSong(song);
@@ -21,6 +23,7 @@ export default function Songbackground({ song }) {
 
   const onClickAdd = () => {
     postAddedSong({ song });
+    onClickAdded();
   };
 
   const optionLists = [
