@@ -37,7 +37,7 @@ export default function SelectedDaily({ dailyId }) {
     state: { user },
   } = useContext(UserContext);
   const { currentComments, currentDaily, currentSong } = state;
-  const { postUserId: postUser, image, textcontent, likes, time } = currentDaily;
+  const { postUserId: postUser, image, textcontent, time } = currentDaily;
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 
@@ -76,7 +76,7 @@ export default function SelectedDaily({ dailyId }) {
         </TrackPlayerProvider>
         {image.length > 0 && <Dailyimage image={image} />}
         <SelectedText textcontent={textcontent} />
-        <Footer likes={likes} comments={currentComments} id={currentDaily._id} type="daily" />
+        <Footer object={currentDaily} type="daily" />
         <Divider containerStyle={styles.dividerContainer} />
         <SelectedComment opt="daily" targetId={dailyId} comments={currentComments} />
       </ScrollView>

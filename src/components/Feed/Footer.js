@@ -7,11 +7,13 @@ import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_1 } from 'constants/colors';
+import SendList, { SendFeed } from 'lib/utils/kakaoShare';
 
-export default function Footer({ likes, comments, id, type }) {
+export default function Footer({ object, type }) {
   const { state } = useContext(UserContext);
   const { likePlaylist, unLikePlaylist } = useContext(PlaylistContext);
   const { likeDaily, unLikeDaily } = useContext(DailyContext);
+  const { likes, comments, _id: id } = object;
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
 
   const onClickLikes = () => {
@@ -27,6 +29,14 @@ export default function Footer({ likes, comments, id, type }) {
       likeDaily({ id });
     }
     setIsLike(!isLike);
+  };
+
+  const onClickShare = () => {
+    if (type === 'playlist') {
+      SendList({ playlist: object });
+    } else {
+      SendFeed({ daily: object });
+    }
   };
 
   return (
@@ -46,7 +56,7 @@ export default function Footer({ likes, comments, id, type }) {
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onClickShare}>
           <Icon source={require('public/icons/share.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
