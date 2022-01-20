@@ -4,6 +4,7 @@ import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
 import { navigate } from 'lib/utils/navigation';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import style from 'constants/styles';
 
 export default function ({ user, action }) {
   const { _id: id, profileImage: img, name } = user;
@@ -19,11 +20,13 @@ export default function ({ user, action }) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onClickProfile} activeOpacity={0.9}>
-        <ProfileImage img={img} imgStyle={styles.profileImg} />
-      </TouchableOpacity>
-      <Text style={styles.name}>{name}</Text>
+    <View style={[styles.container, style.space_between]}>
+      <View style={style.flexRow}>
+        <TouchableOpacity onPress={onClickProfile} activeOpacity={0.9}>
+          <ProfileImage img={img} imgStyle={styles.profileImg} />
+        </TouchableOpacity>
+        <Text style={styles.name}>{name}</Text>
+      </View>
       {action}
     </View>
   );

@@ -10,6 +10,7 @@ import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import { navigate, push } from 'lib/utils/navigation';
+import { useModal } from 'providers/modal';
 
 export default function DailyView({ info, actions, isSelected }) {
   const { image, song, textcontent, _id: id, postUserId } = info;
@@ -22,9 +23,11 @@ export default function DailyView({ info, actions, isSelected }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const { getSelectedDaily } = useContext(DailyContext);
+  const { onClickAdded } = useModal();
 
   const onClickAdd = () => {
     postAddedSong({ song: info.song });
+    onClickAdded();
   };
   const onClickSongView = async () => {
     if (isSelected) {

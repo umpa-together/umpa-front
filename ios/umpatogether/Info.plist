@@ -51,7 +51,7 @@
 			<string>kakao</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao	7c1b48e5eb809fe6e923f3006e57c6f0</string>
+				<string>kakao7c1b48e5eb809fe6e923f3006e57c6f0</string>
 			</array>
 		</dict>
 	</array>
@@ -65,6 +65,7 @@
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
 		<string>vnd.youtube</string>
+		<string>kakaolink</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

@@ -10,6 +10,7 @@ import { COLOR_1, COLOR_3 } from 'constants/colors';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
+import AddedModal from 'components/Modal/AddedModal';
 import Modal from '.';
 
 const ModalView = () => {
@@ -18,10 +19,15 @@ const ModalView = () => {
   const { postAddedSong } = useContext(AddedContext);
   const name = state.otherUser ? state.otherUser.name : state.user.name;
   const { onCloseRepresentModal } = useModal();
+  const { addedModal, onClickAdded } = useModal();
 
+  const onClickAdd = (song) => {
+    postAddedSong({ song });
+    onClickAdded();
+  };
   const onClickAddActions = (song) => {
     return (
-      <TouchableOpacity onPress={() => postAddedSong({ song })}>
+      <TouchableOpacity onPress={() => onClickAdd(song)}>
         <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
       </TouchableOpacity>
     );
@@ -54,6 +60,7 @@ const ModalView = () => {
       ) : (
         <LoadingIndicator />
       )}
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 };

@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   songsContainer: {
     paddingLeft: 16 * SCALE_WIDTH,
     marginTop: 8 * SCALE_HEIGHT,
+    marginBottom: 12 * SCALE_HEIGHT,
   },
   songBox: {
     marginRight: 8 * SCALE_WIDTH,

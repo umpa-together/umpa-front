@@ -40,7 +40,7 @@ const FollowAction = ({ id }) => {
 };
 
 export default function Playlist({ playlist }) {
-  const { _id: id, comments, likes, postUserId: postUser, songs, title, textcontent } = playlist;
+  const { _id: id, postUserId: postUser, songs, title, textcontent } = playlist;
   const { getSelectedPlaylist } = useContext(PlaylistContext);
 
   const onClickPlaylist = async () => {
@@ -60,7 +60,7 @@ export default function Playlist({ playlist }) {
         )}
       </View>
       <SongsLists songs={songs} />
-      <Footer likes={likes} comments={comments} id={id} type="playlist" />
+      <Footer object={playlist} type="playlist" />
     </TouchableOpacity>
   );
 }
