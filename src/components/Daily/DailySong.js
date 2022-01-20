@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
@@ -7,10 +7,15 @@ import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2 } from 'constants/colors';
 
-export default function DailySong({ song, containerStyle, time }) {
+export default function DailySong({ song, containerStyle, time, selected }) {
   const { isPlayingId, onClickSong } = useTrackPlayer();
   const { attributes, id } = song;
   const { contentRating, name, artistName } = attributes;
+  useEffect(() => {
+    if (selected) {
+      onClickSong(song);
+    }
+  }, []);
   return (
     <View style={[containerStyle, style.flexRow, style.space_between]}>
       <TouchableOpacity

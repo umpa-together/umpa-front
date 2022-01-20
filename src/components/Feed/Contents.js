@@ -9,7 +9,7 @@ import { useRefresh } from 'providers/refresh';
 import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
 
-export default function Contents() {
+export default function Contents({ setIsScroll }) {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
     useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
@@ -55,6 +55,12 @@ export default function Contents() {
       <TrackPlayerProvider>
         {state.feed ? (
           <FlatList
+            onMomentumScrollBegin={() => {
+              setIsScroll(true);
+            }}
+            onMomentumScrollEnd={() => {
+              setIsScroll(false);
+            }}
             ListHeaderComponent={<Story />}
             data={state.feed}
             keyExtractor={(_) => _._id}
