@@ -1,6 +1,5 @@
-/* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as UserContext } from 'context/User';
@@ -9,7 +8,7 @@ import { Context as StoryContext } from 'context/Story';
 import Contents from 'components/Feed/Contents';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
-import Icon from 'widgets/Icon';
+import FloatingButton from 'components/Feed/FloatingButton';
 import SortModal from 'components/Modal/SortModal';
 
 const FOLLOWING_NUMBER = 30;
@@ -37,6 +36,7 @@ export default function Feed() {
   const { state, setFeedType, getFeeds, getFeedWithFollowing, getFeedType } =
     useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
+  const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
 
   const sortLists = [
@@ -92,7 +92,6 @@ export default function Feed() {
       await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
     }
   };
-
   useEffect(() => {
     getFeedType();
   }, []);
@@ -109,11 +108,9 @@ export default function Feed() {
         actions={[<FeedActions setModal={setSortModal} />]}
       />
       <RefreshProvider>
-        <Contents />
+        <Contents setIsScroll={setIsScroll} />
       </RefreshProvider>
-      <TouchableOpacity activeOpacity={0.9}>
-        <Icon source={require('public/icons/create-floating.png')} style={styles.floating} />
-      </TouchableOpacity>
+      <FloatingButton show={isScroll} />
       <SortModal
         modal={sortModal}
         setModal={setSortModal}
@@ -135,13 +132,6 @@ const styles = StyleSheet.create({
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 15 * SCALE_HEIGHT,
-  },
-  floating: {
-    width: 52 * SCALE_WIDTH,
-    height: 52 * SCALE_WIDTH,
-    position: 'absolute',
-    bottom: 25 * SCALE_HEIGHT,
-    right: 23 * SCALE_WIDTH,
   },
   actions: {
     width: 40 * SCALE_WIDTH,

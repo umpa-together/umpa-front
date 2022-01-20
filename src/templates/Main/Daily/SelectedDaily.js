@@ -72,6 +72,7 @@ export default function SelectedDaily({ dailyId }) {
             containerStyle={styles.songContainer}
             time={timeConverted}
             song={currentSong}
+            selected
           />
         </TrackPlayerProvider>
         {image.length > 0 && <Dailyimage image={image} />}
