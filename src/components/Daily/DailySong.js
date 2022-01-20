@@ -12,7 +12,7 @@ export default function DailySong({ song, containerStyle, time, selected }) {
   const { attributes, id } = song;
   const { contentRating, name, artistName } = attributes;
   useEffect(() => {
-    if (selected) {
+    if (selected && !contentRating) {
       onClickSong(song);
     }
   }, []);
