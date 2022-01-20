@@ -3,7 +3,6 @@ import { FlatList, ActivityIndicator } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
 import SongView from 'components/SongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { useSongActions } from 'providers/songActions';
 
@@ -12,7 +11,7 @@ export default function ResultLists() {
   const { loading, onEndReached } = useSearch();
   const { getActionComponent } = useSongActions();
   return (
-    <TrackPlayerProvider>
+    <>
       {state.songData ? (
         <FlatList
           data={state.songData}
@@ -27,6 +26,6 @@ export default function ResultLists() {
       ) : (
         <LoadingIndicator />
       )}
-    </TrackPlayerProvider>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import createDataContext from 'lib/utils/createDataContext';
 const dailyReducer = (state, action) => {
   switch (action.type) {
     case 'initDaily':
-      return { ...state, currentDaily: null, currentComments: null, currentSong: [] };
+      return { ...state, currentDaily: null, currentComments: null };
     case 'initRecomment':
       return { ...state, currentRecomments: null };
     case 'getSelectedDaily':
@@ -13,7 +13,6 @@ const dailyReducer = (state, action) => {
         ...state,
         currentDaily: action.payload[0],
         currentComments: action.payload[1],
-        currentSong: action.payload[0].song,
       };
     case 'deleted_Daily':
       return { ...state, currentDaily: [] };
@@ -241,7 +240,6 @@ export const { Provider, Context } = createDataContext(
   {
     currentDaily: null,
     currentComments: null,
-    currentSong: [],
     currentRecomments: null,
     errorMessage: '',
   },

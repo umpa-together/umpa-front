@@ -6,7 +6,6 @@ import { useModal } from 'providers/modal';
 import ScrollSong from 'components/ScrollSong';
 import Movable from 'components/ScrollSong/Movable';
 import ScrollSongView from 'components/SongView/ScrollSongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import { useSongActions } from 'providers/songActions';
 import ProfileImage from 'widgets/ProfileImage';
 import { onClickSingle, onClickCrop } from 'lib/utils/imageEditor';
@@ -123,17 +122,15 @@ export function RepresentSongSection() {
           <Text style={styles.plusText}>+ 곡 추가</Text>
         </TouchableOpacity>
       </View>
-      <TrackPlayerProvider>
-        <ScrollSong songs={songs}>
-          {songs.map((song) => {
-            return (
-              <Movable key={song.id} id={song.id} songsCount={songs.length}>
-                <ScrollSongView song={song} landings={<SongLandings song={song} />} />
-              </Movable>
-            );
-          })}
-        </ScrollSong>
-      </TrackPlayerProvider>
+      <ScrollSong songs={songs}>
+        {songs.map((song) => {
+          return (
+            <Movable key={song.id} id={song.id} songsCount={songs.length}>
+              <ScrollSongView song={song} landings={<SongLandings song={song} />} />
+            </Movable>
+          );
+        })}
+      </ScrollSong>
     </View>
   );
 }

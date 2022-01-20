@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { FlatList, Text, View, TouchableOpacity } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import PlaylistCard from 'components/PlaylistView';
 import style from 'constants/styles';
 
@@ -21,16 +20,14 @@ export function AddedSong() {
   return (
     <>
       <AddedLayout item={state.songLists} setIsEdit={setIsEdit} />
-      <TrackPlayerProvider>
-        <FlatList
-          data={state.songLists}
-          keyExtractor={(song) => song._id}
-          renderItem={({ item }) => {
-            const { song, _id: id } = item;
-            return <SongView song={song} actions={isEdit && deleteActions(id)} />;
-          }}
-        />
-      </TrackPlayerProvider>
+      <FlatList
+        data={state.songLists}
+        keyExtractor={(song) => song._id}
+        renderItem={({ item }) => {
+          const { song, _id: id } = item;
+          return <SongView song={song} actions={isEdit && deleteActions(id)} />;
+        }}
+      />
     </>
   );
 }

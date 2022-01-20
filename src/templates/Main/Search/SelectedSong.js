@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import style from 'constants/styles';
 import Songbackground from 'components/Search/SongBackground';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import { Playlist, Daily, DJ } from 'components/Search/SelectedSection';
 import TabView from 'components/TabView';
 import { Provider as AddedProvider } from 'context/Added';
@@ -46,9 +45,7 @@ export default function SelectedSong({ song }) {
   return (
     <View style={[style.background, styles.container]}>
       <AddedProvider>
-        <TrackPlayerProvider>
-          <Songbackground song={song} />
-        </TrackPlayerProvider>
+        <Songbackground song={song} />
       </AddedProvider>
       {state.selected && (
         <TabView
