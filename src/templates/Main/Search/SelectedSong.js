@@ -9,10 +9,12 @@ import { Playlist, Daily, DJ } from 'components/Search/SelectedSection';
 import TabView from 'components/TabView';
 import { Provider as AddedProvider } from 'context/Added';
 import SelectedTabBar from 'components/TabView/SelectedTabBar';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 export default function SelectedSong({ song }) {
   const { state, getSelectedContents } = useContext(SearchContext);
-
+  const { addedModal } = useModal();
   useEffect(() => {
     getSelectedContents({ id: song.id });
   }, []);
@@ -63,6 +65,7 @@ export default function SelectedSong({ song }) {
           renderTabBar={(props) => <SelectedTabBar props={props} />}
         />
       )}
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 }

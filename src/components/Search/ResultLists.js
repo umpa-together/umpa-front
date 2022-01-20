@@ -8,10 +8,13 @@ import ResultSection from 'components/Search/ResultSection';
 import TabView from 'components/TabView';
 import SearchTabBar from 'components/TabView/SearchTabBar';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 import MoreLists from './MoreLists';
 
 export default function ResultLists() {
   const { state } = useContext(SearchContext);
+  const { addedModal } = useModal();
   const resultLists = [
     {
       title: '곡',
@@ -94,27 +97,30 @@ export default function ResultLists() {
   };
 
   return (
-    <TrackPlayerProvider>
-      <TabView
-        routesMap={[
-          { key: 'all', title: '전체' },
-          { key: 'song', title: '곡' },
-          { key: 'playlist', title: '플레이리스트' },
-          { key: 'daily', title: '데일리' },
-          { key: 'account', title: '계정' },
-          { key: 'hashtag', title: '해시태그' },
-        ]}
-        sceneMap={{
-          all: memo(All),
-          song: Song,
-          playlist: memo(Playlist),
-          daily: memo(Daily),
-          account: memo(Account),
-          hashtag: memo(Hashtag),
-        }}
-        renderTabBar={(props) => <SearchTabBar props={props} />}
-      />
-    </TrackPlayerProvider>
+    <>
+      <TrackPlayerProvider>
+        <TabView
+          routesMap={[
+            { key: 'all', title: '전체' },
+            { key: 'song', title: '곡' },
+            { key: 'playlist', title: '플레이리스트' },
+            { key: 'daily', title: '데일리' },
+            { key: 'account', title: '계정' },
+            { key: 'hashtag', title: '해시태그' },
+          ]}
+          sceneMap={{
+            all: memo(All),
+            song: Song,
+            playlist: memo(Playlist),
+            daily: memo(Daily),
+            account: memo(Account),
+            hashtag: memo(Hashtag),
+          }}
+          renderTabBar={(props) => <SearchTabBar props={props} />}
+        />
+      </TrackPlayerProvider>
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+    </>
   );
 }
 
