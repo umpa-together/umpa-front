@@ -110,9 +110,7 @@ export default function Feed() {
       <RefreshProvider>
         <Contents setIsScroll={setIsScroll} />
       </RefreshProvider>
-      <TouchableOpacity activeOpacity={0.9}>
-        <FloatingButton show={isScroll} />
-      </TouchableOpacity>
+      <FloatingButton show={isScroll} />
       <SortModal
         modal={sortModal}
         setModal={setSortModal}
