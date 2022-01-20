@@ -14,6 +14,7 @@
 		1D3B9F45E940AE91BBCD721B /* libPods-umpatogether.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 725E9DA1B85E104CCE8DE997 /* libPods-umpatogether.a */; };
 		4BEA7C277FBD50A6AF57E174 /* libPods-umpatogether-umpatogetherTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4266420900224E0310F8CAE /* libPods-umpatogether-umpatogetherTests.a */; };
 		684C71F22779654700C20873 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 684C71F12779654700C20873 /* GoogleService-Info.plist */; };
+		688A62AA279862A900DF4021 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688A62A9279862A900DF4021 /* File.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = umpatogether/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = umpatogether/main.m; sourceTree = "<group>"; };
 		684C71F12779654700C20873 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		688A62A8279862A800DF4021 /* umpatogether-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "umpatogether-Bridging-Header.h"; sourceTree = "<group>"; };
+		688A62A9279862A900DF4021 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		725E9DA1B85E104CCE8DE997 /* libPods-umpatogether.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-umpatogether.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DE4643B276F97EC005A90FD /* umpatogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpatogether.entitlements; path = umpatogether/umpatogether.entitlements; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = umpatogether/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -132,12 +135,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				688A62A9279862A900DF4021 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* umpatogether */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* umpatogetherTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				514744396DD4858F40449544 /* Pods */,
+				688A62A8279862A800DF4021 /* umpatogether-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -212,7 +217,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1300;
 					};
 				};
 			};
@@ -417,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				688A62AA279862A900DF4021 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +442,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CC8438644AACBF0533EA3154 /* Pods-umpatogether-umpatogetherTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -463,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0DEC614FE4B3BDF88BE40A3 /* Pods-umpatogether-umpatogetherTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = umpatogetherTests/Info.plist;
@@ -505,6 +513,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = umpatogether;
+				SWIFT_OBJC_BRIDGING_HEADER = "umpatogether-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -532,6 +541,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = umpatogether;
+				SWIFT_OBJC_BRIDGING_HEADER = "umpatogether-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -9,15 +9,7 @@ import Footer from './Footer';
 import DailyImage from '../DailyImage';
 
 export default function Daily({ daily }) {
-  const {
-    _id: id,
-    comments,
-    likes,
-    postUserId: postUser,
-    song,
-    textcontent: content,
-    image,
-  } = daily;
+  const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
   const { getSelectedDaily } = useContext(DailyContext);
   const onClickDaily = async () => {
     await getSelectedDaily({ id, postUserId: postUser._id });
@@ -34,7 +26,7 @@ export default function Daily({ daily }) {
           {content}
         </Text>
       </TouchableOpacity>
-      <Footer likes={likes} comments={comments} id={id} type="daily" />
+      <Footer object={daily} type="daily" />
     </View>
   );
 }
@@ -47,7 +39,8 @@ const styles = StyleSheet.create({
   },
   contentArea: {
     paddingHorizontal: 18 * SCALE_WIDTH,
-    paddingVertical: 8 * SCALE_HEIGHT,
+    paddingTop: 8 * SCALE_HEIGHT,
+    marginBottom: 20 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(14),

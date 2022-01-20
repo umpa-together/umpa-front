@@ -1,32 +1,90 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
+import { Animated, Icon, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
+import { Context as UserContext } from 'context/User';
 import { Context as FeedContext } from 'context/Feed';
 import { Context as StoryContext } from 'context/Story';
 import Contents from 'components/Feed/Contents';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
 import FloatingButton from 'components/Feed/FloatingButton';
+import SortModal from 'components/Modal/SortModal';
 
-const FeedActions = () => {
-  const { state, setFeedType } = useContext(FeedContext);
+const FOLLOWING_NUMBER = 30;
+const FeedActions = ({ setModal }) => {
+  const { state } = useContext(FeedContext);
 
   const onClickActions = async () => {
-    setFeedType();
+    setModal(true);
   };
 
   return (
-    <TouchableOpacity style={styles.actions} onPress={onClickActions}>
-      <Text>{state.type ? '피드' : '팔로잉'}</Text>
+    <TouchableOpacity onPress={onClickActions} activeOpacity={0.9} style={style.flexRow}>
+      <Text style={styles.type}>{state.type ? '피드' : '팔로잉'}</Text>
+      <Icon source={require('public/icons/feed-down.png')} style={styles.actions} />
     </TouchableOpacity>
   );
 };
 
 export default function Feed() {
-  const { state, getFeeds, getFeedWithFollowing, getFeedType } = useContext(FeedContext);
+  const [sortModal, setSortModal] = useState(false);
+  const [alertModal, setAlertModal] = useState(false);
+  const {
+    state: { user },
+  } = useContext(UserContext);
+  const { state, setFeedType, getFeeds, getFeedWithFollowing, getFeedType } =
+    useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
   const [isScroll, setIsScroll] = useState(false);
+  const opacity = useState(new Animated.Value(1))[0];
+
+  const sortLists = [
+    { title: '전체보기', key: 'all' },
+    { title: '팔로우한 유저들만 보기', key: 'following' },
+  ];
+  const sortFunction = (key) => {
+    if (key === 'all') {
+      setFeedType();
+    } else if (key === 'following') {
+      if (user.following.length > FOLLOWING_NUMBER) {
+        setFeedType();
+      } else {
+        setAlertModal(true);
+        setTimeout(() => {
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }).start();
+          setTimeout(() => {
+            setAlertModal(false);
+            opacity.setValue(1);
+          }, 1500);
+        }, 1500);
+      }
+    }
+  };
+
+  const AlertModal = useMemo(() => {
+    return (
+      <>
+        {alertModal && (
+          <Animated.View style={[styles.alertBox, { opacity }]}>
+            <Animated.Image source={require('public/icons/tool-tip.png')} style={styles.tooltip} />
+            <Animated.Text style={[styles.alertText, { opacity }]}>
+              팔로우한 유저 <Text style={styles.bold}>{FOLLOWING_NUMBER}</Text>명 이상부터
+              가능합니다.
+            </Animated.Text>
+            <Animated.Text style={[styles.alertText, { opacity }]}>
+              더 많은 유저들을 팔로우 해보세요!
+            </Animated.Text>
+          </Animated.View>
+        )}
+      </>
+    );
+  });
+
   const dataFetch = async () => {
     if (state.type) {
       await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
@@ -44,11 +102,25 @@ export default function Feed() {
 
   return (
     <View style={style.background}>
-      <TabTitle title="피드" titleStyle={styles.title} actions={[<FeedActions />]} />
+      <TabTitle
+        title="피드"
+        titleStyle={styles.title}
+        actions={[<FeedActions setModal={setSortModal} />]}
+      />
       <RefreshProvider>
         <Contents setIsScroll={setIsScroll} />
       </RefreshProvider>
       <FloatingButton show={isScroll} />
+      <SortModal
+        modal={sortModal}
+        setModal={setSortModal}
+        sortInfo={{
+          list: sortLists,
+          func: sortFunction,
+          current: state.type ? '전체보기' : '팔로우한 유저들만 보기',
+        }}
+        actions={<AlertModal />}
+      />
     </View>
   );
 }
@@ -64,6 +136,32 @@ const styles = StyleSheet.create({
   actions: {
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,
-    borderWidth: 1,
+  },
+  type: {
+    fontSize: FS(16),
+    right: -8 * SCALE_WIDTH,
+  },
+  alertBox: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 157 * SCALE_HEIGHT,
+    left: 40 * SCALE_WIDTH,
+    width: 278 * SCALE_WIDTH,
+    height: 93 * SCALE_HEIGHT,
+    paddingTop: 19 * SCALE_HEIGHT,
+  },
+  alertText: {
+    fontSize: FS(14),
+    lineHeight: 20 * SCALE_HEIGHT,
+    color: '#fff',
+    zIndex: 98,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  tooltip: {
+    width: 278 * SCALE_WIDTH,
+    height: 93 * SCALE_HEIGHT,
+    position: 'absolute',
   },
 });

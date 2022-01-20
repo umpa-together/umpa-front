@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { Animated } from 'react-native';
 
 const ModalContext = createContext(null);
 
@@ -10,6 +11,8 @@ export default function ModalProvider({ children }) {
   const [searchModal, setSearchModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [playlistModal, setPlaylistModal] = useState(false);
+  const [addedModal, setAddedModal] = useState(false);
+  const opacity = useState(new Animated.Value(1))[0];
 
   const onCloseHarmfulModal = () => {
     setHarmfulModal(false);
@@ -43,10 +46,27 @@ export default function ModalProvider({ children }) {
     });
   };
 
+  const onClickAdded = () => {
+    setAddedModal(true);
+    setTimeout(() => {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 1500,
+        useNativeDriver: true,
+      }).start();
+      setTimeout(() => {
+        setAddedModal(false);
+        opacity.setValue(1);
+      }, 1500);
+    }, 1500);
+  };
+
   const value = {
     harmfulModal,
     representModal,
     searchModal,
+    addedModal,
+    opacity,
     setHarmfulModal,
     setRepresentModal,
     setSearchModal,
@@ -62,6 +82,7 @@ export default function ModalProvider({ children }) {
     onCloseSearchModal,
     onCloseDeleteModal,
     onClosePlaylistModal,
+    onClickAdded,
   };
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
