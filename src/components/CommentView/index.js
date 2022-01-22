@@ -66,6 +66,9 @@ export default function ({ targetId, comment, opt }) {
   const { text, time, postUserId, likes, _id: id } = comment;
   const { name, profileImage } = postUserId;
   const timeConverted = timeConverter(time);
+  const { state } = useContext(UserContext);
+  const reportCheck = postUserId._id === state.user._id;
+
   return (
     <View style={[style.flexRow, styles.container]}>
       <ProfileImage img={profileImage} imgStyle={styles.img} />
@@ -73,9 +76,11 @@ export default function ({ targetId, comment, opt }) {
         <View style={[style.flexRow, style.space_between]}>
           <View style={style.flexRow}>
             <Text style={styles.nameText}>{name}</Text>
-            <TouchableOpacity>
-              <Text style={styles.actionText}>신고</Text>
-            </TouchableOpacity>
+            {!reportCheck && (
+              <TouchableOpacity>
+                <Text style={styles.actionText}>신고</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={styles.timeText}>{timeConverted}</Text>
         </View>
