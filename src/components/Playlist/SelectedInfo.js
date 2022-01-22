@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
@@ -12,11 +12,7 @@ export default function SelectedInfo({ playlistinfo }) {
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={style.flexRow}>
-        {image ? (
-          <Image source={{ uri: image.uri }} style={styles.imageContainer} />
-        ) : (
-          <PlaylistAlbumImage round songs={songs} size={140} />
-        )}
+        <PlaylistAlbumImage round image={image} songs={songs} size={140} />
         <View style={[styles.textContainer, style.space_between]}>
           <View>
             <Text style={styles.titleText}>{title}</Text>

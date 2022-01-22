@@ -49,11 +49,23 @@ const addPlaylist =
           header: { 'content-type': 'multipart/form-data' },
         });
       }
-      navigate('SelectedPlaylist', {
-        post: true,
-        id: imgResponse.data[0]._id,
-        postUser: response.data[0].postUserId,
-      });
+      if (!fd) {
+        dispatch({ type: 'getSelectedPlaylist', payload: response.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: response.data[0]._id,
+          postUser: response.data[0].postUserId,
+        });
+      } else {
+        console.log(imgResponse.data);
+
+        dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: imgResponse.data[0]._id,
+          postUser: imgResponse.data[0].postUserId,
+        });
+      }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }

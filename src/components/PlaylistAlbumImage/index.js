@@ -15,7 +15,6 @@ export default function PlaylistAlbumImage({ edit, image, songs, size, round }) 
     width: (size / 2) * SCALE_WIDTH,
     height: (size / 2) * SCALE_WIDTH,
   };
-
   return (
     songs.length > 0 && (
       <View style={[styles.container, imgStyle, edit && styles.editStyle]}>
