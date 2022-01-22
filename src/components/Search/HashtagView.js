@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function HashtagView({ info, containerStyle }) {
   const { hashtag, playlistId, dailyId, _id: id } = info;
-  const count = playlistId.length + dailyId.length;
+  const count = playlistId && playlistId.length + dailyId && dailyId.length;
 
   const onClickHashtag = () => {
     navigate('SelectedHashtag', { id, info });

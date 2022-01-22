@@ -7,7 +7,6 @@ import ScrollSong from 'components/ScrollSong';
 import Movable from 'components/ScrollSong/Movable';
 import ScrollSongView from 'components/SongView/ScrollSongView';
 import TrackPlayerProvider from 'providers/trackPlayer';
-import { useSongActions } from 'providers/songActions';
 import ProfileImage from 'widgets/ProfileImage';
 import { onClickSingle, onClickCrop } from 'lib/utils/imageEditor';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -103,17 +102,11 @@ const SongLandings = ({ song }) => {
 };
 
 export function RepresentSongSection() {
-  const { searchModal, setSearchModal } = useModal();
-  const { setActionType } = useSongActions();
+  const { setSearchModal } = useModal();
   const { songs } = useProfileEdit();
   const onClickAddSong = () => {
     setSearchModal(true);
   };
-  useEffect(() => {
-    if (searchModal) {
-      setActionType('playlistAddSong');
-    }
-  }, [searchModal]);
 
   return (
     <View style={{ marginBottom: 100 * SCALE_HEIGHT }}>
