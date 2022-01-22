@@ -4,7 +4,6 @@ import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/Auth';
 import Splash from 'screens/Main/Splash';
 import { StatusBar } from 'react-native';
-import HarmfulModal from 'components/Modal/HarmfulModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
@@ -24,7 +23,6 @@ const MainNavigator = () => {
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
       {authState.token ? <MainStackScreen /> : <AuthStackScreen />}
-      <HarmfulModal />
       <SearchSongModal />
     </NavigationContainer>
   );

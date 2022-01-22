@@ -15,6 +15,7 @@ import { useModal } from 'providers/modal';
 import AddedModal from 'components/Modal/AddedModal';
 import StoryViewerModal from 'components/Modal/StoryViewerModal';
 import ActionModal from 'components/Modal/ActionModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
@@ -355,6 +356,7 @@ const ModalView = ({ onClose }) => {
         </AddedProvider>
       </View>
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      <HarmfulModal />
     </View>
   );
 };
