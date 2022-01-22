@@ -10,22 +10,25 @@ import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
 import UserRepresentSong from 'components/UserRepresentSong';
 
-export default function UserView({ user }) {
+export default function UserView({ user, func }) {
   const { name, profileImage, _id: id, songs } = user;
   const { getOtherInformation } = useContext(UserContext);
   const onClickAccount = async () => {
+    if (func) func();
     await getOtherInformation({ id });
     push('OtherAccount', { id });
   };
   return (
-    <TouchableOpacity onPress={onClickAccount} style={[styles.container, style.flexRow]}>
-      <ProfileImage img={profileImage} imgStyle={styles.img} />
+    <View style={[styles.container, style.flexRow]}>
+      <TouchableOpacity onPress={onClickAccount}>
+        <ProfileImage img={profileImage} imgStyle={styles.img} />
+      </TouchableOpacity>
       <View style={styles.infoContainer}>
         <Text style={styles.nameText}>{name}</Text>
         <UserRepresentSong song={songs[0]} />
       </View>
       <FollowButton id={id} />
-    </TouchableOpacity>
+    </View>
   );
 }
 
