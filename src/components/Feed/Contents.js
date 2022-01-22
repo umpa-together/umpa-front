@@ -9,7 +9,7 @@ import { useRefresh } from 'providers/refresh';
 import LoadingIndicator from 'components/LoadingIndicator';
 import StoryProvider from 'providers/story';
 
-export default function Contents() {
+export default function Contents({ setIsScroll }) {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
     useContext(FeedContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
