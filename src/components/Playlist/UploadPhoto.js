@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { onClickSingle } from 'lib/utils/imageEditor';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';

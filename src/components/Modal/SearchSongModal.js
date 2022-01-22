@@ -15,7 +15,7 @@ import ValidityModal from 'components/Modal/ValidityModal';
 import Modal from '.';
 
 const ModalView = () => {
-  const { text, searching } = useSearch();
+  const { text, searching, opt } = useSearch();
   const { songsRef, validityMsg } = useSongActions();
   const { onCloseSearchModal } = useModal();
   const activeCheck = songsRef.current.length > 0 && 1;
@@ -38,7 +38,12 @@ const ModalView = () => {
   });
   return (
     <View style={styles.viewContainer}>
-      <Header title="곡 추가" titleStyle={styles.titleStyle} exit={<Exit />} action={<Action />} />
+      <Header
+        title={opt === 'playlist' ? '곡 추가' : '대표곡 선택'}
+        titleStyle={styles.titleStyle}
+        exit={<Exit />}
+        action={<Action />}
+      />
       <SearchBar />
       {text === '' && !searching ? (
         <AddedProvider>
