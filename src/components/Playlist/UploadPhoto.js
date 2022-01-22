@@ -6,7 +6,6 @@ import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 
 export default function UploadPhoto({ songs }) {
   const { image, setImage } = usePlaylistCreate();
-  console.log(songs)
   return (
     <View>
       <TouchableOpacity
