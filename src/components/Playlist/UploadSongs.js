@@ -1,17 +1,25 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import SongView from 'components/SongView';
-import { useSongActions } from 'providers/songActions';
+import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { COLOR_3 } from 'constants/colors';
 
 export default function UploadSongs({ songs }) {
-  const { getActionComponent } = useSongActions();
-
   return (
-    <View style={{ borderWidth: 1 }}>
-      <Text>총 {songs.length}</Text>
+    <View style={styles.contianer}>
+      <Text style={styles.titleText}>총 {songs.length}곡</Text>
       {songs.map((song) => {
-        return <SongView key={song.id} song={song} actions={getActionComponent({ data: song })} />;
+        return <SongView key={song.id} song={song} />;
       })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  titleText: {
+    fontSize: FS(12),
+    color: COLOR_3,
+    marginBottom: 28 * SCALE_HEIGHT,
+    marginLeft: 16 * SCALE_WIDTH,
+  },
+});

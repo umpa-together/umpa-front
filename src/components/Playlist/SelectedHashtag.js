@@ -1,24 +1,10 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
-import HashtagModal from 'components/Modal/HashtagModal';
-import { usePlaylistCreate } from 'providers/playlistCreate';
 
-export default function UploadHashtag({ hashtags }) {
-  const [hashtagModal, setHashtagModal] = useState(false);
-  const { onClickAddHashtag, onClickDeleteHashtag } = usePlaylistCreate();
-  const info = {
-    data: hashtags,
-    deleteAction: onClickDeleteHashtag,
-    addAction: onClickAddHashtag,
-  };
-  const hashtagCheck = hashtags.length;
-
-  const onPressAdd = () => {
-    setHashtagModal(true);
-  };
+export default function SelectedHashtag({ hashtags }) {
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={[style.flexRow]}>
@@ -30,15 +16,6 @@ export default function UploadHashtag({ hashtags }) {
           );
         })}
       </View>
-      <TouchableOpacity
-        onPress={onPressAdd}
-        style={[styles.hashtagBox, hashtagCheck && styles.hashtagEdit]}
-      >
-        <Text style={[styles.hashtagsStyle, hashtagCheck && styles.hashtagEdit]}>
-          {hashtagCheck ? '+ 태그 편집' : '+ 태그 추가'}
-        </Text>
-      </TouchableOpacity>
-      <HashtagModal info={info} modal={hashtagModal} setModal={setHashtagModal} />
     </View>
   );
 }

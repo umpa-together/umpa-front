@@ -1,30 +1,27 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { onClickSingle } from 'lib/utils/imageEditor';
+import { usePlaylistCreate } from 'providers/playlistCreate';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 
-export default function SelectedInfo({ playlistinfo }) {
-  const { image, title, textcontent, postUserId, songs, time } = playlistinfo;
-  const convertedTime = time.slice(0, 10);
-  const { name } = postUserId;
+export default function UploadInfo({ songs, title, content }) {
+  const { image, setImage } = usePlaylistCreate();
   return (
     <View style={[style.flexRow, styles.container]}>
-      <View style={style.flexRow}>
+      <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
         {image ? (
           <Image source={{ uri: image.uri }} style={styles.imageContainer} />
         ) : (
-          <PlaylistAlbumImage round songs={songs} size={140} />
+          <PlaylistAlbumImage edit round songs={songs} size={140} />
         )}
-        <View style={[styles.textContainer, style.space_between]}>
-          <View>
-            <Text style={styles.titleText}>{title}</Text>
-            {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
-            <Text style={styles.contextText}>{convertedTime}</Text>
-          </View>
-          <Text style={styles.nameText}>{name}</Text>
-        </View>
+        <Text style={styles.imageText}>변경</Text>
+      </TouchableOpacity>
+      <View style={styles.textContainer}>
+        <Text style={styles.titleText}>{title}</Text>
+        <Text style={styles.contextText}>{content}</Text>
       </View>
     </View>
   );
@@ -41,6 +38,11 @@ const styles = StyleSheet.create({
     height: 140 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
   },
+  imageBlur: {
+    zIndex: 2,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    borderRadius: 6 * SCALE_HEIGHT,
+  },
   imageText: {
     fontSize: FS(20),
     color: '#FFF',
@@ -51,7 +53,6 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: 15 * SCALE_WIDTH,
     width: 176 * SCALE_WIDTH,
-    height: 140 * SCALE_HEIGHT,
   },
   titleText: {
     fontSize: FS(16),
@@ -61,10 +62,5 @@ const styles = StyleSheet.create({
   contextText: {
     fontSize: FS(11),
     color: COLOR_5,
-    marginBottom: 10 * SCALE_HEIGHT,
-  },
-  nameText: {
-    fontSize: FS(11),
-    color: '#85A0FF',
   },
 });
