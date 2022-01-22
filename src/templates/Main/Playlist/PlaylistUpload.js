@@ -1,19 +1,25 @@
 import React, { useEffect, useCallback } from 'react';
-import { View, ScrollView, Button } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
-import UploadText from 'components/Playlist/UploadText';
 import UploadSongs from 'components/Playlist/UploadSongs';
-import UploadPhoto from 'components/Playlist/UploadPhoto';
 import UploadHashtag from 'components/Playlist/UploadHashtag';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'widgets/Icon';
+import FS from 'lib/utils/normalize';
+import { MAIN_COLOR } from 'constants/colors';
+import UploadInfo from 'components/Playlist/UploadInfo';
 
 const NextActions = () => {
   const { onClickUpload } = usePlaylistCreate();
-  return <Button title="upload" onPress={onClickUpload} />;
+  return (
+    <TouchableOpacity style={[style.icons, styles.textContainer]} onPress={onClickUpload}>
+      <Text style={styles.uploatText}>저장</Text>
+    </TouchableOpacity>
+  );
 };
 
 const BackLandings = () => {
@@ -25,12 +31,16 @@ const BackLandings = () => {
     });
   };
 
-  return <Button title="back" onPress={onPressBack} />;
+  return (
+    <TouchableOpacity style={styles.backContainer} title="back" onPress={onPressBack}>
+      <Icon source={require('public/icons/back-40.png')} style={style.icons} />
+    </TouchableOpacity>
+  );
 };
 
 export default function PlaylistUpload({ data }) {
   const { information, setParams, songs, setSongs } = usePlaylistCreate();
-  const { setActionType, songsRef, actionsRef } = useSongActions();
+  const { songsRef, actionsRef } = useSongActions();
   const { title, content, hashtags } = information;
 
   useEffect(() => {
@@ -46,19 +56,33 @@ export default function PlaylistUpload({ data }) {
   useFocusEffect(
     useCallback(() => {
       actionsRef.current = setSongs;
-      setActionType('playlistDeleteSong');
     }, []),
   );
 
   return (
     <View style={style.background}>
-      <Header title="플레이리스트 생성" landings={[<BackLandings />]} actions={[<NextActions />]} />
+      <Header
+        titleStyle={style.headertitle}
+        title="새 플레이리스트"
+        landings={[<BackLandings />]}
+        actions={[<NextActions />]}
+      />
       <ScrollView>
-        <UploadPhoto />
-        <UploadText title={title} content={content} />
+        <UploadInfo songs={songs} title={title} content={content} />
         <UploadHashtag hashtags={hashtags} />
         <UploadSongs songs={songs} />
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  uploatText: {
+    fontSize: FS(14),
+    color: MAIN_COLOR,
+  },
+  textContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

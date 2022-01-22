@@ -26,7 +26,7 @@ const UploadActions = () => {
 };
 
 export default function ProfileEdit() {
-  const { setActionType, songsRef, actionsRef } = useSongActions();
+  const { songsRef, actionsRef, setOpt } = useSongActions();
   const { songs, setSongs } = useProfileEdit();
   const { state } = useContext(UserContext);
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
@@ -45,7 +45,7 @@ export default function ProfileEdit() {
   useFocusEffect(
     useCallback(() => {
       actionsRef.current = setSongs;
-      setActionType('playlistDeleteSong');
+      setOpt('represent');
     }, []),
   );
 

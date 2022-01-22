@@ -5,13 +5,13 @@ import TrackPlayerProvider from 'providers/trackPlayer';
 import KeyboradProvider from 'providers/keyboard';
 
 export default function ({ route }) {
-  const { id, postUser } = route.params;
+  const { id, postUser, post } = route.params;
   return (
     <>
       <StatusBar />
       <TrackPlayerProvider>
         <KeyboradProvider>
-          <SelectedPlaylist playlistId={id} postUser={postUser} />
+          <SelectedPlaylist post={post} playlistId={id} postUser={postUser} />
         </KeyboradProvider>
       </TrackPlayerProvider>
     </>
