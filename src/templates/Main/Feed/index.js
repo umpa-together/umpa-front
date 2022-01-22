@@ -36,7 +36,7 @@ export default function Feed() {
   } = useContext(UserContext);
   const { state, setFeedType, getFeeds, getFeedWithFollowing, getFeedType } =
     useContext(FeedContext);
-  const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
+  const { getMyStory } = useContext(StoryContext);
   const opacity = useState(new Animated.Value(1))[0];
 
   const sortLists = [
@@ -87,9 +87,9 @@ export default function Feed() {
 
   const dataFetch = async () => {
     if (state.type) {
-      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
+      await Promise.all([getFeeds(), getMyStory()]);
     } else {
-      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
+      await Promise.all([getFeedWithFollowing(), getMyStory()]);
     }
   };
 

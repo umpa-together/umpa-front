@@ -7,6 +7,7 @@ import Daily from 'components/Feed/Daily';
 import Story from 'components/Feed/Story';
 import { useRefresh } from 'providers/refresh';
 import LoadingIndicator from 'components/LoadingIndicator';
+import StoryProvider from 'providers/story';
 
 export default function Contents() {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
@@ -53,7 +54,11 @@ export default function Contents() {
     <View style={styles.container}>
       {state.feed ? (
         <FlatList
-          ListHeaderComponent={<Story />}
+          ListHeaderComponent={
+            <StoryProvider>
+              <Story />
+            </StoryProvider>
+          }
           data={state.feed}
           keyExtractor={(_) => _._id}
           onEndReached={onEndReached}

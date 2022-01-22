@@ -90,6 +90,26 @@ const getStoryCalendar =
     }
   };
 
+const likeStory =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      await server.put(`/story/like/${id}`);
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likeStory' });
+    }
+  };
+
+const unlikeStory =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      await server.put(`/story/unlike/${id}`);
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unlikeStory' });
+    }
+  };
+
 export const { Provider, Context } = createDataContext(
   storyReducer,
   {
@@ -100,6 +120,8 @@ export const { Provider, Context } = createDataContext(
     getOtherStoryWithFollower,
     readStory,
     getStoryCalendar,
+    likeStory,
+    unlikeStory,
   },
   {
     myStory: null,
