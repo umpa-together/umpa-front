@@ -12,6 +12,8 @@ export default function ModalProvider({ children }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [playlistModal, setPlaylistModal] = useState(false);
   const [addedModal, setAddedModal] = useState(false);
+  const [validityModal, setValidityModal] = useState(false);
+
   const opacity = useState(new Animated.Value(1))[0];
 
   const onCloseHarmfulModal = () => {
@@ -61,11 +63,27 @@ export default function ModalProvider({ children }) {
     }, 1500);
   };
 
+  const onPlayValidityModal = () => {
+    setValidityModal(true);
+    setTimeout(() => {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 1500,
+        useNativeDriver: true,
+      }).start();
+      setTimeout(() => {
+        setValidityModal(false);
+        opacity.setValue(1);
+      }, 1500);
+    }, 1500);
+  };
+
   const value = {
     harmfulModal,
     representModal,
     searchModal,
     addedModal,
+    validityModal,
     opacity,
     setHarmfulModal,
     setRepresentModal,
@@ -83,6 +101,7 @@ export default function ModalProvider({ children }) {
     onCloseDeleteModal,
     onClosePlaylistModal,
     onClickAdded,
+    onPlayValidityModal,
   };
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;

@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 export const MAIN_COLOR = '#1B4DFF';
+export const SUB_COLOR = '#FF3975';
 export const COLOR_1 = '#111111'; // 블랙
 export const COLOR_2 = '#505050'; // 진회색
 export const COLOR_3 = '#767676'; // 회색

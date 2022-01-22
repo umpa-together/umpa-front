@@ -45,6 +45,9 @@ export default function PlaylistCreateProvider({ children }) {
   };
 
   const onClickAddHashtag = (text, setText) => {
+    if (information.hashtags.length >= 3) {
+      onPlayValidiyModal();
+    }
     const addhashtag = (txt) => {
       if (txt !== '' && !information.hashtags.includes(txt)) {
         setInformation({
@@ -83,7 +86,6 @@ export default function PlaylistCreateProvider({ children }) {
         uri: image.uri,
       });
     }
-
     await addPlaylist({
       title: information.title,
       content: information.content,

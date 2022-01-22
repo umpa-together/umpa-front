@@ -45,9 +45,7 @@ export default function SearchProvider({ children }) {
   };
 
   const onFocus = () => {
-    if (isResultClick) {
-      setSearching(true);
-    }
+    setSearching(true);
     setIsResultClick(false);
   };
 
@@ -64,9 +62,6 @@ export default function SearchProvider({ children }) {
       setSearching(true);
       searchHint({ term: text });
     }
-    if (searching && text === '') {
-      setSearching(false);
-    }
   }, [text]);
 
   const value = {
@@ -78,6 +73,7 @@ export default function SearchProvider({ children }) {
     onChangeText,
     onSearchKeyword,
     onEndReached,
+    setSearching,
     setIsResultClick,
     setText,
     onFocus,
