@@ -54,6 +54,12 @@ export default function Contents({ setIsScroll }) {
     <View style={styles.container}>
       {state.feed ? (
         <FlatList
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
+          }}
+          onMomentumScrollEnd={() => {
+            setIsScroll(false);
+          }}
           ListHeaderComponent={
             <StoryProvider>
               <Story />

@@ -7,7 +7,7 @@ import { SCALE_WIDTH } from 'lib/utils/normalize';
 export default function MoveText({ container, text, isMove, isExplicit, textStyle }) {
   return (
     <View style={container}>
-      <View style={[style.flexRow, styles.center]}>
+      <View style={style.flexRow}>
         {isExplicit && <View style={styles.explicit} />}
         {isMove ? (
           <TextTicker duration={7000} bounce={false} marqueeDelay={1000} style={textStyle}>
@@ -29,8 +29,5 @@ const styles = StyleSheet.create({
     height: 12 * SCALE_WIDTH,
     borderWidth: 1 * SCALE_WIDTH,
     marginRight: 5 * SCALE_WIDTH,
-  },
-  center: {
-    justifyContent: 'center',
   },
 });
