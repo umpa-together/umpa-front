@@ -5,7 +5,6 @@ import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_3 } from 'constants/colors';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
-import DailyImage from 'components/Account/DailyImage';
 import { SongImage } from 'widgets/SongImage';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { navigate } from 'lib/utils/navigation';
@@ -14,10 +13,9 @@ const playlistConverter = (el, round) => {
   const { image, songs, title, time, _id, postUserId: postUser } = el;
   const convertTime = time.slice(0, 10).replaceAll('-', '.');
   const { getSelectedPlaylist } = useContext(PlaylistContext);
-
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id: _id, postUserId: postUser._id });
-    navigate('SelectedPlaylist', { id: _id, postUser: postUser._id });
+    await getSelectedPlaylist({ id: _id, postUserId: postUser });
+    navigate('SelectedPlaylist', { id: _id, postUser });
   };
 
   return {
@@ -27,19 +25,6 @@ const playlistConverter = (el, round) => {
     content: `${songs[0].attributes.name}외 ${songs.length} 곡`,
     time: convertTime,
     onClick: onClickPlaylist,
-  };
-};
-
-const dailyConverter = (el) => {
-  const { _id, textcontent, time, song, image } = el;
-  const { artwork, name } = song.attributes;
-  const convertTime = time.slice(0, 10).replaceAll('-', '.');
-  return {
-    _id,
-    image: <DailyImage image={image} artwork={artwork} imgStyle={styles.imageDaily} />,
-    title: name,
-    content: textcontent,
-    time: convertTime,
   };
 };
 
@@ -60,16 +45,12 @@ const relayConverter = (el) => {
 
 export default function PostingCard({ item, opt, action, round }) {
   const transformedData =
-    opt === 'playlist'
-      ? playlistConverter(item, round)
-      : opt === 'daily'
-      ? dailyConverter(item)
-      : relayConverter(item);
+    opt === 'playlist' ? playlistConverter(item, round) : relayConverter(item);
   const { title, content, time, image, onClick } = transformedData;
   return (
     <TouchableOpacity onPress={onClick} style={[styles.container, style.flexRow]}>
       {image}
-      <View style={styles.textContainer}>
+      <View style={action ? styles.textContainer : styles.textContainerNoActon}>
         <Text numberOfLines={1} style={styles.titleText}>
           {title}
         </Text>
@@ -92,6 +73,11 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: 202 * SCALE_WIDTH,
+    marginLeft: 15 * SCALE_WIDTH,
+    justifyContent: 'center',
+  },
+  textContainerNoActon: {
+    width: 242 * SCALE_WIDTH,
     marginLeft: 15 * SCALE_WIDTH,
     justifyContent: 'center',
   },

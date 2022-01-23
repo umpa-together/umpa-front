@@ -1,17 +1,17 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useState, useCallback, memo } from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useContext, useState, useCallback } from 'react';
+import { View } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Provider as AddedProvider } from 'context/Added';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
-import PostingResult from 'components/PostingCard/PostingResult';
 import TabView from 'components/TabView';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
+import TabSection from './TabSection';
 
 export default function OtherAccount() {
   const { state, initRepresentSongs } = useContext(UserContext);
@@ -27,28 +27,17 @@ export default function OtherAccount() {
   );
   const { playlist, daily, relay } = contents;
 
-  const Playlist = () => {
-    return (
-      <ScrollView>
-        <PostingResult data={playlist} opt="playlist" />
-      </ScrollView>
-    );
-  };
-
-  const Daily = () => {
-    return (
-      <ScrollView>
-        <PostingResult data={daily} opt="daily" />
-      </ScrollView>
-    );
-  };
-
-  const Relay = () => {
-    return (
-      <ScrollView>
-        <PostingResult data={relay} opt="relay" />
-      </ScrollView>
-    );
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'playlist':
+        return <TabSection data={playlist} opt="playlist" />;
+      case 'daily':
+        return <TabSection data={daily} opt="daily" />;
+      case 'relay':
+        return <TabSection data={relay} opt="relay" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -64,11 +53,7 @@ export default function OtherAccount() {
               { key: 'daily', title: '데일리' },
               { key: 'relay', title: '릴레이플리' },
             ]}
-            sceneMap={{
-              playlist: memo(Playlist),
-              daily: memo(Daily),
-              relay: memo(Relay),
-            }}
+            renderSceneProps={renderScene}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />
         </>
