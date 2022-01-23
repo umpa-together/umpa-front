@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
 
 export default function SelectedHashtag({ hashtags }) {
   return (
-    <View style={[style.flexRow, styles.container]}>
-      <View style={[style.flexRow]}>
+    <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+      <View style={[style.flexRow, styles.container]}>
         {hashtags.map((item) => {
           return (
             <View key={item} style={styles.hashtagBox}>
@@ -16,7 +16,7 @@ export default function SelectedHashtag({ hashtags }) {
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8 * SCALE_WIDTH,
     paddingRight: 9 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
-    fontSize: FS(11),
+    fontSize: FS(14),
     color: MAIN_COLOR,
   },
   hashtagEdit: {

@@ -39,10 +39,10 @@ export default function SearchBar() {
       />
       <Icon source={require('public/icons/search-modal-textinput.png')} style={styles.searchIcon} />
       {(searching || text.length > 0) && (
-        <TouchableOpacity onPress={onPressCancle} style={styles.cancle}>
+        <TouchableOpacity onPress={onPressCancle}>
           <Icon
             source={require('public/icons/search-modal-cancel.png')}
-            style={styles.cancleIcon}
+            style={styles.cancelIcon}
           />
         </TouchableOpacity>
       )}
@@ -69,17 +69,11 @@ const styles = StyleSheet.create({
     bottom: 10 * SCALE_HEIGHT,
     left: 33 * SCALE_WIDTH,
   },
-  cancle: {
+  cancelIcon: {
+    bottom: 5 * SCALE_HEIGHT,
+    right: 2 * SCALE_WIDTH,
     position: 'absolute',
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    bottom: 0 * SCALE_HEIGHT,
-    right: 15 * SCALE_WIDTH,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cancleIcon: {
-    width: 12 * SCALE_WIDTH,
-    height: 14 * SCALE_HEIGHT,
+    width: 30 * SCALE_WIDTH,
+    height: 30 * SCALE_HEIGHT,
   },
 });

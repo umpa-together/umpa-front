@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import Modal from 'components/Modal';
@@ -8,6 +8,7 @@ import style from 'constants/styles';
 import CreateHashtag from 'components/CreateHashtag';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
+import Icon from 'widgets/Icon';
 
 const HashtagModalView = ({ onCloseModal, info }) => {
   const { data, deleteAction, addAction } = info;
@@ -42,19 +43,25 @@ const HashtagModalView = ({ onCloseModal, info }) => {
         hashtagCount={hashtagCount}
         onPlayValidityModal={onPlayValidityModal}
       />
-      <View style={[style.flexRow, styles.hashtagContainer]}>
-        {data.map((item) => {
-          return (
-            <TouchableOpacity
-              key={item}
-              onPress={() => deleteAction(item)}
-              style={styles.hashtagBox}
-            >
-              <Text style={styles.hashtagsStyle}>{`# ${item} X`}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+        <View style={[style.flexRow, styles.hashtagContainer]}>
+          {data.map((item) => {
+            return (
+              <TouchableOpacity
+                key={item}
+                onPress={() => deleteAction(item)}
+                style={styles.hashtagBox}
+              >
+                <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
+                <Icon
+                  style={styles.hashtagCancelIcon}
+                  source={require('public/icons/hashtag-delete.png')}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
       {validityModal && <ValidityModal title="※ 최대 3개까지 가능합니다." />}
     </View>
   );
@@ -113,13 +120,20 @@ const styles = StyleSheet.create({
   },
   hashtagsStyle: {
     paddingLeft: 8 * SCALE_WIDTH,
-    paddingRight: 9 * SCALE_WIDTH,
+    paddingRight: 25 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
-    fontSize: FS(11),
+    fontSize: FS(14),
     color: MAIN_COLOR,
   },
   hashtagContainer: {
     paddingTop: 24 * SCALE_WIDTH,
     paddingLeft: 18 * SCALE_WIDTH,
+  },
+  hashtagCancelIcon: {
+    position: 'absolute',
+    right: 8 * SCALE_WIDTH,
+    top: 7.3 * SCALE_HEIGHT,
+    width: 14 * SCALE_WIDTH,
+    height: 14 * SCALE_WIDTH,
   },
 });

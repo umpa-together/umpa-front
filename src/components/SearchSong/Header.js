@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 15 * SCALE_WIDTH,
     zIndex: 99,
-    flexDirection: 'row',
   },
   title: {
     textAlign: 'center',
@@ -31,6 +30,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15 * SCALE_WIDTH,
     zIndex: 99,
-    flexDirection: 'row',
   },
 });

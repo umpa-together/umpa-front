@@ -15,11 +15,10 @@ import ValidityModal from 'components/Modal/ValidityModal';
 import Modal from '.';
 
 const ModalView = () => {
-  const { text, searching, opt } = useSearch();
-  const { songsRef, validityMsg } = useSongActions();
-  const { onCloseSearchModal } = useModal();
+  const { text, searching } = useSearch();
+  const { songsRef, validityMsg, opt } = useSongActions();
+  const { validityModal, onCloseSearchModal } = useModal();
   const activeCheck = songsRef.current.length > 0 && 1;
-  const { validityModal } = useModal();
 
   const Exit = memo(() => {
     return (

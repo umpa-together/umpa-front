@@ -6,9 +6,15 @@ import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 
 export default function SelectedInfo({ playlistinfo }) {
-  const { image, title, textcontent, postUserId, songs, time } = playlistinfo;
+  const {
+    image,
+    title,
+    textcontent,
+    postUserId: { name },
+    songs,
+    time,
+  } = playlistinfo;
   const convertedTime = time.slice(0, 10);
-  const { name } = postUserId;
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={style.flexRow}>

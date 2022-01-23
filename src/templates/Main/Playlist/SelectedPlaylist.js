@@ -88,7 +88,7 @@ export default function SelectedPlaylist({ post, playlistId, postUser }) {
           title="플레이리스트"
           titleStyle={style.headertitle}
           landings={post && [<LandingAction />]}
-          back={!post && true}
+          back={!post}
           actions={checkMyPost ? [<PostUserAction setSelectModal={setSelectModal} />] : []}
         />
         <SelectedInfo playlistinfo={currentPlaylist} />

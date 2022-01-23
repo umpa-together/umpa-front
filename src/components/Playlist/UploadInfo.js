@@ -7,8 +7,13 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 
-export default function UploadInfo({ songs, title, content }) {
-  const { image, setImage } = usePlaylistCreate();
+export default function UploadInfo() {
+  const {
+    image,
+    setImage,
+    songs,
+    information: { title, content },
+  } = usePlaylistCreate();
   return (
     <View style={[style.flexRow, styles.container]}>
       <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>

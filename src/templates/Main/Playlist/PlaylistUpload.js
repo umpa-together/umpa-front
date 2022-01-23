@@ -39,9 +39,8 @@ const BackLandings = () => {
 };
 
 export default function PlaylistUpload({ data }) {
-  const { information, setParams, songs, setSongs } = usePlaylistCreate();
+  const { setParams, songs, setSongs } = usePlaylistCreate();
   const { songsRef, actionsRef } = useSongActions();
-  const { title, content, hashtags } = information;
 
   useEffect(() => {
     if (data) {
@@ -68,9 +67,9 @@ export default function PlaylistUpload({ data }) {
         actions={[<NextActions />]}
       />
       <ScrollView>
-        <UploadInfo songs={songs} title={title} content={content} />
-        <UploadHashtag hashtags={hashtags} />
-        <UploadSongs songs={songs} />
+        <UploadInfo />
+        <UploadHashtag />
+        <UploadSongs />
       </ScrollView>
     </View>
   );

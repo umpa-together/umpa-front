@@ -6,29 +6,32 @@ import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 
 export default function CreateInput() {
   const { onChangeValue } = usePlaylistCreate();
+  const sectionLists = [
+    { title: '플레이리스트 제목', key: 'title', placeholder: '제목을 입력하세요.' },
+    { title: '소개글', key: 'content', placeholder: '내용을 입력하세요.' },
+  ];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.inputTitle}>
-        플레이리스트 제목<Text style={styles.required}>{` *`}</Text>
-      </Text>
-      <TextInput
-        style={styles.inputBox}
-        placeholder="제목을 입력하세요."
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(text) => onChangeValue('title', text)}
-        placeholderTextColor="rgb(164,164,164)"
-      />
-      <Text style={styles.inputTitle}>소개글</Text>
-      <TextInput
-        style={styles.inputBox}
-        placeholder="내용을 입력하세요."
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(text) => onChangeValue('content', text)}
-        placeholderTextColor="rgb(164,164,164)"
-      />
+      {sectionLists.map((item) => {
+        const { title, key, placeholder } = item;
+        return (
+          <>
+            <Text style={styles.inputTitle}>
+              {title}
+              <Text style={styles.required}>{key === 'title' && ` *`}</Text>
+            </Text>
+            <TextInput
+              style={styles.inputBox}
+              placeholder={placeholder}
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => onChangeValue(key, text)}
+              placeholderTextColor="rgb(164,164,164)"
+            />
+          </>
+        );
+      })}
     </View>
   );
 }
