@@ -9,9 +9,10 @@ import { Context as StoryContext } from 'context/Story';
 import Contents from 'components/Feed/Contents';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
-import FloatingButton from 'components/Feed/FloatingButton';
+import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
 import Icon from 'widgets/Icon';
+import FloatingButton from 'components/Feed/FloatingButton';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -94,6 +95,7 @@ export default function Feed() {
       await Promise.all([getFeedWithFollowing(), getMyStory()]);
     }
   };
+
   useEffect(() => {
     getFeedType();
   }, []);
@@ -134,6 +136,13 @@ const styles = StyleSheet.create({
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 15 * SCALE_HEIGHT,
+  },
+  floating: {
+    width: 52 * SCALE_WIDTH,
+    height: 52 * SCALE_WIDTH,
+    position: 'absolute',
+    bottom: 25 * SCALE_HEIGHT,
+    right: 23 * SCALE_WIDTH,
   },
   actions: {
     width: 40 * SCALE_WIDTH,

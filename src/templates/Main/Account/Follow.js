@@ -11,7 +11,6 @@ export default function Follow({ opt }) {
   const { state } = useContext(UserContext);
   const title = opt === 'follower' ? '팔로워' : '팔로잉';
   const [users] = useState(state.follow);
-
   return (
     <View style={style.background}>
       <Header back title={title} titleStyle={styles.headerTitle} />

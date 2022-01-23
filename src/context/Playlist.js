@@ -41,11 +41,27 @@ const addPlaylist =
   (dispatch) =>
   async ({ title, content, songs, hashtag, fd }) => {
     try {
+      let imgResponse = null;
       const response = await server.post('/playlist', { title, content, songs, hashtag });
       if (fd) {
-        fd.append('playlistId', response.data);
-        await server.post('/playlist/imgUpload', fd, {
+        fd.append('playlistId', response.data[0]._id);
+        imgResponse = await server.post('/playlist/imgUpload', fd, {
           header: { 'content-type': 'multipart/form-data' },
+        });
+      }
+      if (fd) {
+        dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: imgResponse.data[0]._id,
+          postUser: imgResponse.data[0].postUserId,
+        });
+      } else {
+        dispatch({ type: 'getSelectedPlaylist', payload: response.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: response.data[0]._id,
+          postUser: response.data[0].postUserId,
         });
       }
     } catch (err) {

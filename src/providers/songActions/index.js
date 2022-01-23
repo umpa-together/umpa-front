@@ -1,51 +1,62 @@
+/* eslint-disable no-else-return */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { createContext, useContext, useState, useRef } from 'react';
-import { Button } from 'react-native';
+import { useModal } from 'providers/modal';
 
 const SongActionsContext = createContext(null);
 
 export const useSongActions = () => useContext(SongActionsContext);
 
 export default function SongActionsProvider({ children }) {
-  const [actionType, setActionType] = useState(null);
   const songsRef = useRef();
   const actionsRef = useRef();
+  const { onPlayValidityModal } = useModal();
+  const [validityMsg, setValidityMsg] = useState();
+  const [opt, setOpt] = useState('');
 
-  const PlaylistAddSongActions = ({ song }) => {
-    const onClickActions = () => {
-      let tok = false;
-      Object.values(songsRef.current).forEach((item) => {
-        if (song.id === item.id) {
-          tok = true;
-        }
-      });
-      if (songsRef.current.length < 7 && !tok) {
-        actionsRef.current((prev) => [...prev, song]);
+  const containCheck = ({ song }) => {
+    let tok = false;
+    Object.values(songsRef.current).forEach((item) => {
+      if (song.id === item.id) {
+        tok = true;
       }
-    };
-    return <Button title="플리생성" onPress={onClickActions} />;
+    });
+    return tok;
   };
 
-  const PlaylistDeleteSongActions = ({ song }) => {
-    const onClickActions = () => {
-      actionsRef.current(songsRef.current.filter((item) => item.id !== song.id));
-    };
-    return <Button title="삭제" onPress={onClickActions} />;
-  };
-
-  const getActionComponent = ({ data }) => {
-    if (actionType === 'playlistAddSong') {
-      return <PlaylistAddSongActions song={data} />;
+  const addSongActions = ({ song }) => {
+    const tok = containCheck({ song });
+    if (opt === 'playlist') {
+      if (songsRef.current.length < 8 && !tok) {
+        actionsRef.current((prev) => [...prev, song]);
+        return true;
+      }
+      if (songsRef.current.length === 8 && !tok) {
+        setValidityMsg('※ 최대 8곡을 초과했습니다.');
+        onPlayValidityModal();
+        return false;
+      }
+    } else {
+      if (songsRef.current.length < 3 && !tok) {
+        actionsRef.current((prev) => [...prev, song]);
+        return true;
+      }
+      if (songsRef.current.length === 3 && !tok) {
+        setValidityMsg('※ 최대 3곡을 초과했습니다.');
+        onPlayValidityModal();
+        return false;
+      }
     }
-    if (actionType === 'playlistDeleteSong') {
-      return <PlaylistDeleteSongActions song={data} />;
-    }
-    return null;
+    actionsRef.current(songsRef.current.filter((item) => item.id !== song.id));
+    return false;
   };
 
   const value = {
-    setActionType,
-    getActionComponent,
+    opt,
+    setOpt,
+    addSongActions,
+    containCheck,
+    validityMsg,
     songsRef,
     actionsRef,
   };

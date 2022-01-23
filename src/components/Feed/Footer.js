@@ -15,7 +15,6 @@ export default function Footer({ object, type }) {
   const { likeDaily, unLikeDaily } = useContext(DailyContext);
   const { likes, comments, _id: id } = object;
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
-
   const onClickLikes = () => {
     if (isLike) {
       if (type === 'playlist') {
@@ -43,7 +42,7 @@ export default function Footer({ object, type }) {
     <View style={[styles.container, style.flexRow, style.space_between]}>
       <View style={style.flexRow}>
         <Icon source={require('public/icons/comment.png')} style={styles.icon} />
-        <Text style={styles.indicator}>{comments.length}</Text>
+        <Text style={styles.indicator}>{comments && comments.length}</Text>
       </View>
       <View style={style.flexRow}>
         <TouchableOpacity onPress={onClickLikes}>

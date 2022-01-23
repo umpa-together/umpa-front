@@ -4,12 +4,12 @@ import StatusBar from 'components/StatusBar';
 import KeyboradProvider from 'providers/keyboard';
 
 export default function ({ route }) {
-  const { id, postUser } = route.params;
+  const { id, postUser, post } = route.params;
   return (
     <>
       <StatusBar />
       <KeyboradProvider>
-        <SelectedPlaylist playlistId={id} postUser={postUser} />
+        <SelectedPlaylist post={post} playlistId={id} postUser={postUser} />
       </KeyboradProvider>
     </>
   );

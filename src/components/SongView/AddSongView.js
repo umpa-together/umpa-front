@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
@@ -7,17 +7,33 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
+import { useSongActions } from 'providers/songActions';
 
-export default function SongView({ song, actions }) {
+export default function AddSongView({ song }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const playingCheck = song.id === isPlayingId;
+  const { containCheck, addSongActions } = useSongActions();
+  const [isAdd, setIsAdd] = useState(containCheck({ song }));
+  const onPressAdd = () => {
+    setIsAdd(addSongActions({ song }));
+  };
 
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <View style={actions === undefined ? styles.moveArea : styles.moveArea_actions}>
+        <TouchableOpacity onPress={() => onClickSong(song)} style={styles.playContainer}>
+          <Icon
+            source={
+              playingCheck
+                ? require('public/icons/search-modal-stop.png')
+                : require('public/icons/search-modal-play.png')
+            }
+            style={playingCheck ? styles.stopIcon : styles.playIcon}
+          />
+        </TouchableOpacity>
+        <View style={styles.moveArea}>
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}
@@ -28,15 +44,16 @@ export default function SongView({ song, actions }) {
         </View>
       </View>
       <View style={[style.flexRow, styles.actions]}>
-        <TouchableOpacity onPress={() => onClickSong(song)} style={styles.icon}>
+        <TouchableOpacity onPress={onPressAdd} style={styles.iconContainer}>
           <Icon
+            style={style.icons}
             source={
-              playingCheck ? require('public/icons/stop.png') : require('public/icons/play.png')
+              isAdd
+                ? require('public/icons/search-modal-added.png')
+                : require('public/icons/search-modal-add.png')
             }
-            style={styles.icon}
           />
         </TouchableOpacity>
-        {actions}
       </View>
     </View>
   );
@@ -76,5 +93,24 @@ const styles = StyleSheet.create({
   },
   moveArea_actions: {
     maxWidth: 200 * SCALE_WIDTH,
+  },
+  playContainer: {
+    width: 40 * SCALE_WIDTH,
+    height: 40 * SCALE_WIDTH,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 10 * SCALE_WIDTH,
+  },
+  playIcon: {
+    width: 18 * SCALE_WIDTH,
+    height: 18 * SCALE_WIDTH,
+  },
+  stopIcon: {
+    width: 18 * SCALE_WIDTH,
+    height: 18 * SCALE_WIDTH,
+  },
+  iconContainer: {
+    marginRight: 6 * SCALE_WIDTH,
   },
 });

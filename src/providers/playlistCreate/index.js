@@ -44,7 +44,7 @@ export default function PlaylistCreateProvider({ children }) {
     }
   };
 
-  const onClickAddHashtag = (text, setText) => {
+  const onClickAddHashtag = (textRef) => {
     const addhashtag = (txt) => {
       if (txt !== '' && !information.hashtags.includes(txt)) {
         setInformation({
@@ -57,11 +57,13 @@ export default function PlaylistCreateProvider({ children }) {
     };
 
     if (
-      !patternSpc.test(text) &&
-      (patternEng.test(text) || patternKor.test(text) || patternNum.test(text))
+      !patternSpc.test(textRef.current.value) &&
+      (patternEng.test(textRef.current.value) ||
+        patternKor.test(textRef.current.value) ||
+        patternNum.test(textRef.current.value))
     ) {
-      if (addhashtag(text)) {
-        setText('');
+      if (addhashtag(textRef.current.value)) {
+        textRef.current.clear();
       }
     }
   };
@@ -83,7 +85,6 @@ export default function PlaylistCreateProvider({ children }) {
         uri: image.uri,
       });
     }
-
     await addPlaylist({
       title: information.title,
       content: information.content,

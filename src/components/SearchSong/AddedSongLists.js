@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
-import SongView from 'components/SongView';
-import { useSongActions } from 'providers/songActions';
+import AddSongView from 'components/SongView/AddSongView';
+import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import Divider from 'widgets/Divider';
+import { COLOR_5 } from 'constants/colors';
 
 export default function AddedSongLists() {
   const { getAddedSong, state } = useContext(AddedContext);
-  const { getActionComponent } = useSongActions();
 
   useEffect(() => {
     getAddedSong();
@@ -14,13 +15,15 @@ export default function AddedSongLists() {
 
   return (
     <View style={styles.container}>
-      <Text>담은 곡</Text>
+      <Text style={styles.text}>저장한 곡</Text>
+      <Divider containerStyle={styles.dividerContainer} />
       <FlatList
+        style={styles.listContainter}
         data={state.songLists}
         keyExtractor={(_) => _._id}
         renderItem={({ item }) => {
           const { song } = item;
-          return <SongView song={song} actions={getActionComponent({ data: song })} />;
+          return <AddSongView song={song} />;
         }}
       />
     </View>
@@ -29,6 +32,20 @@ export default function AddedSongLists() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingTop: 21 * SCALE_HEIGHT,
+    height: 600 * SCALE_HEIGHT,
+  },
+  text: {
+    color: COLOR_5,
+    fontSize: FS(14),
+    marginLeft: 16 * SCALE_WIDTH,
+  },
+  dividerContainer: {
+    marginTop: 15.5 * SCALE_HEIGHT,
+    height: 1 * SCALE_HEIGHT,
+    backgroundColor: '#DBDBDB',
+  },
+  listContainter: {
+    paddingTop: 21.5 * SCALE_HEIGHT,
   },
 });
