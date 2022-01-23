@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as UserContext } from 'context/User';
@@ -8,8 +9,9 @@ import { Context as StoryContext } from 'context/Story';
 import Contents from 'components/Feed/Contents';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
-import FloatingButton from 'components/Feed/FloatingButton';
+import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
+import FloatingButton from 'components/Feed/FloatingButton';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -92,6 +94,7 @@ export default function Feed() {
       await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
     }
   };
+
   useEffect(() => {
     getFeedType();
   }, []);
@@ -132,6 +135,13 @@ const styles = StyleSheet.create({
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 15 * SCALE_HEIGHT,
+  },
+  floating: {
+    width: 52 * SCALE_WIDTH,
+    height: 52 * SCALE_WIDTH,
+    position: 'absolute',
+    bottom: 25 * SCALE_HEIGHT,
+    right: 23 * SCALE_WIDTH,
   },
   actions: {
     width: 40 * SCALE_WIDTH,
