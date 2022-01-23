@@ -1,27 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
-import { Context as PlaylistContext } from 'context/Playlist';
-import { Context as DailyContext } from 'context/Daily';
 import { MAIN_COLOR } from 'constants/colors';
 import Modal from '.';
 
 const ModalView = ({ actionInfo }) => {
   const { mainTitle, func, list } = actionInfo;
-  // const { deleteParams, onCloseDeleteModal } = useModal();
-  // const { deleteComment: deleteCommentPlaylist } = useContext(PlaylistContext);
-  // const { deleteComment: deleteCommentDaily } = useContext(DailyContext);
-  //
-  // const { targetId, opt, childId } = deleteParams;
-  // const onPressDelete = () => {
-  //  if (opt === 'playlistcomment') {
-  //    deleteCommentPlaylist({ id: targetId, commentId: childId });
-  //  } else if (opt === 'dailycomment') {
-  //    deleteCommentDaily({ id: targetId, commentId: childId });
-  //  }
-  //  onCloseDeleteModal();
-  // };
 
   return (
     <View style={styles.viewContainer}>
@@ -63,15 +48,18 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     width: 302 * SCALE_WIDTH,
-    height: 130 * SCALE_HEIGHT,
     backgroundColor: 'rgb(254,254,254)',
     borderRadius: 8 * SCALE_HEIGHT,
     alignItems: 'center',
+    paddingTop: 28 * SCALE_HEIGHT,
+    paddingBottom: 20 * SCALE_HEIGHT,
+    paddingHorizontal: 20 * SCALE_WIDTH,
   },
   title: {
     fontSize: FS(15),
-    marginTop: 31 * SCALE_HEIGHT,
     marginBottom: 25 * SCALE_HEIGHT,
+    textAlign: 'center',
+    lineHeight: 24 * SCALE_HEIGHT,
   },
   box: {
     width: 116 * SCALE_HEIGHT,

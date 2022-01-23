@@ -25,7 +25,7 @@ export default function SelectedInfo({ playlistinfo }) {
             {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
             <Text style={styles.contextText}>{convertedTime}</Text>
           </View>
-          <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.nameText}>by {name}</Text>
         </View>
       </View>
     </View>

@@ -16,12 +16,18 @@ import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
 
 export default function MyAccount() {
-  const { state, initRepresentSongs, initOtherInformation } = useContext(UserContext);
-  const { user, myContents } = state;
-  const postingCount =
-    myContents && myContents.playlist.length + myContents.daily.length + myContents.relay.length;
+  const {
+    state: {
+      user,
+      myContents: { playlist, daily, relay },
+    },
+    initRepresentSongs,
+    initOtherInformation,
+  } = useContext(UserContext);
+
+  const postingCount = playlist.length + daily.length + relay.length;
   const [sideModal, setSideModal] = useState(false);
-  const { playlist, daily, relay } = myContents;
+
   const onPressMenu = () => {
     setSideModal(true);
   };
@@ -32,7 +38,6 @@ export default function MyAccount() {
       initRepresentSongs();
     }, []),
   );
-
   const Playlist = () => {
     return (
       <ScrollView>
@@ -61,7 +66,7 @@ export default function MyAccount() {
 
   return (
     <View style={style.background}>
-      {state.user && (
+      {user && (
         <>
           <AccountHeader user={user} hamburger={onPressMenu} />
           <PostingInfo posting={postingCount} user={user} />

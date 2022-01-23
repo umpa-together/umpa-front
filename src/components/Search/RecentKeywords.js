@@ -30,7 +30,7 @@ export default function RecentKeywords({ modal }) {
       <Text style={styles.text}>최근 검색어</Text>
       <Divider containerStyle={styles.dividerContainer} />
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 10 }}
+        contentContainerStyle={styles.scrollContainer}
         style={modal && styles.modalContainer}
       >
         {state.recentKeyword &&
@@ -50,6 +50,7 @@ export default function RecentKeywords({ modal }) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 21 * SCALE_HEIGHT,
+    flex: 1,
   },
   text: {
     color: COLOR_5,
@@ -67,9 +68,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#DBDBDB',
   },
   modalContainer: {
-    height: 530 * SCALE_HEIGHT,
+    flex: 1,
     paddingTop: 21 * SCALE_HEIGHT,
     marginHorizontal: 0,
     marginLeft: 22 * SCALE_WIDTH,
+  },
+  scrollContainer: {
+    paddingBottom: 20 * SCALE_HEIGHT,
   },
 });

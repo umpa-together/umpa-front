@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MyAccount from 'templates/Main/Account/MyAccount';
+import { Context as UserContext } from 'context/User';
 
 export default function Account() {
-  return <MyAccount />;
+  const {
+    state: { user, myContents },
+  } = useContext(UserContext);
+  return <>{user && myContents && <MyAccount />}</>;
 }

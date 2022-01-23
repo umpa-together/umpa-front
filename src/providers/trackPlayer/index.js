@@ -51,6 +51,7 @@ export default function TrackPlayerProvider({ children }) {
   };
 
   const stoptracksong = async () => {
+    setIsStop(false);
     setIsPlayingId('0');
     setCurrentSong(null);
     await TrackPlayer.reset();

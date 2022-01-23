@@ -33,7 +33,7 @@ export default function AddedSongLists() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 21 * SCALE_HEIGHT,
-    height: 600 * SCALE_HEIGHT,
+    flex: 1,
   },
   text: {
     color: COLOR_5,

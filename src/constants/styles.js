@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
+import { COLOR_1 } from 'constants/colors';
 
 const style = StyleSheet.create({
   flexRow: {
@@ -20,7 +21,8 @@ const style = StyleSheet.create({
     height: 40 * SCALE_WIDTH,
   },
   headertitle: {
-    fontSize: FS(20),
+    fontSize: FS(18),
+    color: COLOR_1,
   },
   background: {
     flex: 1,
