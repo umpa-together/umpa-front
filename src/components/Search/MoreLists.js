@@ -19,6 +19,7 @@ import HashtagView from 'components/Search/HashtagView';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import DailyView from 'components/Search/DailyView';
 import Icon from 'widgets/Icon';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 const SongLists = () => {
   const [loading, setLoading] = useState(false);
@@ -111,6 +112,7 @@ export default function MoreLists({ title, data }) {
             </AddedProvider>
           </ScrollView>
         )}
+        <HarmfulModal />
       </>
     )
   );

@@ -12,6 +12,7 @@ import { COLOR_1 } from 'constants/colors';
 import HashtagView from 'components/Search/HashtagView';
 import { Provider as AddedProvider } from 'context/Added';
 import DailyView from 'components/Search/DailyView';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 const Header = ({ title, jumpTo, routeKey }) => {
   const onClickMore = () => {
@@ -73,6 +74,7 @@ export default function ResultSection({ title, data, jumpTo, routeKey }) {
           );
         })}
       </AddedProvider>
+      <HarmfulModal />
     </View>
   );
 }

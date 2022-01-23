@@ -6,6 +6,7 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2 } from 'constants/colors';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 export default function DailySong({ song, containerStyle, time, selected }) {
   const { isPlayingId, onClickSong } = useTrackPlayer();
@@ -32,6 +33,7 @@ export default function DailySong({ song, containerStyle, time, selected }) {
         <Icon source={require('public/icons/daily-song-play.png')} style={styles.icon} />
       </TouchableOpacity>
       <Text style={styles.timeText}>{time}</Text>
+      <HarmfulModal />
     </View>
   );
 }

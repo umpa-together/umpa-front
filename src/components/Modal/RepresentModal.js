@@ -10,6 +10,7 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import AddedModal from 'components/Modal/AddedModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import Modal from '.';
 
 const ModalView = () => {
@@ -24,6 +25,7 @@ const ModalView = () => {
     postAddedSong({ song });
     onClickAdded();
   };
+
   const onClickAddActions = (song) => {
     return (
       <TouchableOpacity onPress={() => onClickAdd(song)}>
@@ -58,6 +60,7 @@ const ModalView = () => {
         <LoadingIndicator />
       )}
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      <HarmfulModal />
     </View>
   );
 };
