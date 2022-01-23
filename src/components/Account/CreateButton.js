@@ -14,25 +14,13 @@ export default function CreateButton({ opt }) {
     playlist: { title: '새 플레이리스트 추가', onClick: onClickPlaylist },
     daily: { title: '새 데일리 추가', onClick: null },
   };
-  const dailyCheck = opt === 'daily';
 
   return (
     <View style={[styles.container, style.flexRow]}>
-      <TouchableOpacity
-        onPress={createOpt[opt].onClick}
-        style={opt === 'playlist' ? styles.buttonBoxPlaylist : styles.buttonBoxDaily}
-      >
-        <Icon
-          style={styles.icon}
-          source={
-            dailyCheck
-              ? require('public/icons/account-daily-create.png')
-              : require('public/icons/account-playlist-create.png')
-          }
-        />
-        {dailyCheck && <Text style={styles.textDaily}>데일리 추가</Text>}
+      <TouchableOpacity onPress={createOpt[opt].onClick} style={styles.buttonBoxDaily}>
+        <Icon style={styles.icon} source={require('public/icons/account-daily-create.png')} />
+        <Text style={styles.textDaily}>{createOpt[opt].title}</Text>
       </TouchableOpacity>
-      {!dailyCheck && <Text style={styles.textPlaylist}>{createOpt[opt].title}</Text>}
     </View>
   );
 }
