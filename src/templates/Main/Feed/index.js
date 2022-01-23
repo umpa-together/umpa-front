@@ -11,7 +11,6 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import RefreshProvider from 'providers/refresh';
 import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
-import Icon from 'widgets/Icon';
 import FloatingButton from 'components/Feed/FloatingButton';
 
 const FOLLOWING_NUMBER = 30;
