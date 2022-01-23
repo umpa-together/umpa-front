@@ -12,6 +12,7 @@ import RefreshProvider from 'providers/refresh';
 import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
 import FloatingButton from 'components/Feed/FloatingButton';
+import SongActionsProvider from 'providers/songActions';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -110,9 +111,11 @@ export default function Feed() {
         titleStyle={styles.title}
         actions={[<FeedActions setModal={setSortModal} />]}
       />
-      <RefreshProvider>
-        <Contents setIsScroll={setIsScroll} />
-      </RefreshProvider>
+      <SongActionsProvider>
+        <RefreshProvider>
+          <Contents setIsScroll={setIsScroll} />
+        </RefreshProvider>
+      </SongActionsProvider>
       <FloatingButton show={isScroll} />
       <SortModal
         modal={sortModal}

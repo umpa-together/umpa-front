@@ -16,7 +16,7 @@ export default function CreateInput() {
       {sectionLists.map((item) => {
         const { title, key, placeholder } = item;
         return (
-          <>
+          <View key={key}>
             <Text style={styles.inputTitle}>
               {title}
               <Text style={styles.required}>{key === 'title' && ` *`}</Text>
@@ -29,7 +29,7 @@ export default function CreateInput() {
               onChangeText={(text) => onChangeValue(key, text)}
               placeholderTextColor="rgb(164,164,164)"
             />
-          </>
+          </View>
         );
       })}
     </View>

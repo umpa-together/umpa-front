@@ -8,26 +8,30 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function HashtagView({ info, containerStyle }) {
   const { hashtag, playlistId, dailyId, _id: id } = info;
-  const count = playlistId && playlistId.length + dailyId && dailyId.length;
+  const count = playlistId.length + dailyId.length;
 
   const onClickHashtag = () => {
     navigate('SelectedHashtag', { id, info });
   };
 
   return (
-    <TouchableOpacity
-      onPress={onClickHashtag}
-      style={[styles.container, style.flexRow, containerStyle]}
-      activeOpacity={0.8}
-    >
-      <View style={styles.circle}>
-        <Text style={styles.hashtag}>#</Text>
-      </View>
-      <View>
-        <Text style={styles.title}>#{hashtag}</Text>
-        <Text style={styles.count}>게시물 {count}</Text>
-      </View>
-    </TouchableOpacity>
+    <>
+      {count > 0 && (
+        <TouchableOpacity
+          onPress={onClickHashtag}
+          style={[styles.container, style.flexRow, containerStyle]}
+          activeOpacity={0.8}
+        >
+          <View style={styles.circle}>
+            <Text style={styles.hashtag}>#</Text>
+          </View>
+          <View>
+            <Text style={styles.title}>#{hashtag}</Text>
+            <Text style={styles.count}>게시물 {count}</Text>
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 }
 

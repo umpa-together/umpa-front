@@ -12,12 +12,12 @@ import Footer from './Footer';
 const FollowAction = ({ id }) => {
   const {
     state: {
-      user: { following },
+      user: { following, _id: userId },
     },
     follow,
     unfollow,
   } = useContext(UserContext);
-  const [isFollow, setIsFollow] = useState(following.includes(id));
+  const [isFollow, setIsFollow] = useState(id === userId || following.includes(id));
 
   const onClickFollow = () => {
     if (isFollow) {

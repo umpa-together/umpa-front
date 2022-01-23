@@ -21,6 +21,8 @@ import SelectModal from 'components/Modal/SelectModal';
 import PlayBar from 'components/PlayBar';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { Provider as AddedProvider } from 'context/Added';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -39,6 +41,7 @@ export default function SelectedDaily({ dailyId }) {
     state: { user },
   } = useContext(UserContext);
   const { currentSong, duration } = useTrackPlayer();
+  const { addedModal } = useModal();
   const { currentComments, currentDaily } = state;
   const { postUserId: postUser, image, textcontent, time, song } = currentDaily;
   const timeConverted = timeConverter(time);
@@ -91,6 +94,7 @@ export default function SelectedDaily({ dailyId }) {
         setModal={setSelectModal}
         selectInfo={{ func: selectFunction, list: selectLists }}
       />
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 }

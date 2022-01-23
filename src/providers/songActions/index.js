@@ -8,15 +8,17 @@ const SongActionsContext = createContext(null);
 export const useSongActions = () => useContext(SongActionsContext);
 
 export default function SongActionsProvider({ children }) {
-  const songsRef = useRef();
-  const actionsRef = useRef();
+  const [selectedSongs, setSelectedSongs] = useState([]);
+  const searchInfoRef = useRef();
   const { onPlayValidityModal } = useModal();
   const [validityMsg, setValidityMsg] = useState();
-  const [opt, setOpt] = useState('');
-
-  const containCheck = ({ song }) => {
+  const songCount = {
+    playlist: 8,
+    represent: 5,
+  };
+  const containCheck = (song) => {
     let tok = false;
-    Object.values(songsRef.current).forEach((item) => {
+    Object.values(selectedSongs).forEach((item) => {
       if (song.id === item.id) {
         tok = true;
       }
@@ -25,40 +27,32 @@ export default function SongActionsProvider({ children }) {
   };
 
   const addSongActions = ({ song }) => {
-    const tok = containCheck({ song });
-    if (opt === 'playlist') {
-      if (songsRef.current.length < 8 && !tok) {
-        actionsRef.current((prev) => [...prev, song]);
-        return true;
-      }
-      if (songsRef.current.length === 8 && !tok) {
-        setValidityMsg('※ 최대 8곡을 초과했습니다.');
-        onPlayValidityModal();
-        return false;
-      }
+    const isIncludeSong = containCheck(song);
+    if (selectedSongs.length < songCount[searchInfoRef.current.key] && !isIncludeSong) {
+      setSelectedSongs((prev) => [...prev, song]);
+      return true;
+    } else if (selectedSongs.length === songCount[searchInfoRef.current.key] && !isIncludeSong) {
+      setValidityMsg(`※ 최대 ${songCount[searchInfoRef.current.key]}곡을 초과했습니다.`);
+      onPlayValidityModal();
+      return false;
     } else {
-      if (songsRef.current.length < 3 && !tok) {
-        actionsRef.current((prev) => [...prev, song]);
-        return true;
-      }
-      if (songsRef.current.length === 3 && !tok) {
-        setValidityMsg('※ 최대 3곡을 초과했습니다.');
-        onPlayValidityModal();
-        return false;
-      }
+      setSelectedSongs(selectedSongs.filter((item) => item.id !== song.id));
+      return false;
     }
-    actionsRef.current(songsRef.current.filter((item) => item.id !== song.id));
-    return false;
+  };
+
+  const onClickComplete = () => {
+    searchInfoRef.current.completeFunc(selectedSongs);
   };
 
   const value = {
-    opt,
-    setOpt,
     addSongActions,
     containCheck,
     validityMsg,
-    songsRef,
-    actionsRef,
+    searchInfoRef,
+    selectedSongs,
+    setSelectedSongs,
+    onClickComplete,
   };
 
   return <SongActionsContext.Provider value={value}>{children}</SongActionsContext.Provider>;

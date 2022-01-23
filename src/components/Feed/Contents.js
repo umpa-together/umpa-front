@@ -8,6 +8,7 @@ import Story from 'components/Feed/Story';
 import { useRefresh } from 'providers/refresh';
 import LoadingIndicator from 'components/LoadingIndicator';
 import StoryProvider from 'providers/story';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 export default function Contents({ setIsScroll }) {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
@@ -84,6 +85,7 @@ export default function Contents({ setIsScroll }) {
       ) : (
         <LoadingIndicator />
       )}
+      <HarmfulModal />
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import CreateInput from 'components/Playlist/CreateInput';
@@ -6,11 +6,10 @@ import CreateSongList from 'components/Playlist/CreateSongList';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import Header from 'components/Header';
 import style from 'constants/styles';
-import { useSongActions } from 'providers/songActions';
-import { useFocusEffect } from '@react-navigation/native';
 import { useScroll } from 'providers/scroll';
 import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
+import SongActionsProvider from 'providers/songActions';
 
 const NextActions = () => {
   const [validity, setValidity] = useState(false);
@@ -39,8 +38,7 @@ const NextActions = () => {
 };
 
 export default function PlaylistCreate({ data }) {
-  const { setParams, songs, setSongs } = usePlaylistCreate();
-  const { songsRef, actionsRef, setOpt } = useSongActions();
+  const { setParams } = usePlaylistCreate();
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
   useEffect(() => {
     if (data) {
@@ -48,19 +46,8 @@ export default function PlaylistCreate({ data }) {
     }
   }, [data]);
 
-  useEffect(() => {
-    songsRef.current = songs;
-  }, [songs]);
-
-  useFocusEffect(
-    useCallback(() => {
-      actionsRef.current = setSongs;
-      setOpt('playlist');
-    }, []),
-  );
-
   return (
-    <View style={[style.background, styles.container]}>
+    <View style={style.background}>
       <Header
         title="새 플레이리스트 추가"
         titleStyle={style.headertitle}
@@ -72,9 +59,12 @@ export default function PlaylistCreate({ data }) {
         onScroll={handleOutsideScroll}
         ref={outsideScrollViewRef}
         scrollEventThrottle={16}
+        contentContainerStyle={styles.container}
       >
         <CreateInput />
-        <CreateSongList />
+        <SongActionsProvider>
+          <CreateSongList />
+        </SongActionsProvider>
       </ScrollView>
     </View>
   );

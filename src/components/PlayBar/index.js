@@ -8,7 +8,6 @@ import style from 'constants/styles';
 import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import { useModal } from 'providers/modal';
-import AddedModal from 'components/Modal/AddedModal';
 
 export default function PlayBar() {
   const { currentSong, position, duration, isPlayingId, onClickPause, isStop } = useTrackPlayer();
@@ -17,7 +16,8 @@ export default function PlayBar() {
   const [width, setWidth] = useState(0);
   const { name, artistName, contentRating } = currentSong.attributes;
   const { postAddedSong } = useContext(AddedContext);
-  const { onClickAdded, addedModal } = useModal();
+  const { onClickAdded } = useModal();
+  
   const onClickAdd = () => {
     postAddedSong({ song: currentSong });
     onClickAdded();
@@ -85,7 +85,6 @@ export default function PlayBar() {
           </TouchableOpacity>
         </View>
       </View>
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 }

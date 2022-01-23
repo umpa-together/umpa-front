@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useModal } from 'providers/modal';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import ScrollSong from 'components/ScrollSong';
 import ScrollSongView from 'components/SongView/ScrollSongView';
@@ -10,13 +9,18 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import SongDeleteModal from 'components/Modal/SongDeleteModal';
+import SearchSongModal from 'components/Modal/SearchSongModal';
+import { useSongActions } from 'providers/songActions';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SongLandings = ({ song }) => {
   const [songDeletemodal, setSongDeleteModal] = useState(false);
   const { setSongs } = usePlaylistCreate();
+
   const onClickDeleteSongModal = () => {
     setSongDeleteModal(true);
   };
+
   return (
     <>
       <TouchableOpacity style={styles.box} activeOpacity={0.9} onPress={onClickDeleteSongModal}>
@@ -35,12 +39,20 @@ const SongLandings = ({ song }) => {
 };
 
 export default function CreateSongList() {
-  const { setSearchModal } = useModal();
-  const { songs } = usePlaylistCreate();
+  const [searchModal, setSearchModal] = useState(false);
+  const { songs, setSongs } = usePlaylistCreate();
+  const { searchInfoRef, setSelectedSongs } = useSongActions();
 
   const onClickAddSong = () => {
+    setSelectedSongs(songs);
     setSearchModal(true);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      searchInfoRef.current = { title: '곡 추가', key: 'playlist', completeFunc: setSongs };
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -63,6 +75,7 @@ export default function CreateSongList() {
           })}
         </ScrollSong>
       </TrackPlayerProvider>
+      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
     </View>
   );
 }

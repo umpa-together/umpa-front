@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as UserContext } from 'context/User';
 
 const PlaylistCreateContext = createContext(null);
 
@@ -7,6 +8,7 @@ export const usePlaylistCreate = () => useContext(PlaylistCreateContext);
 
 export default function PlaylistCreateProvider({ children }) {
   const { addPlaylist } = useContext(PlaylistContext);
+  const { getMyInformation } = useContext(UserContext);
   const [information, setInformation] = useState({
     title: '',
     content: '',
@@ -92,6 +94,7 @@ export default function PlaylistCreateProvider({ children }) {
       songs,
       fd,
     });
+    getMyInformation();
   };
 
   const value = {

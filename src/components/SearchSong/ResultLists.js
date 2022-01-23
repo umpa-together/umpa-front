@@ -43,7 +43,7 @@ export default function ResultLists() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 21 * SCALE_HEIGHT,
-    height: 600 * SCALE_HEIGHT,
+    flex: 1,
   },
   searchText: {
     fontSize: FS(14),
@@ -63,5 +63,6 @@ const styles = StyleSheet.create({
   },
   listContainter: {
     paddingTop: 21.5 * SCALE_HEIGHT,
+    flex: 1,
   },
 });

@@ -14,13 +14,14 @@ export default function UploadInfo() {
     songs,
     information: { title, content },
   } = usePlaylistCreate();
+
   return (
     <View style={[style.flexRow, styles.container]}>
       <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
         {image ? (
           <Image source={{ uri: image.uri }} style={styles.imageContainer} />
         ) : (
-          <PlaylistAlbumImage edit round songs={songs} size={140} />
+          songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
         )}
         <Text style={styles.imageText}>변경</Text>
       </TouchableOpacity>

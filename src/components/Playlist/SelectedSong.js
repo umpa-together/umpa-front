@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import SearchSongView from 'components/SongView/SearchSongView';
+import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
+import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
-import { Provider as AddedProvider } from 'context/Added';
+import Icon from 'widgets/Icon';
+import { useModal } from 'providers/modal';
 
 export default function SelectedSong({ songs }) {
+  const { postAddedSong } = useContext(AddedContext);
+  const { onClickAdded } = useModal();
+
   const [isMore, setIsMore] = useState(false);
   const onClickMore = () => {
     setIsMore(!isMore);
   };
   const songCount = songs.length;
+
+  const onClickAdd = (song) => {
+    postAddedSong({ song });
+    onClickAdded();
+  };
+
+  const onClickAddActions = (song) => {
+    return (
+      <TouchableOpacity onPress={() => onClickAdd(song)}>
+        <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View>
@@ -18,7 +36,7 @@ export default function SelectedSong({ songs }) {
       <View style={[!isMore && styles.songContainer]}>
         <AddedProvider>
           {songs.map((item) => {
-            return <SearchSongView key={item.id} info={{ song: item }} />;
+            return <SongView key={item.id} song={item} actions={onClickAddActions(item)} />;
           })}
         </AddedProvider>
       </View>
@@ -49,5 +67,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1 * SCALE_WIDTH,
     borderColor: COLOR_5,
+  },
+  icon: {
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    marginRight: 4 * SCALE_WIDTH,
   },
 });

@@ -5,17 +5,12 @@ import createDataContext from 'lib/utils/createDataContext';
 const playlistReducer = (state, action) => {
   switch (action.type) {
     case 'init_playlist':
-      return { ...state, currentPlaylist: null, currentComments: null, currentSongs: [] };
+      return { ...state, currentPlaylist: null, currentComments: null };
     case 'init_recomment':
       return { ...state, currentRecomments: null };
 
     case 'getSelectedPlaylist':
-      return {
-        ...state,
-        currentPlaylist: action.payload[0],
-        currentComments: action.payload[1],
-        currentSongs: action.payload[0].songs,
-      };
+      return { ...state, currentPlaylist: action.payload[0], currentComments: action.payload[1] };
     case 'deleted_playlist':
       return { ...state, currentPlaylist: [] };
     case 'getComment':
@@ -284,7 +279,6 @@ export const { Provider, Context } = createDataContext(
   {
     currentPlaylist: null,
     currentComments: null,
-    currentSongs: [],
     currentRecomments: null,
     errorMessage: '',
   },

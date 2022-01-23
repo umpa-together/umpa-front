@@ -12,36 +12,46 @@ import { Provider as AddedProvider } from 'context/Added';
 import SearchLists from 'components/SearchSong/SearchLists';
 import { COLOR_3, MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import ValidityModal from 'components/Modal/ValidityModal';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 import Modal from '.';
 
-const ModalView = () => {
+const ModalView = ({ onClose }) => {
   const { text, searching } = useSearch();
-  const { songsRef, validityMsg, opt } = useSongActions();
-  const { validityModal, onCloseSearchModal } = useModal();
-  const activeCheck = songsRef.current.length > 0 && 1;
+  const { validityMsg, searchInfoRef, onClickComplete } = useSongActions();
+  const { validityModal } = useModal();
+  const activeCheck = true;
 
   const Exit = memo(() => {
     return (
-      <TouchableOpacity style={styles.headerTouch} onPress={onCloseSearchModal}>
+      <TouchableOpacity style={styles.headerTouch} onPress={onClose}>
         <Text style={styles.inactiveText}>닫기</Text>
       </TouchableOpacity>
     );
   });
 
   const Action = memo(() => {
+    const onClickAction = () => {
+      onClickComplete();
+      onClose();
+    };
+
     return (
-      <TouchableOpacity style={styles.headerTouch} onPress={onCloseSearchModal}>
+      <TouchableOpacity style={styles.headerTouch} onPress={onClickAction}>
         <Text style={activeCheck ? styles.activeText : styles.inactiveText}>완료</Text>
       </TouchableOpacity>
     );
   });
+
   return (
     <View style={styles.viewContainer}>
       <Header
-        title={opt === 'playlist' ? '곡 추가' : '대표곡 선택'}
+        title={searchInfoRef.current.title}
         titleStyle={styles.titleStyle}
         exit={<Exit />}
-        action={<Action />}
+        action={
+          (searchInfoRef.current.key === 'playlist' ||
+            searchInfoRef.current.key === 'represent') && <Action />
+        }
       />
       <SearchBar />
       {text === '' && !searching ? (
@@ -52,24 +62,28 @@ const ModalView = () => {
         <SearchLists />
       )}
       {validityModal && <ValidityModal title={validityMsg} />}
+      <HarmfulModal />
     </View>
   );
 };
 
-export default function SearchSongModal() {
-  const { searchModal, onCloseSearchModal } = useModal();
+export default function SearchSongModal({ modal, setModal }) {
+  const onBackdropPress = () => {
+    setModal(!modal);
+  };
+
   return (
     <Modal
       animationIn="slideInUp"
       animationOut="slideOutDown"
       backdropOpacity={0.6}
-      isVisible={searchModal}
-      onBackdropPress={onCloseSearchModal}
+      isVisible={modal}
+      onBackdropPress={onBackdropPress}
       style={styles.container}
     >
       <SearchProvider>
         <SearchProviderC>
-          <ModalView />
+          <ModalView onClose={onBackdropPress} />
         </SearchProviderC>
       </SearchProvider>
     </Modal>

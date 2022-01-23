@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import { Context as RelayContext } from 'context/Relay';
 import { Context as UserContext } from 'context/User';
-import { useModal } from 'providers/modal';
+import SearchSongModal from 'components/Modal/SearchSongModal';
 
 export default function NavButton({ isSwipe }) {
   const { state } = useContext(RelayContext);
   const { state: userState } = useContext(UserContext);
   const { playlist } = state.selectedRelay;
   const { postUserId } = playlist;
-  const { setSearchModal } = useModal();
+  const [searchModal, setSearchModal] = useState(false);
 
   const onClickAdd = (isValid) => {
     if (isValid) {
@@ -50,6 +50,7 @@ export default function NavButton({ isSwipe }) {
           </TouchableOpacity>
         );
       })}
+      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
     </>
   );
 }

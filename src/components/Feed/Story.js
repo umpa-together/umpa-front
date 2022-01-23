@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,27 @@ import ProfileImage from 'widgets/ProfileImage';
 import Icon from 'widgets/Icon';
 import StoryModal from 'components/Modal/StoryModal';
 import { useStory } from 'providers/story';
+import SearchSongModal from 'components/Modal/SearchSongModal';
+import { useSongActions } from 'providers/songActions';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Story() {
   const [storyModal, setStoryModal] = useState(false);
-  const { state, getOtherStoryWithAll } = useContext(StoryContext);
-  const { state: userState } = useContext(UserContext);
+  const [searchModal, setSearchModal] = useState(false);
+  const { state, getOtherStoryWithAll, postStory, getMyStory } = useContext(StoryContext);
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const { onClickMyStory, onClickOtherStory } = useStory();
-  const { user } = userState;
+  const { searchInfoRef } = useSongActions();
 
   const onClickStory = (song, idx) => {
     if (!idx) {
       if (song) {
         onClickMyStory(song);
         setStoryModal(true);
+      } else {
+        setSearchModal(true);
       }
     } else {
       onClickOtherStory(song, idx);
@@ -34,11 +42,23 @@ export default function Story() {
     }
   };
 
+  const postStoryFunction = async (song) => {
+    await postStory({ song });
+    getMyStory();
+    setSearchModal(false);
+  };
+
   useEffect(() => {
     if (!storyModal) {
       getOtherStoryWithAll();
     }
   }, [storyModal]);
+
+  useFocusEffect(
+    useCallback(() => {
+      searchInfoRef.current = { title: '오늘의 곡', key: 'story', func: postStoryFunction };
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
@@ -100,7 +120,8 @@ export default function Story() {
             );
           })}
       </ScrollView>
-      {storyModal && <StoryModal modal={storyModal} setModal={setStoryModal} />}
+      <StoryModal modal={storyModal} setModal={setStoryModal} />
+      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
     </View>
   );
 }

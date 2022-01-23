@@ -4,6 +4,7 @@ import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import PlaylistCard from 'components/PlaylistView';
 import style from 'constants/styles';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 export function AddedSong() {
   const { state, deleteAddedSong } = useContext(AddedContext);
@@ -28,6 +29,7 @@ export function AddedSong() {
           return <SongView song={song} actions={isEdit && deleteActions(id)} />;
         }}
       />
+      <HarmfulModal />
     </>
   );
 }
