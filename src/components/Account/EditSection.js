@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
 import { Context as UserContext } from 'context/User';
-import { useModal } from 'providers/modal';
 import ScrollSong from 'components/ScrollSong';
 import Movable from 'components/ScrollSong/Movable';
 import ScrollSongView from 'components/SongView/ScrollSongView';
@@ -14,6 +13,9 @@ import GenreModal from 'components/Modal/GenreModal';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import SongDeleteModal from 'components/Modal/SongDeleteModal';
+import SearchSongModal from 'components/Modal/SearchSongModal';
+import { useSongActions } from 'providers/songActions';
+import { useFocusEffect } from '@react-navigation/native';
 import ProfileBackground from './ProfileBackground';
 
 export function ImageSection() {
@@ -101,11 +103,20 @@ const SongLandings = ({ song }) => {
 };
 
 export function RepresentSongSection() {
-  const { setSearchModal } = useModal();
-  const { songs } = useProfileEdit();
+  const [searchModal, setSearchModal] = useState(false);
+  const { songs, setSongs } = useProfileEdit();
+  const { searchInfoRef, setSelectedSongs } = useSongActions();
+
   const onClickAddSong = () => {
+    setSelectedSongs(songs);
     setSearchModal(true);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      searchInfoRef.current = { title: '대표곡 선택', key: 'represent', completeFunc: setSongs };
+    }, []),
+  );
 
   return (
     <View style={{ marginBottom: 100 * SCALE_HEIGHT }}>
@@ -124,6 +135,7 @@ export function RepresentSongSection() {
           );
         })}
       </ScrollSong>
+      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
     </View>
   );
 }

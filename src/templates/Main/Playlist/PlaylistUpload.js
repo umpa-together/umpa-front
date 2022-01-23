@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import UploadSongs from 'components/Playlist/UploadSongs';
@@ -6,8 +6,6 @@ import UploadHashtag from 'components/Playlist/UploadHashtag';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
-import { useSongActions } from 'providers/songActions';
-import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'widgets/Icon';
 import FS from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
@@ -39,24 +37,13 @@ const BackLandings = () => {
 };
 
 export default function PlaylistUpload({ data }) {
-  const { setParams, songs, setSongs } = usePlaylistCreate();
-  const { songsRef, actionsRef } = useSongActions();
+  const { setParams } = usePlaylistCreate();
 
   useEffect(() => {
     if (data) {
       setParams(data);
     }
   }, [data]);
-
-  useEffect(() => {
-    songsRef.current = songs;
-  }, [songs]);
-
-  useFocusEffect(
-    useCallback(() => {
-      actionsRef.current = setSongs;
-    }, []),
-  );
 
   return (
     <View style={style.background}>

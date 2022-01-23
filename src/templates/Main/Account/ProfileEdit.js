@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import Header from 'components/Header';
@@ -7,13 +7,11 @@ import EditSection, {
   RepresentSongSection,
   ImageSection,
 } from 'components/Account/EditSection';
-import { useSongActions } from 'providers/songActions';
-import { useFocusEffect } from '@react-navigation/native';
 import { useProfileEdit } from 'providers/profileEdit';
-import { Context as UserContext } from 'context/User';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
 import FS from 'lib/utils/normalize';
 import { useScroll } from 'providers/scroll';
+import SongActionsProvider from 'providers/songActions';
 
 const UploadActions = () => {
   const { onClickEdit } = useProfileEdit();
@@ -26,9 +24,6 @@ const UploadActions = () => {
 };
 
 export default function ProfileEdit() {
-  const { songsRef, actionsRef, setOpt } = useSongActions();
-  const { songs, setSongs } = useProfileEdit();
-  const { state } = useContext(UserContext);
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
 
   const sectionLists = [
@@ -41,19 +36,6 @@ export default function ProfileEdit() {
       placeholder: '간단한 소개를 입력해주세요.',
     },
   ];
-
-  useFocusEffect(
-    useCallback(() => {
-      actionsRef.current = setSongs;
-      setOpt('represent');
-    }, []),
-  );
-
-  useEffect(() => {
-    if (state.user) {
-      songsRef.current = songs;
-    }
-  }, [songs]);
 
   return (
     <View style={style.background}>
@@ -70,7 +52,9 @@ export default function ProfileEdit() {
             return <EditSection key={title} title={title} placeholder={placeholder} />;
           })}
           <GenreSection />
-          <RepresentSongSection />
+          <SongActionsProvider>
+            <RepresentSongSection />
+          </SongActionsProvider>
         </View>
       </ScrollView>
     </View>

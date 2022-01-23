@@ -8,9 +8,7 @@ export const useModal = () => useContext(ModalContext);
 export default function ModalProvider({ children }) {
   const [harmfulModal, setHarmfulModal] = useState(false);
   const [representModal, setRepresentModal] = useState(false);
-  const [searchModal, setSearchModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [playlistModal, setPlaylistModal] = useState(false);
   const [addedModal, setAddedModal] = useState(false);
   const [validityModal, setValidityModal] = useState(false);
 
@@ -30,14 +28,8 @@ export default function ModalProvider({ children }) {
     childId: '',
   });
 
-  const onCloseSearchModal = () => {
-    setSearchModal(false);
-  };
   const onCloseDeleteModal = () => {
     setDeleteModal(false);
-  };
-  const onClosePlaylistModal = () => {
-    setPlaylistModal(false);
   };
 
   const changeDeleteParams = ({ data }) => {
@@ -81,25 +73,19 @@ export default function ModalProvider({ children }) {
   const value = {
     harmfulModal,
     representModal,
-    searchModal,
     addedModal,
     validityModal,
     opacity,
     setHarmfulModal,
     setRepresentModal,
-    setSearchModal,
     deleteModal,
-    playlistModal,
     deleteParams,
     setDeleteModal,
-    setPlaylistModal,
     setDeleteParams,
     changeDeleteParams,
     onCloseHarmfulModal,
     onCloseRepresentModal,
-    onCloseSearchModal,
     onCloseDeleteModal,
-    onClosePlaylistModal,
     onClickAdded,
     onPlayValidityModal,
   };

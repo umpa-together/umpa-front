@@ -13,10 +13,16 @@ export default function AddSongView({ song }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const playingCheck = song.id === isPlayingId;
-  const { containCheck, addSongActions } = useSongActions();
-  const [isAdd, setIsAdd] = useState(containCheck({ song }));
+  const { containCheck, addSongActions, searchInfoRef } = useSongActions();
+  const [isAdd, setIsAdd] = useState(containCheck(song));
+  const { func } = searchInfoRef.current;
+
   const onPressAdd = () => {
-    setIsAdd(addSongActions({ song }));
+    if (func) {
+      func(song);
+    } else {
+      setIsAdd(addSongActions({ song }));
+    }
   };
 
   return (
@@ -43,18 +49,16 @@ export default function AddSongView({ song }) {
           <MoveText text={artistName} isMove={song.id === isPlayingId} textStyle={styles.artist} />
         </View>
       </View>
-      <View style={[style.flexRow, styles.actions]}>
-        <TouchableOpacity onPress={onPressAdd} style={styles.iconContainer}>
-          <Icon
-            style={style.icons}
-            source={
-              isAdd
-                ? require('public/icons/search-modal-added.png')
-                : require('public/icons/search-modal-add.png')
-            }
-          />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={onPressAdd} activeOpacity={0.8}>
+        <Icon
+          style={style.icons}
+          source={
+            isAdd
+              ? require('public/icons/search-modal-added.png')
+              : require('public/icons/search-modal-add.png')
+          }
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 16 * SCALE_WIDTH,
     marginBottom: 19 * SCALE_HEIGHT,
+    paddingRight: 6 * SCALE_WIDTH,
     width: '100%',
   },
   img: {
@@ -82,6 +87,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     marginRight: 4 * SCALE_WIDTH,
+    borderWidth: 1,
   },
   icon: {
     width: 32 * SCALE_WIDTH,
@@ -109,8 +115,5 @@ const styles = StyleSheet.create({
   stopIcon: {
     width: 18 * SCALE_WIDTH,
     height: 18 * SCALE_WIDTH,
-  },
-  iconContainer: {
-    marginRight: 6 * SCALE_WIDTH,
   },
 });
