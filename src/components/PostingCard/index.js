@@ -14,8 +14,8 @@ const playlistConverter = (el, round) => {
   const convertTime = time.slice(0, 10).replaceAll('-', '.');
   const { getSelectedPlaylist } = useContext(PlaylistContext);
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id: _id, postUserId: postUser });
-    navigate('SelectedPlaylist', { id: _id, postUser });
+    await getSelectedPlaylist({ id: _id, postUserId: postUser._id });
+    navigate('SelectedPlaylist', { id: _id, postUser: postUser._id });
   };
 
   return {

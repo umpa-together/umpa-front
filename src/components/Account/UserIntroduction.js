@@ -17,7 +17,7 @@ export default function UserIntroduction({ introduction, song, id }) {
   return (
     <View style={[style.flexRow, styles.introductionBox]}>
       <Text style={styles.introductionText}>
-        {introduction !== undefined ? '소개글 없음' : introduction}
+        {introduction === '' ? '소개글 없음' : introduction}
       </Text>
       <TouchableOpacity style={[style.flexRow]}>
         <UserRepresentSong account song={song} action={onClickRepresentSong} />
