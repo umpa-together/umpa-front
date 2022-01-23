@@ -2,12 +2,20 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import PostingCard from 'components/PostingCard';
+import DailyView from 'components/DailyView';
+import { Provider as AddedProvider } from 'context/Added';
 
 export default function PostingResult({ data, opt }) {
   return (
     <View style={styles.container}>
       {data.map((item) => {
-        return <PostingCard key={item._id} item={item} opt={opt} />;
+        return opt === 'daily' ? (
+          <AddedProvider>
+            <DailyView key={item._id} isSelected info={item} />
+          </AddedProvider>
+        ) : (
+          <PostingCard key={item._id} item={item} opt={opt} />
+        );
       })}
     </View>
   );

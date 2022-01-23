@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
-import { COLOR_3 } from 'constants/colors';
+import { COLOR_2 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useModal } from 'providers/modal';
 import { Context as UserContext } from 'context/User';
@@ -16,9 +16,11 @@ export default function UserIntroduction({ introduction, song, id }) {
   };
   return (
     <View style={[style.flexRow, styles.introductionBox]}>
-      {introduction !== undefined && <Text style={styles.introductionText}>{introduction}</Text>}
+      <Text style={styles.introductionText}>
+        {introduction === '' ? '소개글 없음' : introduction}
+      </Text>
       <TouchableOpacity style={[style.flexRow]}>
-        <UserRepresentSong song={song} action={onClickRepresentSong} />
+        <UserRepresentSong account song={song} action={onClickRepresentSong} />
       </TouchableOpacity>
     </View>
   );
@@ -29,7 +31,8 @@ const styles = StyleSheet.create({
     marginTop: 11 * SCALE_HEIGHT,
   },
   introductionText: {
-    color: COLOR_3,
+    width: 191 * SCALE_WIDTH,
+    color: COLOR_2,
     marginRight: 6 * SCALE_WIDTH,
     fontSize: FS(12),
   },

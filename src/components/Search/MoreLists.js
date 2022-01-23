@@ -17,7 +17,7 @@ import PostingCard from 'components/PostingCard';
 import UserView from 'components/UserView';
 import HashtagView from 'components/Search/HashtagView';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import DailyView from 'components/Search/DailyView';
+import DailyView from 'components/DailyView';
 import Icon from 'widgets/Icon';
 
 const SongLists = () => {

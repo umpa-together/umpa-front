@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     color: COLOR_1,
   },
   titleText: {
-    fontSize: FS(10),
+    fontSize: FS(11),
     color: COLOR_3,
   },
   elementContainer: {
