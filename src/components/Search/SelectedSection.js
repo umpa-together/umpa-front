@@ -7,7 +7,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Provider as AddedProvider } from 'context/Added';
 import Icon from 'widgets/Icon';
-import DailyView from './DailyView';
+import DailyView from 'components/DailyView';
 
 const PlayAction = ({ song }) => {
   const { onClickSong, isPlayingId } = useTrackPlayer();

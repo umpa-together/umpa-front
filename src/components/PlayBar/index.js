@@ -17,7 +17,7 @@ export default function PlayBar() {
   const { name, artistName, contentRating } = currentSong.attributes;
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
-
+  
   const onClickAdd = () => {
     postAddedSong({ song: currentSong });
     onClickAdded();

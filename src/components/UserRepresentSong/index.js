@@ -3,10 +3,17 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import { useTrackPlayer } from 'providers/trackPlayer';
+import Icon from 'widgets/Icon';
+import style from 'constants/styles';
 
-export default function UserRepresentSong({ song, action }) {
+export default function UserRepresentSong({ song, action, account }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { name: songName, artistName } = song.attributes;
+
+  const maxWidthStyle = {
+    maxWidth: account ? 148 * SCALE_WIDTH : 202 * SCALE_WIDTH,
+  };
+
   const onPress = (el) => {
     if (action) {
       action();
@@ -15,8 +22,12 @@ export default function UserRepresentSong({ song, action }) {
     }
   };
   return (
-    <TouchableOpacity onPress={() => onPress(song)} style={styles.representBox}>
+    <TouchableOpacity
+      onPress={() => onPress(song)}
+      style={[style.flexRow, styles.representBox, maxWidthStyle]}
+    >
       <Text numberOfLines={1} style={styles.representText}>{`${songName} - ${artistName}`}</Text>
+      <Icon style={styles.playIcon} />
     </TouchableOpacity>
   );
 }
@@ -29,10 +40,18 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   representText: {
-    paddingHorizontal: 10 * SCALE_WIDTH,
+    paddingLeft: 9 * SCALE_WIDTH,
+    paddingRight: 21 * SCALE_WIDTH,
     paddingTop: 5 * SCALE_HEIGHT,
     paddingBottom: 3 * SCALE_HEIGHT,
     color: COLOR_2,
     fontSize: FS(11),
+  },
+  playIcon: {
+    width: 8 * SCALE_WIDTH,
+    height: 11 * SCALE_HEIGHT,
+    position: 'absolute',
+    right: 4.2 * SCALE_WIDTH,
+    borderWidth: 1 * SCALE_WIDTH,
   },
 });

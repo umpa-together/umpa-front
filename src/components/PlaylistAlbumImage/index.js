@@ -16,21 +16,23 @@ export default function PlaylistAlbumImage({ edit, image, songs, size, round }) 
     height: (size / 2) * SCALE_WIDTH,
   };
   return (
-    <View style={[styles.container, imgStyle, edit && styles.editStyle]}>
-      {image !== undefined ? (
-        <Image source={{ uri: image }} style={imgStyle} />
-      ) : (
-        songs.slice(0, 3).map((item) => {
-          const { url } = item.attributes.artwork;
-          return <SongImage key={item.id} url={url} imgStyle={smallImgStyle} />;
-        })
-      )}
-      {songs.length < 4 ? (
-        <SongImage url={songs[0].attributes.artwork.url} imgStyle={smallImgStyle} />
-      ) : (
-        <SongImage url={songs[3].attributes.artwork.url} imgStyle={smallImgStyle} />
-      )}
-    </View>
+    songs.length > 0 && (
+      <View style={[styles.container, imgStyle, edit && styles.editStyle]}>
+        {image !== undefined ? (
+          <Image source={{ uri: image }} style={imgStyle} />
+        ) : (
+          songs.slice(0, 3).map((item) => {
+            const { url } = item.attributes.artwork;
+            return <SongImage key={item.id} url={url} imgStyle={smallImgStyle} />;
+          })
+        )}
+        {songs.length < 4 ? (
+          <SongImage url={songs[0].attributes.artwork.url} imgStyle={smallImgStyle} />
+        ) : (
+          <SongImage url={songs[3].attributes.artwork.url} imgStyle={smallImgStyle} />
+        )}
+      </View>
+    )
   );
 }
 
