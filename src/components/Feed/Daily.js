@@ -27,14 +27,13 @@ export default function Daily({ daily }) {
         </Text>
       </TouchableOpacity>
       <Footer object={daily} type="daily" />
+      <View style={styles.divider} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1 * SCALE_WIDTH,
-    borderBottomColor: '#dcdcdc',
     paddingBottom: 4 * SCALE_HEIGHT,
   },
   contentArea: {
@@ -54,5 +53,11 @@ const styles = StyleSheet.create({
   dailySongContainer: {
     paddingHorizontal: 16 * SCALE_WIDTH,
     marginTop: 14 * SCALE_HEIGHT,
+  },
+  divider: {
+    width: 343 * SCALE_WIDTH,
+    borderBottomColor: '#dcdcdc',
+    borderBottomWidth: 1 * SCALE_WIDTH,
+    marginLeft: 16 * SCALE_WIDTH,
   },
 });

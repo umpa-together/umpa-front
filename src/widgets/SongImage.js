@@ -27,9 +27,10 @@ const SongImageBackStory = ({ url, imgStyle, border }) => {
   return (
     <ImageBackground
       style={imgStyle}
-      resizeMode="contain"
+      resizeMode="stretch"
       source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
+      blurRadius={10}
     />
   );
 };

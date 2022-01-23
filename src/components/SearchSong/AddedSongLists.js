@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import AddSongView from 'components/SongView/AddSongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_5 } from 'constants/colors';
@@ -18,17 +17,15 @@ export default function AddedSongLists() {
     <View style={styles.container}>
       <Text style={styles.text}>저장한 곡</Text>
       <Divider containerStyle={styles.dividerContainer} />
-      <TrackPlayerProvider>
-        <FlatList
-          style={styles.listContainter}
-          data={state.songLists}
-          keyExtractor={(_) => _._id}
-          renderItem={({ item }) => {
-            const { song } = item;
-            return <AddSongView song={song} />;
-          }}
-        />
-      </TrackPlayerProvider>
+      <FlatList
+        style={styles.listContainter}
+        data={state.songLists}
+        keyExtractor={(_) => _._id}
+        renderItem={({ item }) => {
+          const { song } = item;
+          return <AddSongView song={song} />;
+        }}
+      />
     </View>
   );
 }

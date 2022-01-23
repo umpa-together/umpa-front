@@ -3,7 +3,6 @@ import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-nativ
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
 import AddSongView from 'components/SongView/AddSongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
@@ -20,7 +19,7 @@ export default function ResultLists() {
         <Text style={styles.text}>검색결과</Text>
       </Text>
       <Divider containerStyle={styles.dividerContainer} />
-      <TrackPlayerProvider>
+      <>
         {state.songData ? (
           <FlatList
             style={styles.listContainter}
@@ -36,7 +35,7 @@ export default function ResultLists() {
         ) : (
           <LoadingIndicator />
         )}
-      </TrackPlayerProvider>
+      </>
     </View>
   );
 }

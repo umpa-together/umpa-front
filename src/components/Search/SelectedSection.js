@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import PostingCard from 'components/PostingCard';
-import TrackPlayerProvider, { useTrackPlayer } from 'providers/trackPlayer';
+import { useTrackPlayer } from 'providers/trackPlayer';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Provider as AddedProvider } from 'context/Added';
 import Icon from 'widgets/Icon';
@@ -38,11 +38,7 @@ export const Playlist = () => {
               opt="playlist"
               round
               key={id}
-              action={
-                <TrackPlayerProvider>
-                  <PlayAction song={playlist.songs[0]} />
-                </TrackPlayerProvider>
-              }
+              action={<PlayAction song={playlist.songs[0]} />}
             />
           </View>
         );
@@ -57,12 +53,10 @@ export const Daily = ({ actions }) => {
   return (
     <View style={styles.dailyContainer}>
       <AddedProvider>
-        <TrackPlayerProvider>
-          {state.selected.daily.map((daily) => {
-            const { _id: id } = daily;
-            return <DailyView info={daily} key={id} actions={actions} isSelected />;
-          })}
-        </TrackPlayerProvider>
+        {state.selected.daily.map((daily) => {
+          const { _id: id } = daily;
+          return <DailyView info={daily} key={id} actions={actions} isSelected />;
+        })}
       </AddedProvider>
     </View>
   );

@@ -4,7 +4,6 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 import SongView from 'components/SongView';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
 import { COLOR_1, COLOR_3 } from 'constants/colors';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -47,16 +46,14 @@ const ModalView = () => {
       </TouchableOpacity>
       <Text style={styles.title}>{name}님의 대표곡</Text>
       {representSongs ? (
-        <TrackPlayerProvider>
-          <FlatList
-            data={representSongs}
-            keyExtractor={(song) => song.id}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return <SongView song={item} actions={onClickAddActions(item)} />;
-            }}
-          />
-        </TrackPlayerProvider>
+        <FlatList
+          data={representSongs}
+          keyExtractor={(song) => song.id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return <SongView song={item} actions={onClickAddActions(item)} />;
+          }}
+        />
       ) : (
         <LoadingIndicator />
       )}

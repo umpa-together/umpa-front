@@ -11,7 +11,7 @@ import {
 import { Provider as AddedProvider } from 'context/Added';
 import { Context as SearchContext } from 'context/Search';
 import SearchSongView from 'components/SongView/SearchSongView';
-import TrackPlayerProvider, { useTrackPlayer } from 'providers/trackPlayer';
+import { useTrackPlayer } from 'providers/trackPlayer';
 import { navigate } from 'lib/utils/navigation';
 import PostingCard from 'components/PostingCard';
 import UserView from 'components/UserView';
@@ -42,25 +42,23 @@ const SongLists = () => {
   };
 
   return (
-    <TrackPlayerProvider>
-      <AddedProvider>
-        <FlatList
-          data={state.result.song}
-          keyExtractor={(item) => item.song.id}
-          contentContainerStyle={styles.songContainer}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.6}
-          ListFooterComponent={loading && <ActivityIndicator />}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => onClickSongView(item.song)}>
-                <SearchSongView info={item} />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </AddedProvider>
-    </TrackPlayerProvider>
+    <AddedProvider>
+      <FlatList
+        data={state.result.song}
+        keyExtractor={(item) => item.song.id}
+        contentContainerStyle={styles.songContainer}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.6}
+        ListFooterComponent={loading && <ActivityIndicator />}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity onPress={() => onClickSongView(item.song)}>
+              <SearchSongView info={item} />
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </AddedProvider>
   );
 };
 

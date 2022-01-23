@@ -7,6 +7,7 @@ import { Provider as PlaylistProvider } from 'context/Playlist';
 import { Provider as DailyProvider } from 'context/Daily';
 import ModalProvider from 'providers/modal';
 import SongActionsProvider from 'providers/songActions';
+import TrackPlayerProvider from 'providers/trackPlayer';
 import MainNavigator from './src/navigation';
 
 export default () => {
@@ -19,7 +20,9 @@ export default () => {
               <RelayProvider>
                 <ModalProvider>
                   <SongActionsProvider>
-                    <MainNavigator />
+                    <TrackPlayerProvider>
+                      <MainNavigator />
+                    </TrackPlayerProvider>
                   </SongActionsProvider>
                 </ModalProvider>
               </RelayProvider>

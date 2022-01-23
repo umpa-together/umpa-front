@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,33 @@ import { Context as StoryContext } from 'context/Story';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import ProfileImage from 'widgets/ProfileImage';
 import Icon from 'widgets/Icon';
+import StoryModal from 'components/Modal/StoryModal';
+import { useStory } from 'providers/story';
 
 export default function Story() {
-  const { state } = useContext(StoryContext);
+  const [storyModal, setStoryModal] = useState(false);
+  const { state, getOtherStoryWithAll } = useContext(StoryContext);
   const { state: userState } = useContext(UserContext);
+  const { onClickMyStory, onClickOtherStory } = useStory();
   const { user } = userState;
+
+  const onClickStory = (song, idx) => {
+    if (!idx) {
+      if (song) {
+        onClickMyStory(song);
+        setStoryModal(true);
+      }
+    } else {
+      onClickOtherStory(song, idx);
+      setStoryModal(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!storyModal) {
+      getOtherStoryWithAll();
+    }
+  }, [storyModal]);
 
   return (
     <View style={styles.container}>
@@ -26,7 +48,11 @@ export default function Story() {
         contentContainerStyle={styles.scrollContainer}
       >
         <View style={styles.nameArea}>
-          <TouchableOpacity style={styles.story} activeOpacity={0.9}>
+          <TouchableOpacity
+            style={styles.story}
+            activeOpacity={0.9}
+            onPress={() => onClickStory(state.myStory)}
+          >
             <ImageBackground
               style={styles.story}
               source={
@@ -47,11 +73,15 @@ export default function Story() {
         </View>
         {state.otherStoryLists &&
           state.otherStoryLists.map((item, index) => {
-            const { song, view, _id: id } = item;
+            const { view, _id: id } = item;
             const { profileImage, name } = item.postUserId;
             return (
               <View style={styles.nameArea} key={id}>
-                <TouchableOpacity style={styles.story} activeOpacity={0.9}>
+                <TouchableOpacity
+                  style={styles.story}
+                  activeOpacity={0.9}
+                  onPress={() => onClickStory(item, index)}
+                >
                   <ImageBackground
                     style={styles.story}
                     source={
@@ -70,6 +100,7 @@ export default function Story() {
             );
           })}
       </ScrollView>
+      {storyModal && <StoryModal modal={storyModal} setModal={setStoryModal} />}
     </View>
   );
 }

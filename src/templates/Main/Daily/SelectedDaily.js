@@ -12,13 +12,15 @@ import DeleteModal from 'components/Modal/DeleteMoal';
 import Divider from 'widgets/Divider';
 import SelectedComment from 'components/SelectedComment';
 import CommentBar from 'components/CommentBar';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import KeyboradProvider from 'providers/keyboard';
 import timeConverter from 'lib/utils/time';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Footer from 'components/Feed/Footer';
 import Icon from 'widgets/Icon';
 import SelectModal from 'components/Modal/SelectModal';
+import PlayBar from 'components/PlayBar';
+import { useTrackPlayer } from 'providers/trackPlayer';
+import { Provider as AddedProvider } from 'context/Added';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -36,8 +38,9 @@ export default function SelectedDaily({ dailyId }) {
   const {
     state: { user },
   } = useContext(UserContext);
-  const { currentComments, currentDaily, currentSong } = state;
-  const { postUserId: postUser, image, textcontent, time } = currentDaily;
+  const { currentSong, duration } = useTrackPlayer();
+  const { currentComments, currentDaily } = state;
+  const { postUserId: postUser, image, textcontent, time, song } = currentDaily;
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 
@@ -67,20 +70,18 @@ export default function SelectedDaily({ dailyId }) {
       <Header title="데일리" titleStyle={styles.headerTitle} back />
       <ScrollView>
         <PostUser user={postUser} action={<PostUserAction setSelectModal={setSelectModal} />} />
-        <TrackPlayerProvider>
-          <DailySong
-            containerStyle={styles.songContainer}
-            time={timeConverted}
-            song={currentSong}
-            selected
-          />
-        </TrackPlayerProvider>
+        <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
         {image.length > 0 && <Dailyimage image={image} />}
         <SelectedText textcontent={textcontent} />
         <Footer object={currentDaily} type="daily" />
         <Divider containerStyle={styles.dividerContainer} />
         <SelectedComment opt="daily" targetId={dailyId} comments={currentComments} />
       </ScrollView>
+      {currentSong && duration !== 0 && (
+        <AddedProvider>
+          <PlayBar />
+        </AddedProvider>
+      )}
       <KeyboradProvider>
         <CommentBar targetId={dailyId} action={addComment} />
       </KeyboradProvider>
@@ -105,6 +106,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCDCDC',
     marginTop: 8 * SCALE_HEIGHT,
     marginBottom: 17 * SCALE_HEIGHT,
+    width: 343 * SCALE_WIDTH,
+    marginLeft: 16 * SCALE_WIDTH,
   },
   headerTitle: {
     fontSize: FS(18),

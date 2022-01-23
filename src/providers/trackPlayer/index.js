@@ -10,9 +10,12 @@ export default function TrackPlayerProvider({ children }) {
   const [isPlayingId, setIsPlayingId] = useState('0');
   const [currentSong, setCurrentSong] = useState(null);
   const [isMute, setIsMute] = useState(false);
+  const [isStop, setIsStop] = useState(false);
+
   const { setHarmfulModal } = useModal();
   const { position, duration } = useProgress();
   const addtracksong = async ({ data }) => {
+    setIsStop(false);
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300');
     data.attributes.artwork.url = data.attributes.artwork.url.replace('{h}', '300');
     const { attributes } = data;
@@ -41,16 +44,16 @@ export default function TrackPlayerProvider({ children }) {
       await TrackPlayer.reset();
       await TrackPlayer.add(track);
       TrackPlayer.play();
+      setCurrentSong(data);
     } else {
       setHarmfulModal(true);
     }
-    setCurrentSong(data);
   };
 
-  const stoptracksong = () => {
+  const stoptracksong = async () => {
     setIsPlayingId('0');
     setCurrentSong(null);
-    TrackPlayer.reset();
+    await TrackPlayer.reset();
   };
 
   const onClickSong = (data) => {
@@ -70,20 +73,31 @@ export default function TrackPlayerProvider({ children }) {
     setIsMute(!isMute);
   };
 
+  const onClickPause = () => {
+    if (isStop) {
+      TrackPlayer.play();
+    } else {
+      TrackPlayer.pause();
+    }
+    setIsStop(!isStop);
+  };
+
   const value = {
     isPlayingId,
     currentSong,
     position,
     duration,
     isMute,
+    isStop,
     addtracksong,
     stoptracksong,
     onClickVolume,
     onClickSong,
+    onClickPause,
   };
 
   useEffect(() => {
-    if (duration !== 0 && position !== 0 && duration - position <= 1) {
+    if (duration !== 0 && position !== 0 && duration === position) {
       stoptracksong();
     }
   }, [isPlayingId, duration, position]);

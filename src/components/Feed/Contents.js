@@ -6,8 +6,8 @@ import Playlist from 'components/Feed/Playlist';
 import Daily from 'components/Feed/Daily';
 import Story from 'components/Feed/Story';
 import { useRefresh } from 'providers/refresh';
-import TrackPlayerProvider from 'providers/trackPlayer';
 import LoadingIndicator from 'components/LoadingIndicator';
+import StoryProvider from 'providers/story';
 
 export default function Contents({ setIsScroll }) {
   const { state, nextFeeds, getFeeds, getFeedWithFollowing, getNextFeedWithFollowing } =
@@ -52,36 +52,38 @@ export default function Contents({ setIsScroll }) {
 
   return (
     <View style={styles.container}>
-      <TrackPlayerProvider>
-        {state.feed ? (
-          <FlatList
-            onMomentumScrollBegin={() => {
-              setIsScroll(true);
-            }}
-            onMomentumScrollEnd={() => {
-              setIsScroll(false);
-            }}
-            ListHeaderComponent={<Story />}
-            data={state.feed}
-            keyExtractor={(_) => _._id}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.6}
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-            ListFooterComponent={loading && <ActivityIndicator />}
-            renderItem={({ item }) => {
-              const { playlist, type, daily } = item;
-              return (
-                <>
-                  {type === 'playlist' ? <Playlist playlist={playlist} /> : <Daily daily={daily} />}
-                </>
-              );
-            }}
-          />
-        ) : (
-          <LoadingIndicator />
-        )}
-      </TrackPlayerProvider>
+      {state.feed ? (
+        <FlatList
+          onMomentumScrollBegin={() => {
+            setIsScroll(true);
+          }}
+          onMomentumScrollEnd={() => {
+            setIsScroll(false);
+          }}
+          ListHeaderComponent={
+            <StoryProvider>
+              <Story />
+            </StoryProvider>
+          }
+          data={state.feed}
+          keyExtractor={(_) => _._id}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.6}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          ListFooterComponent={loading && <ActivityIndicator />}
+          renderItem={({ item }) => {
+            const { playlist, type, daily } = item;
+            return (
+              <>
+                {type === 'playlist' ? <Playlist playlist={playlist} /> : <Daily daily={daily} />}
+              </>
+            );
+          }}
+        />
+      ) : (
+        <LoadingIndicator />
+      )}
     </View>
   );
 }
