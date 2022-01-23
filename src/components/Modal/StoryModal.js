@@ -250,6 +250,10 @@ const Footer = ({ onClose }) => {
     setIsLike(!isLike);
   };
 
+  useEffect(() => {
+    setIsLike(likes.includes(user._id));
+  }, [song]);
+
   return (
     <View style={[styles.footerContainer, style.flexRow, { justifyContent: 'center' }]}>
       <TouchableOpacity onPress={onClickLeftOption} style={styles.left}>

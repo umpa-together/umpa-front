@@ -61,14 +61,13 @@ export default function Playlist({ playlist }) {
       </View>
       <SongsLists songs={songs} />
       <Footer object={playlist} type="playlist" />
+      <View style={styles.divider} />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1 * SCALE_WIDTH,
-    borderBottomColor: '#dcdcdc',
     paddingBottom: 4 * SCALE_HEIGHT,
   },
   contentArea: {
@@ -90,5 +89,11 @@ const styles = StyleSheet.create({
     fontSize: FS(12),
     marginLeft: 12 * SCALE_WIDTH,
     color: MAIN_COLOR,
+  },
+  divider: {
+    width: 343 * SCALE_WIDTH,
+    borderBottomColor: '#dcdcdc',
+    borderBottomWidth: 1 * SCALE_WIDTH,
+    marginLeft: 16 * SCALE_WIDTH,
   },
 });

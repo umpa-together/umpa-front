@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DCDCDC',
     marginTop: 8 * SCALE_HEIGHT,
     marginBottom: 17 * SCALE_HEIGHT,
+    width: 343 * SCALE_WIDTH,
+    marginLeft: 16 * SCALE_WIDTH,
   },
   headerTitle: {
     fontSize: FS(18),

@@ -34,7 +34,6 @@ const FloatingButton = ({ show }) => {
     transform: [{ scale: opacity.value }],
     opacity: opacity.value,
   }));
-
   return (
     <Animated.View style={[styles.container, opacityStyle]}>
       {writeList.map((item, index) => {
@@ -75,9 +74,9 @@ const styles = StyleSheet.create({
     right: 70 * SCALE_WIDTH,
   },
   button: {
-    width: 70 * SCALE_WIDTH,
-    height: 70 * SCALE_WIDTH,
-    borderRadius: 70 * SCALE_WIDTH,
+    width: 59 * SCALE_WIDTH,
+    height: 59 * SCALE_WIDTH,
+    borderRadius: 59 * SCALE_WIDTH,
     backgroundColor: MAIN_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
@@ -96,8 +95,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   floating: {
-    width: 70 * SCALE_WIDTH,
-    height: 70 * SCALE_WIDTH,
+    width: 59 * SCALE_WIDTH,
+    height: 59 * SCALE_WIDTH,
     position: 'absolute',
   },
 });
