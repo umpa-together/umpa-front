@@ -4,10 +4,10 @@ import TextTicker from 'react-native-text-ticker';
 import style from 'constants/styles';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
 
-export default function MoveText({ container, text, isMove, isExplicit, textStyle }) {
+export default function MoveText({ container, text, isMove, isExplicit, textStyle, center }) {
   return (
     <View style={container}>
-      <View style={style.flexRow}>
+      <View style={[style.flexRow, center && styles.center]}>
         {isExplicit && <View style={styles.explicit} />}
         {isMove ? (
           <TextTicker duration={7000} bounce={false} marqueeDelay={1000} style={textStyle}>
@@ -29,5 +29,8 @@ const styles = StyleSheet.create({
     height: 12 * SCALE_WIDTH,
     borderWidth: 1 * SCALE_WIDTH,
     marginRight: 5 * SCALE_WIDTH,
+  },
+  center: {
+    justifyContent: 'center',
   },
 });

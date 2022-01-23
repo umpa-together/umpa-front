@@ -106,12 +106,14 @@ const SongBody = () => {
         text={name}
         isMove={id === isPlayingId}
         textStyle={styles.name}
+        center
       />
       <MoveText
         container={styles.textArea}
         text={artistName}
         isMove={id === isPlayingId}
         textStyle={styles.artist}
+        center
       />
     </View>
   );
