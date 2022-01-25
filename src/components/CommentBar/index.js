@@ -1,25 +1,27 @@
-import React, { useContext, useRef, useCallback } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { useKeyboard } from 'providers/keyboard';
+import { useComment } from 'providers/comment';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
-export default function ({ targetId, action }) {
-  const { state } = useContext(UserContext);
-  const { profileImage } = state.user;
-
+export default function () {
+  const {
+    state: {
+      user: { profileImage },
+    },
+  } = useContext(UserContext);
   const { keyboardStyle, onKeyboardDidShow, onKeyboardDidHide, keyboardShowOpt, keyboardHideOpt } =
     useKeyboard();
-  const commentRef = useRef();
-
+  const { commentRef, commentAction } = useComment();
   const setCommentRef = (text) => {
     commentRef.current.value = text;
   };
   const onPressSubmit = () => {
-    action({ id: targetId, text: commentRef.current.value });
+    commentAction(commentRef.current.value);
     commentRef.current.clear();
   };
 

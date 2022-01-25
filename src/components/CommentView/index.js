@@ -7,102 +7,193 @@ import timeConverter from 'lib/utils/time';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as DailyContext } from 'context/Daily';
 import { Context as UserContext } from 'context/User';
-import { useModal } from 'providers/modal';
+import { Context as ReportContext } from 'context/Report';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import ActionModal from 'components/Modal/ActionModal';
+import { useComment } from 'providers/comment';
 
-const CommentAction = ({ postUserId, id, targetId, likes, opt }) => {
-  const { state } = useContext(UserContext);
-  const { setDeleteModal, changeDeleteParams } = useModal();
-  const [isLike, setIsLike] = useState(likes.includes(state.user._id));
-  const deleteCheck = postUserId._id === state.user._id;
-  const { likeComment: playlistLike, unLikeComment: playlistUnLike } = useContext(PlaylistContext);
-  const { likeComment: dailyLike, unLikeComment: dailyUnLike } = useContext(DailyContext);
+const CommentAction = ({ postUserId, commentId, likes, opt }) => {
+  const {
+    state: { user },
+  } = useContext(UserContext);
+  const deleteCheck = postUserId === user._id;
+  const {
+    state: { currentPlaylist },
+    likeComment: playlistCommentLike,
+    unLikeComment: playlistCommentUnLike,
+    likeRecomment: playlistRecommentLike,
+    unLikeRecomment: playlistRecommentUnLike,
+    deleteComment: playlistDeleteComment,
+    deleteRecomment: playlistDeleteRecomment,
+  } = useContext(PlaylistContext);
+  const {
+    state: { currentDaily },
+    likeComment: dailyCommentLike,
+    unLikeComment: dailyCommentUnLike,
+  } = useContext(DailyContext);
+  const { commentRef, setCommentInfo } = useComment();
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const onPressLike = () => {
-    if (isLike) {
-      if (opt === 'playlist') {
-        playlistUnLike({ playlistId: targetId, id });
-      } else if (opt === 'daily') {
-        dailyUnLike({ dailyId: targetId, id });
+    if (likes.includes(user._id)) {
+      if (opt === 'playlistComment') {
+        playlistCommentUnLike({ playlistId: currentPlaylist._id, id: commentId });
+      } else if (opt === 'playlistRecomment') {
+        playlistRecommentUnLike({ playlistId: currentPlaylist._id, id: commentId });
+      } else if (opt === 'dailyComment') {
+        dailyCommentUnLike({ dailyId: currentDaily._id, id: commentId });
+      } else if (opt === 'dailyRecomment') {
+        console.log('like daily recomment');
       }
     } else {
-      if (opt === 'playlist') {
-        playlistLike({ playlistId: targetId, id });
-      } else if (opt === 'daily') {
-        dailyLike({ dailyId: targetId, id });
+      if (opt === 'playlistComment') {
+        playlistCommentLike({ playlistId: currentPlaylist._id, id: commentId });
+      } else if (opt === 'playlistRecomment') {
+        playlistRecommentLike({ playlistId: currentPlaylist._id, id: commentId });
+      } else if (opt === 'dailyComment') {
+        dailyCommentLike({ dailyId: currentDaily._id, id: commentId });
+      } else if (opt === 'dailyRecomment') {
+        console.log('unlike daily recomment');
       }
     }
-    setIsLike(!isLike);
   };
+
   const onPressDelete = () => {
-    if (opt === 'playlist') {
-      changeDeleteParams({ data: { opt: 'playlistcomment', targetId, childId: id } });
-    } else if (opt === 'daily') {
-      changeDeleteParams({ data: { opt: 'dailycomment', targetId, childId: id } });
-    }
     setDeleteModal(true);
+  };
+
+  const actionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '삭제하기', key: 'delete' },
+  ];
+
+  const actionFunction = (key) => {
+    if (key === 'delete') {
+      if (opt === 'playlistComment') {
+        playlistDeleteComment({ id: currentPlaylist._id, commentId });
+      } else if (opt === 'playlistRecomment') {
+        playlistDeleteRecomment({ id: currentPlaylist._id, commentId });
+      } else if (opt === 'dailyComment') {
+        console.log('dailyComment');
+      } else if (opt === 'dailyRecomment') {
+        console.log('dailyRecomment');
+      }
+    }
+    setDeleteModal(false);
+  };
+
+  const onClickRecomment = () => {
+    commentRef.current.focus();
+    if (opt === 'playlistComment') {
+      setCommentInfo('playlistRecomment', commentId);
+    } else if (opt === 'dailyComment') {
+      setCommentInfo('dailyRecomment', commentId);
+    }
   };
 
   return (
     <View style={[style.flexRow, styles.actionContainer]}>
       <TouchableOpacity onPress={onPressLike}>
         <Text style={styles.actionText}>
-          {isLike ? `좋아요 취소 ${likes.length}` : `좋아요 ${likes.length}`}
+          <Text style={likes.includes(user._id) && styles.active}>
+            좋아요 {likes.length > 0 && likes.length}
+          </Text>
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.actionText}>답글</Text>
-      </TouchableOpacity>
+      {(opt === 'playlistComment' || opt === 'dailyComment') && (
+        <TouchableOpacity onPress={onClickRecomment}>
+          <Text style={styles.actionText}>답글</Text>
+        </TouchableOpacity>
+      )}
       {deleteCheck && (
         <TouchableOpacity onPress={onPressDelete}>
           <Text style={styles.actionText}>지우기</Text>
         </TouchableOpacity>
       )}
+      <ActionModal
+        modal={deleteModal}
+        setModal={setDeleteModal}
+        actionInfo={{
+          mainTitle: '댓글을 삭제하시겠습니까??',
+          func: actionFunction,
+          list: actionLists,
+        }}
+      />
     </View>
   );
 };
 
-export default function ({ targetId, comment, opt }) {
-  const { text, time, postUserId, likes, _id: id } = comment;
-  const { name, profileImage } = postUserId;
+export default function ({ comment, opt }) {
+  const {
+    text,
+    time,
+    postUserId: { name, profileImage, _id: postUserId },
+    likes,
+    _id: commentId,
+  } = comment;
   const timeConverted = timeConverter(time);
-  const { state } = useContext(UserContext);
-  const reportCheck = postUserId._id === state.user._id;
+  const {
+    state: { user },
+  } = useContext(UserContext);
+  const { postReport } = useContext(ReportContext);
+  const reportCheck = postUserId === user._id;
+  const [reportModal, setReportModal] = useState(false);
+  const actionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '신고하기', key: 'report' },
+  ];
+  const actionFunction = (key) => {
+    if (key === 'report') {
+      postReport({ type: 'playlistComment', reason: '댓글 부적절', subjectId: id });
+    }
+    setReportModal(false);
+  };
+
+  const onClickReport = () => {
+    setReportModal(true);
+  };
 
   return (
-    <View style={[style.flexRow, styles.container]}>
+    <View
+      style={[
+        style.flexRow,
+        styles.container,
+        {
+          marginLeft: (opt === 'playlistRecomment' || opt === 'dailyRecomment') && 47 * SCALE_WIDTH,
+        },
+      ]}
+    >
       <ProfileImage img={profileImage} imgStyle={styles.img} />
       <View style={styles.commentContainer}>
         <View style={[style.flexRow, style.space_between]}>
           <View style={style.flexRow}>
             <Text style={styles.nameText}>{name}</Text>
             {!reportCheck && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onClickReport}>
                 <Text style={styles.actionText}>신고</Text>
               </TouchableOpacity>
             )}
           </View>
           <Text style={styles.timeText}>{timeConverted}</Text>
         </View>
-        <View style={style.flexRow}>
-          <Text style={styles.commentText}>{text}</Text>
-        </View>
-        <CommentAction
-          postUserId={postUserId}
-          id={id}
-          likes={likes}
-          targetId={targetId}
-          commentId={id}
-          opt={opt}
-        />
+        <Text style={styles.commentText}>{text}</Text>
+        <CommentAction postUserId={postUserId} likes={likes} commentId={commentId} opt={opt} />
       </View>
+      <ActionModal
+        modal={reportModal}
+        setModal={setReportModal}
+        actionInfo={{
+          mainTitle: '댓글을 신고하시겠습니까?',
+          func: actionFunction,
+          list: actionLists,
+        }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: 343 * SCALE_WIDTH,
     marginBottom: 20 * SCALE_HEIGHT,
     alignItems: 'flex-start',
   },
@@ -134,5 +225,8 @@ const styles = StyleSheet.create({
     fontSize: FS(12),
     color: '#5D5D5D',
     marginRight: 16 * SCALE_WIDTH,
+  },
+  active: {
+    color: '#E82C2C',
   },
 });
