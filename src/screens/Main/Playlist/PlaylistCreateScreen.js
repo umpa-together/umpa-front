@@ -10,7 +10,10 @@ export default function ({ route }) {
       <StatusBar />
       <PlaylistCreateProvider>
         <ScrollProvider>
-          <PlaylistCreate data={route.params && route.params.data} />
+          <PlaylistCreate
+            data={route.params && route.params.data}
+            edit={route.params && route.params.edit}
+          />
         </ScrollProvider>
       </PlaylistCreateProvider>
     </>

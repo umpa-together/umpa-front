@@ -8,16 +8,18 @@ import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
 
-export default function SongView({ song, actions }) {
+export default function SongView({ song, actions = null, landings = null, play = true }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const playingCheck = song.id === isPlayingId;
+  const widthCount = (play && 1) + (actions && 1) + (landings && 1);
 
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
+        {landings}
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <View style={actions === undefined ? styles.moveArea : styles.moveArea_actions}>
+        <View style={{ maxWidth: (280 - 40 * widthCount) * SCALE_WIDTH }}>
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}
@@ -28,14 +30,16 @@ export default function SongView({ song, actions }) {
         </View>
       </View>
       <View style={[style.flexRow, styles.actions]}>
-        <TouchableOpacity onPress={() => onClickSong(song)} style={styles.icon}>
-          <Icon
-            source={
-              playingCheck ? require('public/icons/stop.png') : require('public/icons/play.png')
-            }
-            style={styles.icon}
-          />
-        </TouchableOpacity>
+        {play && (
+          <TouchableOpacity onPress={() => onClickSong(song)} style={styles.icon}>
+            <Icon
+              source={
+                playingCheck ? require('public/icons/stop.png') : require('public/icons/play.png')
+              }
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        )}
         {actions}
       </View>
     </View>
@@ -70,11 +74,5 @@ const styles = StyleSheet.create({
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
     marginRight: 4 * SCALE_WIDTH,
-  },
-  moveArea: {
-    maxWidth: 240 * SCALE_WIDTH,
-  },
-  moveArea_actions: {
-    maxWidth: 200 * SCALE_WIDTH,
   },
 });

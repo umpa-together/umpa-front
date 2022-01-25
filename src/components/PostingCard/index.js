@@ -15,7 +15,7 @@ const playlistConverter = (el, round) => {
   const { getSelectedPlaylist } = useContext(PlaylistContext);
   const onClickPlaylist = async () => {
     await getSelectedPlaylist({ id: _id, postUserId: postUser._id });
-    navigate('SelectedPlaylist', { id: _id, postUser: postUser._id });
+    navigate('SelectedPlaylist', { post: false });
   };
 
   return {

@@ -8,7 +8,6 @@ import PostUser from 'components/PostUser';
 import Dailyimage from 'components/DailyImage';
 import DailySong from 'components/Daily/DailySong';
 import SelectedText from 'components/Daily/SelectedText';
-import DeleteModal from 'components/Modal/DeleteMoal';
 import Divider from 'widgets/Divider';
 import SelectedComment from 'components/SelectedComment';
 import CommentBar from 'components/CommentBar';
@@ -88,7 +87,6 @@ export default function SelectedDaily({ dailyId }) {
       <KeyboradProvider>
         <CommentBar targetId={dailyId} action={addComment} />
       </KeyboradProvider>
-      <DeleteModal />
       <SelectModal
         modal={selectModal}
         setModal={setSelectModal}

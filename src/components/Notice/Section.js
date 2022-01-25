@@ -36,10 +36,10 @@ export default function Section({ data }) {
       type === 'precomlike'
     ) {
       await getSelectedPlaylist({ id: playlist._id, postUserId: playlist.postUserId });
-      push('SelectedPlaylist', { id: playlist._id, postUser: playlist.postUserId });
+      navigate('SelectedPlaylist', { post: false });
     } else {
       await getSelectedDaily({ id: daily._id, postUserId: daily.postUserId });
-      push('SelectedDaily', { id: daily._id, postUser: daily.postUserId });
+      push('SelectedDaily');
     }
   };
 

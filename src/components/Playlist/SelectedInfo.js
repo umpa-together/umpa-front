@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Context as PlaylistContext } from 'context/Playlist';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 
-export default function SelectedInfo({ playlistinfo }) {
+export default function SelectedInfo() {
   const {
-    image,
-    title,
-    textcontent,
-    postUserId: { name },
-    songs,
-    time,
-  } = playlistinfo;
+    state: {
+      currentPlaylist: {
+        image,
+        title,
+        textcontent,
+        postUserId: { name },
+        songs,
+        time,
+      },
+    },
+  } = useContext(PlaylistContext);
   const convertedTime = time.slice(0, 10);
   return (
     <View style={[style.flexRow, styles.container]}>

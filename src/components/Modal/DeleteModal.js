@@ -1,25 +1,26 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import FS, { SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import Modal from '.';
 
 const ModalView = ({ onClickDelete }) => {
   return (
     <TouchableOpacity style={styles.viewContainer} onPress={onClickDelete} activeOpacity={1}>
-      <Text>삭제하기</Text>
+      <Text style={styles.delete}>삭제하기</Text>
     </TouchableOpacity>
   );
 };
 
-export default function SongDeleteModal({ song, setSong, modal, setModal }) {
+export default function DeleteModal({ deleteFunc, modal, setModal }) {
   const onBackdropPress = () => {
     setModal(!modal);
   };
   const onClickDelete = () => {
-    setSong((prev) => prev.filter((item) => item.id !== song.id));
+    deleteFunc();
     onBackdropPress();
   };
+
   return (
     <Modal
       isVisible={modal}
@@ -44,5 +45,10 @@ const styles = StyleSheet.create({
     height: 82 * SCALE_HEIGHT,
     backgroundColor: MAIN_COLOR,
     alignItems: 'center',
+  },
+  delete: {
+    color: '#fff',
+    fontSize: FS(14),
+    marginTop: 17 * SCALE_HEIGHT,
   },
 });
