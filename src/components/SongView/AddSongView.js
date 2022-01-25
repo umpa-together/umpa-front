@@ -36,7 +36,7 @@ export default function AddSongView({ song }) {
                 ? require('public/icons/search-modal-stop.png')
                 : require('public/icons/search-modal-play.png')
             }
-            style={playingCheck ? styles.stopIcon : styles.playIcon}
+            style={styles.playIcon}
           />
         </TouchableOpacity>
         <View style={styles.moveArea}>
@@ -109,11 +109,7 @@ const styles = StyleSheet.create({
     left: 10 * SCALE_WIDTH,
   },
   playIcon: {
-    width: 18 * SCALE_WIDTH,
-    height: 18 * SCALE_WIDTH,
-  },
-  stopIcon: {
-    width: 18 * SCALE_WIDTH,
-    height: 18 * SCALE_WIDTH,
+    width: 40 * SCALE_WIDTH,
+    height: 40 * SCALE_WIDTH,
   },
 });
