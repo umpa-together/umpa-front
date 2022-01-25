@@ -43,6 +43,7 @@ export default function SongActionsProvider({ children }) {
 
   const onClickComplete = () => {
     searchInfoRef.current.completeFunc(selectedSongs);
+    if (searchInfoRef.current.key === 'playlist' && selectedSongs.length < 3) onPlayValidityModal();
   };
 
   const value = {
