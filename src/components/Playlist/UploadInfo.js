@@ -7,7 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 
-export default function UploadInfo() {
+export default function UploadInfo({ edit }) {
   const {
     image,
     setImage,
@@ -17,14 +17,24 @@ export default function UploadInfo() {
 
   return (
     <View style={[style.flexRow, styles.container]}>
-      <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
-        {image ? (
-          <Image source={{ uri: image.uri }} style={styles.imageContainer} />
-        ) : (
-          songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
-        )}
-        <Text style={styles.imageText}>변경</Text>
-      </TouchableOpacity>
+      {edit ? (
+        <View style={styles.imageBlur}>
+          {image ? (
+            <Image source={{ uri: image.uri }} style={styles.imageContainer} />
+          ) : (
+            songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
+          )}
+        </View>
+      ) : (
+        <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
+          {image ? (
+            <Image source={{ uri: image.uri }} style={styles.imageContainer} />
+          ) : (
+            songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
+          )}
+          <Text style={styles.imageText}>변경</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{title}</Text>
         <Text style={styles.contextText}>{content}</Text>

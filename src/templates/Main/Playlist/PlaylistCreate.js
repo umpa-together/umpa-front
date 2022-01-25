@@ -11,7 +11,7 @@ import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import SongActionsProvider from 'providers/songActions';
 
-const NextActions = () => {
+const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);
   const { information, setSongs, songs, image } = usePlaylistCreate();
   const { arraySort } = useScroll();
@@ -21,6 +21,7 @@ const NextActions = () => {
       const songsChange = arraySort(songs, setSongs);
       navigate('PlaylistUpload', {
         data: { information, songs: songsChange, image },
+        edit,
       });
     }
   };
@@ -37,7 +38,7 @@ const NextActions = () => {
   );
 };
 
-export default function PlaylistCreate({ data }) {
+export default function PlaylistCreate({ data, edit }) {
   const { setParams } = usePlaylistCreate();
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
   useEffect(() => {
@@ -49,10 +50,10 @@ export default function PlaylistCreate({ data }) {
   return (
     <View style={style.background}>
       <Header
-        title="새 플레이리스트 추가"
+        title={edit ? '플레이리스트 편집' : '새 플레이리스트 추가'}
         titleStyle={style.headertitle}
         back
-        actions={[<NextActions />]}
+        actions={[<NextActions edit={edit} />]}
       />
       <ScrollView
         showsVerticalScrollIndicator={false}

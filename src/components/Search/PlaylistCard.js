@@ -16,7 +16,7 @@ export default function PlaylistCard({ info }) {
 
   const onClickPlaylist = async () => {
     await getSelectedPlaylist({ id, postUserId });
-    navigate('SelectedPlaylist', { id, postUser: postUserId });
+    navigate('SelectedPlaylist', { post: false });
   };
 
   return (

@@ -4,26 +4,13 @@ import createDataContext from 'lib/utils/createDataContext';
 
 const playlistReducer = (state, action) => {
   switch (action.type) {
-    case 'init_playlist':
-      return { ...state, currentPlaylist: null, currentComments: null };
-    case 'init_recomment':
-      return { ...state, currentRecomments: null };
-
     case 'getSelectedPlaylist':
       return { ...state, currentPlaylist: action.payload[0], currentComments: action.payload[1] };
     case 'deleted_playlist':
       return { ...state, currentPlaylist: [] };
     case 'getComment':
       return { ...state, currentComments: action.payload };
-    case 'addComment':
-      return {
-        ...state,
-        currentPlaylist: action.payload[0],
-        currentComments: action.payload[1],
-      };
-    case 'getreComment':
-      return { ...state, currentRecomments: action.payload };
-    case 'likesPlaylist':
+    case 'getPlaylist':
       return { ...state, currentPlaylist: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
@@ -46,19 +33,10 @@ const addPlaylist =
       }
       if (fd) {
         dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
-        navigate('SelectedPlaylist', {
-          post: true,
-          id: imgResponse.data[0]._id,
-          postUser: imgResponse.data[0].postUserId,
-        });
       } else {
         dispatch({ type: 'getSelectedPlaylist', payload: response.data });
-        navigate('SelectedPlaylist', {
-          post: true,
-          id: response.data[0]._id,
-          postUser: response.data[0].postUserId,
-        });
       }
+      navigate('SelectedPlaylist', { post: true });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }
@@ -66,10 +44,17 @@ const addPlaylist =
 
 const editPlaylist =
   (dispatch) =>
-  async ({ title, songs, hashtag, playlistId }) => {
+  async ({ title, content, hashtag, playlistId, songs }) => {
     try {
-      await server.post('/playlist/edit', { title, songs, hashtag, playlistId });
-      navigate('Account');
+      const response = await server.post('/playlist/edit', {
+        title,
+        content,
+        songs,
+        hashtag,
+        playlistId,
+      });
+      dispatch({ type: 'getPlaylist', payload: response.data });
+      navigate('SelectedPlaylist', { post: false });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editPlaylist' });
     }
@@ -81,28 +66,12 @@ const deletePlaylist =
     await server.delete(`/playlist/${id}`);
   };
 
-/// //
-const initRecomment = (dispatch) => () => {
-  try {
-    dispatch({ type: 'init_recomment' });
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with initRecomment' });
-  }
-};
-const initPlaylist = (dispatch) => () => {
-  try {
-    dispatch({ type: 'init_playlist' });
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with initPlaylist' });
-  }
-};
-
 const likePlaylist =
   (dispatch) =>
   async ({ id }) => {
     try {
       const response = await server.post(`/playlist/like/${id}`);
-      dispatch({ type: 'likesPlaylist', payload: response.data });
+      dispatch({ type: 'getPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesPlaylist' });
     }
@@ -113,7 +82,7 @@ const unLikePlaylist =
   async ({ id }) => {
     try {
       const response = await server.delete(`/playlist/like/${id}`);
-      dispatch({ type: 'likesPlaylist', payload: response.data });
+      dispatch({ type: 'getPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesPlaylist' });
     }
@@ -139,7 +108,7 @@ const addComment =
   async ({ id, text }) => {
     try {
       const response = await server.post(`/playlist/comment/${id}`, { text });
-      dispatch({ type: 'addComment', payload: response.data });
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
     }
@@ -150,7 +119,7 @@ const deleteComment =
   async ({ id, commentId }) => {
     try {
       const response = await server.delete(`/playlist/comment/${id}/${commentId}`);
-      dispatch({ type: 'getSelectedPlaylist', payload: response.data });
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
     }
@@ -161,7 +130,7 @@ const addRecomment =
   async ({ id, commentId, text }) => {
     try {
       const response = await server.post(`/playlist/recomment/${id}/${commentId}`, { text });
-      dispatch({ type: 'getreComment', payload: response.data });
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
     }
@@ -169,23 +138,12 @@ const addRecomment =
 
 const deleteRecomment =
   (dispatch) =>
-  async ({ commentId }) => {
+  async ({ id, commentId }) => {
     try {
-      const response = await server.delete(`/playlist/recomment/${commentId}`);
-      dispatch({ type: 'getreComment', payload: response.data });
+      const response = await server.delete(`/playlist/recomment/${id}/${commentId}`);
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
-    }
-  };
-
-const getRecomment =
-  (dispatch) =>
-  async ({ commentId }) => {
-    try {
-      const response = await server.get(`/playlist/recomment/${commentId}`);
-      dispatch({ type: 'getreComment', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with getreComment' });
     }
   };
 
@@ -213,10 +171,10 @@ const unLikeComment =
 
 const likeRecomment =
   (dispatch) =>
-  async ({ commentId, id }) => {
+  async ({ playlistId, id }) => {
     try {
-      const response = await server.post(`/playlist/likerecomment/${commentId}/${id}`);
-      dispatch({ type: 'getreComment', payload: response.data });
+      const response = await server.post(`/playlist/likerecomment/${playlistId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
     }
@@ -224,39 +182,18 @@ const likeRecomment =
 
 const unLikeRecomment =
   (dispatch) =>
-  async ({ commentId, id }) => {
+  async ({ playlistId, id }) => {
     try {
-      const response = await server.delete(`/playlist/likerecomment/${commentId}/${id}`);
-      dispatch({ type: 'getreComment', payload: response.data });
+      const response = await server.delete(`/playlist/likerecomment/${playlistId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
-    }
-  };
-
-const postUserSong =
-  (dispatch) =>
-  async ({ playlistId, song }) => {
-    try {
-      await server.post(`/playlist/userSong/${playlistId}`, { song });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with postUserSong' });
-    }
-  };
-
-const deleteUserSong =
-  (dispatch) =>
-  async ({ playlistId, userSongId }) => {
-    try {
-      await server.delete(`/playlist/userSong/${playlistId}/${userSongId}`);
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with deleteUserSong' });
     }
   };
 
 export const { Provider, Context } = createDataContext(
   playlistReducer,
   {
-    initPlaylist,
     addPlaylist,
     editPlaylist,
     deletePlaylist,
@@ -267,19 +204,14 @@ export const { Provider, Context } = createDataContext(
     deleteComment,
     addRecomment,
     deleteRecomment,
-    getRecomment,
     likeComment,
     unLikeComment,
     likeRecomment,
     unLikeRecomment,
-    initRecomment,
-    postUserSong,
-    deleteUserSong,
   },
   {
     currentPlaylist: null,
     currentComments: null,
-    currentRecomments: null,
     errorMessage: '',
   },
 );

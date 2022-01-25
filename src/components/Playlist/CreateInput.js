@@ -5,7 +5,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 
 export default function CreateInput() {
-  const { onChangeValue } = usePlaylistCreate();
+  const { onChangeValue, information } = usePlaylistCreate();
   const sectionLists = [
     { title: '플레이리스트 제목', key: 'title', placeholder: '제목을 입력하세요.' },
     { title: '소개글', key: 'content', placeholder: '내용을 입력하세요.' },
@@ -22,6 +22,7 @@ export default function CreateInput() {
               <Text style={styles.required}>{key === 'title' && ` *`}</Text>
             </Text>
             <TextInput
+              value={information[key]}
               style={styles.inputBox}
               placeholder={placeholder}
               autoCapitalize="none"
