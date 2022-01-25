@@ -4,11 +4,15 @@ import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/Auth';
 import Splash from 'screens/Main/Splash';
 import { StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 
 const MainNavigator = () => {
-  const { state: authState, tryLocalSignIn } = useContext(AuthContext);
+  const {
+    state: { token },
+    tryLocalSignIn,
+  } = useContext(AuthContext);
   const [isSplash, setIsSplash] = useState(true);
 
   useEffect(() => {
@@ -18,10 +22,11 @@ const MainNavigator = () => {
   if (isSplash) {
     return <Splash setIsSplash={setIsSplash} />;
   }
+
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
-      {authState.token ? <MainStackScreen /> : <AuthStackScreen />}
+      {token ? <MainStackScreen /> : <AuthStackScreen />}
     </NavigationContainer>
   );
 };

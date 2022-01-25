@@ -6,17 +6,9 @@ import createDataContext from 'lib/utils/createDataContext';
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'signIn':
-      return { errorMessage: '', token: action.payload };
-    case 'signUp':
-      return { errorMessage: '', token: action.payload };
+      return { ...state, token: action.payload };
     case 'signOut':
-      return {
-        errorMessage: '',
-        token: null,
-        googleSignup: null,
-        kakaoSignup: null,
-        naverSignup: null,
-      };
+      return { ...state, token: null };
     case 'clearErrorMessage':
       return { ...state, errorMessage: '' };
     case 'add_error':
@@ -30,24 +22,18 @@ const tryLocalSignIn = (dispatch) => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
     dispatch({ type: 'signIn', payload: token });
-  } else {
-    navigate('Signin');
   }
 };
 
 const signUp =
   (dispatch) =>
-  async ({ email, password, name, informationagree, songs }) => {
+  async ({ email, password }) => {
     try {
       const response = await server.post('/signUp', {
         email,
         password,
-        name,
-        informationagree,
-        songs,
       });
       await AsyncStorage.setItem('token', response.data.token);
-      dispatch({ type: 'signUp', payload: response.data.token });
     } catch (err) {
       dispatch({ type: 'add_error', payload: 'Something went wrong with sign up' });
     }
@@ -69,6 +55,7 @@ const signOut = (dispatch) => async () => {
   try {
     await AsyncStorage.removeItem('token');
     dispatch({ type: 'signOut' });
+    navigate('SignIn');
   } catch (err) {
     dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
   }
@@ -178,5 +165,5 @@ export const { Provider, Context } = createDataContext(
     getNaverInfo,
     clearErrorMessage,
   },
-  { token: null, errorMessage: '', email: '', password: '' },
+  { token: null, errorMessage: '' },
 );

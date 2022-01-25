@@ -6,6 +6,7 @@ import EditSection, {
   GenreSection,
   RepresentSongSection,
   ImageSection,
+  SkipAndComplete,
 } from 'components/Account/EditSection';
 import { useProfileEdit } from 'providers/profileEdit';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
@@ -23,13 +24,13 @@ const UploadActions = () => {
   );
 };
 
-export default function ProfileEdit() {
+export default function ProfileEdit({ signUp }) {
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
 
   const sectionLists = [
     {
-      title: '이름',
-      placeholder: '이름을 입력해주세요.',
+      title: '닉네임',
+      placeholder: '닉네임을 입력해주세요 (필수)',
     },
     {
       title: '소개글',
@@ -39,7 +40,12 @@ export default function ProfileEdit() {
 
   return (
     <View style={style.background}>
-      <Header title="프로필 편집" back actions={[<UploadActions />]} titleStyle={styles.title} />
+      <Header
+        title={signUp ? '프로필 설정 ' : '프로필 편집'}
+        back={!signUp}
+        actions={[!signUp && <UploadActions />]}
+        titleStyle={styles.title}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         onScroll={handleOutsideScroll}
@@ -57,6 +63,7 @@ export default function ProfileEdit() {
           </SongActionsProvider>
         </View>
       </ScrollView>
+      {signUp && <SkipAndComplete />}
     </View>
   );
 }

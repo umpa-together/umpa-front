@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Context as UserContext } from 'context/User';
+import { Context as AuthContext } from 'context/Auth';
 import { goBack } from 'lib/utils/navigation';
 import { useScroll } from 'providers/scroll';
 import server from 'lib/api/server';
@@ -9,8 +10,11 @@ const ProfileEditContext = createContext(null);
 export const useProfileEdit = () => useContext(ProfileEditContext);
 
 export default function ProfileEditProvider({ children }) {
-  const { state, editProfile } = useContext(UserContext);
-  const { user } = state;
+  const {
+    state: { user, genreLists },
+    editProfile,
+  } = useContext(UserContext);
+  const { tryLocalSignIn } = useContext(AuthContext);
   const [profile, setProfile] = useState({
     nickName: user ? user.name : '',
     introduction: user ? user.introduction : '',
@@ -30,7 +34,7 @@ export default function ProfileEditProvider({ children }) {
   const { arraySort } = useScroll();
 
   const onChangeValue = (type, value) => {
-    if (type === '이름') {
+    if (type === '닉네임') {
       setProfile({
         ...profile,
         nickName: value,
@@ -97,14 +101,41 @@ export default function ProfileEditProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    if (state.genreLists && profile.genre.length === 0) {
-      setProfile({
-        ...profile,
-        genre: user.genre,
+  const onClickComplete = async () => {
+    let fd = null;
+    if (profileImage.name !== '') {
+      fd = new FormData();
+      fd.append('img', {
+        name: profileImage.name,
+        type: profileImage.type,
+        uri: profileImage.uri,
       });
     }
-  }, [state.genreLists]);
+    const songsChange = arraySort(songs, setSongs);
+    response = await server.get(`/nickName/${profile.nickName}`);
+    if (response.data) {
+      await editProfile({
+        nickName: profile.nickName,
+        name: profile.name,
+        introduction: profile.introduction,
+        genre: profile.genre,
+        songs: songsChange,
+        fd,
+      });
+      await tryLocalSignIn();
+    } else {
+      console.log('이름이 똑같은 계정 존재');
+    }
+  };
+
+  useEffect(() => {
+    if (genreLists && profile.genre.length === 0) {
+      setProfile({
+        ...profile,
+        genre: user && user.genre,
+      });
+    }
+  }, [genreLists]);
 
   const value = {
     profile,
@@ -117,6 +148,7 @@ export default function ProfileEditProvider({ children }) {
     setProfileImage,
     setBackgroundImage,
     onClickEdit,
+    onClickComplete,
   };
 
   return <ProfileEditContext.Provider value={value}>{children}</ProfileEditContext.Provider>;
