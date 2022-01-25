@@ -8,7 +8,6 @@ export const useModal = () => useContext(ModalContext);
 export default function ModalProvider({ children }) {
   const [harmfulModal, setHarmfulModal] = useState(false);
   const [representModal, setRepresentModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
   const [addedModal, setAddedModal] = useState(false);
   const [validityModal, setValidityModal] = useState(false);
 
@@ -27,18 +26,6 @@ export default function ModalProvider({ children }) {
     targetId: '',
     childId: '',
   });
-
-  const onCloseDeleteModal = () => {
-    setDeleteModal(false);
-  };
-
-  const changeDeleteParams = ({ data }) => {
-    setDeleteParams({
-      opt: data.opt,
-      targetId: data.targetId,
-      childId: data.childId,
-    });
-  };
 
   const onClickAdded = () => {
     setAddedModal(true);
@@ -78,14 +65,10 @@ export default function ModalProvider({ children }) {
     opacity,
     setHarmfulModal,
     setRepresentModal,
-    deleteModal,
     deleteParams,
-    setDeleteModal,
     setDeleteParams,
-    changeDeleteParams,
     onCloseHarmfulModal,
     onCloseRepresentModal,
-    onCloseDeleteModal,
     onClickAdded,
     onPlayValidityModal,
   };
