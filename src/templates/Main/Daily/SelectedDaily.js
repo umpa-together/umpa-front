@@ -55,9 +55,11 @@ export default function SelectedDaily({ post }) {
   } = useContext(UserContext);
   const { currentSong, duration } = useTrackPlayer();
   const { addedModal } = useModal();
-  const { currentComments, currentDaily } = state;
-  const { _id: dailyId } = currentDaily;
-  const { postUserId: postUser, image, textcontent, time, song } = currentDaily;
+  const {
+    currentComments,
+    currentDaily,
+    currentDaily: { postUserId: postUser, image, textcontent, time, song, _id: dailyId },
+  } = state;
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 

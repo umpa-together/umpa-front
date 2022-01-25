@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import UploadSongs from 'components/Playlist/UploadSongs';
-import UploadHashtag from 'components/Playlist/UploadHashtag';
+import UploadHashtag from 'components/UploadHashtag';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
-import FS from 'lib/utils/normalize';
+import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Playlist/UploadInfo';
 
@@ -37,8 +37,18 @@ const BackLandings = () => {
 };
 
 export default function PlaylistUpload({ data }) {
-  const { setParams } = usePlaylistCreate();
+  const {
+    setParams,
+    information: { hashtags },
+    onClickAddHashtag,
+    onClickDeleteHashtag,
+  } = usePlaylistCreate();
 
+  const info = {
+    data: hashtags,
+    deleteAction: onClickDeleteHashtag,
+    addAction: onClickAddHashtag,
+  };
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -55,7 +65,7 @@ export default function PlaylistUpload({ data }) {
       />
       <ScrollView>
         <UploadInfo />
-        <UploadHashtag />
+        <UploadHashtag info={info} containerStyle={styles.containerStyle} />
         <UploadSongs />
       </ScrollView>
     </View>
@@ -70,5 +80,10 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerStyle: {
+    paddingTop: 18 * SCALE_HEIGHT,
+    paddingBottom: 16 * SCALE_HEIGHT,
+    paddingHorizontal: 26 * SCALE_WIDTH,
   },
 });

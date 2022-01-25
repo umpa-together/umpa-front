@@ -1,23 +1,14 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
 import HashtagModal from 'components/Modal/HashtagModal';
-import { usePlaylistCreate } from 'providers/playlistCreate';
 
-export default function UploadHashtag() {
+export default function UploadHashtag({ info, containerStyle }) {
   const [hashtagModal, setHashtagModal] = useState(false);
-  const {
-    information: { hashtags },
-    onClickAddHashtag,
-    onClickDeleteHashtag,
-  } = usePlaylistCreate();
-  const info = {
-    data: hashtags,
-    deleteAction: onClickDeleteHashtag,
-    addAction: onClickAddHashtag,
-  };
+
+  const hashtags = info.data;
   const hashtagCheck = hashtags.length;
 
   const onPressAdd = () => {
@@ -25,7 +16,7 @@ export default function UploadHashtag() {
   };
   return (
     <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-      <View style={[styles.container, style.flexRow]}>
+      <View style={[style.flexRow, containerStyle]}>
         <View style={[style.flexRow]}>
           {hashtags.map((item) => {
             return (
@@ -50,11 +41,6 @@ export default function UploadHashtag() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 18 * SCALE_HEIGHT,
-    paddingBottom: 16 * SCALE_HEIGHT,
-    paddingHorizontal: 26 * SCALE_WIDTH,
-  },
   hashtagBox: {
     borderRadius: 43 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
@@ -66,7 +52,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8 * SCALE_WIDTH,
     paddingRight: 9 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
-    fontSize: FS(14),
+    fontSize: FS(12),
     color: MAIN_COLOR,
   },
   hashtagEdit: {

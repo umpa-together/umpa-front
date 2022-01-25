@@ -46,9 +46,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 9 * SCALE_WIDTH,
   },
-  borderWidth: {
-    borderWidth: 1,
-  },
   backgroundImage: {
     width: '100%',
     height: '100%',
