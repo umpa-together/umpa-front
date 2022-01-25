@@ -10,8 +10,8 @@ export default function PostingResult({ data, opt }) {
     <View style={styles.container}>
       {data.map((item) => {
         return opt === 'daily' ? (
-          <AddedProvider>
-            <DailyView key={item._id} isSelected info={item} />
+          <AddedProvider key={item._id}>
+            <DailyView isSelected info={item} />
           </AddedProvider>
         ) : (
           <PostingCard key={item._id} item={item} opt={opt} />

@@ -17,6 +17,7 @@ const NextActions = () => {
   const [validity, setValidity] = useState(false);
   const { information, setSongs, songs, image } = usePlaylistCreate();
   const { arraySort } = useScroll();
+  const { onPlayValidityModal } = useModal();
 
   const onPressNext = async () => {
     if (validity) {
@@ -24,6 +25,8 @@ const NextActions = () => {
       navigate('PlaylistUpload', {
         data: { information, songs: songsChange, image },
       });
+    } else if (songs.length < 3) {
+      onPlayValidityModal();
     }
   };
   useEffect(() => {
