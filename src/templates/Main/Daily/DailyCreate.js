@@ -67,7 +67,7 @@ export default function DailyCreate({ data, edit }) {
         <CreateSong />
       </SongActionsProvider>
       <CreateInput />
-      <CreateImageLists />
+      <CreateImageLists edit={edit} />
       <CreatePhoto edit={edit} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>

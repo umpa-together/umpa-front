@@ -7,7 +7,7 @@ import style from 'constants/styles';
 import ScrollImage from 'components/ScrollImage';
 import Movable from 'components/ScrollImage/Movable';
 
-export default function CreateImageLists({ edit }) {
+export default function CreateImageLists({ edit = false }) {
   const { images, onClickDeleteImage } = useDailyCreate();
 
   return (
@@ -17,7 +17,7 @@ export default function CreateImageLists({ edit }) {
           const { uri } = item;
           return (
             <>
-              {!edit ? (
+              {edit ? (
                 <Image source={{ uri }} style={styles.imageNotEdit} />
               ) : (
                 <Movable key={uri} imagesCount={images.length} id={uri}>
