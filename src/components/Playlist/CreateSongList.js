@@ -8,7 +8,7 @@ import Movable from 'components/ScrollSong/Movable';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
-import SongDeleteModal from 'components/Modal/SongDeleteModal';
+import DeleteModal from 'components/Modal/DeleteModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
@@ -20,7 +20,9 @@ const SongLandings = ({ song }) => {
   const onClickDeleteSongModal = () => {
     setSongDeleteModal(true);
   };
-
+  const deleteFunction = () => {
+    setSongs((prev) => prev.filter((item) => item.id !== song.id));
+  };
   return (
     <>
       <TouchableOpacity style={styles.box} activeOpacity={0.9} onPress={onClickDeleteSongModal}>
@@ -28,9 +30,8 @@ const SongLandings = ({ song }) => {
           {songDeletemodal && <View style={styles.activeCircle} />}
         </View>
       </TouchableOpacity>
-      <SongDeleteModal
-        song={song}
-        setSong={setSongs}
+      <DeleteModal
+        deleteFunc={deleteFunction}
         modal={songDeletemodal}
         setModal={setSongDeleteModal}
       />

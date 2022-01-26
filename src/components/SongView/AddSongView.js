@@ -29,14 +29,18 @@ export default function AddSongView({ song }) {
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <TouchableOpacity onPress={() => onClickSong(song)} style={styles.playContainer}>
+        <TouchableOpacity
+          onPress={() => onClickSong(song)}
+          style={styles.playContainer}
+          activeOpacity={0.8}
+        >
           <Icon
             source={
               playingCheck
                 ? require('public/icons/search-modal-stop.png')
                 : require('public/icons/search-modal-play.png')
             }
-            style={styles.playIcon}
+            style={style.icons}
           />
         </TouchableOpacity>
         <View style={styles.moveArea}>
@@ -107,9 +111,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     left: 10 * SCALE_WIDTH,
-  },
-  playIcon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
   },
 });

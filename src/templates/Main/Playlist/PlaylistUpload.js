@@ -11,21 +11,25 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Playlist/UploadInfo';
 
-const NextActions = () => {
+const NextActions = ({ edit }) => {
   const { onClickUpload } = usePlaylistCreate();
   return (
-    <TouchableOpacity style={[style.icons, styles.textContainer]} onPress={onClickUpload}>
+    <TouchableOpacity
+      style={[style.icons, styles.textContainer]}
+      onPress={() => onClickUpload(edit)}
+    >
       <Text style={styles.uploatText}>저장</Text>
     </TouchableOpacity>
   );
 };
 
-const BackLandings = () => {
+const BackLandings = ({ edit }) => {
   const { information, songs, image } = usePlaylistCreate();
 
   const onPressBack = () => {
     navigate('PlaylistCreate', {
       data: { information, songs, image },
+      edit,
     });
   };
 
@@ -36,13 +40,8 @@ const BackLandings = () => {
   );
 };
 
-export default function PlaylistUpload({ data }) {
-  const {
-    setParams,
-    information: { hashtags },
-    onClickAddHashtag,
-    onClickDeleteHashtag,
-  } = usePlaylistCreate();
+export default function PlaylistUpload({ data, edit }) {
+  const { setParams } = usePlaylistCreate();
 
   const info = {
     data: hashtags,
@@ -59,13 +58,13 @@ export default function PlaylistUpload({ data }) {
     <View style={style.background}>
       <Header
         titleStyle={style.headertitle}
-        title="새 플레이리스트"
-        landings={[<BackLandings />]}
-        actions={[<NextActions />]}
+        title={edit ? '플레이리스트 편집' : '새 플레이리스트'}
+        landings={[<BackLandings edit={edit} />]}
+        actions={[<NextActions edit={edit} />]}
       />
       <ScrollView>
-        <UploadInfo />
-        <UploadHashtag info={info} containerStyle={styles.containerStyle} />
+        <UploadInfo edit={edit} />
+        <UploadHashtag />
         <UploadSongs />
       </ScrollView>
     </View>

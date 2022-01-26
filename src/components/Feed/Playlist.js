@@ -45,7 +45,7 @@ export default function Playlist({ playlist }) {
 
   const onClickPlaylist = async () => {
     await getSelectedPlaylist({ id, postUserId: postUser._id });
-    navigate('SelectedPlaylist', { id, postUser: postUser._id });
+    navigate('SelectedPlaylist', { post: false });
   };
 
   return (

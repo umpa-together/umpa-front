@@ -7,7 +7,7 @@ const PlaylistCreateContext = createContext(null);
 export const usePlaylistCreate = () => useContext(PlaylistCreateContext);
 
 export default function PlaylistCreateProvider({ children }) {
-  const { addPlaylist } = useContext(PlaylistContext);
+  const { editPlaylist, addPlaylist } = useContext(PlaylistContext);
   const { getMyInformation } = useContext(UserContext);
   const [information, setInformation] = useState({
     title: '',
@@ -77,23 +77,33 @@ export default function PlaylistCreateProvider({ children }) {
     });
   };
 
-  const onClickUpload = async () => {
-    let fd = null;
-    if (image) {
-      fd = new FormData();
-      fd.append('img', {
-        name: image.name,
-        type: image.type,
-        uri: image.uri,
+  const onClickUpload = async (edit) => {
+    if (edit) {
+      await editPlaylist({
+        title: information.title,
+        content: information.content,
+        hashtag: information.hashtags,
+        playlistId: information.playlistId,
+        songs,
+      });
+    } else {
+      let fd = null;
+      if (image) {
+        fd = new FormData();
+        fd.append('img', {
+          name: image.name,
+          type: image.type,
+          uri: image.uri,
+        });
+      }
+      await addPlaylist({
+        title: information.title,
+        content: information.content,
+        hashtag: information.hashtags,
+        songs,
+        fd,
       });
     }
-    await addPlaylist({
-      title: information.title,
-      content: information.content,
-      hashtag: information.hashtags,
-      songs,
-      fd,
-    });
     getMyInformation();
   };
 

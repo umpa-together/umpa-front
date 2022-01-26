@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Context as PlaylistContext } from 'context/Playlist';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
 
-export default function SelectedHashtag({ hashtags }) {
+export default function SelectedHashtag() {
+  const {
+    state: {
+      currentPlaylist: { hashtag },
+    },
+  } = useContext(PlaylistContext);
+
   return (
     <ScrollView showsHorizontalScrollIndicator={false} horizontal>
       <View style={[style.flexRow, styles.container]}>
-        {hashtags.map((item) => {
+        {hashtag.map((item) => {
           return (
             <View key={item} style={styles.hashtagBox}>
               <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>

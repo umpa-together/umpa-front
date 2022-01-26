@@ -17,7 +17,11 @@ const ModalView = ({ actionInfo }) => {
           return (
             <TouchableOpacity
               key={key}
-              style={[styles.box, key === 'cancel' ? styles.left : styles.main]}
+              style={[
+                styles.box,
+                // eslint-disable-next-line no-nested-ternary
+                key === 'cancel' ? styles.left : key === 'report' ? styles.report : styles.main,
+              ]}
               onPress={() => func(key)}
               activeOpacity={0.8}
             >
@@ -76,6 +80,10 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: MAIN_COLOR,
     borderColor: MAIN_COLOR,
+  },
+  report: {
+    backgroundColor: '#E82C2C',
+    borderColor: '#E82C2C',
   },
   leftText: {
     fontSize: FS(14),

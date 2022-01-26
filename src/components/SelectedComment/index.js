@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import CommentView from 'components/CommentView';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
+import { Provider as ReportProvider } from 'context/Report';
+import { useComment } from 'providers/comment';
 
-export default function SelectedComment({ opt, targetId, comments }) {
+export default function SelectedComment({ opt, comments }) {
   const [sortModal, setSortModal] = useState(false);
   const [sortType, setSortType] = useState('시간순');
-
+  const { setCommentInfo } = useComment();
   const sortList = [
     { title: '좋아요순', key: 'like' },
     { title: '시간순', key: 'time' },
   ];
+
   const onPressSort = () => {
     setSortModal(true);
   };
@@ -37,6 +40,14 @@ export default function SelectedComment({ opt, targetId, comments }) {
     setSortModal(false);
   };
 
+  useEffect(() => {
+    if (opt === 'playlist') {
+      setCommentInfo('playlistComment');
+    } else if (opt === 'daily') {
+      setCommentInfo('dailyComment');
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={[style.flexRow, style.space_between]}>
@@ -47,9 +58,29 @@ export default function SelectedComment({ opt, targetId, comments }) {
         </TouchableOpacity>
       </View>
       <View style={styles.commentContainer}>
-        {comments.map((item) => {
-          return <CommentView opt={opt} targetId={targetId} key={item._id} comment={item} />;
-        })}
+        <ReportProvider>
+          {comments.map((item) => {
+            const { recomment } = item;
+            return (
+              <View key={item._id}>
+                <CommentView
+                  opt={opt === 'playlist' ? 'playlistComment' : 'dailyComment'}
+                  comment={item}
+                />
+                {recomment.length > 0 &&
+                  recomment.map((comment) => {
+                    return (
+                      <CommentView
+                        opt={opt === 'playlist' ? 'playlistRecomment' : 'dailyRecomment'}
+                        key={comment._id}
+                        comment={comment}
+                      />
+                    );
+                  })}
+              </View>
+            );
+          })}
+        </ReportProvider>
       </View>
       <SortModal
         modal={sortModal}
