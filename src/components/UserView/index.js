@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
@@ -20,9 +21,9 @@ export default function UserView({ user, func }) {
   };
   return (
     <View style={[styles.container, style.flexRow]}>
-      <TouchableOpacity onPress={onClickAccount}>
+      <TouchableNoDouble onPress={onClickAccount}>
         <ProfileImage img={profileImage} imgStyle={styles.img} />
-      </TouchableOpacity>
+      </TouchableNoDouble>
       <View style={styles.infoContainer}>
         <Text style={styles.nameText}>{name}</Text>
         <UserRepresentSong song={songs[0]} />

@@ -105,6 +105,7 @@ export default function SelectedDaily({ post }) {
 
   const selectFunction = checkMyPost
     ? (key) => {
+        setSelectModal(false);
         if (key === 'edit') {
           navigate('DailyCreate', {
             edit: true,
@@ -128,20 +129,23 @@ export default function SelectedDaily({ post }) {
             func: deleteActionFunction,
             list: deleteActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         }
-        setSelectModal(false);
       }
     : (key) => {
+        setSelectModal(false);
         if (key === 'report') {
           setActions({
             mainTitle: '데일리를 신고하시겠습니까?',
             func: reportActionFunction,
             list: reportActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         }
-        setSelectModal(false);
       };
   return (
     <View style={style.background}>

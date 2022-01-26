@@ -9,7 +9,9 @@ export default function ScrollImage({ images, children }) {
 
   useEffect(() => {
     updatePositionImg(images);
-    setRender(!render);
+    setTimeout(() => {
+      setRender(!render);
+    }, 10);
   }, [images]);
 
   return (

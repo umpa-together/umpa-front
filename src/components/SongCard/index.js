@@ -16,7 +16,7 @@ export default function SongCard({ song }) {
           {name}
         </Text>
       </View>
-      <Icon source={require('public/icons/play-indicator.png')} style={styles.icon} />
+      <Icon source={require('public/icons/daily-song-play.png')} style={styles.icon} />
     </View>
   );
 }

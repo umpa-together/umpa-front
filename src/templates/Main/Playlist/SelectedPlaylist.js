@@ -109,6 +109,7 @@ export default function SelectedPlaylist({ post }) {
 
   const selectFunction = checkMyPost
     ? (key) => {
+        setSelectModal(false);
         if (key === 'edit') {
           navigate('PlaylistCreate', {
             edit: true,
@@ -129,24 +130,27 @@ export default function SelectedPlaylist({ post }) {
             func: deleteActionFunction,
             list: deleteActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         }
-        setSelectModal(false);
       }
     : (key) => {
+        setSelectModal(false);
         if (key === 'report') {
           setActions({
             mainTitle: '플레이리스트를 신고하시겠습니까?',
             func: reportActionFunction,
             list: reportActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         } else if (key === 'save') {
           postAddedPlaylist({ id: currentPlaylist._id });
         } else if (key === 'share') {
           SendList({ playlist: currentPlaylist });
         }
-        setSelectModal(false);
       };
 
   return (
@@ -172,12 +176,13 @@ export default function SelectedPlaylist({ post }) {
         {currentSong && duration !== 0 && <PlayBar />}
         <CommentBar />
       </CommentProvider>
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+
       <SelectModal
         modal={selectModal}
         setModal={setSelectModal}
-        selectInfo={{ func: selectFunction, list: selectLists }}
+        selectInfo={{ setActionModal, func: selectFunction, list: selectLists }}
       />
-      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
 
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <HarmfulModal />

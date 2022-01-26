@@ -1,21 +1,22 @@
 /* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_3 } from 'constants/colors';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import { SongImage } from 'widgets/SongImage';
 import { Context as PlaylistContext } from 'context/Playlist';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 const playlistConverter = (el, round) => {
-  const { image, songs, title, time, _id, postUserId: postUser } = el;
+  const { image, songs, title, time, _id, postUserId } = el;
   const convertTime = time.slice(0, 10).replaceAll('-', '.');
   const { getSelectedPlaylist } = useContext(PlaylistContext);
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id: _id, postUserId: postUser._id });
-    navigate('SelectedPlaylist', { post: false });
+    await getSelectedPlaylist({ id: _id, postUserId });
+    push('SelectedPlaylist', { post: false });
   };
 
   return {
@@ -48,7 +49,7 @@ export default function PostingCard({ item, opt, action, round }) {
     opt === 'playlist' ? playlistConverter(item, round) : relayConverter(item);
   const { title, content, time, image, onClick } = transformedData;
   return (
-    <TouchableOpacity onPress={onClick} style={[styles.container, style.flexRow]}>
+    <TouchableNoDouble onPress={onClick} style={[styles.container, style.flexRow]}>
       {image}
       <View style={action ? styles.textContainer : styles.textContainerNoActon}>
         <Text numberOfLines={1} style={styles.titleText}>
@@ -62,7 +63,7 @@ export default function PostingCard({ item, opt, action, round }) {
         </Text>
       </View>
       {action}
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 
