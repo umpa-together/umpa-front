@@ -17,7 +17,7 @@ export default function AccountHeader({ user, back, hamburger }) {
       <View style={[styles.menuContainer, style.flexRow]}>
         {back && (
           <TouchableOpacity style={styles.back} onPress={onPressBack}>
-            <View style={[style.icons]} />
+            <Icon style={style.icons} source={require('public/icons/account-back.png')} />
           </TouchableOpacity>
         )}
         {hamburger && (

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context as PlaylistContext } from 'context/Playlist';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
@@ -20,7 +21,7 @@ export default function PlaylistCard({ info }) {
   };
 
   return (
-    <TouchableOpacity
+    <TouchableNoDouble
       style={[styles.container, style.flexRow]}
       activeOpacity={1}
       onPress={onClickPlaylist}
@@ -29,7 +30,7 @@ export default function PlaylistCard({ info }) {
       <View style={styles.titleArea}>
         <Text style={styles.title}>{title}</Text>
       </View>
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 

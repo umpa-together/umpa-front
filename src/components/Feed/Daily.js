@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
+import TouchableNoDouble from 'components/TouchableNoDouble';
+import DailyImage from 'components/DailyImage';
 import Footer from './Footer';
-import DailyImage from '../DailyImage';
 
 export default function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
@@ -21,11 +22,11 @@ export default function Daily({ daily }) {
       <PostUser user={postUser} />
       {image.length > 0 && <DailyImage image={image} />}
       <DailySong song={song} containerStyle={styles.dailySongContainer} />
-      <TouchableOpacity style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
+      <TouchableNoDouble style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
-      </TouchableOpacity>
+      </TouchableNoDouble>
       <Footer object={daily} type="daily" />
       <View style={styles.divider} />
     </View>

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import { COLOR_1, COLOR_3 } from 'constants/colors';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -42,10 +43,10 @@ export default function PostingInfo({ user, posting }) {
         {optionLists.map((item) => {
           const { count, title } = item;
           return (
-            <TouchableOpacity onPress={item.onClick} key={title} style={styles.elementContainer}>
+            <TouchableNoDouble onPress={item.onClick} key={title} style={styles.elementContainer}>
               <Text style={styles.countText}>{count}</Text>
               <Text style={styles.titleText}>{title}</Text>
-            </TouchableOpacity>
+            </TouchableNoDouble>
           );
         })}
       </View>

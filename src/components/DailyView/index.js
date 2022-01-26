@@ -11,6 +11,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import { navigate, push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default function DailyView({ info, actions, isSelected }) {
   const { image, song, textcontent, _id: id, postUserId } = info;
@@ -39,7 +40,7 @@ export default function DailyView({ info, actions, isSelected }) {
   };
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.8} onPress={onClickSongView}>
+    <TouchableNoDouble style={styles.container} activeOpacity={0.8} onPress={onClickSongView}>
       <View style={[style.flexRow, style.space_between]}>
         <View style={style.flexRow}>
           {image.length === 0 ? (
@@ -82,7 +83,7 @@ export default function DailyView({ info, actions, isSelected }) {
       <Text numberOfLines={2} style={styles.content}>
         {textcontent}
       </Text>
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 

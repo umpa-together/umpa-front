@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as UserContext } from 'context/User';
 import { MAIN_COLOR } from 'constants/colors';
@@ -49,7 +50,7 @@ export default function Playlist({ playlist }) {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onClickPlaylist} activeOpacity={0.8}>
+    <TouchableNoDouble style={styles.container} onPress={onClickPlaylist} activeOpacity={0.8}>
       <PostUser user={postUser} action={<FollowAction id={postUser._id} />} />
       <View style={styles.contentArea}>
         <Text style={styles.title}>{title}</Text>
@@ -62,7 +63,7 @@ export default function Playlist({ playlist }) {
       <SongsLists songs={songs} />
       <Footer object={playlist} type="playlist" />
       <View style={styles.divider} />
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 

@@ -1,23 +1,24 @@
 import React, { useContext } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as UserContext } from 'context/User';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, COLOR_5 } from 'constants/colors';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 
 export default function UserCard({ user }) {
   const { getOtherInformation } = useContext(UserContext);
   const { _id: id, genre, name, profileImage } = user;
   const onClickCard = async () => {
     await getOtherInformation({ id });
-    navigate('OtherAccount', { otherUserId: id });
+    push('OtherAccount', { otherUserId: id });
   };
 
   return (
-    <TouchableOpacity
+    <TouchableNoDouble
       onPress={onClickCard}
       style={[styles.container, style.alignCenter]}
       activeOpacity={0.9}
@@ -30,7 +31,7 @@ export default function UserCard({ user }) {
         <Icon source={require('public/icons/search-right.png')} style={styles.icon} />
       </View>
       {genre.length !== 0 && <Text style={styles.genre}>{genre[0]} 선호</Text>}
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 
