@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
+import { Context as AuthContext } from 'context/Auth';
 import { Context as UserContext } from 'context/User';
 import ScrollSong from 'components/ScrollSong';
 import Movable from 'components/ScrollSong/Movable';
@@ -8,7 +9,7 @@ import ScrollSongView from 'components/SongView/ScrollSongView';
 import ProfileImage from 'widgets/ProfileImage';
 import { onClickSingle, onClickCrop } from 'lib/utils/imageEditor';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { COLOR_3, MAIN_COLOR } from 'constants/colors';
+import { COLOR_3, MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import GenreModal from 'components/Modal/GenreModal';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
@@ -16,6 +17,7 @@ import DeleteModal from 'components/Modal/DeleteModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import { navigate } from 'lib/utils/navigation';
 import ProfileBackground from './ProfileBackground';
 
 export function ImageSection() {
@@ -121,9 +123,9 @@ export function RepresentSongSection() {
   );
 
   return (
-    <View style={{ marginBottom: 100 * SCALE_HEIGHT }}>
+    <View>
       <View style={[styles.songHeader, style.flexRow, style.space_between]}>
-        <Text style={styles.title}>대표곡 (최대 5곡)</Text>
+        <Text style={styles.title}>대표곡 (최대 3곡, 필수)</Text>
         <TouchableOpacity style={styles.plusBox} onPress={onClickAddSong}>
           <Text style={styles.plusText}>+ 곡 추가</Text>
         </TouchableOpacity>
@@ -142,6 +144,43 @@ export function RepresentSongSection() {
   );
 }
 
+export function SkipAndComplete() {
+  const { state } = useContext(AuthContext);
+  const { songs, profile, onClickComplete } = useProfileEdit();
+  const [isComplete, setIsComplete] = useState(false);
+
+  const onClickCompleteSetting = () => {
+    if (isComplete) {
+      onClickComplete();
+    } else {
+      console.log('not');
+    }
+  };
+
+  useEffect(() => {
+    setIsComplete(songs.length > 0 && profile.nickName !== '');
+  }, [songs, profile]);
+
+  useEffect(() => {
+    if (state.token) {
+      setTimeout(() => {
+        navigate('Tab');
+      }, 100);
+    }
+  }, [state]);
+
+  return (
+    <View style={styles.skipCompleteContainer}>
+      <TouchableOpacity
+        style={isComplete ? styles.active : styles.completeBox}
+        activeOpacity={0.8}
+        onPress={onClickCompleteSetting}
+      >
+        <Text style={styles.completeText}>완료</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
 export default function EditSection({ title, placeholder }) {
   const { profile, onChangeValue } = useProfileEdit();
 
@@ -149,16 +188,16 @@ export default function EditSection({ title, placeholder }) {
     <View>
       <View style={style.flexRow}>
         <Text style={styles.title}>{title}</Text>
-        {title === '이름' && <Text style={styles.accent}>*</Text>}
+        {title === '닉네임' && <Text style={styles.accent}>*</Text>}
       </View>
       <TextInput
         style={styles.sectionBox}
-        value={title === '이름' ? profile.nickName : profile.introduction}
+        value={title === '닉네임' ? profile.nickName : profile.introduction}
         placeholder={placeholder}
         autoCapitalize="none"
         autoCorrect={false}
         placeholderTextColor={COLOR_3}
-        maxLength={title === '이름' ? 10 : null}
+        maxLength={title === '닉네임' ? 10 : null}
         // multiline={title === '소개글'}
         onChangeText={(text) => onChangeValue(title, text)}
       />
@@ -272,5 +311,31 @@ const styles = StyleSheet.create({
   accent: {
     color: MAIN_COLOR,
     marginLeft: 3 * SCALE_WIDTH,
+  },
+  skipCompleteContainer: {
+    position: 'absolute',
+    bottom: 30 * SCALE_HEIGHT,
+    left: 16 * SCALE_WIDTH,
+    alignItems: 'center',
+  },
+  completeBox: {
+    width: 343 * SCALE_WIDTH,
+    height: 49 * SCALE_HEIGHT,
+    backgroundColor: COLOR_5,
+    borderRadius: 20 * SCALE_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  completeText: {
+    fontSize: FS(16),
+    color: '#fff',
+  },
+  active: {
+    width: 343 * SCALE_WIDTH,
+    height: 49 * SCALE_HEIGHT,
+    backgroundColor: MAIN_COLOR,
+    borderRadius: 20 * SCALE_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

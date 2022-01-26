@@ -14,7 +14,7 @@ export default function SongActionsProvider({ children }) {
   const [validityMsg, setValidityMsg] = useState();
   const songCount = {
     playlist: 8,
-    represent: 5,
+    represent: 3,
   };
   const containCheck = (song) => {
     let tok = false;
