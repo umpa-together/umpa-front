@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { Context as DailyContext } from 'context/Daily';
 
-export default function SelectedText({ textcontent }) {
+export default function SelectedText() {
+  const {
+    state: {
+      currentDaily: { textcontent },
+    },
+  } = useContext(DailyContext);
   return (
     <View style={styles.container}>
       <Text style={[styles.content]}>{textcontent}</Text>

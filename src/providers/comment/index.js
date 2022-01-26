@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Context as PlaylistContext } from 'context/Playlist';
+import { Context as DailyContext } from 'context/Daily';
 
 const CommentContext = createContext(null);
 
@@ -14,6 +15,11 @@ export default function CommentProvider({ children }) {
     addComment: addPlaylistComment,
     addRecomment: addPlaylistRecomment,
   } = useContext(PlaylistContext);
+  const {
+    state: { currentDaily },
+    addComment: addDailyComment,
+    addRecomment: addDailyRecomment,
+  } = useContext(DailyContext);
 
   const commentAction = (text) => {
     if (commentType === 'playlistComment') {
@@ -23,10 +29,9 @@ export default function CommentProvider({ children }) {
       setCommentId(null);
       setCommentType('playlistComment');
     } else if (commentType === 'dailyComment') {
-      console.log('dailyComment');
+      addDailyComment({ id: currentDaily._id, text });
     } else if (commentType === 'dailyRecomment') {
-      console.log('dailyRecomment');
-
+      addDailyRecomment({ id: currentDaily._id, commentId, text });
       setCommentId(null);
       setCommentType('dailyComment');
     }

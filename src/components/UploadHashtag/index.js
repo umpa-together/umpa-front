@@ -17,15 +17,13 @@ export default function UploadHashtag({ info, containerStyle }) {
   return (
     <ScrollView showsHorizontalScrollIndicator={false} horizontal>
       <View style={[style.flexRow, containerStyle]}>
-        <View style={[style.flexRow]}>
-          {hashtags.map((item) => {
-            return (
-              <View key={item} style={styles.hashtagBox}>
-                <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
-              </View>
-            );
-          })}
-        </View>
+        {hashtags.map((item) => {
+          return (
+            <View key={item} style={styles.hashtagBox}>
+              <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
+            </View>
+          );
+        })}
         <TouchableOpacity
           onPress={onPressAdd}
           style={[styles.hashtagBox, hashtagCheck && styles.hashtagEdit]}

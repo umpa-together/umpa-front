@@ -7,11 +7,11 @@ import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import { onClickMultiple } from 'lib/utils/imageEditor';
 
-export default function CreatePhoto() {
+export default function CreatePhoto({ edit }) {
   const { setImages } = useDailyCreate();
 
   const onPressAdd = () => {
-    onClickMultiple(setImages);
+    if (!edit) onClickMultiple(setImages);
   };
   return (
     <View style={styles.container}>

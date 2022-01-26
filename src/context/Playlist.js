@@ -108,7 +108,7 @@ const addComment =
   async ({ id, text }) => {
     try {
       const response = await server.post(`/playlist/comment/${id}`, { text });
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
     }
@@ -119,7 +119,7 @@ const deleteComment =
   async ({ id, commentId }) => {
     try {
       const response = await server.delete(`/playlist/comment/${id}/${commentId}`);
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
     }
@@ -130,7 +130,7 @@ const addRecomment =
   async ({ id, commentId, text }) => {
     try {
       const response = await server.post(`/playlist/recomment/${id}/${commentId}`, { text });
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
     }
@@ -141,7 +141,7 @@ const deleteRecomment =
   async ({ id, commentId }) => {
     try {
       const response = await server.delete(`/playlist/recomment/${id}/${commentId}`);
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
     }

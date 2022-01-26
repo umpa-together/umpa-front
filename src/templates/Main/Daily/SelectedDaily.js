@@ -22,7 +22,10 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import { Provider as AddedProvider } from 'context/Added';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
-import { navigate } from 'lib/utils/navigation';
+import { navigate, goBack } from 'lib/utils/navigation';
+import CommentProvider from 'providers/comment';
+import { Context as ReportContext } from 'context/Report';
+import ActionModal from 'components/Modal/ActionModal';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -48,17 +51,22 @@ const LandingAction = () => {
 
 export default function SelectedDaily({ post }) {
   const [selectModal, setSelectModal] = useState(false);
-  const { state, addComment } = useContext(DailyContext);
+  const [actionModal, setActionModal] = useState(false);
+  const [actions, setActions] = useState(null);
+  const {
+    state: { currentComments, currentDaily },
+    deleteDaily,
+  } = useContext(DailyContext);
+  const { postUserId: postUser, image, time, song } = currentDaily;
   const {
     state: { user },
+    getMyInformation,
   } = useContext(UserContext);
+  const { postReport } = useContext(ReportContext);
+
   const { currentSong, duration } = useTrackPlayer();
   const { addedModal } = useModal();
-  const {
-    currentComments,
-    currentDaily,
-    currentDaily: { postUserId: postUser, image, textcontent, time, song, _id: dailyId },
-  } = state;
+
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 
@@ -69,20 +77,72 @@ export default function SelectedDaily({ post }) {
       ]
     : [{ title: '신고하기', key: 'report' }];
 
+  const deleteActionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '삭제하기', key: 'delete' },
+  ];
+
+  const deleteActionFunction = async (key) => {
+    if (key === 'delete') {
+      await deleteDaily({ id: currentDaily._id });
+      getMyInformation();
+      goBack();
+    }
+    setActionModal(false);
+  };
+
+  const reportActionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '신고하기', key: 'report' },
+  ];
+
+  const reportActionFunction = async (key) => {
+    if (key === 'report') {
+      postReport({ type: 'daily', reason: '데일리 부적절', subjectId: currentDaily._id });
+    }
+    setActionModal(false);
+  };
+
   const selectFunction = checkMyPost
     ? (key) => {
         if (key === 'edit') {
-          console.log('edit');
+          navigate('DailyCreate', {
+            edit: true,
+            data: {
+              information: {
+                content: currentDaily.textcontent,
+                hashtags: currentDaily.hashtag,
+                dailyId: currentDaily._id,
+              },
+              song: currentDaily.song,
+              images: currentDaily.image
+                ? currentDaily.image.map((img) => {
+                    return { uri: img };
+                  })
+                : [],
+            },
+          });
         } else if (key === 'delete') {
-          console.log('delete');
+          setActions({
+            mainTitle: '삭제된 데일리는 복구할 수 없습니다. 삭제하시겠습니까?',
+            func: deleteActionFunction,
+            list: deleteActionLists,
+          });
+          setActionModal(true);
         }
+        setSelectModal(false);
       }
     : (key) => {
         if (key === 'report') {
-          console.log('report');
+          setActions({
+            mainTitle: '데일리를 신고하시겠습니까?',
+            func: reportActionFunction,
+            list: reportActionLists,
+          });
+          setActionModal(true);
         }
+        setSelectModal(false);
       };
-
   return (
     <View style={style.background}>
       <Header
@@ -91,29 +151,33 @@ export default function SelectedDaily({ post }) {
         landings={post && [<LandingAction />]}
         back={!post}
       />
-      <ScrollView>
-        <PostUser user={postUser} action={<PostUserAction setSelectModal={setSelectModal} />} />
-        <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
-        {image.length > 0 && <Dailyimage image={image} />}
-        <SelectedText textcontent={textcontent} />
-        <Footer object={currentDaily} type="daily" />
-        <Divider containerStyle={styles.dividerContainer} />
-        <SelectedComment opt="daily" targetId={dailyId} comments={currentComments} />
-      </ScrollView>
-      {currentSong && duration !== 0 && (
-        <AddedProvider>
-          <PlayBar />
-        </AddedProvider>
-      )}
-      <KeyboradProvider>
-        <CommentBar targetId={dailyId} action={addComment} />
-      </KeyboradProvider>
+      <CommentProvider>
+        <ScrollView>
+          <PostUser user={postUser} action={<PostUserAction setSelectModal={setSelectModal} />} />
+          <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
+          {image.length > 0 && <Dailyimage image={image} />}
+          <SelectedText />
+          <Footer object={currentDaily} type="daily" />
+          <Divider containerStyle={styles.dividerContainer} />
+          <SelectedComment opt="daily" comments={currentComments} />
+        </ScrollView>
+        {currentSong && duration !== 0 && (
+          <AddedProvider>
+            <PlayBar />
+          </AddedProvider>
+        )}
+        <KeyboradProvider>
+          <CommentBar />
+        </KeyboradProvider>
+      </CommentProvider>
       <SelectModal
         modal={selectModal}
         setModal={setSelectModal}
         selectInfo={{ func: selectFunction, list: selectLists }}
       />
+
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
     </View>
   );
 }

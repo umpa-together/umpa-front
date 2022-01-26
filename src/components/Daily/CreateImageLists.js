@@ -7,7 +7,7 @@ import style from 'constants/styles';
 import ScrollImage from 'components/ScrollImage';
 import Movable from 'components/ScrollImage/Movable';
 
-export default function CreateImageLists() {
+export default function CreateImageLists({ edit }) {
   const { images, onClickDeleteImage } = useDailyCreate();
 
   return (
@@ -16,15 +16,21 @@ export default function CreateImageLists() {
         {images.map((item) => {
           const { uri } = item;
           return (
-            <Movable key={uri} imagesCount={images.length} id={uri}>
-              <Image source={{ uri }} style={styles.imageContainer} />
-              <TouchableOpacity onPress={() => onClickDeleteImage(item)}>
-                <Icon
-                  style={styles.deleteIcon}
-                  source={require('public/icons/daily-delete-photo.png')}
-                />
-              </TouchableOpacity>
-            </Movable>
+            <>
+              {!edit ? (
+                <Image source={{ uri }} style={styles.imageNotEdit} />
+              ) : (
+                <Movable key={uri} imagesCount={images.length} id={uri}>
+                  <Image source={{ uri }} style={styles.imageContainer} />
+                  <TouchableOpacity onPress={() => onClickDeleteImage(item)}>
+                    <Icon
+                      style={styles.deleteIcon}
+                      source={require('public/icons/daily-delete-photo.png')}
+                    />
+                  </TouchableOpacity>
+                </Movable>
+              )}
+            </>
           );
         })}
       </View>
@@ -50,5 +56,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 12 * SCALE_WIDTH,
     top: -45 * SCALE_HEIGHT,
+  },
+  imageNotEdit: {
+    width: 90 * SCALE_WIDTH,
+    height: 90 * SCALE_WIDTH,
+    marginRight: 12 * SCALE_WIDTH,
   },
 });
