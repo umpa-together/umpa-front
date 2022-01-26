@@ -4,45 +4,18 @@ import createDataContext from 'lib/utils/createDataContext';
 
 const dailyReducer = (state, action) => {
   switch (action.type) {
-    case 'initDaily':
-      return { ...state, currentDaily: null, currentComments: null };
-    case 'initRecomment':
-      return { ...state, currentRecomments: null };
     case 'getSelectedDaily':
-      return {
-        ...state,
-        currentDaily: action.payload[0],
-        currentComments: action.payload[1],
-      };
+      return { ...state, currentDaily: action.payload[0], currentComments: action.payload[1] };
     case 'deleted_Daily':
       return { ...state, currentDaily: [] };
     case 'getComment':
       return { ...state, currentComments: action.payload };
-    case 'getRecomment':
-      return { ...state, currentRecomments: action.payload };
-    case 'likesDaily':
+    case 'getDaily':
       return { ...state, currentDaily: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
       return state;
-  }
-};
-
-// Daily
-const initDaily = (dispatch) => () => {
-  try {
-    dispatch({ type: 'initDaily' });
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with initDaily' });
-  }
-};
-
-const initRecomment = (dispatch) => () => {
-  try {
-    dispatch({ type: 'initRecomment' });
-  } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with initRecomment' });
   }
 };
 
@@ -75,8 +48,9 @@ const editDaily =
   (dispatch) =>
   async ({ textcontent, song, hashtag, DailyId }) => {
     try {
-      await server.post('/daily/edit', { textcontent, song, hashtag, DailyId });
-      navigate('Account');
+      const response = await server.post('/daily/edit', { textcontent, song, hashtag, DailyId });
+      dispatch({ type: 'getDaily', payload: response.data });
+      navigate('SelectedDaily', { post: false });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
     }
@@ -93,7 +67,7 @@ const likeDaily =
   async ({ id }) => {
     try {
       const response = await server.post(`/daily/like/${id}`);
-      dispatch({ type: 'likesDaily', payload: response.data });
+      dispatch({ type: 'getDaily', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likes' });
     }
@@ -104,7 +78,7 @@ const unLikeDaily =
   async ({ id }) => {
     try {
       const response = await server.delete(`/daily/like/${id}`);
-      dispatch({ type: 'likesDaily', payload: response.data });
+      dispatch({ type: 'getDaily', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikes' });
     }
@@ -130,7 +104,7 @@ const addComment =
   async ({ id, text }) => {
     try {
       const response = await server.post(`/daily/comment/${id}`, { text });
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedDaily', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
     }
@@ -141,42 +115,31 @@ const deleteComment =
   async ({ id, commentId }) => {
     try {
       const response = await server.delete(`/daily/comment/${id}/${commentId}`);
-      dispatch({ type: 'getComment', payload: response.data });
+      dispatch({ type: 'getSelectedDaily', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
     }
   };
 
-const addreComment =
+const addRecomment =
   (dispatch) =>
   async ({ id, commentId, text }) => {
     try {
       const response = await server.post(`/daily/recomment/${id}/${commentId}`, { text });
-      dispatch({ type: 'getRecomment', payload: response.data });
+      dispatch({ type: 'getSelectedDaily', payload: response.data });
     } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with addreComment' });
+      dispatch({ type: 'error', payload: 'Something went wrong with addRecomment' });
     }
   };
 
-const deletereComment =
+const deleteRecomment =
   (dispatch) =>
-  async ({ commentId }) => {
+  async ({ id, commentId }) => {
     try {
-      const response = await server.delete(`/daily/recomment/${commentId}`);
-      dispatch({ type: 'getRecomment', payload: response.data });
+      const response = await server.delete(`/daily/recomment/${id}/${commentId}`);
+      dispatch({ type: 'getSelectedDaily', payload: response.data });
     } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with deletereComment' });
-    }
-  };
-
-const getRecomment =
-  (dispatch) =>
-  async ({ commentId }) => {
-    try {
-      const response = await server.get(`/daily/recomment/${commentId}`);
-      dispatch({ type: 'getRecomment', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with getRecomment' });
+      dispatch({ type: 'error', payload: 'Something went wrong with deleteRecomment' });
     }
   };
 
@@ -204,10 +167,10 @@ const unLikeComment =
 
 const likeRecomment =
   (dispatch) =>
-  async ({ commentId, id }) => {
+  async ({ dailyId, id }) => {
     try {
-      const response = await server.post(`/daily/likerecomment/${commentId}/${id}`);
-      dispatch({ type: 'getRecomment', payload: response.data });
+      const response = await server.post(`/daily/likerecomment/${dailyId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likesrecomment' });
     }
@@ -215,10 +178,10 @@ const likeRecomment =
 
 const unLikeRecomment =
   (dispatch) =>
-  async ({ commentId, id }) => {
+  async ({ dailyId, id }) => {
     try {
-      const response = await server.delete(`/daily/likerecomment/${commentId}/${id}`);
-      dispatch({ type: 'getRecomment', payload: response.data });
+      const response = await server.delete(`/daily/likerecomment/${dailyId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikesrecomment' });
     }
@@ -227,8 +190,6 @@ const unLikeRecomment =
 export const { Provider, Context } = createDataContext(
   dailyReducer,
   {
-    initDaily,
-    initRecomment,
     addDaily,
     editDaily,
     deleteDaily,
@@ -237,9 +198,8 @@ export const { Provider, Context } = createDataContext(
     getSelectedDaily,
     addComment,
     deleteComment,
-    addreComment,
-    deletereComment,
-    getRecomment,
+    addRecomment,
+    deleteRecomment,
     likeComment,
     unLikeComment,
     likeRecomment,
@@ -248,7 +208,6 @@ export const { Provider, Context } = createDataContext(
   {
     currentDaily: null,
     currentComments: null,
-    currentRecomments: null,
     errorMessage: '',
   },
 );

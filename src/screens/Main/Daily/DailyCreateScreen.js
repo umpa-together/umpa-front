@@ -10,7 +10,10 @@ export default function ({ route }) {
       <StatusBar />
       <ScrollProvider>
         <DailyCreateProvider>
-          <DailyCreate data={route.params && route.params.data} />
+          <DailyCreate
+            data={route.params && route.params.data}
+            edit={route.params && route.params.edit}
+          />
         </DailyCreateProvider>
       </ScrollProvider>
     </>

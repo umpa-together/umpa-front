@@ -43,11 +43,6 @@ const BackLandings = ({ edit }) => {
 export default function PlaylistUpload({ data, edit }) {
   const { setParams } = usePlaylistCreate();
 
-  const info = {
-    data: hashtags,
-    deleteAction: onClickDeleteHashtag,
-    addAction: onClickAddHashtag,
-  };
   useEffect(() => {
     if (data) {
       setParams(data);

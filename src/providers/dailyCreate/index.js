@@ -7,7 +7,7 @@ const DailyCreateContext = createContext(null);
 export const useDailyCreate = () => useContext(DailyCreateContext);
 
 export default function DailyCreateProvider({ children }) {
-  const { addDaily } = useContext(DailyContext);
+  const { addDaily, editDaily } = useContext(DailyContext);
   const { getMyInformation } = useContext(UserContext);
   const [information, setInformation] = useState({
     content: '',
@@ -77,23 +77,33 @@ export default function DailyCreateProvider({ children }) {
     setImages(images.filter((state) => state.uri !== item.uri));
   };
 
-  const onClickUpload = async () => {
-    const fd = new FormData();
-    if (images.length > 0) {
-      images.forEach(({ name, type, uri }) => {
-        fd.append('img', {
-          name,
-          type,
-          uri,
+  const onClickUpload = async (edit) => {
+    if (edit) {
+      await editDaily({
+        textcontent: information.content,
+        song,
+        hashtag: information.hashtags,
+        DailyId: information.dailyId,
+      });
+    } else {
+      const fd = new FormData();
+      if (images.length > 0) {
+        images.forEach(({ name, type, uri }) => {
+          fd.append('img', {
+            name,
+            type,
+            uri,
+          });
         });
+      }
+      await addDaily({
+        textcontent: information.content,
+        hashtag: information.hashtags,
+        song,
+        fd,
       });
     }
-    await addDaily({
-      textcontent: information.content,
-      hashtag: information.hashtags,
-      song,
-      fd,
-    });
+
     getMyInformation();
   };
 

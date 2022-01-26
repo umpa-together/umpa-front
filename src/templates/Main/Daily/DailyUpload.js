@@ -10,21 +10,25 @@ import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Daily/UploadInfo';
 import UploadHashtag from 'components/UploadHashtag';
 
-const NextActions = () => {
+const NextActions = ({ edit }) => {
   const { onClickUpload } = useDailyCreate();
   return (
-    <TouchableOpacity style={[style.icons, styles.textContainer]} onPress={onClickUpload}>
+    <TouchableOpacity
+      style={[style.icons, styles.textContainer]}
+      onPress={() => onClickUpload(edit)}
+    >
       <Text style={styles.uploatText}>저장</Text>
     </TouchableOpacity>
   );
 };
 
-const BackLandings = () => {
+const BackLandings = ({ edit }) => {
   const { information, song, images } = useDailyCreate();
 
   const onPressBack = () => {
     navigate('DailyCreate', {
       data: { information, song, images },
+      edit,
     });
   };
 
@@ -34,7 +38,7 @@ const BackLandings = () => {
     </TouchableOpacity>
   );
 };
-export default function DailyUpload({ data }) {
+export default function DailyUpload({ data, edit }) {
   const {
     setParams,
     information: { hashtags },
@@ -58,9 +62,9 @@ export default function DailyUpload({ data }) {
     <View style={style.background}>
       <Header
         titleStyle={style.headertitle}
-        title="데일리 작성"
-        landings={[<BackLandings />]}
-        actions={[<NextActions />]}
+        title={edit ? '데일리 편집' : '데일리 작성'}
+        landings={[<BackLandings edit={edit} />]}
+        actions={[<NextActions edit={edit} />]}
       />
       <UploadInfo />
       <View style={styles.hashtagContainer}>

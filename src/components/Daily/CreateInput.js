@@ -4,11 +4,12 @@ import { useDailyCreate } from 'providers/dailyCreate';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function CreateInput() {
-  const { onChangeValue } = useDailyCreate();
+  const { information, onChangeValue } = useDailyCreate();
 
   return (
     <View style={styles.container}>
       <TextInput
+        value={information.content}
         style={styles.inputBox}
         placeholder="데일리를 기록해주세요"
         multiline

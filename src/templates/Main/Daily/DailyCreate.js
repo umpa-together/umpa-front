@@ -15,7 +15,7 @@ import { useScroll } from 'providers/scroll';
 import { useModal } from 'providers/modal';
 import ValidityModal from 'components/Modal/ValidityModal';
 
-const NextActions = () => {
+const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);
   const { information, song, images, setImages } = useDailyCreate();
   const { arraySortImage } = useScroll();
@@ -24,9 +24,9 @@ const NextActions = () => {
   const onPressNext = async () => {
     if (validity) {
       const imageChange = arraySortImage(images, setImages);
-
       navigate('DailyUpload', {
         data: { information, song, images: imageChange },
+        edit,
       });
     } else if (!song) {
       onPlayValidityModal();
@@ -45,7 +45,7 @@ const NextActions = () => {
   );
 };
 
-export default function DailyCreate({ data }) {
+export default function DailyCreate({ data, edit }) {
   const { setParams } = useDailyCreate();
   const { validityModal } = useModal();
   const validityMsg = '※ 데일리 곡을 선택해주세요';
@@ -57,13 +57,18 @@ export default function DailyCreate({ data }) {
 
   return (
     <View style={style.background}>
-      <Header title="데일리 작성" titleStyle={style.headertitle} back actions={[<NextActions />]} />
+      <Header
+        title={edit ? '데일리 편집' : '데일리 작성'}
+        titleStyle={style.headertitle}
+        back
+        actions={[<NextActions edit={edit} />]}
+      />
       <SongActionsProvider>
         <CreateSong />
       </SongActionsProvider>
       <CreateInput />
-      <CreateImageLists />
-      <CreatePhoto />
+      <CreateImageLists edit={edit} />
+      <CreatePhoto edit={edit} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );

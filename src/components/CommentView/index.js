@@ -30,6 +30,10 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
     state: { currentDaily },
     likeComment: dailyCommentLike,
     unLikeComment: dailyCommentUnLike,
+    likeRecomment: dailyRecommentLike,
+    unLikeRecomment: dailyRecommentUnLike,
+    deleteComment: dailyDeleteComment,
+    deleteRecomment: dailyDeleteRecomment,
   } = useContext(DailyContext);
   const { commentRef, setCommentInfo } = useComment();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -43,7 +47,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'dailyComment') {
         dailyCommentUnLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'dailyRecomment') {
-        console.log('like daily recomment');
+        dailyRecommentUnLike({ dailyId: currentDaily._id, id: commentId });
       }
     } else {
       if (opt === 'playlistComment') {
@@ -53,7 +57,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'dailyComment') {
         dailyCommentLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'dailyRecomment') {
-        console.log('unlike daily recomment');
+        dailyRecommentLike({ dailyId: currentDaily._id, id: commentId });
       }
     }
   };
@@ -74,9 +78,9 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'playlistRecomment') {
         playlistDeleteRecomment({ id: currentPlaylist._id, commentId });
       } else if (opt === 'dailyComment') {
-        console.log('dailyComment');
+        dailyDeleteComment({ id: currentDaily._id, commentId });
       } else if (opt === 'dailyRecomment') {
-        console.log('dailyRecomment');
+        dailyDeleteRecomment({ id: currentDaily._id, commentId });
       }
     }
     setDeleteModal(false);
