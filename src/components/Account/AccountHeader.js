@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { goBack } from 'lib/utils/navigation';
+import Icon from 'widgets/Icon';
 import ProfileBackground from './ProfileBackground';
 
 export default function AccountHeader({ user, back, hamburger }) {
@@ -16,12 +17,12 @@ export default function AccountHeader({ user, back, hamburger }) {
       <View style={[styles.menuContainer, style.flexRow]}>
         {back && (
           <TouchableOpacity style={styles.back} onPress={onPressBack}>
-            <View style={[styles.borderWidth, style.icons]} />
+            <View style={[style.icons]} />
           </TouchableOpacity>
         )}
         {hamburger && (
           <TouchableOpacity style={styles.hamburger} onPress={hamburger}>
-            <View style={[styles.borderWidth, style.icons]} />
+            <Icon style={style.icons} source={require('public/icons/account-hamburger.png')} />
           </TouchableOpacity>
         )}
       </View>
@@ -44,9 +45,6 @@ const styles = StyleSheet.create({
   hamburger: {
     position: 'absolute',
     right: 9 * SCALE_WIDTH,
-  },
-  borderWidth: {
-    borderWidth: 1,
   },
   backgroundImage: {
     width: '100%',

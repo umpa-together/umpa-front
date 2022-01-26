@@ -6,14 +6,21 @@ import {
   useAnimatedReaction,
   scrollTo,
 } from 'react-native-reanimated';
-import { SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
 const SONG_HEIGHT = 50 * SCALE_HEIGHT;
 const SCROLL_HEIGHT_THRESHOLD = 10;
 const MARGIN_BOTTOM = 14 * SCALE_HEIGHT;
 const INIT_MARGIN_TOP = 13 * SCALE_HEIGHT;
+const INIT_MARGIN_LEFT = 18 * SCALE_WIDTH;
+
 const TOTAL_HEIGHT = SONG_HEIGHT + MARGIN_BOTTOM;
 const CORRECTION = 20 * SCALE_HEIGHT;
+const CORRECTION_WIDTH = 20 * SCALE_WIDTH;
+
+const IMAGE_WIDTH = 90 * SCALE_WIDTH;
+const MARGIN_RIGHT = 12 * SCALE_WIDTH;
+const TOTAL_WIDTH = IMAGE_WIDTH + MARGIN_RIGHT;
 
 const ScrollContext = createContext(null);
 
@@ -27,12 +34,23 @@ export default function ScrollProvider({ children }) {
     });
     return object;
   };
+
+  const listToObjectImg = (list) => {
+    const object = {};
+    Object.values(list).forEach((image, index) => {
+      object[image.uri] = index;
+    });
+    return object;
+  };
+
   const positions = useRef(useSharedValue(listToObject([])));
   const scrollY = useSharedValue(0);
+  const scrollX = useSharedValue(0);
   const scrollViewRef = useAnimatedRef();
   const outsideScrollViewRef = useAnimatedRef();
   const scrollOutsideY = useSharedValue(0);
   const [topOffset, setTopOffset] = useState(0);
+  const [leftOffset, setLeftOffset] = useState(0);
 
   // update scroll view location by using shared value
   useAnimatedReaction(
@@ -50,9 +68,20 @@ export default function ScrollProvider({ children }) {
     return result;
   };
 
+  const arraySortImage = (images, setImages) => {
+    const result = [];
+    Object.keys(positions.current.value).forEach((position) => {
+      result[positions.current.value[position]] =
+        images[images.findIndex((item) => item.uri === position)];
+    });
+    setImages(result);
+    return result;
+  };
+
   const onLayoutScroll = () => {
     scrollViewRef.current.measure((x, y, width, height, pagex, pagey) => {
       setTopOffset(pagey);
+      setLeftOffset(pagex);
     });
   };
 
@@ -60,9 +89,14 @@ export default function ScrollProvider({ children }) {
     positions.current.value = listToObject(songs);
   };
 
+  const updatePositionImg = (images) => {
+    positions.current.value = listToObjectImg(images);
+  };
+
   // set scrolly value accrroding scroll offset
   const handleScroll = useAnimatedScrollHandler((event) => {
     scrollY.value = event.contentOffset.y;
+    scrollX.value = event.contentOffset.x;
   });
 
   const handleOutsideScroll = (event) => {
@@ -94,22 +128,29 @@ export default function ScrollProvider({ children }) {
 
   const value = {
     SONG_HEIGHT,
+    TOTAL_WIDTH,
     SCROLL_HEIGHT_THRESHOLD,
     INIT_MARGIN_TOP,
+    INIT_MARGIN_LEFT,
     TOTAL_HEIGHT,
     CORRECTION,
+    CORRECTION_WIDTH,
+    IMAGE_WIDTH,
     scrollY,
+    scrollX,
     scrollViewRef,
     scrollOutsideY,
     outsideScrollViewRef,
     topOffset,
+    leftOffset,
     positions,
-    listToObject,
     updatePosition,
+    updatePositionImg,
     handleScroll,
     onLayoutScroll,
     handleOutsideScroll,
     arraySort,
+    arraySortImage,
     clamp,
     objectMove,
   };

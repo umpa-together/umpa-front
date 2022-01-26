@@ -13,7 +13,7 @@ export default function Daily({ daily }) {
   const { getSelectedDaily } = useContext(DailyContext);
   const onClickDaily = async () => {
     await getSelectedDaily({ id, postUserId: postUser._id });
-    push('SelectedDaily', { id, postUser: postUser._id });
+    push('SelectedDaily', { post: false });
   };
 
   return (

@@ -10,11 +10,14 @@ import { useScroll } from 'providers/scroll';
 import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import SongActionsProvider from 'providers/songActions';
+import ValidityModal from 'components/Modal/ValidityModal';
+import { useModal } from 'providers/modal';
 
 const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);
   const { information, setSongs, songs, image } = usePlaylistCreate();
   const { arraySort } = useScroll();
+  const { onPlayValidityModal } = useModal();
 
   const onPressNext = async () => {
     if (validity) {
@@ -23,6 +26,8 @@ const NextActions = ({ edit }) => {
         data: { information, songs: songsChange, image },
         edit,
       });
+    } else if (songs.length < 3) {
+      onPlayValidityModal();
     }
   };
   useEffect(() => {
@@ -41,6 +46,8 @@ const NextActions = ({ edit }) => {
 export default function PlaylistCreate({ data, edit }) {
   const { setParams } = usePlaylistCreate();
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
+  const { validityModal } = useModal();
+  const validityMsg = '최소 3곡을 담아주세요';
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -67,6 +74,7 @@ export default function PlaylistCreate({ data, edit }) {
           <CreateSongList />
         </SongActionsProvider>
       </ScrollView>
+      {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );
 }

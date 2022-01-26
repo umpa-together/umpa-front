@@ -27,7 +27,7 @@ export default function UserRepresentSong({ song, action, account }) {
       style={[style.flexRow, styles.representBox, maxWidthStyle]}
     >
       <Text numberOfLines={1} style={styles.representText}>{`${songName} - ${artistName}`}</Text>
-      <Icon style={styles.playIcon} />
+      <Icon style={styles.playIcon} source={require('public/icons/daily-song-play.png')} />
     </TouchableOpacity>
   );
 }
@@ -48,10 +48,9 @@ const styles = StyleSheet.create({
     fontSize: FS(11),
   },
   playIcon: {
-    width: 8 * SCALE_WIDTH,
-    height: 11 * SCALE_HEIGHT,
+    width: 20 * SCALE_WIDTH,
+    height: 20 * SCALE_HEIGHT,
     position: 'absolute',
-    right: 4.2 * SCALE_WIDTH,
-    borderWidth: 1 * SCALE_WIDTH,
+    right: 2.2 * SCALE_WIDTH,
   },
 });

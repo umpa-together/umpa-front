@@ -10,9 +10,12 @@ export default function CreateButton({ opt }) {
   const onClickPlaylist = () => {
     navigate('PlaylistCreate');
   };
+  const onClickDaily = () => {
+    navigate('DailyCreate');
+  };
   const createOpt = {
     playlist: { title: '새 플레이리스트 추가', onClick: onClickPlaylist },
-    daily: { title: '새 데일리 추가', onClick: null },
+    daily: { title: '새 데일리 추가', onClick: onClickDaily },
   };
 
   return (

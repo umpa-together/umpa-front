@@ -1,4 +1,4 @@
-import { navigate, goBack } from 'lib/utils/navigation';
+import { navigate } from 'lib/utils/navigation';
 import server from 'lib/api/server';
 import createDataContext from 'lib/utils/createDataContext';
 
@@ -50,13 +50,21 @@ const addDaily =
   (dispatch) =>
   async ({ textcontent, song, hashtag, fd }) => {
     try {
+      let imgResponse = null;
       const response = await server.post('/daily', { textcontent, song, hashtag });
-      goBack();
       // eslint-disable-next-line no-underscore-dangle
-      if (fd._parts.length !== 0) {
-        await server.post(`/daily/imgUpload/${response.data}`, fd, {
+      if (fd._parts.length > 0) {
+        fd.append('dailyId', response.data[0]._id);
+        imgResponse = await server.post(`/daily/imgUpload/${response.data}`, fd, {
           header: { 'content-type': 'multipart/form-data' },
         });
+      }
+      if (fd._parts.length > 0) {
+        dispatch({ type: 'getSelectedDaily', payload: imgResponse.data });
+        navigate('SelectedDaily', { post: true });
+      } else {
+        dispatch({ type: 'getSelectedDaily', payload: response.data });
+        navigate('SelectedDaily', { post: true });
       }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });

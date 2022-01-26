@@ -36,10 +36,10 @@ export const onClickMultiple = (setImages) => {
     maxFiles: MAX_FILES,
   }).then((images) => {
     const arr = [];
-    images.forEach(({ filename, path }) => {
+    images.forEach(({ filename, path, mime }) => {
       arr.push({
         name: filename,
-        type: image.mime,
+        type: mime,
         uri: `file://${path}`,
       });
     });

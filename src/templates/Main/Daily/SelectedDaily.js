@@ -22,6 +22,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import { Provider as AddedProvider } from 'context/Added';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import { navigate } from 'lib/utils/navigation';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -33,7 +34,19 @@ const PostUserAction = ({ setSelectModal }) => {
     </TouchableOpacity>
   );
 };
-export default function SelectedDaily({ dailyId }) {
+
+const LandingAction = () => {
+  const onPressLanding = () => {
+    navigate('Feed');
+  };
+  return (
+    <TouchableOpacity onPress={onPressLanding} style={styles.back} activeOpacity={0.9}>
+      <Icon source={require('public/icons/back-40.png')} style={style.icons} />
+    </TouchableOpacity>
+  );
+};
+
+export default function SelectedDaily({ post }) {
   const [selectModal, setSelectModal] = useState(false);
   const { state, addComment } = useContext(DailyContext);
   const {
@@ -41,8 +54,11 @@ export default function SelectedDaily({ dailyId }) {
   } = useContext(UserContext);
   const { currentSong, duration } = useTrackPlayer();
   const { addedModal } = useModal();
-  const { currentComments, currentDaily } = state;
-  const { postUserId: postUser, image, textcontent, time, song } = currentDaily;
+  const {
+    currentComments,
+    currentDaily,
+    currentDaily: { postUserId: postUser, image, textcontent, time, song, _id: dailyId },
+  } = state;
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 
@@ -69,7 +85,12 @@ export default function SelectedDaily({ dailyId }) {
 
   return (
     <View style={style.background}>
-      <Header title="데일리" titleStyle={styles.headerTitle} back />
+      <Header
+        title="데일리"
+        titleStyle={styles.headerTitle}
+        landings={post && [<LandingAction />]}
+        back={!post}
+      />
       <ScrollView>
         <PostUser user={postUser} action={<PostUserAction setSelectModal={setSelectModal} />} />
         <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
