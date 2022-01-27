@@ -8,12 +8,12 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
 import { Context as UserContext } from 'context/User';
 
-export default function PostingInfo({ user, posting }) {
+export default function PostingInfo({ my, user, posting }) {
   const { getFollow } = useContext(UserContext);
   const { _id: userId, follower, following, profileImage } = user;
   const onClickFollowing = async () => {
     await getFollow({ id: userId, opt: 'following' });
-    push('Follow', { opt: 'following' });
+    push('Follow', { opt: 'following', my });
   };
   const onClickFollower = async () => {
     await getFollow({ id: userId, opt: 'follower' });
@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
   },
   elementContainer: {
     width: 44 * SCALE_WIDTH,
-    height: 34 * SCALE_WIDTH,
+    height: 34 * SCALE_HEIGHT,
     alignItems: 'center',
   },
   profileImage: {
-    top: -45 * SCALE_HEIGHT,
+    bottom: 16 * SCALE_HEIGHT,
     left: 16 * SCALE_WIDTH,
     position: 'absolute',
     zIndex: 1,

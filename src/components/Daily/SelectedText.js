@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as DailyContext } from 'context/Daily';
+import { COLOR_1 } from 'constants/colors';
 
 export default function SelectedText() {
   const {
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
   },
   content: {
     fontSize: FS(14),
+    color: COLOR_1,
     lineHeight: 24 * SCALE_HEIGHT,
   },
 });

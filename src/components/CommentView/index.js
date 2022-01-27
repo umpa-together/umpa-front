@@ -163,7 +163,8 @@ export default function ({ comment, opt }) {
         style.flexRow,
         styles.container,
         {
-          marginLeft: (opt === 'playlistRecomment' || opt === 'dailyRecomment') && 47 * SCALE_WIDTH,
+          marginLeft:
+            opt === 'playlistRecomment' || opt === 'dailyRecomment' ? 47 * SCALE_WIDTH : 0,
         },
       ]}
     >

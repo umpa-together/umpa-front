@@ -94,6 +94,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-end',
     margin: 0,
+    marginTop: 60 * SCALE_HEIGHT,
+    position: 'absolute',
   },
   viewContainer: {
     width: '100%',

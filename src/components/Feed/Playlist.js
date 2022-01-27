@@ -6,7 +6,7 @@ import PostUser from 'components/PostUser';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as UserContext } from 'context/User';
-import { MAIN_COLOR } from 'constants/colors';
+import { MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import SongsLists from './SongsLists';
 import Footer from './Footer';
 
@@ -77,12 +77,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FS(14),
-    fontWeight: '500',
+    color: COLOR_1,
     lineHeight: 24 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(13),
-    fontWeight: '400',
     lineHeight: 24 * SCALE_HEIGHT,
     color: '#5d5d5d',
   },

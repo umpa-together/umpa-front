@@ -25,7 +25,7 @@ export default function KeyboardProvider({ children }) {
   };
 
   const keyboardStyle = {
-    marginBottom: keyboardHeight,
+    marginBottom: Platform.select({ ios: keyboardHeight, android: 0 }),
   };
 
   const value = {

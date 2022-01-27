@@ -7,6 +7,7 @@ import HarmfulModal from 'components/Modal/HarmfulModal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import DeleteModal from 'components/Modal/DeleteModal';
+import EmptySaved from './EmptySaved';
 
 const DeleteLandings = ({ type, id }) => {
   const [deletemodal, setDeleteModal] = useState(false);
@@ -38,51 +39,65 @@ const DeleteLandings = ({ type, id }) => {
 };
 
 export function AddedSong({ edit }) {
-  const { state } = useContext(AddedContext);
+  const {
+    state: { songLists },
+  } = useContext(AddedContext);
 
   return (
     <>
-      <Text style={styles.length}>총 {state.songLists.length}개</Text>
-      <FlatList
-        data={state.songLists}
-        keyExtractor={(song) => song._id}
-        renderItem={({ item }) => {
-          const { song, _id: id } = item;
-          return (
-            <SongView
-              song={song}
-              landings={edit && <DeleteLandings type="song" id={id} />}
-              play={!edit}
-            />
-          );
-        }}
-      />
-      <HarmfulModal />
+      <Text style={styles.length}>총 {songLists.length}개</Text>
+      {songLists.length > 0 ? (
+        <>
+          <FlatList
+            data={songLists}
+            keyExtractor={(song) => song._id}
+            renderItem={({ item }) => {
+              const { song, _id: id } = item;
+              return (
+                <SongView
+                  song={song}
+                  landings={edit && <DeleteLandings type="song" id={id} />}
+                  play={!edit}
+                />
+              );
+            }}
+          />
+          <HarmfulModal />{' '}
+        </>
+      ) : (
+        <EmptySaved opt="song" />
+      )}
     </>
   );
 }
 
 export function AddedPlaylist({ edit }) {
-  const { state } = useContext(AddedContext);
+  const {
+    state: { playlists },
+  } = useContext(AddedContext);
 
   return (
     <>
-      <Text style={styles.length}>총 {state.playlists.length}개</Text>
-      <FlatList
-        data={state.playlists}
-        keyExtractor={(playlist) => playlist._id}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={({ item }) => {
-          const { playlistId: playlist, _id: id } = item;
-          return (
-            <PlaylistCard
-              playlist={playlist}
-              landings={edit && <DeleteLandings type="playlist" id={id} />}
-              play={!edit}
-            />
-          );
-        }}
-      />
+      <Text style={styles.length}>총 {playlists.length}개</Text>
+      {playlists.length > 0 ? (
+        <FlatList
+          data={playlists}
+          keyExtractor={(playlist) => playlist._id}
+          contentContainerStyle={styles.contentContainer}
+          renderItem={({ item }) => {
+            const { playlistId: playlist, _id: id } = item;
+            return (
+              <PlaylistCard
+                playlist={playlist}
+                landings={edit && <DeleteLandings type="playlist" id={id} />}
+                play={!edit}
+              />
+            );
+          }}
+        />
+      ) : (
+        <EmptySaved opt="playlist" />
+      )}
     </>
   );
 }

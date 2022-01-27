@@ -156,14 +156,14 @@ export default function SelectedPlaylist({ post }) {
   return (
     <View style={style.background}>
       <CommentProvider>
+        <Header
+          title="플레이리스트"
+          titleStyle={style.headertitle}
+          landings={post && [<LandingAction />]}
+          back={!post}
+          actions={[<PostUserAction setSelectModal={setSelectModal} />]}
+        />
         <ScrollView>
-          <Header
-            title="플레이리스트"
-            titleStyle={style.headertitle}
-            landings={post && [<LandingAction />]}
-            back={!post}
-            actions={[<PostUserAction setSelectModal={setSelectModal} />]}
-          />
           <SelectedInfo />
           <SelectedHashtag />
           <AddedProvider>
