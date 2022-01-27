@@ -7,7 +7,7 @@ import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
-import {COLOR_1} from 'constants/colors';
+import { COLOR_1 } from 'constants/colors';
 import Footer from './Footer';
 
 export default function Daily({ daily }) {

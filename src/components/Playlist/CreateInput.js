@@ -42,11 +42,12 @@ const styles = StyleSheet.create({
     paddingTop: 32 * SCALE_HEIGHT,
   },
   inputBox: {
+    padding: 0,
     borderRadius: 6 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
     borderColor: '#DBDBDB',
+    minHeight: 32 * SCALE_HEIGHT,
     paddingHorizontal: 12 * SCALE_WIDTH,
-    paddingVertical: 12 * SCALE_WIDTH,
     marginBottom: 28 * SCALE_HEIGHT,
     fontSize: FS(14),
   },
