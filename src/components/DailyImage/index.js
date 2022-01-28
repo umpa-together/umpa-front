@@ -10,8 +10,6 @@ export default function Dailyimage({ image, upload }) {
       {image.map((img) => {
         return (
           <FastImage
-            modalImageResizeMode="contain"
-            resizeMode="cover"
             source={{ uri: upload ? img.uri : img }}
             style={styles.img}
             key={upload ? img.uri : img}
