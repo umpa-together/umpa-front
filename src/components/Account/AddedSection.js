@@ -3,7 +3,6 @@ import { FlatList, Text, View, TouchableOpacity, StyleSheet } from 'react-native
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import PlaylistCard from 'components/PlaylistView';
-import HarmfulModal from 'components/Modal/HarmfulModal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import DeleteModal from 'components/Modal/DeleteModal';
@@ -62,7 +61,6 @@ export function AddedSong({ edit }) {
               );
             }}
           />
-          <HarmfulModal />{' '}
         </>
       ) : (
         <EmptySaved opt="song" />
