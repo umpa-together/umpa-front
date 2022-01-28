@@ -18,19 +18,12 @@ export default function EmptySaved({ opt }) {
 
   return (
     <>
-      <EmptyData icon={<IconComponent />} textList={textList} customContainer={styles.height} />
+      <EmptyData icon={<IconComponent />} textList={textList} />
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  height: {
-    flex: 1,
-  },
   icon: {
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,

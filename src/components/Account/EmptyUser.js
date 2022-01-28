@@ -29,27 +29,13 @@ export default function EmptyUser({ my, opt }) {
 
   return (
     <>
-      <EmptyData
-        icon={<IconComponent />}
-        textList={textList}
-        customContainer={opt === 'follower' ? styles.followerHeight : styles.followingHeight}
-      />
+      <EmptyData icon={<IconComponent />} textList={textList} />
       {my && <RecommendAcocunt />}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  followerHeight: {
-    flex: 1,
-  },
-  followingHeight: {
-    flex: 1,
-  },
   icon: {
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,
