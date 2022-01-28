@@ -47,7 +47,7 @@ export default function TabSection({ my, data, opt }) {
     <ScrollView>
       <SortPosting count={data.length} onPressModal={onPressModal} title={sortOpt} />
       {my && opt !== 'relay' && <CreateButton opt={opt} />}
-      <PostingResult data={data} opt={opt} />
+      <PostingResult my={my} data={data} opt={opt} />
       <SortModal
         modal={sortModal}
         setModal={setSortModal}

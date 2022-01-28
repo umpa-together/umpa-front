@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
-import TabSection from './TabSection';
+import TabSection from 'components/Account/TabSection';
 
 export default function OtherAccount() {
   const { state, initRepresentSongs } = useContext(UserContext);

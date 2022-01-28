@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
-import TabSection from './TabSection';
+import TabSection from 'components/Account/TabSection';
 
 export default function MyAccount() {
   const {
@@ -56,7 +56,7 @@ export default function MyAccount() {
       {user && (
         <>
           <AccountHeader user={user} hamburger={onPressMenu} />
-          <PostingInfo posting={postingCount} user={user} />
+          <PostingInfo my posting={postingCount} user={user} />
           <UserInfo myaccount user={user} />
           <TabView
             routesMap={[

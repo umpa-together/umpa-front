@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     shadowRadius: 2 * SCALE_WIDTH,
     shadowOpacity: 0.1,
+    elevation: 10,
   },
   touchContainer: {
     marginLeft: 18 * SCALE_WIDTH,

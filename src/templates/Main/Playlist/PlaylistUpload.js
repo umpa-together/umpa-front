@@ -41,8 +41,18 @@ const BackLandings = ({ edit }) => {
 };
 
 export default function PlaylistUpload({ data, edit }) {
-  const { setParams } = usePlaylistCreate();
+  const {
+    setParams,
+    information: { hashtags },
+    onClickAddHashtag,
+    onClickDeleteHashtag,
+  } = usePlaylistCreate();
 
+  const info = {
+    data: hashtags,
+    deleteAction: onClickDeleteHashtag,
+    addAction: onClickAddHashtag,
+  };
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -59,7 +69,7 @@ export default function PlaylistUpload({ data, edit }) {
       />
       <ScrollView>
         <UploadInfo edit={edit} />
-        <UploadHashtag />
+        <UploadHashtag info={info} containerStyle={styles.containerStyle} />
         <UploadSongs />
       </ScrollView>
     </View>

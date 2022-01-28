@@ -7,6 +7,7 @@ import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
+import { COLOR_1 } from 'constants/colors';
 import Footer from './Footer';
 
 export default function Daily({ daily }) {
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
     marginBottom: 20 * SCALE_HEIGHT,
   },
   content: {
+    color: COLOR_1,
     fontSize: FS(14),
-    fontWeight: '500',
     lineHeight: 24 * SCALE_HEIGHT,
   },
   songsContainer: {

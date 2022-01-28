@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
+import { COLOR_1 } from 'constants/colors';
 
 export default function DailyNoticeForm({ notice, onClickProfile }) {
   const {
@@ -56,17 +57,16 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: FS(14),
-    fontWeight: '500',
+    color: COLOR_1,
     lineHeight: 18 * SCALE_HEIGHT,
   },
   contentText: {
     fontSize: FS(14),
-    fontWeight: '400',
+    color: COLOR_1,
     lineHeight: 18 * SCALE_HEIGHT,
   },
   time: {
     fontSize: FS(12),
-    fontWeight: '400',
     color: '#9499a3',
   },
 });

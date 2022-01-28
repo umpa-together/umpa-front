@@ -10,6 +10,7 @@ export default function ({ children, ...props }) {
       animationIn="fadeIn"
       animationOut="fadeOut"
       backdropOpacity={0.4}
+      statusBarTranslucent
       {...props}
     >
       {children}

@@ -37,8 +37,6 @@ export default function UserCard({ user }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 97 * SCALE_WIDTH,
-    height: 131 * SCALE_HEIGHT,
     borderColor: '#f4f4f4',
     borderWidth: 1 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
@@ -59,6 +57,8 @@ const styles = StyleSheet.create({
     borderRadius: 56 * SCALE_HEIGHT,
     marginTop: 13 * SCALE_HEIGHT,
     marginBottom: 11 * SCALE_HEIGHT,
+    marginLeft: 20 * SCALE_WIDTH,
+    marginRight: 21 * SCALE_WIDTH,
   },
   name: {
     fontSize: FS(12),
@@ -76,5 +76,6 @@ const styles = StyleSheet.create({
     fontSize: FS(10),
     fontWeight: '300',
     marginTop: 7 * SCALE_HEIGHT,
+    paddingBottom: 17 * SCALE_HEIGHT,
   },
 });

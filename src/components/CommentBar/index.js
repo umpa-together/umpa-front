@@ -8,7 +8,7 @@ import { useKeyboard } from 'providers/keyboard';
 import { useComment } from 'providers/comment';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
-export default function () {
+export default function CommentBar() {
   const {
     state: {
       user: { profileImage },
@@ -61,14 +61,15 @@ const styles = StyleSheet.create({
   container: {
     height: 68 * SCALE_HEIGHT,
     paddingHorizontal: 13 * SCALE_WIDTH,
+    backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
       height: -1 * SCALE_WIDTH,
       width: 0,
     },
-    backgroundColor: '#fff',
-    shadowRadius: 10 * SCALE_WIDTH,
+    shadowRadius: 2 * SCALE_WIDTH,
     shadowOpacity: 0.1,
+    elevation: 10,
   },
   profileImage: {
     width: 32 * SCALE_WIDTH,

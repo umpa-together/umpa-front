@@ -8,6 +8,7 @@ import RecommendAccount from 'components/Search/RecommendAccount';
 import SearchBarView from 'components/Search/SearchBarView';
 import RecentDailies from 'components/Search/RecentDailies';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { COLOR_1 } from 'constants/colors';
 
 export default function Search() {
   const { state, getMainRecommendPlaylist, getMainRecommendDJ, getRecentDailies } =
@@ -39,6 +40,7 @@ export default function Search() {
 const styles = StyleSheet.create({
   title: {
     fontSize: FS(24),
+    color: COLOR_1,
     lineHeight: 35 * SCALE_HEIGHT,
     marginTop: 6 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,

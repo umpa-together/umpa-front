@@ -36,8 +36,6 @@ export default function PlaylistCard({ info }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 176 * SCALE_WIDTH,
-    height: 80 * SCALE_HEIGHT,
     backgroundColor: COLOR_1,
     marginRight: 10 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
@@ -45,6 +43,8 @@ const styles = StyleSheet.create({
   img: {
     width: 50 * SCALE_WIDTH,
     height: 50 * SCALE_WIDTH,
+    marginTop: 21 * SCALE_HEIGHT,
+    marginBottom: 10 * SCALE_HEIGHT,
     borderWidth: 1,
     borderColor: '#fff',
     marginLeft: 13 * SCALE_WIDTH,
@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
   },
   titleArea: {
     width: 95 * SCALE_WIDTH,
+    marginRight: 16 * SCALE_WIDTH,
   },
 });
