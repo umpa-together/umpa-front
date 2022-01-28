@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
-import { Context as DailyContext } from 'context/Daily';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
@@ -23,7 +22,6 @@ export default function DailyView({ info, actions, isSelected }) {
   } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
-  const { getSelectedDaily } = useContext(DailyContext);
   const { onClickAdded } = useModal();
 
   const onClickAdd = () => {
@@ -32,8 +30,7 @@ export default function DailyView({ info, actions, isSelected }) {
   };
   const onClickSongView = async () => {
     if (isSelected) {
-      await getSelectedDaily({ id, postUserId });
-      push('SelectedDaily', { post: false });
+      push('SelectedDaily', { post: false, id, postUserId });
     } else {
       navigate('SelectedSong', { song });
     }

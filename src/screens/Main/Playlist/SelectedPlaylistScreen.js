@@ -6,14 +6,14 @@ import { Provider as AddedProvider } from 'context/Added';
 import { Provider as ReportProvider } from 'context/Report';
 
 export default function ({ route }) {
-  const { post } = route.params;
+  const { post, id, postUserId } = route.params;
   return (
     <>
       <StatusBar />
       <KeyboradProvider>
         <AddedProvider>
           <ReportProvider>
-            <SelectedPlaylist post={post} />
+            <SelectedPlaylist post={post} id={id} postUserId={postUserId} />
           </ReportProvider>
         </AddedProvider>
       </KeyboradProvider>

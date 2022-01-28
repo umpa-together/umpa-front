@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
@@ -12,10 +11,8 @@ import Footer from './Footer';
 
 export default function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
-  const { getSelectedDaily } = useContext(DailyContext);
-  const onClickDaily = async () => {
-    await getSelectedDaily({ id, postUserId: postUser._id });
-    push('SelectedDaily', { post: false });
+  const onClickDaily = () => {
+    push('SelectedDaily', { post: false, id, postUserId: postUser._id });
   };
 
   return (

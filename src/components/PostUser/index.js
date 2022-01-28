@@ -9,13 +9,12 @@ import style from 'constants/styles';
 
 export default function ({ user, action }) {
   const { _id: id, profileImage: img, name } = user;
-  const { state, getOtherInformation } = useContext(UserContext);
+  const { state } = useContext(UserContext);
 
-  const onClickProfile = async () => {
+  const onClickProfile = () => {
     if (id === state.user._id) {
       navigate('MyAccount');
     } else {
-      await getOtherInformation({ id });
       push('OtherAccount', { id });
     }
   };

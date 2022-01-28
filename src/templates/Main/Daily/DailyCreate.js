@@ -15,7 +15,7 @@ import { useScroll } from 'providers/scroll';
 import { useModal } from 'providers/modal';
 import ValidityModal from 'components/Modal/ValidityModal';
 
-const NextActions = ({ edit }) => {
+const NextActions = ({ edit, setValidityMsg }) => {
   const [validity, setValidity] = useState(false);
   const { information, song, images, setImages } = useDailyCreate();
   const { arraySortImage } = useScroll();
@@ -29,6 +29,7 @@ const NextActions = ({ edit }) => {
         edit,
       });
     } else if (!song) {
+      setValidityMsg('※ 데일리 곡을 선택해주세요');
       onPlayValidityModal();
     }
   };
@@ -48,7 +49,7 @@ const NextActions = ({ edit }) => {
 export default function DailyCreate({ data, edit }) {
   const { setParams } = useDailyCreate();
   const { validityModal } = useModal();
-  const validityMsg = '※ 데일리 곡을 선택해주세요';
+  const [validityMsg, setValidityMsg] = useState('');
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -61,14 +62,14 @@ export default function DailyCreate({ data, edit }) {
         title={edit ? '데일리 편집' : '데일리 작성'}
         titleStyle={style.headertitle}
         back
-        actions={[<NextActions edit={edit} />]}
+        actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
       />
       <SongActionsProvider>
         <CreateSong />
       </SongActionsProvider>
       <CreateInput />
       <CreateImageLists edit={edit} />
-      <CreatePhoto edit={edit} />
+      <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );

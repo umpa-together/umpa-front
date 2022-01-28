@@ -41,7 +41,6 @@ export default function CreateImageLists({ edit = false }) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginBottom: 82 * SCALE_HEIGHT,
     paddingLeft: 18 * SCALE_WIDTH,
   },
   imageContainer: {
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
     width: 30 * SCALE_WIDTH,
     height: 30 * SCALE_WIDTH,
     position: 'absolute',
-    right: 12 * SCALE_WIDTH,
+    right: 2 * SCALE_WIDTH,
     top: -45 * SCALE_HEIGHT,
   },
   imageNotEdit: {

@@ -1,22 +1,19 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_3 } from 'constants/colors';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import { SongImage } from 'widgets/SongImage';
-import { Context as PlaylistContext } from 'context/Playlist';
 import { push } from 'lib/utils/navigation';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 
 const playlistConverter = (el, round) => {
   const { image, songs, title, time, _id, postUserId } = el;
   const convertTime = time.slice(0, 10).replaceAll('-', '.');
-  const { getSelectedPlaylist } = useContext(PlaylistContext);
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id: _id, postUserId });
-    push('SelectedPlaylist', { post: false });
+    push('SelectedPlaylist', { post: false, id: _id, postUserId });
   };
 
   return {
