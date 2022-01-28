@@ -11,12 +11,12 @@ import { useModal } from 'providers/modal';
 export default function CreatePhoto({ edit, setValidityMsg }) {
   const { images, setImages } = useDailyCreate();
   const imageCheck = images.length > 0;
-  const { onPlayValidityModal } = useModal();
+  const { onValidityModal } = useModal();
   const onPressAdd = () => {
     if (!edit && !imageCheck) onClickMultiple(setImages);
     if (imageCheck) {
       setValidityMsg('※ 현재 사진 전체 삭제 후, 사진 추가가 가능합니다.');
-      onPlayValidityModal();
+      onValidityModal();
     }
   };
   return (
