@@ -17,7 +17,7 @@ const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);
   const { information, setSongs, songs, image } = usePlaylistCreate();
   const { arraySort } = useScroll();
-  const { onPlayValidityModal } = useModal();
+  const { onValidityModal } = useModal();
 
   const onPressNext = async () => {
     if (validity) {
@@ -27,7 +27,7 @@ const NextActions = ({ edit }) => {
         edit,
       });
     } else if (songs.length < 3) {
-      onPlayValidityModal();
+      onValidityModal();
     }
   };
   useEffect(() => {

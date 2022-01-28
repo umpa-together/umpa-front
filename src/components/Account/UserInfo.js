@@ -6,11 +6,11 @@ import UserGenre from './UserGenre';
 import UserIntroduction from './UserIntroduction';
 
 export default function UserInfo({ myaccount, user }) {
-  const { songs, name, introduction, genre, _id: id } = user;
+  const { songs, name, introduction, genre, _id: id, realName } = user;
 
   return (
     <View style={[styles.container]}>
-      <UserName id={id} myaccount={myaccount} name={name} />
+      <UserName id={id} myaccount={myaccount} name={name} realName={realName} />
       <UserGenre genre={genre} />
       <UserIntroduction introduction={introduction} song={songs[0]} id={id} />
     </View>

@@ -5,7 +5,7 @@ import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 
-export default function CreateHashtag({ addAction, hashtagCount, onPlayValidityModal }) {
+export default function CreateHashtag({ addAction, hashtagCount, onValidityModal }) {
   const hashtagRef = useRef();
 
   const onPressCancle = () => {
@@ -13,7 +13,7 @@ export default function CreateHashtag({ addAction, hashtagCount, onPlayValidityM
   };
   onPressAdd = () => {
     if (hashtagCount >= 3) {
-      onPlayValidityModal();
+      onValidityModal();
       return;
     }
     if (hashtagRef.current.value !== '') {

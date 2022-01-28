@@ -12,7 +12,7 @@ import Icon from 'widgets/Icon';
 
 const HashtagModalView = ({ onCloseModal, info }) => {
   const { data, deleteAction, addAction } = info;
-  const { validityModal, onPlayValidityModal } = useModal();
+  const { validityModal, onValidityModal } = useModal();
   const hashtagCount = data.length;
   const Landing = memo(() => {
     return (
@@ -41,7 +41,7 @@ const HashtagModalView = ({ onCloseModal, info }) => {
       <CreateHashtag
         addAction={addAction}
         hashtagCount={hashtagCount}
-        onPlayValidityModal={onPlayValidityModal}
+        onValidityModal={onValidityModal}
       />
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         <View style={[style.flexRow, styles.hashtagContainer]}>

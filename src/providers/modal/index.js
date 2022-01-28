@@ -42,7 +42,7 @@ export default function ModalProvider({ children }) {
     }, 1500);
   };
 
-  const onPlayValidityModal = () => {
+  const onValidityModal = () => {
     setValidityModal(true);
     setTimeout(() => {
       Animated.timing(opacity, {
@@ -70,7 +70,7 @@ export default function ModalProvider({ children }) {
     onCloseHarmfulModal,
     onCloseRepresentModal,
     onClickAdded,
-    onPlayValidityModal,
+    onValidityModal,
   };
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
