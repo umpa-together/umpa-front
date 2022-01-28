@@ -66,8 +66,18 @@ const getOtherInformation =
 
 const editProfile =
   (dispatch) =>
-  async ({ nickName, name, introduction, genre, songs, fd }) => {
+  async ({ nickName, name, introduction, genre, songs, profileFd, backgroundFd }) => {
     try {
+      if (profileFd) {
+        profileResponse = await server.post('/user/editProfileImage', profileFd, {
+          header: { 'content-type': 'multipart/form-data' },
+        });
+      }
+      if (backgroundFd) {
+        backgroundResponse = await server.post('/user/editBackgroundImage', backgroundFd, {
+          header: { 'content-type': 'multipart/form-data' },
+        });
+      }
       const response = await server.post('/user/editProfile', {
         nickName,
         name,
@@ -75,11 +85,6 @@ const editProfile =
         genre,
         songs,
       });
-      if (fd) {
-        await server.post('/user/editProfileImage', fd, {
-          header: { 'content-type': 'multipart/form-data' },
-        });
-      }
       dispatch({ type: 'getProfile', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editProfile' });

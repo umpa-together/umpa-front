@@ -4,6 +4,7 @@ import { Context as AuthContext } from 'context/Auth';
 import { goBack } from 'lib/utils/navigation';
 import { useScroll } from 'providers/scroll';
 import server from 'lib/api/server';
+import { useModal } from 'providers/modal';
 
 const ProfileEditContext = createContext(null);
 
@@ -17,6 +18,7 @@ export default function ProfileEditProvider({ children }) {
   const { tryLocalSignIn } = useContext(AuthContext);
   const [profile, setProfile] = useState({
     nickName: user ? user.name : '',
+    realName: user ? user.realName : '',
     introduction: user ? user.introduction : '',
     genre: [],
   });
@@ -31,7 +33,9 @@ export default function ProfileEditProvider({ children }) {
     uri: user ? user.backgroundImage : '',
     type: 'image/jpeg',
   });
+  const [validityMsg, setValidityMsg] = useState(null);
   const { arraySort } = useScroll();
+  const { onValidityModal } = useModal();
 
   const onChangeValue = (type, value) => {
     if (type === '닉네임') {
@@ -43,6 +47,11 @@ export default function ProfileEditProvider({ children }) {
       setProfile({
         ...profile,
         introduction: value,
+      });
+    } else if (type === '이름') {
+      setProfile({
+        ...profile,
+        realName: value,
       });
     }
   };
@@ -61,14 +70,28 @@ export default function ProfileEditProvider({ children }) {
     }
   };
 
-  const onClickEdit = async () => {
-    let fd = null;
+  const onClickEdit = async (signUp) => {
+    if (profile.nickName.length === 0 || songs.length === 0) {
+      setValidityMsg('※ 닉네임, 대표곡을 입력해주세요.');
+      onValidityModal();
+      return;
+    }
+    let profileFormData = null;
+    let backgroundFormData = null;
     if (profileImage.name !== '') {
-      fd = new FormData();
-      fd.append('img', {
+      profileFormData = new FormData();
+      profileFormData.append('img', {
         name: profileImage.name,
         type: profileImage.type,
         uri: profileImage.uri,
+      });
+    }
+    if (backgroundImage.name !== '') {
+      backgroundFormData = new FormData();
+      backgroundFormData.append('img', {
+        name: backgroundImage.name,
+        type: backgroundImage.type,
+        uri: backgroundImage.uri,
       });
     }
     const songsChange = arraySort(songs, setSongs);
@@ -78,53 +101,33 @@ export default function ProfileEditProvider({ children }) {
       if (response.data) {
         await editProfile({
           nickName: profile.nickName,
-          name: profile.name,
+          name: profile.realName,
           introduction: profile.introduction,
           genre: profile.genre,
           songs: songsChange,
-          fd,
+          profileFd: profileFormData,
+          backgroundFd: backgroundFormData,
         });
-        goBack();
+        if (signUp) {
+          await tryLocalSignIn();
+        } else {
+          goBack();
+        }
       } else {
-        console.log('이름이 똑같은 계정 존재');
+        setValidityMsg('※ 닉네임이 같은 계정이 존재합니다.');
+        onValidityModal();
       }
     } else {
       await editProfile({
         nickName: profile.nickName,
-        name: profile.name,
+        name: profile.realName,
         introduction: profile.introduction,
         genre: profile.genre,
         songs: songsChange,
-        fd,
+        profileFd: profileFormData,
+        backgroundFd: backgroundFormData,
       });
       goBack();
-    }
-  };
-
-  const onClickComplete = async () => {
-    let fd = null;
-    if (profileImage.name !== '') {
-      fd = new FormData();
-      fd.append('img', {
-        name: profileImage.name,
-        type: profileImage.type,
-        uri: profileImage.uri,
-      });
-    }
-    const songsChange = arraySort(songs, setSongs);
-    response = await server.get(`/nickName/${profile.nickName}`);
-    if (response.data) {
-      await editProfile({
-        nickName: profile.nickName,
-        name: profile.name,
-        introduction: profile.introduction,
-        genre: profile.genre,
-        songs: songsChange,
-        fd,
-      });
-      await tryLocalSignIn();
-    } else {
-      console.log('이름이 똑같은 계정 존재');
     }
   };
 
@@ -148,7 +151,7 @@ export default function ProfileEditProvider({ children }) {
     setProfileImage,
     setBackgroundImage,
     onClickEdit,
-    onClickComplete,
+    validityMsg,
   };
 
   return <ProfileEditContext.Provider value={value}>{children}</ProfileEditContext.Provider>;

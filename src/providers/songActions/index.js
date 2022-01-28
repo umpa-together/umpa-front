@@ -10,7 +10,7 @@ export const useSongActions = () => useContext(SongActionsContext);
 export default function SongActionsProvider({ children }) {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const searchInfoRef = useRef();
-  const { onPlayValidityModal } = useModal();
+  const { onValidityModal } = useModal();
   const [validityMsg, setValidityMsg] = useState();
   const songCount = {
     playlist: 8,
@@ -33,7 +33,7 @@ export default function SongActionsProvider({ children }) {
       return true;
     } else if (selectedSongs.length === songCount[searchInfoRef.current.key] && !isIncludeSong) {
       setValidityMsg(`※ 최대 ${songCount[searchInfoRef.current.key]}곡을 초과했습니다.`);
-      onPlayValidityModal();
+      onValidityModal();
       return false;
     } else {
       setSelectedSongs(selectedSongs.filter((item) => item.id !== song.id));

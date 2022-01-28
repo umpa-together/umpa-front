@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
-import { COLOR_3 } from 'constants/colors';
+import { COLOR_3, COLOR_5 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
 import FollowButton from 'components/FollowButton';
 
-export default function UserName({ id, myaccount, name }) {
+export default function UserName({ id, myaccount, name, realName }) {
   const onPressProfileEdit = () => {
     navigate('ProfileEdit');
   };
@@ -14,6 +14,7 @@ export default function UserName({ id, myaccount, name }) {
   return (
     <View style={style.flexRow}>
       <Text style={styles.name}>{name}</Text>
+      {realName !== '' && <Text style={styles.realName}>({realName})</Text>}
       {myaccount ? (
         <TouchableOpacity style={styles.editBox} onPress={onPressProfileEdit}>
           <Text style={styles.editText}>편집</Text>
@@ -27,7 +28,6 @@ export default function UserName({ id, myaccount, name }) {
 
 const styles = StyleSheet.create({
   editBox: {
-    marginLeft: 7 * SCALE_WIDTH,
     borderWidth: 1 * SCALE_WIDTH,
     borderColor: COLOR_3,
     paddingHorizontal: 13 * SCALE_WIDTH,
@@ -40,9 +40,13 @@ const styles = StyleSheet.create({
     fontSize: FS(12),
     color: COLOR_3,
   },
-
   name: {
     fontSize: FS(14),
     fontWeight: 'bold',
+  },
+  realName: {
+    fontSize: FS(12),
+    color: COLOR_5,
+    marginHorizontal: 4 * SCALE_WIDTH,
   },
 });
