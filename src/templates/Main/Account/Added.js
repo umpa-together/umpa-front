@@ -6,6 +6,7 @@ import style from 'constants/styles';
 import { AddedSong, AddedPlaylist } from 'components/Account/AddedSection';
 import { COLOR_1, COLOR_5, MAIN_COLOR } from 'constants/colors';
 import FS from 'lib/utils/normalize';
+import HarmfulModal from 'components/Modal/HarmfulModal';
 
 const HeaderActions = ({ edit, setEdit }) => {
   const onClickActions = () => {
@@ -54,6 +55,7 @@ export default function Added({ type }) {
         actions={[<HeaderActions edit={edit} setEdit={setEdit} />]}
       />
       {(state.songLists || state.playlists) && titleLists[type].component}
+      <HarmfulModal />
     </View>
   );
 }

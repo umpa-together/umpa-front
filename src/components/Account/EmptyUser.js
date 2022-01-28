@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   followerHeight: {
-    height: 600 * SCALE_HEIGHT,
+    flex: 1,
   },
   followingHeight: {
-    height: 450 * SCALE_HEIGHT,
+    flex: 1,
   },
   icon: {
     width: 40 * SCALE_WIDTH,

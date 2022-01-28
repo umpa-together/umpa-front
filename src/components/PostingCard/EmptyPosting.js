@@ -48,10 +48,10 @@ export default function EmptyPosting({ my, opt }) {
 
 const styles = StyleSheet.create({
   myHeight: {
-    height: 250 * SCALE_HEIGHT,
+    marginTop: 100 * SCALE_HEIGHT,
   },
   otherHeight: {
-    height: 300 * SCALE_HEIGHT,
+    marginTop: 130 * SCALE_HEIGHT,
   },
   relayButton: {
     backgroundColor: '#DBDBDB',

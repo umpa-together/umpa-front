@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   height: {
-    height: 550 * SCALE_HEIGHT,
+    flex: 1,
   },
   icon: {
     width: 40 * SCALE_WIDTH,

@@ -164,7 +164,7 @@ export default function ({ comment, opt }) {
         styles.container,
         {
           marginLeft:
-            opt === 'playlistRecomment' || opt === 'dailyRecomment' ? 47 * SCALE_WIDTH : 0,
+            opt === ('playlistRecomment' || opt === 'dailyRecomment') ? 47 * SCALE_WIDTH : 0,
         },
       ]}
     >
