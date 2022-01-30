@@ -19,7 +19,7 @@ const NextActions = ({ edit, setValidityMsg }) => {
   const [validity, setValidity] = useState(false);
   const { information, song, images, setImages } = useDailyCreate();
   const { arraySortImage } = useScroll();
-  const { onPlayValidityModal } = useModal();
+  const { onValidityModal } = useModal();
 
   const onPressNext = async () => {
     if (validity) {
@@ -30,7 +30,7 @@ const NextActions = ({ edit, setValidityMsg }) => {
       });
     } else if (!song) {
       setValidityMsg('※ 데일리 곡을 선택해주세요');
-      onPlayValidityModal();
+      onValidityModal();
     }
   };
   useEffect(() => {

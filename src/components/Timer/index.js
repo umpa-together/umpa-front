@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-export default function Timer({ time, timeStyle }) {
+export default function Timer({ containerStyle, time, timeStyle }) {
   const nowTime = new Date();
   const startTime = new Date(time);
   const endTime = new Date(
@@ -22,7 +22,7 @@ export default function Timer({ time, timeStyle }) {
     const hour = Math.floor(minutes / 60);
     const day = Math.floor(hour / 24);
     setOutput(
-      `0${day}:${hour - day * 24}:${minutes - hour * 60 < 10 ? '0' : ''}${minutes - hour * 60}:${
+      `${day}일 ${hour - day * 24}:${minutes - hour * 60 < 10 ? '0' : ''}${minutes - hour * 60}:${
         seconds - minutes * 60 < 10 ? '0' : ''
       }${seconds - minutes * 60}`,
     );
@@ -30,5 +30,9 @@ export default function Timer({ time, timeStyle }) {
     return () => clearInterval(timer);
   }, [remainTime]);
 
-  return <Text style={timeStyle}>{output}</Text>;
+  return (
+    <View style={containerStyle}>
+      <Text style={timeStyle}>{`${output} 남음`}</Text>
+    </View>
+  );
 }

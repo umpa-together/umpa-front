@@ -1,7 +1,4 @@
-import React, { memo } from 'react';
-import { StyleSheet } from 'react-native';
-import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
-import Icon from 'widgets/Icon';
+import React from 'react';
 import EmptyData from 'components/EmptyData';
 
 const commentList = {
@@ -12,21 +9,9 @@ const commentList = {
 export default function EmptySaved({ opt }) {
   const textList = commentList[opt];
 
-  const IconComponent = memo(() => {
-    return <Icon style={styles.icon} source={require('public/icons/account-empty-data.png')} />;
-  });
-
   return (
     <>
-      <EmptyData icon={<IconComponent />} textList={textList} />
+      <EmptyData icon textList={textList} />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  icon: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    marginBottom: 17 * SCALE_HEIGHT,
-  },
-});
