@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import Header from 'components/Header';
 import { Context as DailyContext } from 'context/Daily';
@@ -26,6 +26,7 @@ import { navigate, goBack } from 'lib/utils/navigation';
 import CommentProvider from 'providers/comment';
 import { Context as ReportContext } from 'context/Report';
 import ActionModal from 'components/Modal/ActionModal';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -195,7 +196,12 @@ export default function SelectedDaily({ post, id, postUserId }) {
                 user={postUser}
                 action={<PostUserAction setSelectModal={setSelectModal} />}
               />
-              <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
+              <DailySong
+                selected
+                containerStyle={styles.songContainer}
+                time={timeConverted}
+                song={song}
+              />
               {image.length > 0 && <Dailyimage image={image} />}
               <SelectedText />
               <Footer object={daily} type="daily" />
@@ -221,7 +227,7 @@ export default function SelectedDaily({ post, id, postUserId }) {
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
         </>
       ) : (
-        <Text>로딩중</Text>
+        <LoadingIndicator />
       )}
     </View>
   );

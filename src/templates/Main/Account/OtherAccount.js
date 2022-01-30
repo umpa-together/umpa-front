@@ -12,6 +12,7 @@ import AccountHeader from 'components/Account/AccountHeader';
 import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
 import TabSection from 'components/Account/TabSection';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 export default function OtherAccount({ id }) {
   const {
@@ -89,7 +90,9 @@ export default function OtherAccount({ id }) {
             <RepresentModal />
           </AddedProvider>
         </>
-      ) : null}
+      ) : (
+        <LoadingIndicator />
+      )}
     </View>
   );
 }
