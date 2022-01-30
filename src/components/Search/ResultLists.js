@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useEffect, useCallback, memo } from 'react';
+import React, { useContext, useCallback, memo } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { Context as SearchContext } from 'context/Search';
@@ -10,8 +10,8 @@ import SearchTabBar from 'components/TabView/SearchTabBar';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
-import { Context as MainContentsContext } from 'context/MainContents';
 import EmptyData from 'components/EmptyData';
+import { useSearch } from 'providers/search';
 import MoreLists from './MoreLists';
 
 export default function ResultLists() {
@@ -52,10 +52,12 @@ export default function ResultLists() {
       state.result != null &&
       (daily.length || dj.length || hashtag.length || playlist.length || song.length);
     const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
+    const { searchWait } = useSearch();
+
     return state.result ? (
       !checkData ? (
         <EmptyData textList={textList} icon />
-      ) : (
+      ) : !searchWait ? (
         <ScrollView contentContainerStyle={styles.container}>
           {resultLists.map((option) => {
             const { title, data, key } = option;
@@ -70,6 +72,8 @@ export default function ResultLists() {
             );
           })}
         </ScrollView>
+      ) : (
+        <LoadingIndicator />
       )
     ) : (
       <LoadingIndicator />
@@ -93,14 +97,6 @@ export default function ResultLists() {
     );
   };
   const Account = () => {
-    const { getMainRecommendDJ } = useContext(MainContentsContext);
-
-    const dataFetch = async () => {
-      await getMainRecommendDJ();
-    };
-    useEffect(() => {
-      dataFetch();
-    }, []);
     return (
       <ScrollView style={styles.accountContainer}>
         <MoreLists title={resultLists[3].title} data={resultLists[3].data} />

@@ -20,7 +20,6 @@ import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import DailyView from 'components/DailyView';
 import Icon from 'widgets/Icon';
 import HarmfulModal from 'components/Modal/HarmfulModal';
-import RecommendAccount from 'components/Search/RecommendAccount';
 import EmptyData from 'components/EmptyData';
 
 const SongLists = () => {
@@ -124,7 +123,6 @@ export default function MoreLists({ title, data }) {
         textList={textList}
         icon
       />
-      {title === '계정' && <RecommendAccount />}
     </>
   );
 }

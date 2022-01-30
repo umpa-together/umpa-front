@@ -4,7 +4,6 @@ import HintLists from 'components/Search/HintLists';
 import ResultLists from 'components/Search/ResultLists';
 import { useSearch } from 'providers/search';
 import RecentKeywords from 'components/Search/RecentKeywords';
-import { Provider as MainContentsProvider } from 'context/MainContents';
 
 export default function SearchLists() {
   const { text, isResultClick } = useSearch();
@@ -12,9 +11,7 @@ export default function SearchLists() {
   return (
     <>
       {isResultClick ? (
-        <MainContentsProvider>
-          <ResultLists />
-        </MainContentsProvider>
+        <ResultLists />
       ) : text.length > 0 ? (
         <HintLists />
       ) : (
