@@ -17,9 +17,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: 60 * SCALE_HEIGHT,
+    bottom: 0,
     backgroundColor: SUB_COLOR,
     position: 'absolute',
-    bottom: 0,
+    elevation: 12,
   },
   text: {
     fontSize: FS(13),

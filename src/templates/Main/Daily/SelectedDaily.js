@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import Header from 'components/Header';
 import { Context as DailyContext } from 'context/Daily';
@@ -49,23 +49,55 @@ const LandingAction = () => {
   );
 };
 
-export default function SelectedDaily({ post }) {
+export default function SelectedDaily({ post, id, postUserId }) {
   const [selectModal, setSelectModal] = useState(false);
   const [actionModal, setActionModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [actions, setActions] = useState(null);
+  const [comment, setComment] = useState(null);
+  const [daily, setDaily] = useState({
+    _id: '',
+    postUserId: '',
+    image: '',
+    time: '',
+    song: null,
+  });
+
   const {
     state: { currentComments, currentDaily },
     deleteDaily,
+    getSelectedDaily,
   } = useContext(DailyContext);
-  const { postUserId: postUser, image, time, song } = currentDaily;
   const {
     state: { user },
     getMyInformation,
   } = useContext(UserContext);
   const { postReport } = useContext(ReportContext);
-
   const { currentSong, duration } = useTrackPlayer();
   const { addedModal } = useModal();
+
+  const getDaily = async () => {
+    if (id) {
+      await getSelectedDaily({ id, postUserId });
+    }
+  };
+  const setSelected = () => {
+    if (currentDaily != null && currentDaily._id === id) {
+      setDaily(currentDaily);
+      setComment(currentComments);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getDaily();
+  }, [id]);
+
+  useEffect(() => {
+    setSelected();
+  }, [currentDaily]);
+
+  const { postUserId: postUser, image, time, song } = daily;
 
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
@@ -84,7 +116,7 @@ export default function SelectedDaily({ post }) {
 
   const deleteActionFunction = async (key) => {
     if (key === 'delete') {
-      await deleteDaily({ id: currentDaily._id });
+      await deleteDaily({ id });
       getMyInformation();
       goBack();
     }
@@ -98,7 +130,7 @@ export default function SelectedDaily({ post }) {
 
   const reportActionFunction = async (key) => {
     if (key === 'report') {
-      postReport({ type: 'daily', reason: '데일리 부적절', subjectId: currentDaily._id });
+      postReport({ type: 'daily', reason: '데일리 부적절', subjectId: id });
     }
     setActionModal(false);
   };
@@ -111,13 +143,13 @@ export default function SelectedDaily({ post }) {
             edit: true,
             data: {
               information: {
-                content: currentDaily.textcontent,
-                hashtags: currentDaily.hashtag,
-                dailyId: currentDaily._id,
+                content: daily.textcontent,
+                hashtags: daily.hashtag,
+                dailyId: daily._id,
               },
-              song: currentDaily.song,
-              images: currentDaily.image
-                ? currentDaily.image.map((img) => {
+              song: daily.song,
+              images: daily.image
+                ? daily.image.map((img) => {
                     return { uri: img };
                   })
                 : [],
@@ -155,33 +187,42 @@ export default function SelectedDaily({ post }) {
         landings={post && [<LandingAction />]}
         back={!post}
       />
-      <CommentProvider>
-        <ScrollView>
-          <PostUser user={postUser} action={<PostUserAction setSelectModal={setSelectModal} />} />
-          <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
-          {image.length > 0 && <Dailyimage image={image} />}
-          <SelectedText />
-          <Footer object={currentDaily} type="daily" />
-          <Divider containerStyle={styles.dividerContainer} />
-          <SelectedComment opt="daily" comments={currentComments} />
-        </ScrollView>
-        {currentSong && duration !== 0 && (
-          <AddedProvider>
-            <PlayBar />
-          </AddedProvider>
-        )}
-        <KeyboradProvider>
-          <CommentBar />
-        </KeyboradProvider>
-      </CommentProvider>
-      <SelectModal
-        modal={selectModal}
-        setModal={setSelectModal}
-        selectInfo={{ func: selectFunction, list: selectLists }}
-      />
+      {!loading ? (
+        <>
+          <CommentProvider>
+            <ScrollView>
+              <PostUser
+                user={postUser}
+                action={<PostUserAction setSelectModal={setSelectModal} />}
+              />
+              <DailySong containerStyle={styles.songContainer} time={timeConverted} song={song} />
+              {image.length > 0 && <Dailyimage image={image} />}
+              <SelectedText />
+              <Footer object={daily} type="daily" />
+              <Divider containerStyle={styles.dividerContainer} />
+              <SelectedComment opt="daily" comments={comment} />
+            </ScrollView>
+            {currentSong && duration !== 0 && (
+              <AddedProvider>
+                <PlayBar />
+              </AddedProvider>
+            )}
+            <KeyboradProvider>
+              <CommentBar />
+            </KeyboradProvider>
+          </CommentProvider>
+          <SelectModal
+            modal={selectModal}
+            setModal={setSelectModal}
+            selectInfo={{ func: selectFunction, list: selectLists }}
+          />
 
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
-      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+          <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+        </>
+      ) : (
+        <Text>로딩중</Text>
+      )}
     </View>
   );
 }

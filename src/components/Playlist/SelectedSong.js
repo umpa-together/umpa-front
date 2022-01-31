@@ -1,21 +1,15 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
-import { Context as PlaylistContext } from 'context/Playlist';
 import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
 
-export default function SelectedSong() {
+export default function SelectedSong({ songs }) {
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
-  const {
-    state: {
-      currentPlaylist: { songs },
-    },
-  } = useContext(PlaylistContext);
 
   const onClickAdd = (song) => {
     postAddedSong({ song });

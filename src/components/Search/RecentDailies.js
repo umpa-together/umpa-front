@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
-import { Context as DailyContext } from 'context/Daily';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
@@ -11,11 +10,9 @@ import { push } from 'lib/utils/navigation';
 
 export default function RecentDailies() {
   const { state } = useContext(MainContentsContext);
-  const { getSelectedDaily } = useContext(DailyContext);
 
   const onClickSong = async (id, postUser) => {
-    await getSelectedDaily({ id, postUserId: postUser });
-    push('SelectedDaily', { id, postUser });
+    push('SelectedDaily', { post: false, id, postUserId: postUser });
   };
 
   return (

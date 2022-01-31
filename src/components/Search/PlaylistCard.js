@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Context as PlaylistContext } from 'context/Playlist';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 
 export default function PlaylistCard({ info }) {
   const {
@@ -13,11 +12,9 @@ export default function PlaylistCard({ info }) {
     title,
     playlist: { _id: id, postUserId },
   } = info;
-  const { getSelectedPlaylist } = useContext(PlaylistContext);
 
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id, postUserId });
-    navigate('SelectedPlaylist', { post: false });
+    push('SelectedPlaylist', { post: false, id, postUserId });
   };
 
   return (
