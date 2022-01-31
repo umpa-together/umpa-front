@@ -7,7 +7,6 @@ import { COLOR_1 } from 'constants/colors';
 
 export default function RecommendAcocunt() {
   const { state } = useContext(MainContentsContext);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>추천 계정</Text>

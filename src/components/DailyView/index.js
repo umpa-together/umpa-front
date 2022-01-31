@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
-import { Context as DailyContext } from 'context/Daily';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
@@ -11,6 +10,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import { navigate, push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default function DailyView({ info, actions, isSelected }) {
   const { image, song, textcontent, _id: id, postUserId } = info;
@@ -22,7 +22,6 @@ export default function DailyView({ info, actions, isSelected }) {
   } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
-  const { getSelectedDaily } = useContext(DailyContext);
   const { onClickAdded } = useModal();
 
   const onClickAdd = () => {
@@ -31,15 +30,14 @@ export default function DailyView({ info, actions, isSelected }) {
   };
   const onClickSongView = async () => {
     if (isSelected) {
-      await getSelectedDaily({ id, postUserId });
-      push('SelectedDaily', { post: false });
+      push('SelectedDaily', { post: false, id, postUserId });
     } else {
       navigate('SelectedSong', { song });
     }
   };
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.8} onPress={onClickSongView}>
+    <TouchableNoDouble style={styles.container} activeOpacity={0.8} onPress={onClickSongView}>
       <View style={[style.flexRow, style.space_between]}>
         <View style={style.flexRow}>
           {image.length === 0 ? (
@@ -82,7 +80,7 @@ export default function DailyView({ info, actions, isSelected }) {
       <Text numberOfLines={2} style={styles.content}>
         {textcontent}
       </Text>
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 export default function ProfileBackground({ img, imgStyle }) {
   return (
     <>
       {img !== undefined ? (
-        <Image style={imgStyle} source={{ uri: img }} />
+        <FastImage style={imgStyle} source={{ uri: img }} />
       ) : (
-        <Image source={require('public/icons/profile-background-init.png')} style={imgStyle} />
+        <FastImage source={require('public/icons/profile-background-init.png')} style={imgStyle} />
       )}
     </>
   );

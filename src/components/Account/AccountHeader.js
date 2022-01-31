@@ -14,10 +14,10 @@ export default function AccountHeader({ user, back, hamburger }) {
   return (
     <View style={styles.container}>
       <ProfileBackground img={backgroundImage} imgStyle={styles.backgroundImage} />
-      <View style={[styles.menuContainer, style.flexRow]}>
+      <View>
         {back && (
           <TouchableOpacity style={styles.back} onPress={onPressBack}>
-            <View style={[style.icons]} />
+            <Icon style={style.icons} source={require('public/icons/account-back.png')} />
           </TouchableOpacity>
         )}
         {hamburger && (
@@ -35,15 +35,14 @@ const styles = StyleSheet.create({
     height: 122 * SCALE_HEIGHT,
     width: '100%',
   },
-  menuContainer: {
-    bottom: 54 * SCALE_HEIGHT,
-  },
   back: {
     position: 'absolute',
+    bottom: 48 * SCALE_HEIGHT,
     left: 9 * SCALE_WIDTH,
   },
   hamburger: {
     position: 'absolute',
+    bottom: 40 * SCALE_HEIGHT,
     right: 9 * SCALE_WIDTH,
   },
   backgroundImage: {

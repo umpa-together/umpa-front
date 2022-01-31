@@ -3,6 +3,7 @@ import { ScrollView, Text, StyleSheet } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import DailyImage from 'components/DailyImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { COLOR_1 } from 'constants/colors';
 import DailySong from './DailySong';
 
 export default function UploadInfo() {
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     paddingRight: 15 * SCALE_WIDTH,
     paddingTop: 11 * SCALE_HEIGHT,
     lineHeight: 26 * SCALE_HEIGHT,
+    color: COLOR_1,
     fontSize: FS(14),
   },
 });

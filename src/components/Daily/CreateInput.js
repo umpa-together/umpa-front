@@ -13,6 +13,7 @@ export default function CreateInput() {
         style={styles.inputBox}
         placeholder="데일리를 기록해주세요"
         multiline
+        textAlignVertical="top"
         autoCapitalize="none"
         autoCorrect={false}
         onChangeText={(text) => onChangeValue(text)}
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: '100%',
-    height: 455 * SCALE_HEIGHT,
+    height: 420 * SCALE_HEIGHT,
     paddingHorizontal: 18 * SCALE_WIDTH,
     marginBottom: 12 * SCALE_HEIGHT,
     fontSize: FS(14),

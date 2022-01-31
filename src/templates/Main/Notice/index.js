@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/Notice';
@@ -8,6 +9,9 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import { useRefresh } from 'providers/refresh';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
+import { navigate } from 'lib/utils/navigation';
+import EmptyData from 'components/EmptyData';
+import NavigateButton from 'components/EmptyData/NavigateButton';
 
 export default function Notice() {
   const { state, getNotice, getNextNotice } = useContext(NoticeContext);
@@ -18,6 +22,7 @@ export default function Notice() {
   const { refreshing, onRefresh, setRefresh } = useRefresh();
 
   const now = new Date();
+  const textList = ['아직 새로운 알림이 없습니다'];
 
   const getData = async () => {
     if (state.notice.length >= 20 && !state.notNextNotice) {
@@ -83,6 +88,10 @@ export default function Notice() {
     return null;
   };
 
+  const onPress = () => {
+    navigate('Relay');
+  };
+
   useEffect(() => {
     getNotice();
     setRefresh(getNotice);
@@ -101,6 +110,12 @@ export default function Notice() {
       <Header titleStyle={style.headertitle} title="알림" />
       {state.notice === null ? (
         <LoadingIndicator />
+      ) : state.notice.length === 0 ? (
+        <EmptyData
+          textList={textList}
+          icon
+          action={<NavigateButton onPress={onPress} text="릴레이 플레이리스트 구경하기" />}
+        />
       ) : (
         <FlatList
           data={state.notice}

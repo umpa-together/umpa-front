@@ -4,6 +4,7 @@ import { goBack } from 'lib/utils/navigation';
 import style from 'constants/styles';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
+import { COLOR_1 } from 'constants/colors';
 
 const Header = ({ headerStyle, title, titleStyle, back, landings = [], actions = [] }) => {
   const onClickBack = () => {
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     width: '100%',
+    color: COLOR_1,
   },
   landings: {
     position: 'absolute',

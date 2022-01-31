@@ -1,30 +1,30 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
-import { navigate } from 'lib/utils/navigation';
+import TouchableNoDouble from 'components/TouchableNoDouble';
+import { navigate, push } from 'lib/utils/navigation';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 
 export default function ({ user, action }) {
   const { _id: id, profileImage: img, name } = user;
-  const { state, getOtherInformation } = useContext(UserContext);
+  const { state } = useContext(UserContext);
 
-  const onClickProfile = async () => {
+  const onClickProfile = () => {
     if (id === state.user._id) {
-      navigate('Account');
+      navigate('MyAccount');
     } else {
-      await getOtherInformation({ id });
-      navigate('OtherAccount', { id });
+      push('OtherAccount', { id });
     }
   };
 
   return (
     <View style={[styles.container, style.space_between]}>
       <View style={style.flexRow}>
-        <TouchableOpacity onPress={onClickProfile} activeOpacity={0.9}>
+        <TouchableNoDouble onPress={onClickProfile} activeOpacity={0.9}>
           <ProfileImage img={img} imgStyle={styles.profileImg} />
-        </TouchableOpacity>
+        </TouchableNoDouble>
         <Text style={styles.name}>{name}</Text>
       </View>
       {action}

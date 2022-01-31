@@ -1,19 +1,18 @@
-import React, { useContext } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
 import Footer from 'components/Footer';
-import DailyImage from '../DailyImage';
+import TouchableNoDouble from 'components/TouchableNoDouble';
+import DailyImage from 'components/DailyImage';
+import { COLOR_1 } from 'constants/colors';
 
 export default function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
-  const { getSelectedDaily } = useContext(DailyContext);
-  const onClickDaily = async () => {
-    await getSelectedDaily({ id, postUserId: postUser._id });
-    push('SelectedDaily', { post: false });
+  const onClickDaily = () => {
+    push('SelectedDaily', { post: false, id, postUserId: postUser._id });
   };
 
   return (
@@ -21,11 +20,11 @@ export default function Daily({ daily }) {
       <PostUser user={postUser} />
       {image.length > 0 && <DailyImage image={image} />}
       <DailySong song={song} containerStyle={styles.dailySongContainer} />
-      <TouchableOpacity style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
+      <TouchableNoDouble style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
-      </TouchableOpacity>
+      </TouchableNoDouble>
       <Footer object={daily} type="daily" />
       <View style={styles.divider} />
     </View>
@@ -42,8 +41,8 @@ const styles = StyleSheet.create({
     marginBottom: 20 * SCALE_HEIGHT,
   },
   content: {
+    color: COLOR_1,
     fontSize: FS(14),
-    fontWeight: '500',
     lineHeight: 24 * SCALE_HEIGHT,
   },
   songsContainer: {

@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import style from 'constants/styles';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import { COLOR_1, COLOR_3 } from 'constants/colors';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
 import { Context as UserContext } from 'context/User';
 
-export default function PostingInfo({ user, posting }) {
+export default function PostingInfo({ my, user, posting }) {
   const { getFollow } = useContext(UserContext);
   const { _id: userId, follower, following, profileImage } = user;
   const onClickFollowing = async () => {
     await getFollow({ id: userId, opt: 'following' });
-    push('Follow', { opt: 'following' });
+    push('Follow', { opt: 'following', my });
   };
   const onClickFollower = async () => {
     await getFollow({ id: userId, opt: 'follower' });
@@ -42,10 +43,10 @@ export default function PostingInfo({ user, posting }) {
         {optionLists.map((item) => {
           const { count, title } = item;
           return (
-            <TouchableOpacity onPress={item.onClick} key={title} style={styles.elementContainer}>
+            <TouchableNoDouble onPress={item.onClick} key={title} style={styles.elementContainer}>
               <Text style={styles.countText}>{count}</Text>
               <Text style={styles.titleText}>{title}</Text>
-            </TouchableOpacity>
+            </TouchableNoDouble>
           );
         })}
       </View>
@@ -73,11 +74,11 @@ const styles = StyleSheet.create({
   },
   elementContainer: {
     width: 44 * SCALE_WIDTH,
-    height: 34 * SCALE_WIDTH,
+    height: 34 * SCALE_HEIGHT,
     alignItems: 'center',
   },
   profileImage: {
-    top: -45 * SCALE_HEIGHT,
+    bottom: 16 * SCALE_HEIGHT,
     left: 16 * SCALE_WIDTH,
     position: 'absolute',
     zIndex: 1,

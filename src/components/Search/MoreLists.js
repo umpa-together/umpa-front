@@ -20,6 +20,7 @@ import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import DailyView from 'components/DailyView';
 import Icon from 'widgets/Icon';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import EmptyData from 'components/EmptyData';
 
 const SongLists = () => {
   const [loading, setLoading] = useState(false);
@@ -80,41 +81,49 @@ const PlayAction = ({ song }) => {
 };
 
 export default function MoreLists({ title, data }) {
-  return (
-    data && (
-      <>
-        {title === '곡' ? (
-          <SongLists />
-        ) : (
-          <ScrollView>
-            <AddedProvider>
-              {data.map((item) => {
-                const { _id: id } = item;
-                return (
-                  <View key={id}>
-                    {title === '플레이리스트' ? (
-                      <PostingCard
-                        item={item}
-                        opt="playlist"
-                        round
-                        action={<PlayAction song={item.songs[0]} />}
-                      />
-                    ) : title === '데일리' ? (
-                      <DailyView info={item} actions />
-                    ) : title === '계정' ? (
-                      <UserView user={item} />
-                    ) : (
-                      <HashtagView info={item} />
-                    )}
-                  </View>
-                );
-              })}
-            </AddedProvider>
-          </ScrollView>
-        )}
-        <HarmfulModal />
-      </>
-    )
+  const textList = ['검색 결과가 없습니다.', '다른 검색어를 입력해보세요.'];
+
+  return data && data.length > 0 ? (
+    <>
+      {title === '곡' ? (
+        <SongLists />
+      ) : (
+        <ScrollView>
+          <AddedProvider>
+            {data.map((item) => {
+              const { _id: id } = item;
+              return (
+                <View key={id}>
+                  {title === '플레이리스트' ? (
+                    <PostingCard
+                      item={item}
+                      opt="playlist"
+                      round
+                      action={<PlayAction song={item.songs[0]} />}
+                    />
+                  ) : title === '데일리' ? (
+                    <DailyView info={item} actions />
+                  ) : title === '계정' ? (
+                    <UserView user={item} />
+                  ) : (
+                    <HashtagView info={item} />
+                  )}
+                </View>
+              );
+            })}
+          </AddedProvider>
+        </ScrollView>
+      )}
+      <HarmfulModal />
+    </>
+  ) : (
+    <>
+      <EmptyData
+        customContainer={[styles.emptyContainer, title === '계정' && styles.emptyAccountContainer]}
+        textList={textList}
+        icon
+      />
+    </>
   );
 }
 
@@ -125,5 +134,11 @@ const styles = StyleSheet.create({
   icon: {
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
+  },
+  emptyContainer: {
+    paddingTop: 220 * SCALE_HEIGHT,
+  },
+  emptyAccountContainer: {
+    marginBottom: 50 * SCALE_HEIGHT,
   },
 });

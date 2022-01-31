@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
-import { Context as UserContext } from 'context/User';
 import { push } from 'lib/utils/navigation';
 import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
@@ -12,17 +12,15 @@ import UserRepresentSong from 'components/UserRepresentSong';
 
 export default function UserView({ user, func }) {
   const { name, profileImage, _id: id, songs } = user;
-  const { getOtherInformation } = useContext(UserContext);
-  const onClickAccount = async () => {
+  const onClickAccount = () => {
     if (func) func();
-    await getOtherInformation({ id });
     push('OtherAccount', { id });
   };
   return (
     <View style={[styles.container, style.flexRow]}>
-      <TouchableOpacity onPress={onClickAccount}>
+      <TouchableNoDouble onPress={onClickAccount}>
         <ProfileImage img={profileImage} imgStyle={styles.img} />
-      </TouchableOpacity>
+      </TouchableNoDouble>
       <View style={styles.infoContainer}>
         <Text style={styles.nameText}>{name}</Text>
         <UserRepresentSong song={songs[0]} />

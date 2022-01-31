@@ -93,8 +93,9 @@ export default function SearchSongModal({ modal, setModal }) {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'flex-end',
     margin: 0,
+    position: 'absolute',
+    marginTop: 60 * SCALE_HEIGHT,
   },
   viewContainer: {
     width: '100%',

@@ -24,7 +24,7 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <StatusBar />
+      <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
       {token ? <MainStackScreen /> : <AuthStackScreen />}
     </NavigationContainer>
   );

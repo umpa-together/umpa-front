@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import FastImage from 'react-native-fast-image';
 
 export default function PlaylistAlbumImage({ edit, image, songs, size, round }) {
   const imgStyle = {
@@ -19,7 +20,7 @@ export default function PlaylistAlbumImage({ edit, image, songs, size, round }) 
     songs.length > 0 && (
       <View style={[styles.container, imgStyle, edit && styles.editStyle]}>
         {image !== undefined ? (
-          <Image source={{ uri: image }} style={imgStyle} />
+          <FastImage source={{ uri: image }} style={imgStyle} />
         ) : (
           songs.slice(0, 3).map((item) => {
             const { url } = item.attributes.artwork;

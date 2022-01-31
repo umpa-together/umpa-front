@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-export default function Timer({ time, timeStyle }) {
+export default function Timer({ containerStyle, time, timeStyle }) {
   const nowTime = new Date();
   const startTime = new Date(time);
   const endTime = new Date(
@@ -26,11 +26,15 @@ export default function Timer({ time, timeStyle }) {
         minutes - hour * 60 < 10 ? '0' : ''
       }${minutes - hour * 60}:${seconds - minutes * 60 < 10 ? '0' : ''}${
         seconds - minutes * 60
-      } 남음`,
+      }`,
     );
     const timer = setInterval(() => setRemainTime((prev) => prev - 1000), 1000);
     return () => clearInterval(timer);
   }, [remainTime]);
 
-  return <Text style={timeStyle}>{output}</Text>;
+  return (
+    <View style={containerStyle}>
+      <Text style={timeStyle}>{`${output} 남음`}</Text>
+    </View>
+  );
 }

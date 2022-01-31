@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
@@ -7,11 +8,12 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_1, COLOR_2 } from 'constants/colors';
+import EmptyData from 'components/EmptyData';
 
 export default function ResultLists() {
   const { state } = useContext(AppleMusicContext);
-  const { text, loading, onEndReached } = useSearch();
-
+  const { text, searchWait, loading, onEndReached } = useSearch();
+  const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
   return (
     <View style={styles.container}>
       <Text style={styles.searchText}>
@@ -21,17 +23,23 @@ export default function ResultLists() {
       <Divider containerStyle={styles.dividerContainer} />
       <>
         {state.songData ? (
-          <FlatList
-            style={styles.listContainter}
-            data={state.songData}
-            keyExtractor={(_) => _.id}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.6}
-            ListFooterComponent={loading && <ActivityIndicator />}
-            renderItem={({ item }) => {
-              return <AddSongView song={item} />;
-            }}
-          />
+          searchWait ? (
+            <LoadingIndicator />
+          ) : state.songData.length > 0 ? (
+            <FlatList
+              style={styles.listContainter}
+              data={state.songData}
+              keyExtractor={(_) => _.id}
+              onEndReached={onEndReached}
+              onEndReachedThreshold={0.6}
+              ListFooterComponent={loading && <ActivityIndicator />}
+              renderItem={({ item }) => {
+                return <AddSongView song={item} />;
+              }}
+            />
+          ) : (
+            <EmptyData textList={textList} icon />
+          )
         ) : (
           <LoadingIndicator />
         )}

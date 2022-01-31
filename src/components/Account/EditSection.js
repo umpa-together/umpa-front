@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
     borderWidth: 1 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
     justifyContent: 'center',
+    padding: 0,
     paddingHorizontal: 12 * SCALE_WIDTH,
     marginTop: 10 * SCALE_HEIGHT,
   },

@@ -1,20 +1,18 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
-import { Context as DailyContext } from 'context/Daily';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import SongCard from 'components/SongCard';
 import style from 'constants/styles';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 
 export default function RecentDailies() {
   const { state } = useContext(MainContentsContext);
-  const { getSelectedDaily } = useContext(DailyContext);
 
   const onClickSong = async (id, postUser) => {
-    await getSelectedDaily({ id, postUserId: postUser });
-    navigate('SelectedDaily', { id, postUser });
+    push('SelectedDaily', { post: false, id, postUserId: postUser });
   };
 
   return (
@@ -25,13 +23,13 @@ export default function RecentDailies() {
           state.recentDailies.map((daily) => {
             const { _id: id, song, postUserId: postUser } = daily;
             return (
-              <TouchableOpacity
+              <TouchableNoDouble
                 key={id}
                 onPress={() => onClickSong(id, postUser)}
                 activeOpacity={0.8}
               >
                 <SongCard song={song} />
-              </TouchableOpacity>
+              </TouchableNoDouble>
             );
           })}
       </View>

@@ -1,23 +1,21 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
-import { Context as UserContext } from 'context/User';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, COLOR_5 } from 'constants/colors';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 
 export default function UserCard({ user }) {
-  const { getOtherInformation } = useContext(UserContext);
   const { _id: id, genre, name, profileImage } = user;
-  const onClickCard = async () => {
-    await getOtherInformation({ id });
-    navigate('OtherAccount', { otherUserId: id });
+  const onClickCard = () => {
+    push('OtherAccount', { id });
   };
 
   return (
-    <TouchableOpacity
+    <TouchableNoDouble
       onPress={onClickCard}
       style={[styles.container, style.alignCenter]}
       activeOpacity={0.9}
@@ -38,8 +36,6 @@ export default function UserCard({ user }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 97 * SCALE_WIDTH,
-    height: 131 * SCALE_HEIGHT,
     borderColor: '#f4f4f4',
     borderWidth: 1 * SCALE_WIDTH,
     borderRadius: 6 * SCALE_HEIGHT,
@@ -60,6 +56,8 @@ const styles = StyleSheet.create({
     borderRadius: 56 * SCALE_HEIGHT,
     marginTop: 13 * SCALE_HEIGHT,
     marginBottom: 11 * SCALE_HEIGHT,
+    marginLeft: 20 * SCALE_WIDTH,
+    marginRight: 21 * SCALE_WIDTH,
   },
   name: {
     fontSize: FS(12),
@@ -77,5 +75,6 @@ const styles = StyleSheet.create({
     fontSize: FS(10),
     fontWeight: '300',
     marginTop: 7 * SCALE_HEIGHT,
+    paddingBottom: 17 * SCALE_HEIGHT,
   },
 });

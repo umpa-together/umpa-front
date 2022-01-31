@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
-import { Context as PlaylistContext } from 'context/Playlist';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as UserContext } from 'context/User';
-import { MAIN_COLOR } from 'constants/colors';
 import Footer from 'components/Footer';
+import { MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import SongsLists from './SongsLists';
 
 const FollowAction = ({ id }) => {
@@ -41,15 +41,13 @@ const FollowAction = ({ id }) => {
 
 export default function Playlist({ playlist }) {
   const { _id: id, postUserId: postUser, songs, title, textcontent } = playlist;
-  const { getSelectedPlaylist } = useContext(PlaylistContext);
 
   const onClickPlaylist = async () => {
-    await getSelectedPlaylist({ id, postUserId: postUser._id });
-    navigate('SelectedPlaylist', { post: false });
+    push('SelectedPlaylist', { post: false, id, postUserId: postUser._id });
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onClickPlaylist} activeOpacity={0.8}>
+    <TouchableNoDouble style={styles.container} onPress={onClickPlaylist} activeOpacity={0.8}>
       <PostUser user={postUser} action={<FollowAction id={postUser._id} />} />
       <View style={styles.contentArea}>
         <Text style={styles.title}>{title}</Text>
@@ -62,7 +60,7 @@ export default function Playlist({ playlist }) {
       <SongsLists songs={songs} />
       <Footer object={playlist} type="playlist" />
       <View style={styles.divider} />
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 
@@ -76,12 +74,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FS(14),
-    fontWeight: '500',
+    color: COLOR_1,
     lineHeight: 24 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(13),
-    fontWeight: '400',
     lineHeight: 24 * SCALE_HEIGHT,
     color: '#5d5d5d',
   },

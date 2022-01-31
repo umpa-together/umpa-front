@@ -29,10 +29,7 @@ export default function RecentKeywords({ modal }) {
     <View style={styles.container}>
       <Text style={styles.text}>최근 검색어</Text>
       <Divider containerStyle={styles.dividerContainer} />
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        style={modal && styles.modalContainer}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.modalContainer}>
         {state.recentKeyword &&
           state.recentKeyword.map((item) => {
             const { keyword } = item;

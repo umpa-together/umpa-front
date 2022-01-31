@@ -1,26 +1,21 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import style from 'constants/styles';
-import CurrentSection from 'components/Relay/CurrentSection';
-import Swiper from 'react-native-swiper';
-import TabTitle from 'components/TabTitle';
-import Divider from 'widgets/Divider';
-import RelayCardView from 'components/Relay/RelayCardView';
 import { Context as UserContext } from 'context/User';
 import { useFocusEffect } from '@react-navigation/native';
-import OpenYoutube from 'lib/utils/youtube';
-
-const TitleActions = () => {
-  return (
-    <TouchableOpacity onPress={OpenYoutube}>
-      <View style={{ width: 40, height: 40, borderWidth: 1 }} />
-    </TouchableOpacity>
-  );
-};
+import LogoHeader from 'components/Relay/LogoHeader';
+import CurrentRelayList from 'components/Relay/CurrentRelayList';
+import RelayList from 'components/Relay/RelayList';
+import GuideBox from 'components/Relay/GuideBox';
 
 export default function () {
-  const { state, getCurrentRelay, getRelayLists, initRelay } = useContext(RelayContext);
+  const {
+    state: { currentRelay, relayLists },
+    getCurrentRelay,
+    getRelayLists,
+    initRelay,
+  } = useContext(RelayContext);
   const { getMyInformation } = useContext(UserContext);
   const [time, setTime] = useState(1);
 
@@ -42,20 +37,12 @@ export default function () {
 
   return (
     <View style={style.background}>
-      <TabTitle title="umpa" actions={[<TitleActions />]} />
-      {state.currentRelay && state.relayLists && (
+      {currentRelay && relayLists && (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Swiper autoplay showsPagination={false} height={350} autoplayTimeout={time}>
-            {state.currentRelay.map((relay) => (
-              <CurrentSection relay={relay} key={relay._id} />
-            ))}
-          </Swiper>
-          <Divider />
-          <Text>umpa의 릴레이 플레이리스트</Text>
-          {state.relayLists.map((relay) => {
-            const { _id: id } = relay;
-            return <RelayCardView relay={relay} key={id} />;
-          })}
+          <LogoHeader />
+          <CurrentRelayList time={time} currentRelay={currentRelay} />
+          <GuideBox />
+          <RelayList relayList={relayLists} />
         </ScrollView>
       )}
     </View>

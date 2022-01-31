@@ -13,6 +13,7 @@ import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
 import FloatingButton from 'components/Feed/FloatingButton';
 import SongActionsProvider from 'providers/songActions';
+import { COLOR_1 } from 'constants/colors';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -134,7 +135,7 @@ export default function Feed() {
 const styles = StyleSheet.create({
   title: {
     fontSize: FS(24),
-    fontWeight: '500',
+    color: COLOR_1,
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 15 * SCALE_HEIGHT,

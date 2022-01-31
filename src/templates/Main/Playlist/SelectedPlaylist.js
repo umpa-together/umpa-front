@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
@@ -25,6 +25,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import ActionModal from 'components/Modal/ActionModal';
 import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 const LandingAction = () => {
   const onPressLanding = () => {
@@ -48,12 +49,26 @@ const PostUserAction = ({ setSelectModal }) => {
   );
 };
 
-export default function SelectedPlaylist({ post }) {
+export default function SelectedPlaylist({ post, id, postUserId }) {
   const [selectModal, setSelectModal] = useState(false);
   const [actionModal, setActionModal] = useState(false);
   const [actions, setActions] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState(null);
+  const [playlist, setPlaylist] = useState({
+    _id: '',
+    postUserId: '',
+    title: '',
+    textcontent: '',
+    hashtag: [],
+    image: '',
+    time: '',
+    likes: [],
+    songs: [],
+  });
   const {
     state: { currentComments, currentPlaylist },
+    getSelectedPlaylist,
     deletePlaylist,
   } = useContext(PlaylistContext);
   const { postAddedPlaylist } = useContext(AddedContext);
@@ -63,12 +78,36 @@ export default function SelectedPlaylist({ post }) {
     state: { user },
     getMyInformation,
   } = useContext(UserContext);
-  const checkMyPost = currentPlaylist.postUserId._id === user._id;
+
+  const getPlaylist = async () => {
+    if (id) {
+      await getSelectedPlaylist({ id, postUserId });
+    }
+  };
+  const setSelected = () => {
+    if (currentPlaylist != null && currentPlaylist._id === id) {
+      setPlaylist(currentPlaylist);
+      setComment(currentComments);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPlaylist();
+  }, [id]);
+
+  useEffect(() => {
+    setSelected();
+  }, [currentPlaylist]);
+
+  const { postUserId: postUser, _id, likes, title, textcontent, hashtag, songs, image } = playlist;
+
+  const checkMyPost = postUser._id === user._id;
   const { currentSong, duration } = useTrackPlayer();
   const footerData = {
-    _id: currentPlaylist._id,
-    likes: currentPlaylist.likes,
-    comments: currentPlaylist.comments,
+    _id,
+    likes,
+    comments: comment,
   };
   const selectLists = checkMyPost
     ? [
@@ -88,7 +127,7 @@ export default function SelectedPlaylist({ post }) {
 
   const deleteActionFunction = async (key) => {
     if (key === 'delete') {
-      await deletePlaylist({ id: currentPlaylist._id });
+      await deletePlaylist({ id: _id });
       getMyInformation();
       goBack();
     }
@@ -102,25 +141,26 @@ export default function SelectedPlaylist({ post }) {
 
   const reportActionFunction = async (key) => {
     if (key === 'report') {
-      postReport({ type: 'playlist', reason: '플리 부적절', subjectId: currentPlaylist._id });
+      postReport({ type: 'playlist', reason: '플리 부적절', subjectId: _id });
     }
     setActionModal(false);
   };
 
   const selectFunction = checkMyPost
     ? (key) => {
+        setSelectModal(false);
         if (key === 'edit') {
           navigate('PlaylistCreate', {
             edit: true,
             data: {
               information: {
-                title: currentPlaylist.title,
-                content: currentPlaylist.textcontent,
-                hashtags: currentPlaylist.hashtag,
-                playlistId: currentPlaylist._id,
+                title,
+                content: textcontent,
+                hashtags: hashtag,
+                playlistId: _id,
               },
-              songs: currentPlaylist.songs,
-              image: currentPlaylist.image && { uri: currentPlaylist.image },
+              songs,
+              image: image && { uri: image },
             },
           });
         } else if (key === 'delete') {
@@ -129,58 +169,68 @@ export default function SelectedPlaylist({ post }) {
             func: deleteActionFunction,
             list: deleteActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         }
-        setSelectModal(false);
       }
     : (key) => {
+        setSelectModal(false);
         if (key === 'report') {
           setActions({
             mainTitle: '플레이리스트를 신고하시겠습니까?',
             func: reportActionFunction,
             list: reportActionLists,
           });
-          setActionModal(true);
+          setTimeout(() => {
+            setActionModal(true);
+          }, 400);
         } else if (key === 'save') {
-          postAddedPlaylist({ id: currentPlaylist._id });
+          postAddedPlaylist({ id: playlist._id });
         } else if (key === 'share') {
-          SendList({ playlist: currentPlaylist });
+          SendList({ playlist });
         }
-        setSelectModal(false);
       };
 
   return (
     <View style={style.background}>
-      <CommentProvider>
-        <ScrollView>
-          <Header
-            title="플레이리스트"
-            titleStyle={style.headertitle}
-            landings={post && [<LandingAction />]}
-            back={!post}
-            actions={[<PostUserAction setSelectModal={setSelectModal} />]}
-          />
-          <SelectedInfo />
-          <SelectedHashtag />
-          <AddedProvider>
-            <SelectedSong />
-          </AddedProvider>
-          <Footer object={footerData} type="playlist" />
-          <Divider containerStyle={styles.dividerContainer} />
-          <SelectedComment opt="playlist" comments={currentComments} />
-        </ScrollView>
-        {currentSong && duration !== 0 && <PlayBar />}
-        <CommentBar />
-      </CommentProvider>
-      <SelectModal
-        modal={selectModal}
-        setModal={setSelectModal}
-        selectInfo={{ func: selectFunction, list: selectLists }}
+      <Header
+        title="플레이리스트"
+        titleStyle={style.headertitle}
+        landings={post && [<LandingAction />]}
+        back={!post}
+        actions={[<PostUserAction setSelectModal={setSelectModal} />]}
       />
-      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+      {!loading ? (
+        <>
+          <CommentProvider>
+            <ScrollView>
+              <SelectedInfo playlist={playlist} />
+              <SelectedHashtag hashtag={hashtag} />
+              <AddedProvider>
+                <SelectedSong songs={songs} />
+              </AddedProvider>
+              <Footer object={footerData} type="playlist" />
+              <Divider containerStyle={styles.dividerContainer} />
+              <SelectedComment opt="playlist" comments={comment} />
+            </ScrollView>
+            {currentSong && duration !== 0 && <PlayBar />}
+            <CommentBar />
+          </CommentProvider>
+          <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
 
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
-      <HarmfulModal />
+          <SelectModal
+            modal={selectModal}
+            setModal={setSelectModal}
+            selectInfo={{ setActionModal, func: selectFunction, list: selectLists }}
+          />
+
+          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+          <HarmfulModal />
+        </>
+      ) : (
+        <LoadingIndicator />
+      )}
     </View>
   );
 }

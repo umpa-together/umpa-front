@@ -8,7 +8,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_4, MAIN_COLOR } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
-import { navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
 
 export default function SearchSongView({ info }) {
@@ -25,7 +25,7 @@ export default function SearchSongView({ info }) {
   };
 
   const onClickSongView = () => {
-    navigate('SelectedSong', { song: info.song });
+    push('SelectedSong', { song: info.song });
   };
 
   return (
