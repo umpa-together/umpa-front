@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as DailyContext } from 'context/Daily';
+import { Context as RelayContext } from 'context/Relay';
 
 const CommentContext = createContext(null);
 
@@ -20,6 +21,13 @@ export default function CommentProvider({ children }) {
     addComment: addDailyComment,
     addRecomment: addDailyRecomment,
   } = useContext(DailyContext);
+  const {
+    state: {
+      selectedRelay: { playlist },
+    },
+    addComment: addRelayComment,
+    addRecomment: addRelayRecomment,
+  } = useContext(RelayContext);
 
   const commentAction = (text) => {
     if (commentType === 'playlistComment') {
@@ -34,6 +42,12 @@ export default function CommentProvider({ children }) {
       addDailyRecomment({ id: currentDaily._id, commentId, text });
       setCommentId(null);
       setCommentType('dailyComment');
+    } else if (commentType === 'relayComment') {
+      addRelayComment({ id: playlist._id, text });
+    } else if (commentType === 'relayRecomment') {
+      addRelayRecomment({ id: playlist._id, commentId, text });
+      setCommentId(null);
+      setCommentType('relayComment');
     }
   };
 

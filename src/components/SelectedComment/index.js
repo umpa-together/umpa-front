@@ -12,6 +12,16 @@ export default function SelectedComment({ opt, comments }) {
   const [sortModal, setSortModal] = useState(false);
   const [sortType, setSortType] = useState('시간순');
   const { setCommentInfo } = useComment();
+  const commentLists = {
+    playlist: 'playlistComment',
+    daily: 'dailyComment',
+    relay: 'relayComment',
+  };
+  const recommentLists = {
+    playlist: 'playlistRecomment',
+    daily: 'dailyRecomment',
+    relay: 'relayRecomment',
+  };
   const sortList = [
     { title: '좋아요순', key: 'like' },
     { title: '시간순', key: 'time' },
@@ -45,6 +55,8 @@ export default function SelectedComment({ opt, comments }) {
       setCommentInfo('playlistComment');
     } else if (opt === 'daily') {
       setCommentInfo('dailyComment');
+    } else if (opt === 'relay') {
+      setCommentInfo('relayComment');
     }
   }, []);
 
@@ -63,18 +75,11 @@ export default function SelectedComment({ opt, comments }) {
             const { recomment } = item;
             return (
               <View key={item._id}>
-                <CommentView
-                  opt={opt === 'playlist' ? 'playlistComment' : 'dailyComment'}
-                  comment={item}
-                />
+                <CommentView opt={commentLists[opt]} comment={item} />
                 {recomment.length > 0 &&
                   recomment.map((comment) => {
                     return (
-                      <CommentView
-                        opt={opt === 'playlist' ? 'playlistRecomment' : 'dailyRecomment'}
-                        key={comment._id}
-                        comment={comment}
-                      />
+                      <CommentView opt={recommentLists[opt]} key={comment._id} comment={comment} />
                     );
                   })}
               </View>
