@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
-import style from 'constants/styles';
+import { Context as RelayContext } from 'context/Relay';
 import Timer from 'components/Timer';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import Icon from 'widgets/Icon';
+import style from 'constants/styles';
+import completeChecker from 'lib/utils/relayPlaylist';
+import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
+import YoutubeLink from 'components/youtubeLink';
 
-export default function Information({ information }) {
-  const { createdTime, postUserId, title, image } = information;
+export default function Information() {
+  const {
+    state: {
+      selectedRelay: {
+        playlist: { createdTime, postUserId, title, image, evaluateCount, youtubeUrl },
+      },
+    },
+  } = useContext(RelayContext);
+  const currentStatus = completeChecker(createdTime);
 
   return (
-    <View style={[styles.container, style.flexRow]}>
+    <View style={styles.container}>
       <Image source={{ uri: image }} style={styles.img} />
-      <View>
-        <Text>{title}</Text>
-        <Text>참여자 {postUserId.length}명</Text>
-        <Timer time={createdTime} />
+      <View style={styles.infoContainer}>
+        <View style={[styles.statusBox, !currentStatus && styles.completeBox]}>
+          <Text style={styles.statusText}>{currentStatus ? '진행중' : '마감'}</Text>
+        </View>
+        <Text style={styles.title}>{title}</Text>
+        <View style={[style.flexRow, styles.callengerContainer]}>
+          <Icon source={require('public/icons/challenger.png')} style={styles.icon} />
+          <Text style={styles.challenger}>
+            도전 {postUserId.length}명 / 평가 {evaluateCount}명
+          </Text>
+        </View>
+        {currentStatus && <Timer time={createdTime} timeStyle={styles.time} />}
+        {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} />}
       </View>
     </View>
   );
@@ -20,10 +42,55 @@ export default function Information({ information }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    paddingTop: 17 * SCALE_HEIGHT,
+    paddingLeft: 26 * SCALE_WIDTH,
+    flexDirection: 'row',
   },
   img: {
-    width: 150,
-    height: 150,
+    width: 140 * SCALE_WIDTH,
+    height: 140 * SCALE_WIDTH,
+    borderRadius: 6 * SCALE_HEIGHT,
+  },
+  infoContainer: {
+    marginLeft: 15 * SCALE_WIDTH,
+    marginRight: 18 * SCALE_WIDTH,
+    flex: 1,
+  },
+  title: {
+    fontSize: FS(16),
+  },
+  callengerContainer: {
+    marginTop: 14 * SCALE_HEIGHT,
+    marginBottom: 12 * SCALE_HEIGHT,
+  },
+  challenger: {
+    fontSize: FS(11),
+    color: COLOR_5,
+  },
+  time: {
+    fontSize: FS(16),
+    color: '#FF3975',
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: 13 * SCALE_WIDTH,
+    height: 13 * SCALE_WIDTH,
+    marginRight: 5 * SCALE_WIDTH,
+  },
+  statusBox: {
+    paddingVertical: 4 * SCALE_HEIGHT,
+    width: 50 * SCALE_WIDTH,
+    borderRadius: 4 * SCALE_HEIGHT,
+    backgroundColor: MAIN_COLOR,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12 * SCALE_HEIGHT,
+  },
+  statusText: {
+    fontSize: FS(11),
+    color: '#fff',
+  },
+  completeBox: {
+    backgroundColor: COLOR_5,
   },
 });

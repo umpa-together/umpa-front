@@ -10,9 +10,20 @@ const relayReducer = (state, action) => {
     case 'getRelayLists':
       return { ...state, relayLists: action.payload };
     case 'getSelectedRelay':
-      return { ...state, selectedRelay: action.payload };
+      return { ...state, selectedRelay: action.payload[0], currentComments: action.payload[1] };
     case 'getRelaySong':
       return { ...state, swipeSongs: action.payload };
+    case 'updateRelayWithComment':
+      return {
+        ...state,
+        selectedRelay: {
+          ...state.selectedRelay,
+          playlist: { ...state.selectedRelay.playlist, comments: action.payload[0] },
+        },
+        currentComments: action.payload[1],
+      };
+    case 'getComment':
+      return { ...state, currentComments: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -68,11 +79,21 @@ const getRelaySong =
     }
   };
 
+const postRelaySong =
+  (dispatch) =>
+  async ({ song, playlistId }) => {
+    try {
+      await server.post(`/relay/song/${playlistId}`, { song });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with postRelaySong' });
+    }
+  };
+
 const likeRelaySong =
   (dispatch) =>
   async ({ id }) => {
     try {
-      await server.post(`/relay/like/${id}`);
+      await server.put(`/relay/songs-like/${id}`);
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with likeRelaySong' });
     }
@@ -82,9 +103,117 @@ const unlikeRelaySong =
   (dispatch) =>
   async ({ id }) => {
     try {
-      await server.post(`/relay/unlike/${id}`);
+      await server.put(`/relay/songs-unlike/${id}`);
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with unlikeRelaySong' });
+    }
+  };
+
+const likeRelayPlaylist =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      await server.put(`relay/playlists-like/${id}`);
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likeRelayPlaylist' });
+    }
+  };
+
+const unlikeRelayPlaylist =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      await server.put(`relay/playlists-unlike/${id}`);
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unlikeRelayPlaylist' });
+    }
+  };
+
+const addComment =
+  (dispatch) =>
+  async ({ id, text }) => {
+    try {
+      const response = await server.post(`/relay/comment/${id}`, { text });
+      dispatch({ type: 'updateRelayWithComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with addComment' });
+    }
+  };
+
+const deleteComment =
+  (dispatch) =>
+  async ({ id, commentId }) => {
+    try {
+      const response = await server.delete(`/relay/comment/${id}/${commentId}`);
+      dispatch({ type: 'updateRelayWithComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with deleteComment' });
+    }
+  };
+
+const addRecomment =
+  (dispatch) =>
+  async ({ id, commentId, text }) => {
+    try {
+      const response = await server.post(`/relay/recomment/${id}/${commentId}`, { text });
+      dispatch({ type: 'updateRelayWithComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with addRecomment' });
+    }
+  };
+
+const deleteRecomment =
+  (dispatch) =>
+  async ({ id, commentId }) => {
+    try {
+      const response = await server.delete(`/relay/recomment/${id}/${commentId}`);
+      dispatch({ type: 'updateRelayWithComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with deleteRecomment' });
+    }
+  };
+
+const likeComment =
+  (dispatch) =>
+  async ({ relayId, id }) => {
+    try {
+      const response = await server.put(`/relay/comments-like/${relayId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likeComment' });
+    }
+  };
+
+const unLikeComment =
+  (dispatch) =>
+  async ({ relayId, id }) => {
+    try {
+      const response = await server.put(`/relay/comments-unlike/${relayId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unLikeComment' });
+    }
+  };
+
+const likeRecomment =
+  (dispatch) =>
+  async ({ relayId, id }) => {
+    try {
+      const response = await server.put(`/relay/recomments-like/${relayId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with likeRecomment' });
+    }
+  };
+
+const unLikeRecomment =
+  (dispatch) =>
+  async ({ relayId, id }) => {
+    try {
+      const response = await server.put(`/relay/recomments-unlike/${relayId}/${id}`);
+      dispatch({ type: 'getComment', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unLikeRecomment' });
     }
   };
 
@@ -96,13 +225,25 @@ export const { Provider, Context } = createDataContext(
     getRelayLists,
     getSelectedRelay,
     getRelaySong,
+    postRelaySong,
     likeRelaySong,
     unlikeRelaySong,
+    likeRelayPlaylist,
+    unlikeRelayPlaylist,
+    addComment,
+    deleteComment,
+    addRecomment,
+    deleteRecomment,
+    likeComment,
+    unLikeComment,
+    likeRecomment,
+    unLikeRecomment,
   },
   {
     currentRelay: null,
     relayLists: null,
     selectedRelay: null,
     swipeSongs: null,
+    currentComments: [],
   },
 );

@@ -14,7 +14,7 @@ import CommentBar from 'components/CommentBar';
 import KeyboradProvider from 'providers/keyboard';
 import timeConverter from 'lib/utils/time';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
-import Footer from 'components/Feed/Footer';
+import Footer from 'components/Footer';
 import Icon from 'widgets/Icon';
 import SelectModal from 'components/Modal/SelectModal';
 import PlayBar from 'components/PlayBar';

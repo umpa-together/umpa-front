@@ -4,10 +4,10 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
+import Footer from 'components/Footer';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
 import { COLOR_1 } from 'constants/colors';
-import Footer from './Footer';
 
 export default function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;

@@ -26,6 +26,10 @@ export default function RelayCardView({ relay }) {
   const day = Math.floor(hour / 24);
   const finished = day < 0;
 
+  const onClickRelayPlaylist = () => {
+    push('SelectedRelay', { id });
+  };
+
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.9}>
       <FastImage source={{ uri: image }} style={[styles.img, style.space_between]}>

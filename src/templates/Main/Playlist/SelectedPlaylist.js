@@ -17,7 +17,7 @@ import SelectModal from 'components/Modal/SelectModal';
 import SelectedHashtag from 'components/Playlist/SelectedHashtag';
 import { useModal } from 'providers/modal';
 import AddedModal from 'components/Modal/AddedModal';
-import Footer from 'components/Feed/Footer';
+import Footer from 'components/Footer';
 import { Provider as AddedProvider, Context as AddedContext } from 'context/Added';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import PlayBar from 'components/PlayBar';

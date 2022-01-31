@@ -6,6 +6,7 @@ import style from 'constants/styles';
 import timeConverter from 'lib/utils/time';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as DailyContext } from 'context/Daily';
+import { Context as RelayContext } from 'context/Relay';
 import { Context as UserContext } from 'context/User';
 import { Context as ReportContext } from 'context/Report';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -17,6 +18,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
     state: { user },
   } = useContext(UserContext);
   const deleteCheck = postUserId === user._id;
+  const commentChecker = ['playlistComment', 'dailyComment', 'relayComment'];
   const {
     state: { currentPlaylist },
     likeComment: playlistCommentLike,
@@ -35,6 +37,17 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
     deleteComment: dailyDeleteComment,
     deleteRecomment: dailyDeleteRecomment,
   } = useContext(DailyContext);
+  const {
+    state: {
+      selectedRelay: { playlist },
+    },
+    likeComment: relayCommentLike,
+    unLikeComment: relayCommentUnLike,
+    likeRecomment: relayRecommentLike,
+    unLikeRecomment: relayRecommentUnLike,
+    deleteComment: relayDeleteComment,
+    deleteRecomment: relayDeleteRecomment,
+  } = useContext(RelayContext);
   const { commentRef, setCommentInfo } = useComment();
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -48,6 +61,10 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
         dailyCommentUnLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'dailyRecomment') {
         dailyRecommentUnLike({ dailyId: currentDaily._id, id: commentId });
+      } else if (opt === 'relayComment') {
+        relayCommentUnLike({ relayId: playlist._id, id: commentId });
+      } else if (opt === 'relayRecomment') {
+        relayRecommentUnLike({ relayId: playlist._id, id: commentId });
       }
     } else {
       if (opt === 'playlistComment') {
@@ -58,6 +75,10 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
         dailyCommentLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'dailyRecomment') {
         dailyRecommentLike({ dailyId: currentDaily._id, id: commentId });
+      } else if (opt === 'relayComment') {
+        relayCommentLike({ relayId: playlist._id, id: commentId });
+      } else if (opt === 'relayRecomment') {
+        relayRecommentLike({ relayId: playlist._id, id: commentId });
       }
     }
   };
@@ -81,6 +102,10 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
         dailyDeleteComment({ id: currentDaily._id, commentId });
       } else if (opt === 'dailyRecomment') {
         dailyDeleteRecomment({ id: currentDaily._id, commentId });
+      } else if (opt === 'relayComment') {
+        relayDeleteComment({ id: playlist._id, commentId });
+      } else if (opt === 'relayRecomment') {
+        relayDeleteRecomment({ id: playlist._id, commentId });
       }
     }
     setDeleteModal(false);
@@ -92,6 +117,8 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       setCommentInfo('playlistRecomment', commentId);
     } else if (opt === 'dailyComment') {
       setCommentInfo('dailyRecomment', commentId);
+    } else if (opt === 'relayComment') {
+      setCommentInfo('relayRecomment', commentId);
     }
   };
 
@@ -104,7 +131,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
           </Text>
         </Text>
       </TouchableOpacity>
-      {(opt === 'playlistComment' || opt === 'dailyComment') && (
+      {commentChecker.includes(opt) && (
         <TouchableOpacity onPress={onClickRecomment}>
           <Text style={styles.actionText}>답글</Text>
         </TouchableOpacity>
@@ -136,6 +163,7 @@ export default function ({ comment, opt }) {
     _id: commentId,
   } = comment;
   const timeConverted = timeConverter(time);
+  const RecommentChecker = ['playlistRecomment', 'dailyRecomment', 'relayRecomment'];
   const {
     state: { user },
   } = useContext(UserContext);
@@ -162,8 +190,7 @@ export default function ({ comment, opt }) {
         style.flexRow,
         styles.container,
         {
-          marginLeft:
-            opt === 'playlistRecomment' || opt === 'dailyRecomment' ? 47 * SCALE_WIDTH : 0,
+          marginLeft: RecommentChecker.includes(opt) && 47 * SCALE_WIDTH,
         },
       ]}
     >

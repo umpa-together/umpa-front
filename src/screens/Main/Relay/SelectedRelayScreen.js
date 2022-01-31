@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectedRelay from 'templates/Main/Relay/SelectedRelay';
 import StatusBar from 'components/StatusBar';
+import { Provider as ReportProvider } from 'context/Report';
 
 export default function ({ route }) {
   const { id } = route.params;
@@ -8,7 +9,9 @@ export default function ({ route }) {
   return (
     <>
       <StatusBar />
-      <SelectedRelay id={id} />
+      <ReportProvider>
+        <SelectedRelay id={id} />
+      </ReportProvider>
     </>
   );
 }

@@ -27,8 +27,10 @@ export default function UserCard({ user }) {
         </Text>
         <Icon source={require('public/icons/search-right.png')} style={styles.icon} />
       </View>
-      {genre.length !== 0 && <Text style={styles.genre}>{genre[0]} 선호</Text>}
-    </TouchableNoDouble>
+      {genre !== undefined && genre.length !== 0 && (
+        <Text style={styles.genre}>{genre[0]} 선호</Text>
+      )}
+    </TouchableOpacity>
   );
 }
 

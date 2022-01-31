@@ -5,9 +5,9 @@ import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as UserContext } from 'context/User';
+import Footer from 'components/Footer';
 import { MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import SongsLists from './SongsLists';
-import Footer from './Footer';
 
 const FollowAction = ({ id }) => {
   const {
