@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLOR_3,
   },
   check: {
-    width: 18 * SCALE_WIDTH,
-    height: 18 * SCALE_WIDTH,
-    marginRight: 7 * SCALE_WIDTH,
+    width: 30 * SCALE_WIDTH,
+    height: 30 * SCALE_WIDTH,
   },
 });

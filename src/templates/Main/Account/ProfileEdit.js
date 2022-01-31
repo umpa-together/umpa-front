@@ -1,36 +1,58 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { Context as AuthContext } from 'context/Auth';
 import style from 'constants/styles';
 import Header from 'components/Header';
 import EditSection, {
   GenreSection,
   RepresentSongSection,
   ImageSection,
-  SkipAndComplete,
 } from 'components/Account/EditSection';
 import { useProfileEdit } from 'providers/profileEdit';
-import { COLOR_1, MAIN_COLOR } from 'constants/colors';
+import { COLOR_1, MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import FS from 'lib/utils/normalize';
 import { useScroll } from 'providers/scroll';
 import SongActionsProvider from 'providers/songActions';
+import ValidityModal from 'components/Modal/ValidityModal';
+import { useModal } from 'providers/modal';
+import { navigate } from 'lib/utils/navigation';
 
-const UploadActions = () => {
-  const { onClickEdit } = useProfileEdit();
+const UploadActions = ({ signUp }) => {
+  const { state } = useContext(AuthContext);
+  const { onClickEdit, profile, songs } = useProfileEdit();
+
+  useEffect(() => {
+    if (signUp && state.token) {
+      setTimeout(() => {
+        navigate('Tab');
+      }, 100);
+    }
+  }, [state]);
 
   return (
     <TouchableOpacity onPress={onClickEdit}>
-      <Text style={styles.complete}>완료</Text>
+      <Text
+        style={profile.nickName.length > 0 && songs.length > 0 ? styles.complete : styles.notActive}
+      >
+        완료
+      </Text>
     </TouchableOpacity>
   );
 };
 
 export default function ProfileEdit({ signUp }) {
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
+  const { validityModal } = useModal();
+  const { validityMsg } = useProfileEdit();
 
   const sectionLists = [
     {
       title: '닉네임',
       placeholder: '닉네임을 입력해주세요 (필수)',
+    },
+    {
+      title: '이름',
+      placeholder: '이름을 입력해주세요.',
     },
     {
       title: '소개글',
@@ -43,7 +65,7 @@ export default function ProfileEdit({ signUp }) {
       <Header
         title={signUp ? '프로필 설정 ' : '프로필 편집'}
         back={!signUp}
-        actions={[!signUp && <UploadActions />]}
+        actions={[<UploadActions signUp={signUp} />]}
         titleStyle={styles.title}
       />
       <ScrollView
@@ -63,7 +85,7 @@ export default function ProfileEdit({ signUp }) {
           </SongActionsProvider>
         </View>
       </ScrollView>
-      {signUp && <SkipAndComplete />}
+      {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );
 }
@@ -78,5 +100,9 @@ const styles = StyleSheet.create({
     fontSize: FS(16),
     color: MAIN_COLOR,
     fontWeight: '400',
+  },
+  notActive: {
+    fontSize: FS(16),
+    color: COLOR_5,
   },
 });
