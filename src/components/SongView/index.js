@@ -49,7 +49,7 @@ export default function SongView({ song, actions = null, landings = null, play =
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 16 * SCALE_WIDTH,
-    marginBottom: 19 * SCALE_HEIGHT,
+    marginVertical: 10 * SCALE_HEIGHT,
     width: '100%',
   },
   img: {

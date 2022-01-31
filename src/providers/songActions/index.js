@@ -15,6 +15,7 @@ export default function SongActionsProvider({ children }) {
   const songCount = {
     playlist: 8,
     represent: 3,
+    relay: 1,
   };
   const containCheck = (song) => {
     let tok = false;

@@ -53,7 +53,8 @@ export default function () {
           <Divider />
           <Text>umpa의 릴레이 플레이리스트</Text>
           {state.relayLists.map((relay) => {
-            return <RelayCardView relay={relay} key={relay._id} />;
+            const { _id: id } = relay;
+            return <RelayCardView relay={relay} key={id} />;
           })}
         </ScrollView>
       )}

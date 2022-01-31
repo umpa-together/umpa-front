@@ -1,12 +1,21 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
+import { push } from 'lib/utils/navigation';
 
 export default function RelayCardView({ relay }) {
   const { _id: id, image, title, postUserId } = relay;
 
+  const onClickRelayPlaylist = () => {
+    push('SelectedRelay', { id });
+  };
+
   return (
-    <TouchableOpacity style={[stlyes.container, style.flexRow]} activeOpacity={0.9}>
+    <TouchableOpacity
+      style={[stlyes.container, style.flexRow]}
+      activeOpacity={0.9}
+      onPress={onClickRelayPlaylist}
+    >
       <Image source={{ uri: image }} style={stlyes.img} />
       <View>
         <Text>{title}</Text>

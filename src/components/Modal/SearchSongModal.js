@@ -50,7 +50,8 @@ const ModalView = ({ onClose }) => {
         exit={<Exit />}
         action={
           (searchInfoRef.current.key === 'playlist' ||
-            searchInfoRef.current.key === 'represent') && <Action />
+            searchInfoRef.current.key === 'represent' ||
+            searchInfoRef.current.key === 'relay') && <Action />
         }
       />
       <SearchBar />
