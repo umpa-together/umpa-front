@@ -5,9 +5,11 @@ import AddSongView from 'components/SongView/AddSongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_5 } from 'constants/colors';
+import EmptyData from 'components/EmptyData';
 
 export default function AddedSongLists() {
   const { getAddedSong, state } = useContext(AddedContext);
+  const textList = ['아직 저장한 곡이 없습니다'];
 
   useEffect(() => {
     getAddedSong();
@@ -17,15 +19,19 @@ export default function AddedSongLists() {
     <View style={styles.container}>
       <Text style={styles.text}>저장한 곡</Text>
       <Divider containerStyle={styles.dividerContainer} />
-      <FlatList
-        style={styles.listContainter}
-        data={state.songLists}
-        keyExtractor={(_) => _._id}
-        renderItem={({ item }) => {
-          const { song } = item;
-          return <AddSongView song={song} />;
-        }}
-      />
+      {state.songLists > 0 ? (
+        <FlatList
+          style={styles.listContainter}
+          data={state.songLists}
+          keyExtractor={(_) => _._id}
+          renderItem={({ item }) => {
+            const { song } = item;
+            return <AddSongView song={song} />;
+          }}
+        />
+      ) : (
+        <EmptyData textList={textList} icon />
+      )}
     </View>
   );
 }

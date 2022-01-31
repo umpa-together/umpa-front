@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useCallback, memo } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
@@ -9,6 +10,8 @@ import SearchTabBar from 'components/TabView/SearchTabBar';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import EmptyData from 'components/EmptyData';
+import { useSearch } from 'providers/search';
 import MoreLists from './MoreLists';
 
 export default function ResultLists() {
@@ -44,21 +47,34 @@ export default function ResultLists() {
 
   const All = (props) => {
     const { jumpTo } = props;
+    const { daily, dj, hashtag, playlist, song } = state.result != null && state.result;
+    const checkData =
+      state.result != null &&
+      (daily.length || dj.length || hashtag.length || playlist.length || song.length);
+    const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
+    const { searchWait } = useSearch();
+
     return state.result ? (
-      <ScrollView contentContainerStyle={styles.container}>
-        {resultLists.map((option) => {
-          const { title, data, key } = option;
-          return (
-            <View key={title}>
-              {data.length > 0 && (
-                <>
-                  <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
-                </>
-              )}
-            </View>
-          );
-        })}
-      </ScrollView>
+      !checkData ? (
+        <EmptyData textList={textList} icon />
+      ) : !searchWait ? (
+        <ScrollView contentContainerStyle={styles.container}>
+          {resultLists.map((option) => {
+            const { title, data, key } = option;
+            return (
+              <View key={title}>
+                {data.length > 0 && (
+                  <>
+                    <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
+                  </>
+                )}
+              </View>
+            );
+          })}
+        </ScrollView>
+      ) : (
+        <LoadingIndicator />
+      )
     ) : (
       <LoadingIndicator />
     );

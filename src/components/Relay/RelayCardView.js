@@ -1,29 +1,139 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
+import FastImage from 'react-native-fast-image';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { MAIN_COLOR, COLOR_1, COLOR_5 } from 'constants/colors';
+import Timer from 'components/Timer';
+import Icon from 'widgets/Icon';
 
 export default function RelayCardView({ relay }) {
-  const { _id: id, image, title, postUserId } = relay;
+  const { _id: id, image, title, postUserId, createdTime } = relay;
+  const nowTime = new Date();
+  const startTime = new Date(createdTime);
+  const endTime = new Date(
+    startTime.getFullYear(),
+    startTime.getMonth(),
+    startTime.getDate() + 4,
+    startTime.getHours(),
+    startTime.getMinutes(),
+    startTime.getSeconds(),
+    startTime.getMilliseconds(),
+  );
+  const remainTime = endTime.getTime() - nowTime.getTime();
+  const minutes = Math.floor(remainTime / 1000 / 60);
+  const hour = Math.floor(minutes / 60);
+  const day = Math.floor(hour / 24);
+  const finished = day < 0;
 
   return (
-    <TouchableOpacity style={[stlyes.container, style.flexRow]} activeOpacity={0.9}>
-      <Image source={{ uri: image }} style={stlyes.img} />
-      <View>
-        <Text>{title}</Text>
-        <Text>도전자 {postUserId.length}명</Text>
-      </View>
+    <TouchableOpacity style={styles.container} activeOpacity={0.9}>
+      <FastImage source={{ uri: image }} style={[styles.img, style.space_between]}>
+        <View style={style.flexRow}>
+          <View style={[styles.progressContainer, finished && styles.finishedStyle]}>
+            <Text style={styles.statusText}>{finished ? '마감' : '진행중'}</Text>
+          </View>
+          {!finished && (
+            <Timer
+              containerStyle={styles.timeContainer}
+              timeStyle={styles.statusText}
+              time={createdTime}
+            />
+          )}
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={[style.flexRow, styles.titleContainer]}>
+            <Icon style={styles.icon} source={require('public/icons/relay-card-icon.png')} />
+            <Text style={styles.titleText}>{title}</Text>
+            <Icon style={styles.moveIcon} source={require('public/icons/relay-card-move.png')} />
+          </View>
+          <View style={[style.flexRow, styles.peopleContainer]}>
+            <Icon
+              style={styles.peopleIcon}
+              source={require('public/icons/relay-card-people.png')}
+            />
+            <Text style={styles.peopleText}>도전자 {postUserId.length}명</Text>
+          </View>
+        </View>
+      </FastImage>
     </TouchableOpacity>
   );
 }
 
-const stlyes = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    width: 334,
-    height: 131,
-    borderWidth: 1,
+    flex: 1,
+    width: 344 * SCALE_WIDTH,
+    marginBottom: 30 * SCALE_HEIGHT,
+    borderRadius: 6 * SCALE_HEIGHT,
+    backgroundColor: '#fff',
+    shadowOffset: {
+      height: 2 * SCALE_WIDTH,
+      width: 0,
+    },
+    shadowRadius: 3 * SCALE_WIDTH,
+    shadowOpacity: 0.2,
+    elevation: 2,
+  },
+  infoContainer: {
+    width: 344 * SCALE_WIDTH,
+    paddingLeft: 12 * SCALE_WIDTH,
+    backgroundColor: '#fff',
+  },
+  titleContainer: {
+    paddingTop: 18.6 * SCALE_HEIGHT,
+    marginBottom: 11 * SCALE_HEIGHT,
   },
   img: {
-    width: 92,
-    height: 92,
+    width: 344 * SCALE_WIDTH,
+    height: 217 * SCALE_HEIGHT,
+    borderRadius: 6 * SCALE_HEIGHT,
+  },
+  statusText: {
+    fontSize: FS(11),
+    color: '#FFF',
+    paddingHorizontal: 6 * SCALE_WIDTH,
+    paddingVertical: 2 * SCALE_HEIGHT,
+  },
+  progressContainer: {
+    backgroundColor: MAIN_COLOR,
+    borderRadius: 4 * SCALE_HEIGHT,
+    marginLeft: 13 * SCALE_WIDTH,
+    marginTop: 14 * SCALE_HEIGHT,
+  },
+  finishedStyle: {
+    backgroundColor: COLOR_5,
+  },
+  timeContainer: {
+    backgroundColor: '#85A0FF',
+    borderRadius: 4 * SCALE_HEIGHT,
+    marginLeft: 3 * SCALE_WIDTH,
+    marginTop: 14 * SCALE_HEIGHT,
+  },
+  icon: {
+    width: 17 * SCALE_WIDTH,
+    height: 14 * SCALE_HEIGHT,
+  },
+  moveIcon: {
+    width: 28 * SCALE_WIDTH,
+    height: 28 * SCALE_WIDTH,
+  },
+  titleText: {
+    fontSize: FS(14),
+    color: COLOR_1,
+    fontWeight: 'bold',
+    marginLeft: 6.5 * SCALE_WIDTH,
+  },
+  peopleContainer: {
+    marginBottom: 14.2 * SCALE_HEIGHT,
+  },
+  peopleIcon: {
+    width: 11.5 * SCALE_WIDTH,
+    height: 13 * SCALE_HEIGHT,
+    marginRight: 4 * SCALE_WIDTH,
+  },
+  peopleText: {
+    color: COLOR_5,
+    fontSize: FS(12),
   },
 });

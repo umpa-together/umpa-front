@@ -25,6 +25,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import ActionModal from 'components/Modal/ActionModal';
 import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 const LandingAction = () => {
   const onPressLanding = () => {
@@ -227,7 +228,9 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
           {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
           <HarmfulModal />
         </>
-      ) : null}
+      ) : (
+        <LoadingIndicator />
+      )}
     </View>
   );
 }
