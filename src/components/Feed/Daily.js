@@ -5,7 +5,7 @@ import { Context as DailyContext } from 'context/Daily';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
 import DailySong from 'components/Daily/DailySong';
-import Footer from './Footer';
+import Footer from 'components/Footer';
 import DailyImage from '../DailyImage';
 
 export default function Daily({ daily }) {

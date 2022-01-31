@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as DailyContext } from 'context/Daily';
+import { Context as RelayContext } from 'context/Relay';
 import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
@@ -13,27 +14,32 @@ export default function Footer({ object, type }) {
   const { state } = useContext(UserContext);
   const { likePlaylist, unLikePlaylist } = useContext(PlaylistContext);
   const { likeDaily, unLikeDaily } = useContext(DailyContext);
+  const { likeRelayPlaylist, unlikeRelayPlaylist } = useContext(RelayContext);
   const { likes, comments, _id: id } = object;
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
   const onClickLikes = () => {
     if (isLike) {
       if (type === 'playlist') {
         unLikePlaylist({ id });
-      } else {
+      } else if (type === 'daily') {
         unLikeDaily({ id });
+      } else if (type === 'relay') {
+        unlikeRelayPlaylist({ id });
       }
     } else if (type === 'playlist') {
       likePlaylist({ id });
-    } else {
+    } else if (type === 'daily') {
       likeDaily({ id });
+    } else if (type === 'relay') {
+      likeRelayPlaylist({ id });
     }
     setIsLike(!isLike);
   };
 
   const onClickShare = () => {
-    if (type === 'playlist') {
+    if (type === 'playlist' || type === 'relay') {
       SendList({ playlist: object });
-    } else {
+    } else if (type === 'daily') {
       SendFeed({ daily: object });
     }
   };
