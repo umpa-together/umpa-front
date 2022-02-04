@@ -8,7 +8,10 @@ import { COLOR_5 } from 'constants/colors';
 import EmptyData from 'components/EmptyData';
 
 export default function AddedSongLists() {
-  const { getAddedSong, state } = useContext(AddedContext);
+  const {
+    getAddedSong,
+    state: { songLists },
+  } = useContext(AddedContext);
   const textList = ['아직 저장한 곡이 없습니다'];
 
   useEffect(() => {
@@ -19,10 +22,10 @@ export default function AddedSongLists() {
     <View style={styles.container}>
       <Text style={styles.text}>저장한 곡</Text>
       <Divider containerStyle={styles.dividerContainer} />
-      {state.songLists > 0 ? (
+      {songLists && songLists.length > 0 ? (
         <FlatList
           style={styles.listContainter}
-          data={state.songLists}
+          data={songLists}
           keyExtractor={(_) => _._id}
           renderItem={({ item }) => {
             const { song } = item;

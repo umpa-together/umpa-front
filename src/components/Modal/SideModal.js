@@ -57,7 +57,7 @@ const SideModalView = ({ onCloseModal }) => {
       onClick: emptyfunction,
     },
     {
-      title: '피드맥 건의사항',
+      title: '피드백 건의사항',
       onClick: emptyfunction,
     },
   ];
