@@ -26,6 +26,7 @@ import ActionModal from 'components/Modal/ActionModal';
 import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
 import LoadingIndicator from 'components/LoadingIndicator';
+import KeyboardProvider from 'providers/keyboard';
 
 const LandingAction = () => {
   const onPressLanding = () => {
@@ -215,7 +216,9 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
               <SelectedComment opt="playlist" comments={comment} />
             </ScrollView>
             {currentSong && duration !== 0 && <PlayBar />}
-            <CommentBar />
+            <KeyboardProvider>
+              <CommentBar />
+            </KeyboardProvider>
           </CommentProvider>
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
 

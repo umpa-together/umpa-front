@@ -11,7 +11,7 @@ import SelectedText from 'components/Daily/SelectedText';
 import Divider from 'widgets/Divider';
 import SelectedComment from 'components/SelectedComment';
 import CommentBar from 'components/CommentBar';
-import KeyboradProvider from 'providers/keyboard';
+import KeyboardProvider from 'providers/keyboard';
 import timeConverter from 'lib/utils/time';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Footer from 'components/Footer';
@@ -213,9 +213,9 @@ export default function SelectedDaily({ post, id, postUserId }) {
                 <PlayBar />
               </AddedProvider>
             )}
-            <KeyboradProvider>
+            <KeyboardProvider>
               <CommentBar />
-            </KeyboradProvider>
+            </KeyboardProvider>
           </CommentProvider>
           <SelectModal
             modal={selectModal}
