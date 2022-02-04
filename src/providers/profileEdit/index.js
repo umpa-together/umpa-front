@@ -76,19 +76,17 @@ export default function ProfileEditProvider({ children }) {
       onValidityModal();
       return;
     }
-    let profileFormData = null;
-    let backgroundFormData = null;
+    const fd = new FormData();
+
     if (profileImage.name !== '') {
-      profileFormData = new FormData();
-      profileFormData.append('img', {
+      fd.append('profileImage', {
         name: profileImage.name,
         type: profileImage.type,
         uri: profileImage.uri,
       });
     }
     if (backgroundImage.name !== '') {
-      backgroundFormData = new FormData();
-      backgroundFormData.append('img', {
+      fd.append('backgroundImage', {
         name: backgroundImage.name,
         type: backgroundImage.type,
         uri: backgroundImage.uri,
@@ -105,8 +103,7 @@ export default function ProfileEditProvider({ children }) {
           introduction: profile.introduction,
           genre: profile.genre,
           songs: songsChange,
-          profileFd: profileFormData,
-          backgroundFd: backgroundFormData,
+          fd,
         });
         if (signUp) {
           await tryLocalSignIn();
@@ -124,8 +121,7 @@ export default function ProfileEditProvider({ children }) {
         introduction: profile.introduction,
         genre: profile.genre,
         songs: songsChange,
-        profileFd: profileFormData,
-        backgroundFd: backgroundFormData,
+        fd,
       });
       goBack();
     }

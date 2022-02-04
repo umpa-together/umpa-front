@@ -66,15 +66,10 @@ const getOtherInformation =
 
 const editProfile =
   (dispatch) =>
-  async ({ nickName, name, introduction, genre, songs, profileFd, backgroundFd }) => {
+  async ({ nickName, name, introduction, genre, songs, fd }) => {
     try {
-      if (profileFd) {
-        profileResponse = await server.post('/user/editProfileImage', profileFd, {
-          header: { 'content-type': 'multipart/form-data' },
-        });
-      }
-      if (backgroundFd) {
-        backgroundResponse = await server.post('/user/editBackgroundImage', backgroundFd, {
+      if (fd) {
+        await server.post('/user/editImage', fd, {
           header: { 'content-type': 'multipart/form-data' },
         });
       }
