@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TextInput,
   Text,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   TouchableWithoutFeedback,
@@ -19,6 +18,7 @@ import { NaverLogin } from '@react-native-seoul/naver-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import jwtDecode from 'jwt-decode';
 import * as env from 'constants/app';
+import FastImage from 'react-native-fast-image';
 
 const webclientid = Platform.select({
   ios: env.webClientIdIOS,
@@ -107,7 +107,7 @@ const SignIn = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <View style={{ width: 194.9, height: 119.9 }}>
-              <Image
+              <FastImage
                 style={{ width: '100%', height: '100%' }}
                 source={require('public/icons/logo.png')}
               />
@@ -165,25 +165,25 @@ const SignIn = () => {
             }}
           >
             <TouchableOpacity style={{ width: 60, height: 60 }} onPress={() => googleLogin()}>
-              <Image
+              <FastImage
                 style={{ width: '100%', height: '100%' }}
                 source={require('public/icons/google.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity style={{ width: 60, height: 60 }} onPress={() => naverLogin(naverid)}>
-              <Image
+              <FastImage
                 style={{ width: '100%', height: '100%' }}
                 source={require('../../public/icons/naver.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity style={{ width: 60, height: 60 }} onPress={() => kakaoLogin()}>
-              <Image
+              <FastImage
                 style={{ width: '100%', height: '100%' }}
                 source={require('public/icons/kakao.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity style={{ width: 60, height: 60 }} onPress={() => appleLogin()}>
-              <Image
+              <FastImage
                 style={{ width: '100%', height: '100%' }}
                 source={require('public/icons/apple.png')}
               />

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Image } from 'react-native';
+import { Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TrackPlayerInitializer from 'lib/utils/trackPlayer';
+import FastImage from 'react-native-fast-image';
 
 export default function Splash({ setIsSplash }) {
   const opacity = useRef(new Animated.Value(0)).current;
@@ -27,7 +28,7 @@ export default function Splash({ setIsSplash }) {
       style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
     >
       <Animated.View style={{ width: 194.9, height: 119.9, opacity }}>
-        <Image
+        <FastImage
           style={{ width: '100%', height: '100%' }}
           source={require('public/icons/logo.png')}
         />

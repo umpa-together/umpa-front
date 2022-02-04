@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import Timer from 'components/Timer';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,6 +8,7 @@ import style from 'constants/styles';
 import completeChecker from 'lib/utils/relayPlaylist';
 import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import YoutubeLink from 'components/youtubeLink';
+import FastImage from 'react-native-fast-image';
 
 export default function Information() {
   const {
@@ -21,7 +22,7 @@ export default function Information() {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.img} />
+      <FastImage source={{ uri: image }} style={styles.img} />
       <View style={styles.infoContainer}>
         <View style={[styles.statusBox, !currentStatus && styles.completeBox]}>
           <Text style={styles.statusText}>{currentStatus ? '진행중' : '마감'}</Text>

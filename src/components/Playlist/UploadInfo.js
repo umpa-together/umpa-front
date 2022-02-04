@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { onClickSingle } from 'lib/utils/imageEditor';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
+import FastImage from 'react-native-fast-image';
 
 export default function UploadInfo({ edit }) {
   const {
@@ -20,7 +21,7 @@ export default function UploadInfo({ edit }) {
       {edit ? (
         <View style={styles.imageBlur}>
           {image ? (
-            <Image source={{ uri: image.uri }} style={styles.imageContainer} />
+            <FastImage source={{ uri: image.uri }} style={styles.imageContainer} />
           ) : (
             songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
           )}
@@ -28,7 +29,7 @@ export default function UploadInfo({ edit }) {
       ) : (
         <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
           {image ? (
-            <Image source={{ uri: image.uri }} style={styles.imageContainer} />
+            <FastImage source={{ uri: image.uri }} style={styles.imageContainer} />
           ) : (
             songs.length > 0 && <PlaylistAlbumImage edit round songs={songs} size={140} />
           )}

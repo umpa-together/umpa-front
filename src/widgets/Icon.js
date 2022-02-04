@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 export default function Icon(props) {
-  return <Image {...props} />;
+  return <FastImage {...props} />;
 }

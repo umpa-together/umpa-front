@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedReaction,
@@ -12,6 +12,7 @@ import Animated, {
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useScroll } from 'providers/scroll';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import FastImage from 'react-native-fast-image';
 
 export default function Movable({ id, imagesCount, children }) {
   const {
@@ -93,7 +94,7 @@ export default function Movable({ id, imagesCount, children }) {
         {children}
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View>
-            <Image style={styles.iconStyle} source={require('public/icons/drag-drop.png')} />
+            <FastImage style={styles.iconStyle} source={require('public/icons/drag-drop.png')} />
           </Animated.View>
         </PanGestureHandler>
       </View>

@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
 import { COLOR_1 } from 'constants/colors';
+import FastImage from 'react-native-fast-image';
 
 export default function DailyNoticeForm({ notice, onClickProfile }) {
   const {
@@ -36,7 +37,7 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
           <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
-      {daily.image[0] && <Image style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
+      {daily.image[0] && <FastImage style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
     </>
   );
 }
