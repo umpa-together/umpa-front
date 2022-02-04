@@ -38,9 +38,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
     deleteRecomment: dailyDeleteRecomment,
   } = useContext(DailyContext);
   const {
-    state: {
-      selectedRelay: { playlist },
-    },
+    state: { selectedRelay },
     likeComment: relayCommentLike,
     unLikeComment: relayCommentUnLike,
     likeRecomment: relayRecommentLike,
@@ -62,9 +60,9 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'dailyRecomment') {
         dailyRecommentUnLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'relayComment') {
-        relayCommentUnLike({ relayId: playlist._id, id: commentId });
+        relayCommentUnLike({ relayId: selectedRelay.playlist._id, id: commentId });
       } else if (opt === 'relayRecomment') {
-        relayRecommentUnLike({ relayId: playlist._id, id: commentId });
+        relayRecommentUnLike({ relayId: selectedRelay.playlist._id, id: commentId });
       }
     } else {
       if (opt === 'playlistComment') {
@@ -76,9 +74,9 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'dailyRecomment') {
         dailyRecommentLike({ dailyId: currentDaily._id, id: commentId });
       } else if (opt === 'relayComment') {
-        relayCommentLike({ relayId: playlist._id, id: commentId });
+        relayCommentLike({ relayId: selectedRelay.playlist._id, id: commentId });
       } else if (opt === 'relayRecomment') {
-        relayRecommentLike({ relayId: playlist._id, id: commentId });
+        relayRecommentLike({ relayId: selectedRelay.playlist._id, id: commentId });
       }
     }
   };
@@ -103,9 +101,9 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
       } else if (opt === 'dailyRecomment') {
         dailyDeleteRecomment({ id: currentDaily._id, commentId });
       } else if (opt === 'relayComment') {
-        relayDeleteComment({ id: playlist._id, commentId });
+        relayDeleteComment({ id: selectedRelay.playlist._id, commentId });
       } else if (opt === 'relayRecomment') {
-        relayDeleteRecomment({ id: playlist._id, commentId });
+        relayDeleteRecomment({ id: selectedRelay.playlist._id, commentId });
       }
     }
     setDeleteModal(false);
