@@ -52,12 +52,12 @@ export default function ResultLists() {
       state.result != null &&
       (daily.length || dj.length || hashtag.length || playlist.length || song.length);
     const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
-    const { searchWait } = useSearch();
+    const { searching } = useSearch();
 
     return state.result ? (
       !checkData ? (
         <EmptyData textList={textList} icon />
-      ) : !searchWait ? (
+      ) : !searching ? (
         <ScrollView contentContainerStyle={styles.container}>
           {resultLists.map((option) => {
             const { title, data, key } = option;

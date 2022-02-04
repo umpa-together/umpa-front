@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
-import { Context as SearchContextC } from 'context/Search';
 
 const SearchContext = createContext(null);
 
@@ -8,11 +7,8 @@ export const useSearch = () => useContext(SearchContext);
 
 export default function SearchProvider({ children }) {
   const { state, searchSong, searchNext, searchHint, initSearch } = useContext(AppleMusicContext);
-  const { state: AllState } = useContext(SearchContextC);
-
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [searchWait, setSearchWait] = useState(false);
   const [isResultClick, setIsResultClick] = useState(false);
   const [searching, setSearching] = useState(false);
   const textInputRef = useRef();
@@ -36,7 +32,6 @@ export default function SearchProvider({ children }) {
   };
 
   const onSearchKeyword = (input) => {
-    setSearchWait(true);
     searchSong({ songname: input });
     setText(input);
     setIsResultClick(true);
@@ -44,16 +39,12 @@ export default function SearchProvider({ children }) {
   };
 
   const onSearchContents = (input) => {
-    setSearchWait(true);
     setText(input);
     setIsResultClick(true);
     setSearching(false);
   };
 
   const onFocus = () => {
-    /* if (isResultClick) {
-      setSearching(true);
-    } */
     setSearching(true);
     setIsResultClick(false);
   };
@@ -71,19 +62,10 @@ export default function SearchProvider({ children }) {
       setSearching(true);
       searchHint({ term: text });
     }
-    /*
     if (searching && text === '') {
       setSearching(false);
-    } */
+    }
   }, [text]);
-
-  useEffect(() => {
-    setSearchWait(false);
-  }, [state.songData]);
-
-  useEffect(() => {
-    setSearchWait(false);
-  }, [AllState.result]);
 
   const value = {
     text,
@@ -91,7 +73,6 @@ export default function SearchProvider({ children }) {
     isResultClick,
     searching,
     textInputRef,
-    searchWait,
     onChangeText,
     onSearchKeyword,
     onEndReached,
