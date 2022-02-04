@@ -12,6 +12,8 @@ import { Context as ReportContext } from 'context/Report';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import ActionModal from 'components/Modal/ActionModal';
 import { useComment } from 'providers/comment';
+import Hyperlink from 'react-native-hyperlink';
+import openURL from 'lib/utils/openUrl';
 
 const CommentAction = ({ postUserId, commentId, likes, opt }) => {
   const {
@@ -205,7 +207,9 @@ export default function ({ comment, opt }) {
           </View>
           <Text style={styles.timeText}>{timeConverted}</Text>
         </View>
-        <Text style={styles.commentText}>{text}</Text>
+        <Hyperlink linkStyle={styles.link} onPress={(url) => openURL(url)}>
+          <Text style={styles.commentText}>{text}</Text>
+        </Hyperlink>
         <CommentAction postUserId={postUserId} likes={likes} commentId={commentId} opt={opt} />
       </View>
       <ActionModal
@@ -257,5 +261,9 @@ const styles = StyleSheet.create({
   },
   active: {
     color: '#E82C2C',
+  },
+  link: {
+    fontSize: FS(14),
+    color: '#2980b9',
   },
 });
