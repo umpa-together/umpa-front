@@ -22,9 +22,7 @@ export default function CommentProvider({ children }) {
     addRecomment: addDailyRecomment,
   } = useContext(DailyContext);
   const {
-    state: {
-      selectedRelay: { playlist },
-    },
+    state: { selectedRelay },
     addComment: addRelayComment,
     addRecomment: addRelayRecomment,
   } = useContext(RelayContext);
@@ -43,9 +41,9 @@ export default function CommentProvider({ children }) {
       setCommentId(null);
       setCommentType('dailyComment');
     } else if (commentType === 'relayComment') {
-      addRelayComment({ id: playlist._id, text });
+      addRelayComment({ id: selectedRelay.playlist._id, text });
     } else if (commentType === 'relayRecomment') {
-      addRelayRecomment({ id: playlist._id, commentId, text });
+      addRelayRecomment({ id: selectedRelay.playlist._id, commentId, text });
       setCommentId(null);
       setCommentType('relayComment');
     }

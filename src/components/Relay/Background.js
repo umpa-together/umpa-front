@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, Image, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
+import FastImage from 'react-native-fast-image';
 
 export default function Background() {
   const { state } = useContext(RelayContext);
@@ -11,7 +12,7 @@ export default function Background() {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.backgroundImg} />
+      <FastImage source={{ uri: image }} style={styles.backgroundImg} />
       <View style={styles.infoBox}>
         <Text>{title}</Text>
         <Text>

@@ -6,38 +6,25 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_1, COLOR_5 } from 'constants/colors';
 import Timer from 'components/Timer';
 import Icon from 'widgets/Icon';
+import completeChecker from 'lib/utils/relayPlaylist';
+import { push } from 'lib/utils/navigation';
 
 export default function RelayCardView({ relay }) {
   const { _id: id, image, title, postUserId, createdTime } = relay;
-  const nowTime = new Date();
-  const startTime = new Date(createdTime);
-  const endTime = new Date(
-    startTime.getFullYear(),
-    startTime.getMonth(),
-    startTime.getDate() + 4,
-    startTime.getHours(),
-    startTime.getMinutes(),
-    startTime.getSeconds(),
-    startTime.getMilliseconds(),
-  );
-  const remainTime = endTime.getTime() - nowTime.getTime();
-  const minutes = Math.floor(remainTime / 1000 / 60);
-  const hour = Math.floor(minutes / 60);
-  const day = Math.floor(hour / 24);
-  const finished = day < 0;
+  const currentStatus = completeChecker(createdTime);
 
   const onClickRelayPlaylist = () => {
     push('SelectedRelay', { id });
   };
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.9}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.9} onPress={onClickRelayPlaylist}>
       <FastImage source={{ uri: image }} style={[styles.img, style.space_between]}>
         <View style={style.flexRow}>
-          <View style={[styles.progressContainer, finished && styles.finishedStyle]}>
-            <Text style={styles.statusText}>{finished ? '마감' : '진행중'}</Text>
+          <View style={[styles.progressContainer, !currentStatus && styles.finishedStyle]}>
+            <Text style={styles.statusText}>{!currentStatus ? '마감' : '진행중'}</Text>
           </View>
-          {!finished && (
+          {currentStatus && (
             <Timer
               containerStyle={styles.timeContainer}
               timeStyle={styles.statusText}

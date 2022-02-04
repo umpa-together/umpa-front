@@ -23,6 +23,7 @@ export default function PostingInfo({ my, user, posting }) {
     {
       title: '총 게시글',
       count: posting,
+      onClick: () => null,
     },
     {
       title: '팔로워',
@@ -41,9 +42,9 @@ export default function PostingInfo({ my, user, posting }) {
       <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
       <View style={[style.flexRow, style.spaceEven, styles.postingContainer]}>
         {optionLists.map((item) => {
-          const { count, title } = item;
+          const { count, title, onClick } = item;
           return (
-            <TouchableNoDouble onPress={item.onClick} key={title} style={styles.elementContainer}>
+            <TouchableNoDouble onPress={onClick} key={title} style={styles.elementContainer}>
               <Text style={styles.countText}>{count}</Text>
               <Text style={styles.titleText}>{title}</Text>
             </TouchableNoDouble>

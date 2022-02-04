@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import ScrollImage from 'components/ScrollImage';
 import Movable from 'components/ScrollImage/Movable';
+import FastImage from 'react-native-fast-image';
 
 export default function CreateImageLists({ edit = false }) {
   const { images, onClickDeleteImage } = useDailyCreate();
@@ -18,10 +19,10 @@ export default function CreateImageLists({ edit = false }) {
           return (
             <>
               {edit ? (
-                <Image source={{ uri }} style={styles.imageNotEdit} />
+                <FastImage source={{ uri }} style={styles.imageNotEdit} />
               ) : (
                 <Movable key={uri} imagesCount={images.length} id={uri}>
-                  <Image source={{ uri }} style={styles.imageContainer} />
+                  <FastImage source={{ uri }} style={styles.imageContainer} />
                   <TouchableOpacity onPress={() => onClickDeleteImage(item)}>
                     <Icon
                       style={styles.deleteIcon}

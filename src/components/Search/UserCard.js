@@ -30,7 +30,7 @@ export default function UserCard({ user }) {
       {genre !== undefined && genre.length !== 0 && (
         <Text style={styles.genre}>{genre[0]} 선호</Text>
       )}
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 }
 
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6 * SCALE_HEIGHT,
     shadowOpacity: 0.1,
     elevation: 3,
+    minHeight: 130 * SCALE_HEIGHT,
   },
   img: {
     width: 56 * SCALE_WIDTH,

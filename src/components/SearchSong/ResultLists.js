@@ -12,7 +12,7 @@ import EmptyData from 'components/EmptyData';
 
 export default function ResultLists() {
   const { state } = useContext(AppleMusicContext);
-  const { text, searchWait, loading, onEndReached } = useSearch();
+  const { text, searching, loading, onEndReached } = useSearch();
   const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
   return (
     <View style={styles.container}>
@@ -23,7 +23,7 @@ export default function ResultLists() {
       <Divider containerStyle={styles.dividerContainer} />
       <>
         {state.songData ? (
-          searchWait ? (
+          searching ? (
             <LoadingIndicator />
           ) : state.songData.length > 0 ? (
             <FlatList
