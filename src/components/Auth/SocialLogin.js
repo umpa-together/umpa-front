@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     paddingTop: 61 * SCALE_HEIGHT,
   },
   iconMargin: {
-    marginTop: 24.5 * SCALE_HEIGHT,
+    marginTop: 19.5 * SCALE_HEIGHT,
     marginRight: 14 * SCALE_WIDTH,
   },
   title: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     color: COLOR_5,
   },
   icon: {
-    width: 50 * SCALE_WIDTH,
-    height: 50 * SCALE_WIDTH,
+    width: 58 * SCALE_WIDTH,
+    height: 58 * SCALE_WIDTH,
   },
 });

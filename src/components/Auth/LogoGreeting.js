@@ -19,12 +19,12 @@ export default function LogoGreeting() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 41 * SCALE_HEIGHT,
-    paddingBottom: 42 * SCALE_HEIGHT,
+    paddingTop: 35.5 * SCALE_HEIGHT,
+    paddingBottom: 38.5 * SCALE_HEIGHT,
   },
   icon: {
-    width: 46 * SCALE_WIDTH,
-    height: 46 * SCALE_WIDTH,
+    width: 58 * SCALE_WIDTH,
+    height: 58 * SCALE_WIDTH,
   },
   textContainer: {
     paddingLeft: 11 * SCALE_WIDTH,
