@@ -63,7 +63,7 @@ export default function Songbackground({ song }) {
           textStyle={styles.title}
         />
         <MoveText text={artistName} isMove={song.id === isPlayingId} textStyle={styles.artist} />
-        <Text style={styles.release}>{releaseDate}</Text>
+        <Text style={styles.release}>{releaseDate.replaceAll('-', '.')}</Text>
       </View>
       <View style={[styles.optionContainer, style.flexRow]}>
         {optionLists.map((option) => {

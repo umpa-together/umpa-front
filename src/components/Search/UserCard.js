@@ -63,13 +63,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: FS(12),
     color: COLOR_2,
-    marginRight: 7 * SCALE_WIDTH,
     maxWidth: 60 * SCALE_WIDTH,
     textAlign: 'center',
   },
   icon: {
-    width: 4 * SCALE_WIDTH,
-    height: 10 * SCALE_HEIGHT,
+    width: 12 * SCALE_WIDTH,
+    height: 18 * SCALE_HEIGHT,
   },
   genre: {
     color: COLOR_5,

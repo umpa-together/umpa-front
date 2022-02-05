@@ -16,21 +16,19 @@ export default function HashtagView({ info, containerStyle }) {
 
   return (
     <>
-      {count > 0 && (
-        <TouchableOpacity
-          onPress={onClickHashtag}
-          style={[styles.container, style.flexRow, containerStyle]}
-          activeOpacity={0.8}
-        >
-          <View style={styles.circle}>
-            <Text style={styles.hashtag}>#</Text>
-          </View>
-          <View>
-            <Text style={styles.title}>#{hashtag}</Text>
-            <Text style={styles.count}>게시물 {count}</Text>
-          </View>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        onPress={onClickHashtag}
+        style={[styles.container, style.flexRow, containerStyle]}
+        activeOpacity={0.8}
+      >
+        <View style={styles.circle}>
+          <Text style={styles.hashtag}>#</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>#{hashtag}</Text>
+          <Text style={styles.count}>게시물 {count}</Text>
+        </View>
+      </TouchableOpacity>
     </>
   );
 }

@@ -8,7 +8,6 @@ import Icon from 'widgets/Icon';
 
 export default function SongLists({ songs }) {
   const { isPlayingId, onClickSong } = useTrackPlayer();
-
   return (
     <FlatList
       contentContainerStyle={styles.songsContainer}
@@ -30,7 +29,14 @@ export default function SongLists({ songs }) {
           <View style={styles.songBox}>
             <TouchableOpacity onPress={() => onClickSong(item)} activeOpacity={0.9}>
               <SongImage url={url} imgStyle={styles.playlistsImg} />
-              <Icon source={require('public/icons/feed-playlist-play.png')} style={styles.play} />
+              <Icon
+                source={
+                  id === isPlayingId
+                    ? require('public/icons/feed-playlist-stop.png')
+                    : require('public/icons/feed-playlist-play.png')
+                }
+                style={styles.play}
+              />
             </TouchableOpacity>
             <MoveText
               isExplicit={contentRating === 'explicit'}
@@ -80,8 +86,8 @@ const styles = StyleSheet.create({
   play: {
     position: 'absolute',
     right: 5 * SCALE_WIDTH,
-    bottom: 13 * SCALE_HEIGHT,
-    width: 17 * SCALE_WIDTH,
-    height: 20 * SCALE_HEIGHT,
+    bottom: 5 * SCALE_HEIGHT,
+    width: 26 * SCALE_WIDTH,
+    height: 26 * SCALE_HEIGHT,
   },
 });

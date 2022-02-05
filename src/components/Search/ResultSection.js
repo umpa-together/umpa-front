@@ -48,7 +48,7 @@ const PlayAction = ({ song }) => {
 export default function ResultSection({ title, data, jumpTo, routeKey }) {
   return (
     <View>
-      <Header title={title} data={data} jumpTo={jumpTo} routeKey={routeKey} />
+      <Header title={title} jumpTo={jumpTo} routeKey={routeKey} />
       <AddedProvider>
         {data.slice(0, 3).map((item) => {
           const id = item._id !== undefined ? item._id : item.song.id;
