@@ -6,15 +6,22 @@ import ProfileEdit from 'screens/Main/Account/ProfileEditScreen';
 
 const AuthStack = createNativeStackNavigator();
 
+const screenLists = [
+  { title: 'SignIn', component: SignIn },
+  { title: 'SignUp', component: SignUp },
+  { title: 'ProfileEdit', component: ProfileEdit },
+];
+
 const AuthStackScreen = () => (
   <AuthStack.Navigator
     screenOptions={{
       headerShown: false,
     }}
   >
-    <AuthStack.Screen name="SignIn" component={SignIn} />
-    <AuthStack.Screen name="SignUp" component={SignUp} />
-    <AuthStack.Screen name="ProfileEdit" component={ProfileEdit} />
+    {screenLists.map((screen) => {
+      const { title, component } = screen;
+      return <AuthStack.Screen name={title} component={component} key={title} />;
+    })}
   </AuthStack.Navigator>
 );
 

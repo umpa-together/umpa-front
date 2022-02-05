@@ -16,9 +16,29 @@ import ProfileEdit from 'screens/Main/Account/ProfileEditScreen';
 import SelectedPlaylist from 'screens/Main/Playlist/SelectedPlaylistScreen';
 import SelectedDaily from 'screens/Main/Daily/SelectedDailyScreen';
 import Participant from 'screens/Main/Relay/ParticipantScreen';
-import TabScreen from './Tab';
+import Tab from './Tab';
 
 const MainStack = createNativeStackNavigator();
+
+const screenLists = [
+  { title: 'Tab', component: Tab },
+  { title: 'SelectedRelay', component: SelectedRelay },
+  { title: 'Swipe', component: Swipe },
+  { title: 'Follow', component: Follow },
+  { title: 'OtherAccount', component: OtherAccount },
+  { title: 'SearchDetail', component: SearchDetail },
+  { title: 'SelectedSong', component: SelectedSong },
+  { title: 'SelectedHashtag', component: SelectedHashtag },
+  { title: 'PlaylistCreate', component: PlaylistCreate },
+  { title: 'PlaylistUpload', component: PlaylistUpload },
+  { title: 'DailyCreate', component: DailyCreate },
+  { title: 'DailyUpload', component: DailyUpload },
+  { title: 'Added', component: Added },
+  { title: 'ProfileEdit', component: ProfileEdit },
+  { title: 'SelectedPlaylist', component: SelectedPlaylist },
+  { title: 'SelectedDaily', component: SelectedDaily },
+  { title: 'Participant', component: Participant },
+];
 
 const MainStackScreen = () => (
   <MainStack.Navigator
@@ -26,23 +46,10 @@ const MainStackScreen = () => (
       headerShown: false,
     }}
   >
-    <MainStack.Screen name="Tab" component={TabScreen} />
-    <MainStack.Screen name="SelectedRelay" component={SelectedRelay} />
-    <MainStack.Screen name="Swipe" component={Swipe} />
-    <MainStack.Screen name="Follow" component={Follow} />
-    <MainStack.Screen name="OtherAccount" component={OtherAccount} />
-    <MainStack.Screen name="SearchDetail" component={SearchDetail} />
-    <MainStack.Screen name="SelectedSong" component={SelectedSong} />
-    <MainStack.Screen name="SelectedHashtag" component={SelectedHashtag} />
-    <MainStack.Screen name="PlaylistCreate" component={PlaylistCreate} />
-    <MainStack.Screen name="PlaylistUpload" component={PlaylistUpload} />
-    <MainStack.Screen name="DailyCreate" component={DailyCreate} />
-    <MainStack.Screen name="DailyUpload" component={DailyUpload} />
-    <MainStack.Screen name="Added" component={Added} />
-    <MainStack.Screen name="ProfileEdit" component={ProfileEdit} />
-    <MainStack.Screen name="SelectedPlaylist" component={SelectedPlaylist} />
-    <MainStack.Screen name="SelectedDaily" component={SelectedDaily} />
-    <MainStack.Screen name="Participant" component={Participant} />
+    {screenLists.map((screen) => {
+      const { title, component } = screen;
+      return <MainStack.Screen name={title} component={component} key={title} />;
+    })}
   </MainStack.Navigator>
 );
 
