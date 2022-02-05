@@ -33,10 +33,19 @@ const addPlaylist =
       }
       if (fd) {
         dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: imgResponse.data[0]._id,
+          postUserId: imgResponse.data[0].postUserId,
+        });
       } else {
         dispatch({ type: 'getSelectedPlaylist', payload: response.data });
+        navigate('SelectedPlaylist', {
+          post: true,
+          id: response.data[0]._id,
+          postUserId: response.data[0].postUserId,
+        });
       }
-      navigate('SelectedPlaylist', { post: true });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addPlaylist' });
     }

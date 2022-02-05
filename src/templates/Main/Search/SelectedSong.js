@@ -21,7 +21,7 @@ export default function SelectedSong({ song }) {
   const PlaylistSection = () => {
     return (
       <ScrollView>
-        <Playlist song={song} />
+        <Playlist />
       </ScrollView>
     );
   };
