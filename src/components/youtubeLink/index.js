@@ -5,11 +5,11 @@ import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
 
-export default function YoutubeLink() {
+export default function YoutubeLink({ func, relay = false }) {
   return (
-    <TouchableOpacity style={[style.flexRow, styles.container]}>
+    <TouchableOpacity style={[style.flexRow, styles.container]} onPress={func} activeOpacity={0.6}>
       <Icon source={require('public/icons/youtube.png')} style={styles.youtube} />
-      <Text style={styles.text}>플리 전체 듣기</Text>
+      <Text style={styles.text}>플리{!relay && ' 전체'} 듣기</Text>
       <Icon source={require('public/icons/youtube-right.png')} style={styles.right} />
     </TouchableOpacity>
   );
@@ -17,7 +17,6 @@ export default function YoutubeLink() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 110 * SCALE_WIDTH,
     paddingLeft: 4 * SCALE_WIDTH,
     paddingRight: 8 * SCALE_WIDTH,
     paddingVertical: 2 * SCALE_HEIGHT,
