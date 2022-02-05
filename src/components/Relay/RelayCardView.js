@@ -10,7 +10,7 @@ import completeChecker from 'lib/utils/relayPlaylist';
 import { push } from 'lib/utils/navigation';
 
 export default function RelayCardView({ relay }) {
-  const { _id: id, image, title, postUserId, createdTime } = relay;
+  const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateCount } = relay;
   const currentStatus = completeChecker(createdTime);
 
   const onClickRelayPlaylist = () => {
@@ -39,11 +39,20 @@ export default function RelayCardView({ relay }) {
             <Icon style={styles.moveIcon} source={require('public/icons/relay-card-move.png')} />
           </View>
           <View style={[style.flexRow, styles.peopleContainer]}>
+            {hashtags.map((hashtag) => {
+              return (
+                <View key={hashtag} style={styles.box}>
+                  <Text style={styles.text}># {hashtag}</Text>
+                </View>
+              );
+            })}
             <Icon
               style={styles.peopleIcon}
               source={require('public/icons/relay-card-people.png')}
             />
-            <Text style={styles.peopleText}>도전자 {postUserId.length}명</Text>
+            <Text style={styles.peopleText}>
+              {`도전자 ${postUserId.length}명 / 평가 ${evaluateCount}명`}
+            </Text>
           </View>
         </View>
       </FastImage>
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   titleContainer: {
-    paddingTop: 18.6 * SCALE_HEIGHT,
+    paddingTop: 16.5 * SCALE_HEIGHT,
     marginBottom: 11 * SCALE_HEIGHT,
   },
   img: {
@@ -126,5 +135,18 @@ const styles = StyleSheet.create({
   peopleText: {
     color: COLOR_5,
     fontSize: FS(12),
+  },
+  box: {
+    paddingLeft: 6.7 * SCALE_WIDTH,
+    paddingRight: 7.4 * SCALE_WIDTH,
+    paddingVertical: 3.6 * SCALE_HEIGHT,
+    borderRadius: 43 * SCALE_HEIGHT,
+    borderColor: COLOR_5,
+    borderWidth: 1 * SCALE_HEIGHT,
+    marginRight: 4.6 * SCALE_WIDTH,
+  },
+  text: {
+    color: COLOR_5,
+    fontSize: FS(11),
   },
 });
