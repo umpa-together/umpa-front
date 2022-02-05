@@ -47,7 +47,7 @@ const signIn =
       await AsyncStorage.setItem('token', response.data.token);
       dispatch({ type: 'signIn', payload: response.data.token });
     } catch (err) {
-      dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+      dispatch({ type: 'add_error', payload: '※ 이메일,비밀번호가 일치하지 않습니다.' });
     }
   };
 
@@ -75,7 +75,9 @@ const getGoogleInfo =
     try {
       const response = await server.get(`/social/google/${email}/${id}`);
       if (response.data[0] === false) {
-        navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
+        navigate('SignUp', {
+          data: { email: response.data[1], password: response.data[2], social: true },
+        });
       } else {
         const res = await server.post('/signIn', {
           email: response.data[1],
@@ -95,7 +97,9 @@ const getAppleInfo =
     try {
       const response = await server.get(`/social/apple/${email}/${id}`);
       if (response.data[0] === false) {
-        navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
+        navigate('SignUp', {
+          data: { email: response.data[1], password: response.data[2], social: true },
+        });
       } else {
         const res = await server.post('/signIn', {
           email: response.data[1],
@@ -116,7 +120,9 @@ const getKakaoInfo =
     try {
       const response = await server.get(`/social/kakao/${token}`);
       if (response.data[0] === false) {
-        navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
+        navigate('SignUp', {
+          data: { email: response.data[1], password: response.data[2], social: true },
+        });
       } else {
         const res = await server.post('/signIn', {
           email: response.data[1],
@@ -137,7 +143,9 @@ const getNaverInfo =
     try {
       const response = await server.get(`/social/naver/${token}`);
       if (response.data[0] === false) {
-        navigate('Signup', { email: response.data[1], password: response.data[2], isSNS: true });
+        navigate('SignUp', {
+          data: { email: response.data[1], password: response.data[2], social: true },
+        });
       } else {
         const res = await server.post('/signIn', {
           email: response.data[1],

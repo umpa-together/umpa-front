@@ -8,9 +8,14 @@ import Terms from 'components/Auth/Terms';
 import { useSignUp } from 'providers/signUp';
 import InformationInput from 'components/Auth/InformationInput';
 
-export default function SignUp() {
-  const { information, onClickComplete } = useSignUp();
+export default function SignUp({ data }) {
+  const { information, onClickComplete, onInitialize } = useSignUp();
   const [isComplete, setIsComplete] = useState(false);
+  const { social } = data;
+
+  useEffect(() => {
+    onInitialize(data);
+  }, []);
   useEffect(() => {
     setIsComplete(
       information.allTerm &&
@@ -23,12 +28,12 @@ export default function SignUp() {
     <View style={[styles.container, style.background]}>
       <Header title="회원가입" back titleStyle={styles.header} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <InformationInput />
+        {!social && <InformationInput />}
         <View>
           <Terms />
           <TouchableOpacity
             style={[styles.completeBox, isComplete && styles.active]}
-            onPress={onClickComplete}
+            onPress={() => onClickComplete(social)}
             activeOpacity={0.8}
           >
             <Text style={styles.complete}>완료</Text>
