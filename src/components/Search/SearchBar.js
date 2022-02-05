@@ -44,7 +44,7 @@ export default function SearchBar() {
           />
         </View>
         <TouchableOpacity onPress={onClickDelete}>
-          <Icon source={require('public/icons/search-cancel.png')} style={styles.cancel} />
+          <Icon source={require('public/icons/search-modal-cancel.png')} style={styles.cancel} />
         </TouchableOpacity>
       </View>
     </View>
@@ -73,9 +73,8 @@ const styles = StyleSheet.create({
     marginRight: 12 * SCALE_WIDTH,
   },
   cancel: {
-    width: 12 * SCALE_WIDTH,
-    height: 12 * SCALE_WIDTH,
-    marginRight: 12 * SCALE_WIDTH,
+    width: 40 * SCALE_WIDTH,
+    height: 40 * SCALE_WIDTH,
   },
   textInput: {
     width: 220 * SCALE_WIDTH,

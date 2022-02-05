@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useContext } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import PostingCard from 'components/PostingCard';
 import { useTrackPlayer } from 'providers/trackPlayer';
@@ -11,6 +11,7 @@ import DailyView from 'components/DailyView';
 import EmptyData from 'components/EmptyData';
 import NavigateButton from 'components/EmptyData/NavigateButton';
 import { navigate } from 'lib/utils/navigation';
+import UserView from 'components/UserView';
 
 const PlayAction = ({ song }) => {
   const { onClickSong, isPlayingId } = useTrackPlayer();
@@ -107,20 +108,20 @@ export const DJ = () => {
   const textList = ['이 곡을 대표곡으로 하는 계정이 아직 없습니다.'];
 
   return (
-    <>
+    <View style={styles.djContainer}>
       {count > 0 ? (
         state.selected.dj.map((dj) => {
           const { _id: id } = dj;
           return (
             <View key={id}>
-              <Text>dj</Text>
+              <UserView user={dj} />
             </View>
           );
         })
       ) : (
         <EmptyData customContainer={styles.emptyContainer} textList={textList} />
       )}
-    </>
+    </View>
   );
 };
 
@@ -130,6 +131,9 @@ const styles = StyleSheet.create({
   },
   dailyContainer: {
     marginTop: 18 * SCALE_HEIGHT,
+  },
+  djContainer: {
+    marginTop: 15 * SCALE_HEIGHT,
   },
   icon: {
     width: 32 * SCALE_WIDTH,
