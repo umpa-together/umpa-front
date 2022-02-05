@@ -27,7 +27,7 @@ export default function Information() {
         <View style={[styles.statusBox, !currentStatus && styles.completeBox]}>
           <Text style={styles.statusText}>{currentStatus ? '진행중' : '마감'}</Text>
         </View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{title.map((item) => `${item} `)}</Text>
         <View style={[style.flexRow, styles.callengerContainer]}>
           <Icon source={require('public/icons/challenger.png')} style={styles.icon} />
           <Text style={styles.challenger}>

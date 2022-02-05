@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Platform, StatusBar as RnStatusBar } from 'react-native';
 
-const StatusBarHeight = Platform.select({
+export const StatusBarHeight = Platform.select({
   ios: 44,
   android: RnStatusBar.currentHeight,
   default: 0,
