@@ -8,17 +8,24 @@ import Notice from 'screens/Main/Notice';
 
 const Tab = createBottomTabNavigator();
 
+const tabLists = [
+  { title: 'Relay', component: Relay },
+  { title: 'Feed', component: Feed },
+  { title: 'Search', component: Search },
+  { title: 'Notice', component: Notice },
+  { title: 'MyAccount', component: MyAccount },
+];
+
 const TabScreen = () => (
   <Tab.Navigator
     screenOptions={() => ({
       headerShown: false,
     })}
   >
-    <Tab.Screen name="Relay" component={Relay} />
-    <Tab.Screen name="Feed" component={Feed} />
-    <Tab.Screen name="Search" component={Search} />
-    <Tab.Screen name="Notice" component={Notice} />
-    <Tab.Screen name="MyAccount" component={MyAccount} />
+    {tabLists.map((tab) => {
+      const { title, component } = tab;
+      return <Tab.Screen name={title} key={title} component={component} />;
+    })}
   </Tab.Navigator>
 );
 
