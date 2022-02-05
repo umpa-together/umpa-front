@@ -42,7 +42,7 @@ const SongLandings = ({ song }) => {
 export default function CreateSongList() {
   const [searchModal, setSearchModal] = useState(false);
   const { songs, setSongs } = usePlaylistCreate();
-  const { searchInfoRef, setSelectedSongs } = useSongActions();
+  const { searchInfoRef, setSelectedSongs, selectedSongs } = useSongActions();
 
   const onClickAddSong = () => {
     setSelectedSongs(songs);
@@ -76,7 +76,11 @@ export default function CreateSongList() {
           })}
         </ScrollSong>
       </TrackPlayerProvider>
-      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
+      <SearchSongModal
+        modal={searchModal}
+        setModal={setSearchModal}
+        activeCheck={selectedSongs.length > 0}
+      />
     </View>
   );
 }

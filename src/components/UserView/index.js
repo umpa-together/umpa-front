@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as UserContext } from 'context/User';
 import { Text, StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
@@ -12,10 +13,16 @@ import UserRepresentSong from 'components/UserRepresentSong';
 
 export default function UserView({ user, func }) {
   const { name, profileImage, _id: id, songs } = user;
+  const {
+    state: {
+      user: { _id: userId },
+    },
+  } = useContext(UserContext);
   const onClickAccount = () => {
     if (func) func();
     push('OtherAccount', { id });
   };
+
   return (
     <View style={[styles.container, style.flexRow]}>
       <TouchableNoDouble onPress={onClickAccount}>
@@ -25,7 +32,7 @@ export default function UserView({ user, func }) {
         <Text style={styles.nameText}>{name}</Text>
         <UserRepresentSong song={songs[0]} />
       </View>
-      <FollowButton id={id} />
+      {userId !== id && <FollowButton id={id} />}
     </View>
   );
 }

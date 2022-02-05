@@ -15,11 +15,9 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
   const {
     state: {
       selectedRelay: {
-        playlist: { postUserId, _id: playlistId },
+        playlist: { postUserId },
       },
     },
-    postRelaySong,
-    getSelectedRelay,
   } = useContext(RelayContext);
   const { state: user } = useContext(UserContext);
   const { searchInfoRef, selectedSongs } = useSongActions();
@@ -59,20 +57,15 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
     },
   ];
 
-  const addFunction = async () => {
-    await postRelaySong({ song: selectedSongs[0], playlistId });
-    getSelectedRelay({ id: playlistId });
-  };
-
   useFocusEffect(
     useCallback(() => {
       searchInfoRef.current = {
         title: '릴레이 플리 곡 추천',
         key: 'relay',
-        completeFunc: addFunction,
       };
     }, [selectedSongs]),
   );
+
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       {optionLists.map((option) => {
@@ -88,7 +81,11 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
           </TouchableOpacity>
         );
       })}
-      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
+      <SearchSongModal
+        modal={searchModal}
+        setModal={setSearchModal}
+        activeCheck={selectedSongs.length > 0}
+      />
     </View>
   );
 }

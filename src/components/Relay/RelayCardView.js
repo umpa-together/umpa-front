@@ -22,7 +22,7 @@ export default function RelayCardView({ relay }) {
       <FastImage source={{ uri: image }} style={[styles.img, style.space_between]}>
         <View style={style.flexRow}>
           <View style={[styles.progressContainer, !currentStatus && styles.finishedStyle]}>
-            <Text style={styles.statusText}>{!currentStatus ? '마감' : '진행중'}</Text>
+            <Text style={styles.statusText}>{!currentStatus ? '플리완성' : '진행중'}</Text>
           </View>
           {currentStatus && (
             <Timer
@@ -35,7 +35,9 @@ export default function RelayCardView({ relay }) {
         <View style={styles.infoContainer}>
           <View style={[style.flexRow, styles.titleContainer]}>
             <Icon style={styles.icon} source={require('public/icons/relay-card-icon.png')} />
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={styles.titleText} numberOfLines={1}>
+              {title.map((item) => `${item} `)}
+            </Text>
             <Icon style={styles.moveIcon} source={require('public/icons/relay-card-move.png')} />
           </View>
           <View style={[style.flexRow, styles.peopleContainer]}>
@@ -76,16 +78,17 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   infoContainer: {
-    width: 344 * SCALE_WIDTH,
-    paddingLeft: 12 * SCALE_WIDTH,
+    width: '100%',
+    paddingLeft: 13 * SCALE_WIDTH,
     backgroundColor: '#fff',
   },
   titleContainer: {
-    paddingTop: 16.5 * SCALE_HEIGHT,
+    paddingTop: 17 * SCALE_HEIGHT,
     marginBottom: 11 * SCALE_HEIGHT,
+    width: 300 * SCALE_WIDTH,
   },
   img: {
-    width: 344 * SCALE_WIDTH,
+    width: '100%',
     height: 217 * SCALE_HEIGHT,
     borderRadius: 6 * SCALE_HEIGHT,
   },
@@ -102,10 +105,10 @@ const styles = StyleSheet.create({
     marginTop: 14 * SCALE_HEIGHT,
   },
   finishedStyle: {
-    backgroundColor: COLOR_5,
+    backgroundColor: '#85A0FF',
   },
   timeContainer: {
-    backgroundColor: '#85A0FF',
+    backgroundColor: COLOR_5,
     borderRadius: 4 * SCALE_HEIGHT,
     marginLeft: 3 * SCALE_WIDTH,
     marginTop: 14 * SCALE_HEIGHT,
@@ -125,10 +128,10 @@ const styles = StyleSheet.create({
     marginLeft: 6.5 * SCALE_WIDTH,
   },
   peopleContainer: {
-    marginBottom: 14.2 * SCALE_HEIGHT,
+    marginBottom: 14 * SCALE_HEIGHT,
   },
   peopleIcon: {
-    width: 11.5 * SCALE_WIDTH,
+    width: 12 * SCALE_WIDTH,
     height: 13 * SCALE_HEIGHT,
     marginRight: 4 * SCALE_WIDTH,
   },
@@ -137,13 +140,12 @@ const styles = StyleSheet.create({
     fontSize: FS(12),
   },
   box: {
-    paddingLeft: 6.7 * SCALE_WIDTH,
-    paddingRight: 7.4 * SCALE_WIDTH,
-    paddingVertical: 3.6 * SCALE_HEIGHT,
+    paddingHorizontal: 7 * SCALE_WIDTH,
+    paddingVertical: 4 * SCALE_HEIGHT,
     borderRadius: 43 * SCALE_HEIGHT,
     borderColor: COLOR_5,
     borderWidth: 1 * SCALE_HEIGHT,
-    marginRight: 4.6 * SCALE_WIDTH,
+    marginRight: 4 * SCALE_WIDTH,
   },
   text: {
     color: COLOR_5,

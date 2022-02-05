@@ -7,7 +7,7 @@ import CurrentSection from './CurrentSection';
 export default function CurrentRelayList({ currentRelay, time }) {
   return (
     <View>
-      <Swiper autoplay showsPagination={false} height={443 * SCALE_HEIGHT} autoplayTimeout={time}>
+      <Swiper autoplay height={595 * SCALE_HEIGHT} autoplayTimeout={time} activeDotColor="#aeaeae">
         {currentRelay.map((relay) => (
           <CurrentSection relay={relay} key={relay._id} />
         ))}

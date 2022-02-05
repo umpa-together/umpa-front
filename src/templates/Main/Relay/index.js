@@ -4,10 +4,8 @@ import { Context as RelayContext } from 'context/Relay';
 import style from 'constants/styles';
 import { Context as UserContext } from 'context/User';
 import { useFocusEffect } from '@react-navigation/native';
-import LogoHeader from 'components/Relay/LogoHeader';
 import CurrentRelayList from 'components/Relay/CurrentRelayList';
 import RelayList from 'components/Relay/RelayList';
-import GuideBox from 'components/Relay/GuideBox';
 
 export default function () {
   const {
@@ -39,9 +37,7 @@ export default function () {
     <View style={style.background}>
       {currentRelay && relayLists && (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <LogoHeader />
           <CurrentRelayList time={time} currentRelay={currentRelay} />
-          <GuideBox />
           <RelayList relayList={relayLists} />
         </ScrollView>
       )}

@@ -24,7 +24,7 @@ import Divider from 'widgets/Divider';
 import Footer from 'components/Footer';
 import CommentBar from 'components/CommentBar';
 import CommentProvider from 'providers/comment';
-import KeyboradProvider from 'providers/keyboard';
+import KeyboardProvider from 'providers/keyboard';
 import SelectedComment from 'components/SelectedComment';
 import SelectModal from 'components/Modal/SelectModal';
 import ActionModal from 'components/Modal/ActionModal';
@@ -118,9 +118,9 @@ const CompletedRelay = () => {
           <Divider containerStyle={styles.dividerContainer} />
           <SelectedComment opt="relay" comments={currentComments} />
         </ScrollView>
-        <KeyboradProvider>
+        <KeyboardProvider>
           <CommentBar />
-        </KeyboradProvider>
+        </KeyboardProvider>
       </CommentProvider>
     </>
   );

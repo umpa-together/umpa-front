@@ -107,7 +107,7 @@ const SongLandings = ({ song }) => {
 export function RepresentSongSection() {
   const [searchModal, setSearchModal] = useState(false);
   const { songs, setSongs } = useProfileEdit();
-  const { searchInfoRef, setSelectedSongs } = useSongActions();
+  const { searchInfoRef, setSelectedSongs, selectedSongs } = useSongActions();
 
   const onClickAddSong = () => {
     setSelectedSongs(songs);
@@ -139,7 +139,11 @@ export function RepresentSongSection() {
           );
         })}
       </ScrollSong>
-      <SearchSongModal modal={searchModal} setModal={setSearchModal} />
+      <SearchSongModal
+        modal={searchModal}
+        setModal={setSearchModal}
+        activeCheck={selectedSongs.length > 0}
+      />
     </View>
   );
 }

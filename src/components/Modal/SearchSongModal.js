@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -14,12 +14,14 @@ import { COLOR_3, MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import ValidityModal from 'components/Modal/ValidityModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Modal from '.';
+import RelayActionModal from './RelayActionModal';
 
-const ModalView = ({ onClose }) => {
+const ModalView = ({ onClose, activeCheck }) => {
   const { text, searching } = useSearch();
   const { validityMsg, searchInfoRef, onClickComplete } = useSongActions();
   const { validityModal } = useModal();
-  const activeCheck = true;
+  const [relayModal, setRelayModal] = useState(false);
+  const completeLists = ['playlist', 'represent', 'relay'];
 
   const Exit = memo(() => {
     return (
@@ -31,8 +33,14 @@ const ModalView = ({ onClose }) => {
 
   const Action = memo(() => {
     const onClickAction = () => {
-      onClickComplete();
-      onClose();
+      if (activeCheck) {
+        if (searchInfoRef.current.key !== 'relay') {
+          onClickComplete();
+          onClose();
+        } else {
+          setRelayModal(true);
+        }
+      }
     };
 
     return (
@@ -48,11 +56,7 @@ const ModalView = ({ onClose }) => {
         title={searchInfoRef.current.title}
         titleStyle={styles.titleStyle}
         exit={<Exit />}
-        action={
-          (searchInfoRef.current.key === 'playlist' ||
-            searchInfoRef.current.key === 'represent' ||
-            searchInfoRef.current.key === 'relay') && <Action />
-        }
+        action={completeLists.includes(searchInfoRef.current.key) && <Action />}
       />
       <SearchBar />
       {text === '' && !searching ? (
@@ -64,11 +68,12 @@ const ModalView = ({ onClose }) => {
       )}
       {validityModal && <ValidityModal title={validityMsg} />}
       <HarmfulModal />
+      <RelayActionModal modal={relayModal} setModal={setRelayModal} onClose={onClose} />
     </View>
   );
 };
 
-export default function SearchSongModal({ modal, setModal }) {
+export default function SearchSongModal({ modal, setModal, activeCheck }) {
   const onBackdropPress = () => {
     setModal(!modal);
   };
@@ -84,7 +89,7 @@ export default function SearchSongModal({ modal, setModal }) {
     >
       <SearchProvider>
         <SearchProviderC>
-          <ModalView onClose={onBackdropPress} />
+          <ModalView onClose={onBackdropPress} activeCheck={activeCheck} />
         </SearchProviderC>
       </SearchProvider>
     </Modal>
