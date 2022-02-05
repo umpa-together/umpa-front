@@ -74,7 +74,7 @@ const SideModalView = ({ onCloseModal }) => {
           return <SideMenu key={title} title={title} onClick={onClick} />;
         })}
       </View>
-      <ModalSign />
+      <ModalSign onCloseModal={onCloseModal} />
     </View>
   );
 };

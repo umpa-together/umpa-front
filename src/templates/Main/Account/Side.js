@@ -116,6 +116,17 @@ const Feedback = () => {
   );
 };
 
+const WithDrawal = () => {
+  return (
+    <ScrollView contentContainerStyle={{flex: 1}}>
+      <Text style={styles.withdrawalText}>*회원 탈퇴시, 유의사항</Text>
+      <TouchableOpacity style={styles.sendBox}>
+        <Text style={styles.sendText}>계정 삭제하기</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  )
+}
+
 export default function Side({ type }) {
   const typeLists = {
     Notice: {
@@ -148,6 +159,10 @@ export default function Side({ type }) {
         </KeyboardProvider>
       ),
     },
+    WithDrawal: {
+      title: '회원 탈퇴',
+      component: <WithDrawal />,
+    }
   };
 
   return (
@@ -191,4 +206,10 @@ const styles = StyleSheet.create({
     fontSize: FS(16),
     color: '#fff',
   },
+  withdrawalText: {
+    fontSize: FS(14),
+    color: COLOR_2,
+    marginTop: 23 * SCALE_HEIGHT,
+    textAlign: 'center'
+  }
 });
