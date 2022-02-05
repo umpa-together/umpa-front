@@ -34,10 +34,18 @@ const addDaily =
       }
       if (fd._parts.length > 0) {
         dispatch({ type: 'getSelectedDaily', payload: imgResponse.data });
-        navigate('SelectedDaily', { post: true });
+        navigate('SelectedDaily', {
+          post: true,
+          id: imgResponse.data[0]._id,
+          postUserId: imgResponse.data[0].postUserId,
+        });
       } else {
         dispatch({ type: 'getSelectedDaily', payload: response.data });
-        navigate('SelectedDaily', { post: true });
+        navigate('SelectedDaily', {
+          post: true,
+          id: response.data[0]._id,
+          postUserId: response.data[0].postUserId,
+        });
       }
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });

@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     borderRadius: 100 * SCALE_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 7 * SCALE_WIDTH,
   },
   editText: {
     fontSize: FS(12),

@@ -20,7 +20,7 @@ export default function SelectedHashtag({ id, info }) {
   const PlaylistSection = () => {
     return (
       <ScrollView>
-        <Playlist />
+        <Playlist hashtag />
       </ScrollView>
     );
   };
@@ -28,7 +28,7 @@ export default function SelectedHashtag({ id, info }) {
   const DailySection = () => {
     return (
       <ScrollView>
-        <Daily actions />
+        <Daily actions hashtag />
       </ScrollView>
     );
   };

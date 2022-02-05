@@ -29,17 +29,12 @@ const PlayAction = ({ song }) => {
   );
 };
 
-export const Playlist = ({ song }) => {
+export const Playlist = ({ hashtag }) => {
   const { state } = useContext(SearchContext);
   const count = state.selected.playlist.length;
   const textList = ['아직 생성된 플레이리스트가 없습니다'];
-  const data = {
-    songs: [song],
-    information: { title: '', content: '', hashtags: [] },
-    image: null,
-  };
   const onPress = () => {
-    navigate('PlaylistCreate', { data });
+    navigate('PlaylistCreate');
   };
   return (
     <View style={styles.playlistContainer}>
@@ -60,7 +55,7 @@ export const Playlist = ({ song }) => {
         })
       ) : (
         <EmptyData
-          action={<NavigateButton onPress={onPress} text="이 곡으로 플레이리스트 만들기" />}
+          action={!hashtag && <NavigateButton onPress={onPress} text="플레이리스트 만들기" />}
           customContainer={styles.emptyContainer}
           textList={textList}
         />
@@ -69,7 +64,7 @@ export const Playlist = ({ song }) => {
   );
 };
 
-export const Daily = ({ actions, song }) => {
+export const Daily = ({ actions, song, hashtag }) => {
   const { state } = useContext(SearchContext);
   const count = state.selected.daily.length;
 
@@ -93,7 +88,7 @@ export const Daily = ({ actions, song }) => {
         </AddedProvider>
       ) : (
         <EmptyData
-          action={<NavigateButton onPress={onPress} text="이 곡으로 데일리 만들기" />}
+          action={!hashtag && <NavigateButton onPress={onPress} text="이 곡으로 데일리 만들기" />}
           customContainer={styles.emptyContainer}
           textList={textList}
         />

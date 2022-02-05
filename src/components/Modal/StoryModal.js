@@ -140,7 +140,6 @@ const ProgressBar = () => {
       reactive.setValue(-1000);
     }
   }, [position, width, duration]);
-
   return (
     <View style={styles.progressContainer}>
       <View style={styles.progressBox}>
@@ -424,7 +423,6 @@ const styles = StyleSheet.create({
   },
   songContainer: {
     width: 317 * SCALE_WIDTH,
-    height: 382 * SCALE_HEIGHT,
     borderRadius: 36 * SCALE_HEIGHT,
     backgroundColor: 'rgba(25,25,25,0.8)',
     alignItems: 'center',
@@ -447,6 +445,7 @@ const styles = StyleSheet.create({
   },
   artist: {
     fontSize: FS(14),
+    marginBottom: 9 * SCALE_HEIGHT,
     color: '#fff',
   },
   exitIcon: {

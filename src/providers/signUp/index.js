@@ -25,6 +25,10 @@ export default function SignUpProvider({ children }) {
     passwordCheck: true,
   });
 
+  const onInitialize = (data) => {
+    const { email, password } = data;
+    setInformation((prev) => ({ ...prev, email, password, passwordCheck: password }));
+  };
   const onChangeValue = (type, text) => {
     if (type === 'email') {
       setInformation((prev) => ({ ...prev, email: text }));
@@ -43,13 +47,14 @@ export default function SignUpProvider({ children }) {
     return check;
   };
 
-  const onClickComplete = async () => {
+  const onClickComplete = async (social) => {
     if (
-      information.allTerm &&
-      information.email !== '' &&
-      passwordChecker(information.password) &&
-      passwordChecker(information.password) &&
-      information.password === information.passwordCheck
+      social ||
+      (information.allTerm &&
+        information.email !== '' &&
+        passwordChecker(information.password) &&
+        passwordChecker(information.password) &&
+        information.password === information.passwordCheck)
     ) {
       await signUp({ email: information.email, password: information.password });
       await getMyInformation();
@@ -97,6 +102,7 @@ export default function SignUpProvider({ children }) {
     onClickComplete,
     onClickTerm,
     validityChecker,
+    onInitialize,
   };
 
   return <SignUpContext.Provider value={value}>{children}</SignUpContext.Provider>;

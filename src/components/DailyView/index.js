@@ -13,7 +13,7 @@ import { useModal } from 'providers/modal';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
 
-export default function DailyView({ info, actions, isSelected }) {
+export default function DailyView({ info, actions, isSelected, titleCustom }) {
   const { image, song, textcontent, _id: id, postUserId } = info;
   const {
     name,
@@ -46,7 +46,7 @@ export default function DailyView({ info, actions, isSelected }) {
           ) : (
             <FastImage source={{ uri: image[0] }} style={styles.img} />
           )}
-          <View style={styles.area}>
+          <View style={[styles.area, titleCustom]}>
             <MoveText
               isExplicit={contentRating === 'explicit'}
               text={name}
