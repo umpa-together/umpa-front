@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_3, MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import { useSignUp } from 'providers/signUp';
+import Text from 'components/Text';
 
 export default function InformationInput() {
   const { validity, information, onChangeValue } = useSignUp();

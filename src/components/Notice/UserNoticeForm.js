@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
 import style from 'constants/styles';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function UserNoticeForm({ notice, onClickProfile }) {
   const { noticinguser: user, time } = notice;

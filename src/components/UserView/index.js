@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useContext } from 'react';
 import { Context as UserContext } from 'context/User';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
@@ -10,6 +10,7 @@ import { push } from 'lib/utils/navigation';
 import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
 import UserRepresentSong from 'components/UserRepresentSong';
+import Text from 'components/Text';
 
 export default function UserView({ user, func }) {
   const { name, profileImage, _id: id, songs } = user;

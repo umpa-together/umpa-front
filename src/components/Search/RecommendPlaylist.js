@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
 import PlaylistCard from 'components/Search/PlaylistCard';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function RecommendPlaylist() {
   const { state } = useContext(MainContentsContext);

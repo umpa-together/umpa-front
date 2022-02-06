@@ -49,8 +49,8 @@ export default function SongView({ song, actions = null, landings = null, play =
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 16 * SCALE_WIDTH,
-    marginVertical: 10 * SCALE_HEIGHT,
     width: '100%',
+    marginVertical: 10 * SCALE_HEIGHT,
   },
   img: {
     width: 60 * SCALE_WIDTH,
@@ -68,11 +68,11 @@ const styles = StyleSheet.create({
     marginTop: 10 * SCALE_HEIGHT,
   },
   actions: {
-    marginRight: 4 * SCALE_WIDTH,
+    marginRight: 10 * SCALE_WIDTH,
   },
   icon: {
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
-    marginRight: 4 * SCALE_WIDTH,
+    marginRight: 5 * SCALE_WIDTH,
   },
 });

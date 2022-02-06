@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
 import { Context as UserContext } from 'context/User';
 import ScrollSong from 'components/ScrollSong';
@@ -16,6 +16,7 @@ import DeleteModal from 'components/Modal/DeleteModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import Text from 'components/Text';
 import ProfileBackground from './ProfileBackground';
 
 export function ImageSection() {

@@ -1,8 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function LoginSignUp() {
   const onPress = () => {

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
 import FollowButton from 'components/FollowButton';
+import Text from 'components/Text';
 
 export default function UserName({ id, myaccount, name, realName }) {
   const onPressProfileEdit = () => {

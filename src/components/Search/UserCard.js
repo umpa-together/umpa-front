@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -7,6 +7,7 @@ import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, COLOR_5 } from 'constants/colors';
 import { push } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function UserCard({ user }) {
   const { _id: id, genre, name, profileImage } = user;

@@ -4,6 +4,8 @@ import { useSearch } from 'providers/search';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import { COLOR_3 } from 'constants/colors';
+import style from 'constants/styles';
+import FS from 'lib/utils/navigation';
 
 export default function SearchBar() {
   const {
@@ -24,7 +26,7 @@ export default function SearchBar() {
     textInputRef.current.blur();
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style.flexRow]}>
       <TextInput
         ref={textInputRef}
         value={text}
@@ -56,11 +58,12 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: 343 * SCALE_WIDTH,
-    height: 40 * SCALE_HEIGHT,
+    paddingVertical: 10 * SCALE_HEIGHT,
     paddingLeft: 43 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     backgroundColor: '#EEE',
     borderRadius: 7 * SCALE_HEIGHT,
+    fontSize: FS(10),
   },
   searchIcon: {
     width: 18 * SCALE_WIDTH,

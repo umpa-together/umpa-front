@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import timeConverter from 'lib/utils/time';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 import PlaylistAlbumImage from '../PlaylistAlbumImage';
 
 export default function PlaylistNoticeForm({ notice, onClickProfile }) {
@@ -16,9 +17,7 @@ export default function PlaylistNoticeForm({ notice, onClickProfile }) {
     playlistrecomment,
     time,
   } = notice;
-
   const { image, songs } = playlist;
-
   return (
     <>
       <TouchableOpacity onPress={onClickProfile}>

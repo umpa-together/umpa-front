@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import Text from 'components/Text';
 
 export default function PrivacyPolicyForm() {
   return (

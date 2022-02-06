@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Icon from 'widgets/Icon';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function SongCard({ song }) {
   const { name, contentRating } = song.attributes;

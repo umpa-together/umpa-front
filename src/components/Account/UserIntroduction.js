@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import { COLOR_2 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useModal } from 'providers/modal';
 import { Context as UserContext } from 'context/User';
 import UserRepresentSong from 'components/UserRepresentSong';
+import Text from 'components/Text';
 
 export default function UserIntroduction({ introduction, song, id }) {
   const { setRepresentModal } = useModal();

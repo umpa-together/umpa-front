@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import React, { useContext, useEffect } from 'react';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
@@ -11,6 +11,7 @@ import { login } from '@react-native-seoul/kakao-login';
 import { NaverLogin } from '@react-native-seoul/naver-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import * as env from 'constants/app';
+import Text from 'components/Text';
 
 const webclientid = Platform.select({
   ios: env.webClientIdIOS,

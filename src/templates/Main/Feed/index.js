@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as UserContext } from 'context/User';
@@ -14,6 +14,7 @@ import SortModal from 'components/Modal/SortModal';
 import FloatingButton from 'components/Feed/FloatingButton';
 import SongActionsProvider from 'providers/songActions';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {

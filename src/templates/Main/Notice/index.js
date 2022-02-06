@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { FlatList, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/Notice';
 import style from 'constants/styles';
 import Header from 'components/Header';
@@ -12,6 +12,7 @@ import { COLOR_1 } from 'constants/colors';
 import { navigate } from 'lib/utils/navigation';
 import EmptyData from 'components/EmptyData';
 import NavigateButton from 'components/EmptyData/NavigateButton';
+import Text from 'components/Text';
 
 export default function Notice() {
   const { state, getNotice, getNextNotice } = useContext(NoticeContext);

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = ({ onClickDelete }) => {

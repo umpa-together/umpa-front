@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import UserCard from 'components/Search/UserCard';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function Participant() {
   const {

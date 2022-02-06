@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import CreateInput from 'components/Playlist/CreateInput';
 import CreateSongList from 'components/Playlist/CreateSongList';
@@ -12,6 +12,7 @@ import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import SongActionsProvider from 'providers/songActions';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);

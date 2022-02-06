@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
@@ -11,6 +11,7 @@ import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import AddedModal from 'components/Modal/AddedModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = () => {

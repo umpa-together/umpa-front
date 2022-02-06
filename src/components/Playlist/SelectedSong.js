@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
 import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 export default function SelectedSong({ songs }) {
   const { postAddedSong } = useContext(AddedContext);
@@ -48,6 +49,5 @@ const styles = StyleSheet.create({
   icon: {
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
-    marginRight: 4 * SCALE_WIDTH,
   },
 });

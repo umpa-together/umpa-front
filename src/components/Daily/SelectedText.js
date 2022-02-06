@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as DailyContext } from 'context/Daily';
 import { COLOR_1 } from 'constants/colors';
 import Hyperlink from 'react-native-hyperlink';
 import openURL from 'lib/utils/openUrl';
+import Text from 'components/Text';
 
 export default function SelectedText() {
   const {

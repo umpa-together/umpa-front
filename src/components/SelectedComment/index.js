@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import CommentView from 'components/CommentView';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
@@ -7,6 +7,7 @@ import Icon from 'widgets/Icon';
 import SortModal from 'components/Modal/SortModal';
 import { Provider as ReportProvider } from 'context/Report';
 import { useComment } from 'providers/comment';
+import Text from 'components/Text';
 
 export default function SelectedComment({ opt, comments }) {
   const [sortModal, setSortModal] = useState(false);

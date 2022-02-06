@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { Context as AuthContext } from 'context/Auth';
+import Text from 'components/Text';
 
 export default function ModalSign() {
   const { signOut } = useContext(AuthContext);

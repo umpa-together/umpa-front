@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
 import UserCard from 'components/Search/UserCard';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function RecommendAcocunt() {
   const { state } = useContext(MainContentsContext);

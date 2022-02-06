@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { COLOR_3, MAIN_COLOR } from 'constants/colors';
+import { COLOR_1, MAIN_COLOR } from 'constants/colors';
+import style from 'constants/styles';
+import Text from 'components/Text';
 
-export default function MusicSection({ title, songs }) {
+export default function MusicSection({ title, songs, icon }) {
   const { onClickAdded } = useModal();
   const { postAddedSong } = useContext(AddedContext);
 
@@ -26,7 +28,14 @@ export default function MusicSection({ title, songs }) {
 
   return (
     <>
-      <Text style={[styles.title, title === '내가 도전한 곡' && styles.activeTitle]}>{title}</Text>
+      <View style={[styles.titleContainer, style.flexRow]}>
+        <Text style={[styles.title, title === '내가 도전한 곡' && styles.activeTitle]}>
+          {title}
+        </Text>
+        {icon && (
+          <Icon source={require('public/icons/relay-first-song.png')} style={styles.songIcon} />
+        )}
+      </View>
       {songs &&
         songs.map((item) => {
           const key = item._id || item.id;
@@ -45,19 +54,24 @@ const styles = StyleSheet.create({
   icon: {
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
-    marginRight: 4 * SCALE_WIDTH,
   },
-  title: {
-    fontSize: FS(12),
-    color: COLOR_3,
+  titleContainer: {
     marginLeft: 21 * SCALE_WIDTH,
     marginBottom: 13 * SCALE_HEIGHT,
     marginTop: 30 * SCALE_HEIGHT,
+  },
+  title: {
+    fontSize: FS(14),
+    color: COLOR_1,
   },
   active: {
     backgroundColor: '#E6ECFF',
   },
   activeTitle: {
     color: MAIN_COLOR,
+  },
+  songIcon: {
+    width: 22 * SCALE_WIDTH,
+    height: 22 * SCALE_WIDTH,
   },
 });

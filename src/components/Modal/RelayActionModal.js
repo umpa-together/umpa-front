@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { useSongActions } from 'providers/songActions';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
+import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = ({ onCloseSearchSongModal, onClose }) => {

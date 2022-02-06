@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
 import SongTitle from 'components/SongTitle';
+import Text from 'components/Text';
 
 export default function ScrollSongView({ landings, song }) {
   const { artwork, artistName, name, contentRating } = song.attributes;

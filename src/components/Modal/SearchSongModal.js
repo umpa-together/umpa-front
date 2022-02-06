@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Header from 'components/SearchSong/Header';
@@ -13,6 +13,7 @@ import SearchLists from 'components/SearchSong/SearchLists';
 import { COLOR_3, MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import ValidityModal from 'components/Modal/ValidityModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 import Modal from '.';
 import RelayActionModal from './RelayActionModal';
 
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     color: MAIN_COLOR,
   },
   inactiveText: {
-    fontSize: FS(12),
+    fontSize: FS(16),
     color: COLOR_3,
   },
   titleStyle: {

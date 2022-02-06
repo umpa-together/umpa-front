@@ -75,7 +75,7 @@ const NotCompletedRelay = () => {
           {challengeSong.length > 0 && (
             <MusicSection title="내가 도전한 곡" songs={challengeSong} />
           )}
-          <MusicSection title="음파에서 선정한 곡" songs={[playlist.representSong]} />
+          <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
           {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
         </AddedProvider>
       </ScrollView>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import { COLOR_2 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function SortPosting({ count, title, onPressModal }) {
   return (

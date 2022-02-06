@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSearch } from 'providers/search';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_5, COLOR_3 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function RecentKeywords({ modal }) {
   const { state, getRecentKeywords, getAllContents } = useContext(SearchContext);
