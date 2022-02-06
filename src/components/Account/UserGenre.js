@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import { COLOR_3 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import Text from 'components/Text';
 
 export default function UserGenre({ genre }) {
   return (

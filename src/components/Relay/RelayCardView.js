@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FastImage from 'react-native-fast-image';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,6 +8,7 @@ import Timer from 'components/Timer';
 import Icon from 'widgets/Icon';
 import completeChecker from 'lib/utils/relayPlaylist';
 import { push } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function RelayCardView({ relay }) {
   const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateCount } = relay;
@@ -79,12 +80,12 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '100%',
+    height: 77 * SCALE_HEIGHT,
     paddingLeft: 13 * SCALE_WIDTH,
     backgroundColor: '#fff',
   },
   titleContainer: {
-    paddingTop: 17 * SCALE_HEIGHT,
-    marginBottom: 11 * SCALE_HEIGHT,
+    paddingTop: 7 * SCALE_HEIGHT,
     width: 300 * SCALE_WIDTH,
   },
   img: {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: FS(11),
     color: '#FFF',
     paddingHorizontal: 6 * SCALE_WIDTH,
-    paddingVertical: 2 * SCALE_HEIGHT,
+    paddingVertical: 2.2 * SCALE_HEIGHT,
   },
   progressContainer: {
     backgroundColor: MAIN_COLOR,
@@ -125,10 +126,10 @@ const styles = StyleSheet.create({
     fontSize: FS(14),
     color: COLOR_1,
     fontWeight: 'bold',
-    marginLeft: 6.5 * SCALE_WIDTH,
+    marginLeft: 5.4 * SCALE_WIDTH,
   },
   peopleContainer: {
-    marginBottom: 14 * SCALE_HEIGHT,
+    marginTop: 3 * SCALE_HEIGHT,
   },
   peopleIcon: {
     width: 12 * SCALE_WIDTH,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   },
   box: {
     paddingHorizontal: 7 * SCALE_WIDTH,
-    paddingVertical: 4 * SCALE_HEIGHT,
+    paddingVertical: 3 * SCALE_HEIGHT,
     borderRadius: 43 * SCALE_HEIGHT,
     borderColor: COLOR_5,
     borderWidth: 1 * SCALE_HEIGHT,

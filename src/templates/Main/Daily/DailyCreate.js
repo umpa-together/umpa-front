@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
@@ -14,6 +14,7 @@ import FS from 'lib/utils/normalize';
 import { useScroll } from 'providers/scroll';
 import { useModal } from 'providers/modal';
 import ValidityModal from 'components/Modal/ValidityModal';
+import Text from 'components/Text';
 
 const NextActions = ({ edit, setValidityMsg }) => {
   const [validity, setValidity] = useState(false);

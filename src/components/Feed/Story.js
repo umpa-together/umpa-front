@@ -1,12 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Context as StoryContext } from 'context/Story';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -17,6 +10,7 @@ import { useStory } from 'providers/story';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import Text from 'components/Text';
 
 export default function Story() {
   const [storyModal, setStoryModal] = useState(false);

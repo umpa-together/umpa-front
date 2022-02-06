@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
@@ -16,6 +16,7 @@ import AddedModal from 'components/Modal/AddedModal';
 import StoryViewerModal from 'components/Modal/StoryViewerModal';
 import ActionModal from 'components/Modal/ActionModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 import Modal from '.';
 
 const Header = ({ onClose }) => {

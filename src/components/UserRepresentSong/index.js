@@ -1,10 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function UserRepresentSong({ song, action, account }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();

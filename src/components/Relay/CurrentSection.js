@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { navigate } from 'lib/utils/navigation';
@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import { StatusBarHeight } from 'components/StatusBar';
 import Icon from 'widgets/Icon';
 import GuideBox from 'components/Relay/GuideBox';
+import Text from 'components/Text';
 
 const TemplateA = ({ title }) => {
   return (
@@ -197,15 +198,15 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   icon: {
-    width: 26 * SCALE_WIDTH,
-    height: 26 * SCALE_WIDTH,
+    width: 20 * SCALE_WIDTH,
+    height: 20 * SCALE_WIDTH,
     marginRight: 2 * SCALE_WIDTH,
   },
   nameContainer: {
     paddingVertical: 3 * SCALE_HEIGHT,
   },
   name: {
-    fontSize: FS(18),
+    fontSize: FS(16),
     color: '#fff',
     fontWeight: 'bold',
   },

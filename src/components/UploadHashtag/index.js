@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
 import HashtagModal from 'components/Modal/HashtagModal';
+import Text from 'components/Text';
 
 export default function UploadHashtag({ info, containerStyle }) {
   const [hashtagModal, setHashtagModal] = useState(false);

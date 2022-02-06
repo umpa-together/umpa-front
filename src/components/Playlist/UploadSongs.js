@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
 import { usePlaylistCreate } from 'providers/playlistCreate';
+import Text from 'components/Text';
 
 export default function UploadSongs() {
   const { songs } = usePlaylistCreate();

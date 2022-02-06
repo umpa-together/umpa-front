@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Header from 'components/Header';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -7,6 +7,7 @@ import style from 'constants/styles';
 import Terms from 'components/Auth/Terms';
 import { useSignUp } from 'providers/signUp';
 import InformationInput from 'components/Auth/InformationInput';
+import Text from 'components/Text';
 
 export default function SignUp({ data }) {
   const { information, onClickComplete, onInitialize } = useSignUp();

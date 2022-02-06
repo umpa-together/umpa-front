@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import AddSongView from 'components/SongView/AddSongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_5 } from 'constants/colors';
 import EmptyData from 'components/EmptyData';
+import Text from 'components/Text';
 
 export default function AddedSongLists() {
   const {

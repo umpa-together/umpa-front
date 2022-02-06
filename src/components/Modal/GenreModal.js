@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1, MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import style from 'constants/styles';
 import { useProfileEdit } from 'providers/profileEdit';
+import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = ({ onCloseGenreModal }) => {

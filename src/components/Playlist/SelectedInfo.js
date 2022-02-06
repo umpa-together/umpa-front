@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function SelectedInfo({ playlist }) {
   const {

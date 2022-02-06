@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Text, FlatList, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function HintLists() {
   const { state } = useContext(AppleMusicContext);

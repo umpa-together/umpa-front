@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Context as PlaylistContext } from 'context/Playlist';
 import { Context as DailyContext } from 'context/Daily';
@@ -9,6 +9,7 @@ import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_1 } from 'constants/colors';
 import SendList, { SendFeed } from 'lib/utils/kakaoShare';
+import Text from 'components/Text';
 
 export default function Footer({ object, type }) {
   const { state } = useContext(UserContext);

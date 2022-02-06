@@ -24,4 +24,5 @@ module.exports = {
       },
     },
   },
+  ignorePatterns: ['FCMService.js', 'LocalNotificationService.js'],
 };

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import RelayCardView from 'components/Relay/RelayCardView';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -6,6 +6,7 @@ import { COLOR_1 } from 'constants/colors';
 import style from 'constants/styles';
 import YoutubeLink from 'components/youtubeLink';
 import OpenYoutube from 'lib/utils/youtube';
+import Text from 'components/Text';
 
 export default function RelayList({ relayList }) {
   return (

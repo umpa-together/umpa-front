@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { MAIN_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = ({ actionInfo }) => {

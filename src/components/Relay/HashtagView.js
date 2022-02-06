@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { MAIN_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function HashtagView() {
   const {

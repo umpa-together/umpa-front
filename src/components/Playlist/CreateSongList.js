@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import ScrollSong from 'components/ScrollSong';
 import ScrollSongView from 'components/SongView/ScrollSongView';
@@ -12,6 +12,7 @@ import DeleteModal from 'components/Modal/DeleteModal';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import { useSongActions } from 'providers/songActions';
 import { useFocusEffect } from '@react-navigation/native';
+import Text from 'components/Text';
 
 const SongLandings = ({ song }) => {
   const [songDeletemodal, setSongDeleteModal] = useState(false);

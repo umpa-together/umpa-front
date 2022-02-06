@@ -17,7 +17,7 @@ export default function CreateImageLists({ edit = false }) {
         {images.map((item) => {
           const { uri } = item;
           return (
-            <>
+            <View key={uri}>
               {edit ? (
                 <FastImage source={{ uri }} style={styles.imageNotEdit} />
               ) : (
@@ -31,7 +31,7 @@ export default function CreateImageLists({ edit = false }) {
                   </TouchableOpacity>
                 </Movable>
               )}
-            </>
+            </View>
           );
         })}
       </View>

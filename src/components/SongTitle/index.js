@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
+import Text from 'components/Text';
 
 export default function SongTitle({ isExplicit, title, titleStyle }) {
   return (

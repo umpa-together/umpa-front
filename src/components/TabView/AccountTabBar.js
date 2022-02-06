@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { TabBar } from 'react-native-tab-view';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_6, COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function AccountTabBar({ props }) {
   const indicatorStyle = {

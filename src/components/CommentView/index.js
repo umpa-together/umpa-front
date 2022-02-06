@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
 import timeConverter from 'lib/utils/time';
@@ -14,6 +14,7 @@ import ActionModal from 'components/Modal/ActionModal';
 import { useComment } from 'providers/comment';
 import Hyperlink from 'react-native-hyperlink';
 import openURL from 'lib/utils/openUrl';
+import Text from 'components/Text';
 
 const CommentAction = ({ postUserId, commentId, likes, opt }) => {
   const {

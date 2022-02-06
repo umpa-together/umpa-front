@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import Icon from 'widgets/Icon';
+import Text from 'components/Text';
 
 export default function EmptyData({ icon, action, textList, customContainer }) {
   return (

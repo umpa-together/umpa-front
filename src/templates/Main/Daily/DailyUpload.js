@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import Header from 'components/Header';
 import style from 'constants/styles';
@@ -9,6 +9,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Daily/UploadInfo';
 import UploadHashtag from 'components/UploadHashtag';
+import Text from 'components/Text';
 
 const NextActions = ({ edit }) => {
   const { onClickUpload } = useDailyCreate();

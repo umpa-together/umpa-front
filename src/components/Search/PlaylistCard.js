@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import { push } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function PlaylistCard({ info }) {
   const {
-    image,
     title,
     playlist: { _id: id, postUserId },
   } = info;

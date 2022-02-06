@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_2, COLOR_3, COLOR_4 } from 'constants/colors';
 import style from 'constants/styles';
 import { useSignUp } from 'providers/signUp';
 import Icon from 'widgets/Icon';
 import TermModalView from 'components/Modal/TermModal';
+import Text from 'components/Text';
 
 export default function Terms() {
   const [termModal, setTermModal] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { SongImage } from 'widgets/SongImage';
@@ -12,6 +12,7 @@ import { navigate, push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
+import Text from 'components/Text';
 
 export default function DailyView({ info, actions, isSelected, titleCustom }) {
   const { image, song, textcontent, _id: id, postUserId } = info;

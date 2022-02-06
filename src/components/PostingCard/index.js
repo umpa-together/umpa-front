@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_3 } from 'constants/colors';
@@ -8,6 +8,7 @@ import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import { SongImage } from 'widgets/SongImage';
 import { push } from 'lib/utils/navigation';
 import TouchableNoDouble from 'components/TouchableNoDouble';
+import Text from 'components/Text';
 
 const playlistConverter = (el, round) => {
   const { image, songs, title, time, _id, postUserId } = el;

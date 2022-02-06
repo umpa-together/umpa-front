@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { goBack } from 'lib/utils/navigation';
 import style from 'constants/styles';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 const Header = ({ headerStyle, title, titleStyle, back, landings = [], actions = [] }) => {
   const onClickBack = () => {

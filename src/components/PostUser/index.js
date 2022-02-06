@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import { navigate, push } from 'lib/utils/navigation';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function ({ user, action }) {
   const { _id: id, profileImage: img, name } = user;
