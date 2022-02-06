@@ -22,7 +22,7 @@ export default function RelayCardView({ relay }) {
       <FastImage source={{ uri: image }} style={[styles.img, style.space_between]}>
         <View style={style.flexRow}>
           <View style={[styles.progressContainer, !currentStatus && styles.finishedStyle]}>
-            <Text style={styles.statusText}>{!currentStatus ? '플리완성' : '진행중'}</Text>
+            <Text style={styles.statusTextBig}>{!currentStatus ? '플리완성' : '진행중'}</Text>
           </View>
           {currentStatus && (
             <Timer
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '100%',
+    height: 77 * SCALE_HEIGHT,
     paddingLeft: 13 * SCALE_WIDTH,
     backgroundColor: '#fff',
   },
   titleContainer: {
-    paddingTop: 17 * SCALE_HEIGHT,
-    marginBottom: 11 * SCALE_HEIGHT,
+    paddingTop: 6.6 * SCALE_HEIGHT,
     width: 300 * SCALE_WIDTH,
   },
   img: {
@@ -96,7 +96,13 @@ const styles = StyleSheet.create({
     fontSize: FS(11),
     color: '#FFF',
     paddingHorizontal: 6 * SCALE_WIDTH,
-    paddingVertical: 2 * SCALE_HEIGHT,
+    paddingVertical: 2.8 * SCALE_HEIGHT,
+  },
+  statusTextBig: {
+    fontSize: FS(11),
+    color: '#FFF',
+    paddingHorizontal: 6 * SCALE_WIDTH,
+    paddingVertical: 4 * SCALE_HEIGHT,
   },
   progressContainer: {
     backgroundColor: MAIN_COLOR,
@@ -108,9 +114,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#85A0FF',
   },
   timeContainer: {
-    backgroundColor: COLOR_5,
+    backgroundColor: '#rgba(166,166,166,0.5)',
     borderRadius: 4 * SCALE_HEIGHT,
-    marginLeft: 3 * SCALE_WIDTH,
+    marginLeft: 3.3 * SCALE_WIDTH,
     marginTop: 14 * SCALE_HEIGHT,
   },
   icon: {
@@ -125,14 +131,15 @@ const styles = StyleSheet.create({
     fontSize: FS(14),
     color: COLOR_1,
     fontWeight: 'bold',
-    marginLeft: 6.5 * SCALE_WIDTH,
+    marginLeft: 5.4 * SCALE_WIDTH,
   },
   peopleContainer: {
-    marginBottom: 14 * SCALE_HEIGHT,
+    marginTop: 3 * SCALE_HEIGHT,
   },
   peopleIcon: {
     width: 12 * SCALE_WIDTH,
     height: 13 * SCALE_HEIGHT,
+    marginLeft: 3 * SCALE_WIDTH,
     marginRight: 4 * SCALE_WIDTH,
   },
   peopleText: {
@@ -141,7 +148,7 @@ const styles = StyleSheet.create({
   },
   box: {
     paddingHorizontal: 7 * SCALE_WIDTH,
-    paddingVertical: 4 * SCALE_HEIGHT,
+    paddingVertical: 3 * SCALE_HEIGHT,
     borderRadius: 43 * SCALE_HEIGHT,
     borderColor: COLOR_5,
     borderWidth: 1 * SCALE_HEIGHT,

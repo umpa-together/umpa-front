@@ -44,7 +44,7 @@ export default function Information() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 17 * SCALE_HEIGHT,
-    paddingLeft: 26 * SCALE_WIDTH,
+    paddingLeft: 22 * SCALE_WIDTH,
     flexDirection: 'row',
   },
   img: {

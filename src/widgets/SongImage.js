@@ -15,7 +15,6 @@ const SongImageBack = ({ url, imgStyle, border }) => {
   return (
     <ImageBackground
       style={imgStyle}
-      resizeMode="stretch"
       source={{ uri: url }}
       imageStyle={{ borderRadius: border * SCALE_HEIGHT }}
     />

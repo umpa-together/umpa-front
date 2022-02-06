@@ -47,7 +47,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
       title: '릴레이 곡 도전',
       onClick: onClickAdd,
       isValid: !postUserId.includes(user.user._id),
-      icon: <Icon source={require('public/icons/play.png')} style={styles.icon} />,
+      icon: <Icon source={require('public/icons/relay-like.png')} style={styles.icon} />,
     },
     {
       title: '심사하기',
@@ -72,7 +72,10 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
         const { title, onClick, isValid, icon } = option;
         return (
           <TouchableOpacity
-            style={[style.flexRow, styles.optionBox, title === '릴레이 곡 도전' && styles.active]}
+            style={[
+              style.flexRow,
+              title === '심사하기' ? styles.optionBoxVote : styles.optionBoxTry,
+            ]}
             onPress={() => onClick(isValid)}
             key={title}
           >
@@ -95,19 +98,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22 * SCALE_WIDTH,
     marginTop: 33 * SCALE_HEIGHT,
   },
-  optionBox: {
+  optionBoxTry: {
     width: 159 * SCALE_WIDTH,
     paddingVertical: 5 * SCALE_HEIGHT,
-    backgroundColor: '#E4E4E440',
+    backgroundColor: '#E4E4E460',
     borderRadius: 8 * SCALE_HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingLeft: 18 * SCALE_WIDTH,
   },
-  active: {
-    backgroundColor: '#85A0FF33',
+  optionBoxVote: {
+    width: 159 * SCALE_WIDTH,
+    paddingVertical: 5 * SCALE_HEIGHT,
+    backgroundColor: '#E4E4E460',
+    borderRadius: 8 * SCALE_HEIGHT,
+    paddingLeft: 35 * SCALE_WIDTH,
   },
   icon: {
-    width: 32 * SCALE_WIDTH,
-    height: 32 * SCALE_WIDTH,
+    width: 30 * SCALE_WIDTH,
+    height: 30 * SCALE_WIDTH,
   },
 });

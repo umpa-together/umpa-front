@@ -162,6 +162,7 @@ export default function ({ comment, opt }) {
     likes,
     _id: commentId,
   } = comment;
+  console.log(comment)
   const timeConverted = timeConverter(time);
   const RecommentChecker = ['playlistRecomment', 'dailyRecomment', 'relayRecomment'];
   const {

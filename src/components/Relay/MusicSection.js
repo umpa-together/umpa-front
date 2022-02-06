@@ -5,7 +5,7 @@ import SongView from 'components/SongView';
 import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { COLOR_3, MAIN_COLOR } from 'constants/colors';
+import { COLOR_1, MAIN_COLOR } from 'constants/colors';
 
 export default function MusicSection({ title, songs }) {
   const { onClickAdded } = useModal();
@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FS(12),
-    color: COLOR_3,
-    marginLeft: 21 * SCALE_WIDTH,
+    color: COLOR_1,
+    marginLeft: 15 * SCALE_WIDTH,
     marginBottom: 13 * SCALE_HEIGHT,
-    marginTop: 30 * SCALE_HEIGHT,
+    marginTop: 20 * SCALE_HEIGHT,
   },
   active: {
     backgroundColor: '#E6ECFF',

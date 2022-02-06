@@ -5,7 +5,7 @@ import MoveText from 'components/MoveText';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
-import { COLOR_2 } from 'constants/colors';
+import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 
 export default function DailySong({ song, containerStyle, time, selected }) {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     paddingRight: 24 * SCALE_WIDTH,
     borderWidth: 1 * SCALE_WIDTH,
     borderRadius: 43 * SCALE_HEIGHT,
-    borderColor: 'rgba(27,77,255,0.3)',
+    borderColor: MAIN_COLOR,
   },
   timeText: {
     fontSize: FS(12),

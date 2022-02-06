@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     left: 6 * SCALE_WIDTH,
   },
   img: {
-    width: 122 * SCALE_WIDTH,
-    height: 122 * SCALE_WIDTH,
+    width: 122 * SCALE_HEIGHT,
+    height: 122 * SCALE_HEIGHT,
     borderRadius: 6 * SCALE_HEIGHT,
     zIndex: 98,
     position: 'absolute',
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     color: COLOR_4,
   },
   optionContainer: {
-    marginTop: 35 * SCALE_HEIGHT,
+    marginTop: 26 * SCALE_HEIGHT,
     paddingHorizontal: 15.5 * SCALE_WIDTH,
   },
   box: {

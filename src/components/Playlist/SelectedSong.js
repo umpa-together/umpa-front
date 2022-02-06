@@ -25,7 +25,7 @@ export default function SelectedSong({ songs }) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.titleText}>총 {songs.length}곡</Text>
       <View>
         <AddedProvider>
@@ -39,10 +39,13 @@ export default function SelectedSong({ songs }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 13 * SCALE_HEIGHT,
+  },
   titleText: {
     fontSize: FS(12),
     color: COLOR_3,
-    marginBottom: 28 * SCALE_HEIGHT,
+    marginBottom: 13 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
   },
   icon: {
