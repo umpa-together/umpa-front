@@ -61,7 +61,7 @@ export function GenreSection() {
       <Text style={styles.title}>선호장르</Text>
       <TouchableOpacity style={styles.sectionBox} onPress={onClickSelect}>
         {profile.genre.length === 0 ? (
-          <Text style={styles.title}>선호 장르 선택</Text>
+          <Text style={styles.genreText}>선호 장르 선택</Text>
         ) : (
           <View style={style.flexRow}>
             {profile.genre.map((item, index) => {
@@ -210,6 +210,10 @@ const styles = StyleSheet.create({
   title: {
     color: COLOR_3,
     fontSize: FS(12),
+  },
+  genreText: {
+    color: COLOR_3,
+    fontSize: FS(15),
   },
   sectionContainer: {
     marginBottom: 24 * SCALE_HEIGHT,

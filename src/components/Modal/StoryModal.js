@@ -110,7 +110,7 @@ const SongBody = () => {
         center
       />
       <MoveText
-        container={styles.textArea}
+        container={[styles.textArea, styles.textBetween]}
         text={artistName}
         isMove={id === isPlayingId}
         textStyle={styles.artist}
@@ -424,19 +424,24 @@ const styles = StyleSheet.create({
   },
   songContainer: {
     width: 317 * SCALE_WIDTH,
-    borderRadius: 36 * SCALE_HEIGHT,
+    borderRadius: 12 * SCALE_HEIGHT,
     backgroundColor: 'rgba(25,25,25,0.8)',
     alignItems: 'center',
   },
   songImg: {
     width: 317 * SCALE_WIDTH,
     height: 317 * SCALE_WIDTH,
-    borderRadius: 25 * SCALE_HEIGHT,
+    borderRadius: 12 * SCALE_HEIGHT,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   textArea: {
     width: 270 * SCALE_WIDTH,
     textAlign: 'center',
-    marginTop: 9 * SCALE_HEIGHT,
+    marginTop: 16 * SCALE_HEIGHT,
+  },
+  textBetween: {
+    marginTop: 3 * SCALE_HEIGHT,
   },
   name: {
     fontSize: FS(18),
@@ -446,7 +451,7 @@ const styles = StyleSheet.create({
   },
   artist: {
     fontSize: FS(14),
-    marginBottom: 9 * SCALE_HEIGHT,
+    marginBottom: 19 * SCALE_HEIGHT,
     color: '#fff',
   },
   exitIcon: {

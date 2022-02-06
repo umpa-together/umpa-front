@@ -26,7 +26,7 @@ const FeedActions = ({ setModal }) => {
 
   return (
     <TouchableOpacity onPress={onClickActions} activeOpacity={0.9} style={style.flexRow}>
-      <Text style={styles.type}>{state.type ? '피드' : '팔로잉'}</Text>
+      <Text style={styles.type}>{state.type ? '전체보기' : '팔로잉'}</Text>
       <Icon source={require('public/icons/feed-down.png')} style={styles.actions} />
     </TouchableOpacity>
   );

@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     height: 32 * SCALE_WIDTH,
   },
   titleContainer: {
-    marginLeft: 21 * SCALE_WIDTH,
     marginBottom: 13 * SCALE_HEIGHT,
-    marginTop: 30 * SCALE_HEIGHT,
+    marginTop: 20 * SCALE_HEIGHT,
   },
   title: {
     fontSize: FS(14),
     color: COLOR_1,
+    marginLeft: 15 * SCALE_WIDTH,
   },
   active: {
     backgroundColor: '#E6ECFF',
