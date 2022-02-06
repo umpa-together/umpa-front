@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function Header({ titleStyle, title, exit, action }) {
   return (

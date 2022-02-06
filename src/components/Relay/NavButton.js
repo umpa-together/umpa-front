@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import { Context as RelayContext } from 'context/Relay';
 import { Context as UserContext } from 'context/User';
@@ -10,6 +10,7 @@ import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSongActions } from 'providers/songActions';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 export default function NavButton({ isSwipe, setValidityMsg }) {
   const {

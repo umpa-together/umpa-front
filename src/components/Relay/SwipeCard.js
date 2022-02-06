@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
 import { SongImage } from 'widgets/SongImage';
+import Text from 'components/Text';
 
 export default function SwipeCard({ card }) {
   const { postUserId, song } = card;

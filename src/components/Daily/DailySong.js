@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -7,6 +7,7 @@ import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 
 export default function DailySong({ song, containerStyle, time, selected }) {
   const { isPlayingId, onClickSong } = useTrackPlayer();

@@ -1,9 +1,10 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import React, { useRef, useContext } from 'react';
 import { COLOR_5, COLOR_3, MAIN_COLOR } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as AuthContext } from 'context/Auth';
+import Text from 'components/Text';
 
 export default function LoginInput() {
   const email = useRef();

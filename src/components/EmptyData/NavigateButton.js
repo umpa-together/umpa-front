@@ -1,9 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function NavigateButton({ text, onPress }) {
   return (

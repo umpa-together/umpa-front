@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
@@ -8,6 +8,7 @@ import Footer from 'components/Footer';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;

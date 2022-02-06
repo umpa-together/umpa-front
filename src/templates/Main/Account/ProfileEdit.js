@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Context as AuthContext } from 'context/Auth';
 import style from 'constants/styles';
 import Header from 'components/Header';
@@ -16,6 +16,7 @@ import SongActionsProvider from 'providers/songActions';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
 import { navigate } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 const UploadActions = ({ signUp }) => {
   const { state } = useContext(AuthContext);

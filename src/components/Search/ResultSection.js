@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import PostingCard from 'components/PostingCard';
 import UserView from 'components/UserView';
 import { useTrackPlayer } from 'providers/trackPlayer';
@@ -13,6 +13,7 @@ import HashtagView from 'components/Search/HashtagView';
 import { Provider as AddedProvider } from 'context/Added';
 import DailyView from 'components/DailyView';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 
 const Header = ({ title, jumpTo, routeKey }) => {
   const onClickMore = () => {

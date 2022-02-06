@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_1, COLOR_2 } from 'constants/colors';
 import style from 'constants/styles';
 import { navigate } from 'lib/utils/navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Text from 'components/Text';
 
 export default function HashtagView({ info, containerStyle }) {
   const { hashtag, playlistId, dailyId, _id: id } = info;

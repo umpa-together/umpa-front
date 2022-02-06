@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import TextTicker from 'react-native-text-ticker';
 import style from 'constants/styles';
 import { SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
+import Text from 'components/Text';
 
 export default function MoveText({ container, text, isMove, isExplicit, textStyle, center }) {
   return (

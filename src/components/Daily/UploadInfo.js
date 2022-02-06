@@ -1,9 +1,10 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import DailyImage from 'components/DailyImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 import DailySong from './DailySong';
 
 export default function UploadInfo() {

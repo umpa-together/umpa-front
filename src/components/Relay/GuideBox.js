@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
-import { StatusBarHeight } from 'components/StatusBar';
 import Icon from 'widgets/Icon';
 import Timer from 'components/Timer';
 import style from 'constants/styles';
+import Text from 'components/Text';
 
 export default function GuideBox({ time }) {
   return (
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
     position: 'absolute',
-    top: (StatusBarHeight + 420) * SCALE_HEIGHT,
+    top: 464 * SCALE_HEIGHT,
     left: 20 * SCALE_WIDTH,
     borderRadius: 9 * SCALE_HEIGHT,
     shadowOffset: {

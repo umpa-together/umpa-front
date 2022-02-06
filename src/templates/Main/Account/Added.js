@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import Header from 'components/Header';
 import style from 'constants/styles';
@@ -7,6 +7,7 @@ import { AddedSong, AddedPlaylist } from 'components/Account/AddedSection';
 import { COLOR_1, COLOR_5, MAIN_COLOR } from 'constants/colors';
 import FS from 'lib/utils/normalize';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import Text from 'components/Text';
 
 const HeaderActions = ({ edit, setEdit }) => {
   const onClickActions = () => {

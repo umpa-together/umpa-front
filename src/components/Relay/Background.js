@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import FastImage from 'react-native-fast-image';
+import Text from 'components/Text';
 
 export default function Background() {
   const { state } = useContext(RelayContext);

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1, COLOR_5 } from 'constants/colors';
 import Modal from 'components/Modal';
 import PrivacyPolicyForm from 'components/Setting/PrivatePolicyForm';
 import TosForm from 'components/Setting/TosForm';
+import Text from 'components/Text';
 
 const ModalView = ({ onCloseModal, type }) => {
   const termLists = {

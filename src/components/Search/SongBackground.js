@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import { SongImage, SongImageBack } from 'widgets/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
@@ -10,6 +10,7 @@ import MoveText from 'components/MoveText';
 import { COLOR_4 } from 'constants/colors';
 import style from 'constants/styles';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 export default function Songbackground({ song }) {
   const { name, artistName, artwork, contentRating, releaseDate } = song.attributes;

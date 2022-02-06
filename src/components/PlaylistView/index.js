@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_2, COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
+import Text from 'components/Text';
 
 export default function PlaylistCard({ playlist, actions = null, landings = null, play = true }) {
   const { image, songs, title, time } = playlist;

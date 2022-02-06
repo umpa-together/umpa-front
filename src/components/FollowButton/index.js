@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function FollowButton({ id }) {
   const { state, follow, unfollow } = useContext(UserContext);

@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
+import Text from 'components/Text';
 
 export default function CreateHashtag({ addAction, hashtagCount, onValidityModal }) {
   const hashtagRef = useRef();

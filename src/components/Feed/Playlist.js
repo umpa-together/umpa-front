@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
 import PostUser from 'components/PostUser';
@@ -7,6 +7,7 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import { Context as UserContext } from 'context/User';
 import Footer from 'components/Footer';
 import { MAIN_COLOR, COLOR_1 } from 'constants/colors';
+import Text from 'components/Text';
 import SongsLists from './SongsLists';
 
 const FollowAction = ({ id }) => {

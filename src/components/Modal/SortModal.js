@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Modal from 'components/Modal';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 
 const ModalView = ({ sortInfo, onClose, actions }) => {
   const { current, func, list } = sortInfo;

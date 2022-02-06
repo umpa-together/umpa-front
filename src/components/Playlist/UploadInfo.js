@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { onClickSingle } from 'lib/utils/imageEditor';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
@@ -7,6 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 import FastImage from 'react-native-fast-image';
+import Text from 'components/Text';
 
 export default function UploadInfo({ edit }) {
   const {

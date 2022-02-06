@@ -12,6 +12,14 @@ export default function timeConverter(time) {
   if (betweenTimeHour < 24) {
     return `${betweenTimeHour}시간전`;
   }
-  const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-  return `${betweenTimeDay}일전`;
+  const betweenTimeDay = Math.floor(betweenTimeHour / 24);
+  if (betweenTimeDay < 31) {
+    return `${betweenTimeDay}일전`;
+  }
+  const betweenMonth = Math.floor(betweenTimeDay / 30);
+  if (betweenMonth < 12) {
+    return `${betweenMonth}달전`;
+  }
+  const betweenYear = Math.floor(betweenMonth / 12);
+  return `${betweenYear}년전`;
 }

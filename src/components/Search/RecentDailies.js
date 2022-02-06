@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -7,6 +7,7 @@ import { COLOR_1 } from 'constants/colors';
 import SongCard from 'components/SongCard';
 import style from 'constants/styles';
 import { push } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function RecentDailies() {
   const { state } = useContext(MainContentsContext);

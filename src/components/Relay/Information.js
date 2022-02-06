@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Context as RelayContext } from 'context/Relay';
 import Timer from 'components/Timer';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -9,6 +9,7 @@ import completeChecker from 'lib/utils/relayPlaylist';
 import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import YoutubeLink from 'components/youtubeLink';
 import FastImage from 'react-native-fast-image';
+import Text from 'components/Text';
 
 export default function Information() {
   const {
@@ -27,7 +28,9 @@ export default function Information() {
         <View style={[styles.statusBox, !currentStatus && styles.completeBox]}>
           <Text style={styles.statusText}>{currentStatus ? '진행중' : '마감'}</Text>
         </View>
-        <Text style={styles.title}>{title.map((item) => `${item} `)}</Text>
+        <Text style={styles.title} allowFontScaling={false}>
+          {title.map((item) => `${item} `)}
+        </Text>
         <View style={[style.flexRow, styles.callengerContainer]}>
           <Icon source={require('public/icons/challenger.png')} style={styles.icon} />
           <Text style={styles.challenger}>
@@ -59,9 +62,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FS(16),
+    color: '#000',
+    lineHeight: 22 * SCALE_HEIGHT,
   },
   callengerContainer: {
-    marginTop: 14 * SCALE_HEIGHT,
+    marginTop: 8 * SCALE_HEIGHT,
     marginBottom: 12 * SCALE_HEIGHT,
   },
   challenger: {

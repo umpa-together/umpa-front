@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
@@ -7,6 +7,7 @@ import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import { onClickMultiple } from 'lib/utils/imageEditor';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 export default function CreatePhoto({ edit, setValidityMsg }) {
   const { images, setImages } = useDailyCreate();

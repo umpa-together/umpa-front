@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FastImage from 'react-native-fast-image';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,6 +8,7 @@ import Timer from 'components/Timer';
 import Icon from 'widgets/Icon';
 import completeChecker from 'lib/utils/relayPlaylist';
 import { push } from 'lib/utils/navigation';
+import Text from 'components/Text';
 
 export default function RelayCardView({ relay }) {
   const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateCount } = relay;

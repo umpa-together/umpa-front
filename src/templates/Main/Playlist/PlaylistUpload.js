@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import UploadSongs from 'components/Playlist/UploadSongs';
 import UploadHashtag from 'components/UploadHashtag';
@@ -10,6 +10,7 @@ import Icon from 'widgets/Icon';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Playlist/UploadInfo';
+import Text from 'components/Text';
 
 const NextActions = ({ edit }) => {
   const { onClickUpload } = usePlaylistCreate();

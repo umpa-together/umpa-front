@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
 import Modal from 'components/Modal';
@@ -9,6 +9,7 @@ import CreateHashtag from 'components/CreateHashtag';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
 import Icon from 'widgets/Icon';
+import Text from 'components/Text';
 
 const HashtagModalView = ({ onCloseModal, info }) => {
   const { data, deleteAction, addAction } = info;

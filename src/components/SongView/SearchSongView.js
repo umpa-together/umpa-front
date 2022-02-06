@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import { SongImage } from 'widgets/SongImage';
 import style from 'constants/styles';
@@ -10,6 +10,7 @@ import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
 import { push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
+import Text from 'components/Text';
 
 export default function SearchSongView({ info }) {
   const { id } = info.song;

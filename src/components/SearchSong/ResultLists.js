@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
 import AddSongView from 'components/SongView/AddSongView';
@@ -9,6 +9,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
 import { COLOR_1, COLOR_2 } from 'constants/colors';
 import EmptyData from 'components/EmptyData';
+import Text from 'components/Text';
 
 export default function ResultLists() {
   const { state } = useContext(AppleMusicContext);

@@ -1,10 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { COLOR_3 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function SearchBarView() {
   const onClickBar = () => {
