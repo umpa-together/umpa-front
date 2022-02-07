@@ -28,7 +28,7 @@ const addDaily =
       // eslint-disable-next-line no-underscore-dangle
       if (fd._parts.length > 0) {
         fd.append('dailyId', response.data[0]._id);
-        imgResponse = await server.post(`/daily/imgUpload/${response.data}`, fd, {
+        imgResponse = await server.post(`/daily/imgUpload`, fd, {
           header: { 'content-type': 'multipart/form-data' },
         });
       }
@@ -37,14 +37,14 @@ const addDaily =
         navigate('SelectedDaily', {
           post: true,
           id: imgResponse.data[0]._id,
-          postUserId: imgResponse.data[0].postUserId,
+          postUserId: imgResponse.data[0].postUserId._id,
         });
       } else {
         dispatch({ type: 'getSelectedDaily', payload: response.data });
         navigate('SelectedDaily', {
           post: true,
           id: response.data[0]._id,
-          postUserId: response.data[0].postUserId,
+          postUserId: response.data[0].postUserId._id,
         });
       }
     } catch (err) {

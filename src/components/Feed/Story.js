@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Context as StoryContext } from 'context/Story';
@@ -15,7 +15,11 @@ import Text from 'components/Text';
 export default function Story() {
   const [storyModal, setStoryModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
-  const { state, getOtherStoryWithAll, postStory, getMyStory } = useContext(StoryContext);
+  const {
+    state: { myStory, storyViewer, otherStoryLists },
+    postStory,
+    getMyStory,
+  } = useContext(StoryContext);
   const {
     state: { user },
   } = useContext(UserContext);
@@ -42,12 +46,6 @@ export default function Story() {
     setSearchModal(false);
   };
 
-  useEffect(() => {
-    if (!storyModal) {
-      getOtherStoryWithAll();
-    }
-  }, [storyModal]);
-
   useFocusEffect(
     useCallback(() => {
       searchInfoRef.current = { title: '오늘의 곡', key: 'story', func: postStoryFunction };
@@ -65,28 +63,26 @@ export default function Story() {
           <TouchableOpacity
             style={styles.story}
             activeOpacity={0.9}
-            onPress={() => onClickStory(state.myStory)}
+            onPress={() => onClickStory(myStory)}
           >
             <ImageBackground
               style={styles.story}
               source={
-                state.storyViewer.includes(user._id)
+                storyViewer.includes(user._id)
                   ? require('public/icons/story-read.png')
                   : require('public/icons/story-unread.png')
               }
             >
               <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
             </ImageBackground>
-            {!state.myStory && (
-              <Icon source={require('public/icons/story-add.png')} style={styles.add} />
-            )}
+            {!myStory && <Icon source={require('public/icons/story-add.png')} style={styles.add} />}
           </TouchableOpacity>
           <Text numberOfLines={1} style={styles.name}>
             {user.name}
           </Text>
         </View>
-        {state.otherStoryLists &&
-          state.otherStoryLists.map((item, index) => {
+        {otherStoryLists &&
+          otherStoryLists.map((item, index) => {
             const { view, _id: id } = item;
             const { profileImage, name } = item.postUserId;
             return (

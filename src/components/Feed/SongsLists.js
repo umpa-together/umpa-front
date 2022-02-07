@@ -27,7 +27,11 @@ export default function SongLists({ songs }) {
         } = item;
         return (
           <View style={styles.songBox}>
-            <TouchableOpacity onPress={() => onClickSong(item)} activeOpacity={0.9}>
+            <TouchableOpacity
+              style={styles.margin}
+              onPress={() => onClickSong(item)}
+              activeOpacity={0.9}
+            >
               <SongImage url={url} imgStyle={styles.playlistsImg} />
               <Icon
                 source={
@@ -73,10 +77,12 @@ const styles = StyleSheet.create({
     height: 117 * SCALE_WIDTH,
     borderRadius: 4 * SCALE_HEIGHT,
   },
+  margin: {
+    marginBottom: 9 * SCALE_HEIGHT,
+  },
   name: {
     fontSize: FS(14),
     lineHeight: 16 * SCALE_HEIGHT,
-    marginTop: 9 * SCALE_HEIGHT,
   },
   artist: {
     fontSize: FS(13),

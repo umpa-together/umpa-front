@@ -20,6 +20,7 @@ export default function CreatePhoto({ edit, setValidityMsg }) {
       onValidityModal();
     }
   };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPressAdd} style={[style.flexRow, styles.touchContainer]}>

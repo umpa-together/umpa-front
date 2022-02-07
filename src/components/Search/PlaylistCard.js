@@ -6,11 +6,13 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import { push } from 'lib/utils/navigation';
 import Text from 'components/Text';
+import Icon from 'widgets/Icon';
 
 export default function PlaylistCard({ info }) {
   const {
     title,
     playlist: { _id: id, postUserId },
+    image,
   } = info;
 
   const onClickPlaylist = async () => {
@@ -23,7 +25,7 @@ export default function PlaylistCard({ info }) {
       activeOpacity={1}
       onPress={onClickPlaylist}
     >
-      <View style={styles.img} />
+      <Icon source={{ uri: image }} style={styles.img} />
       <View style={styles.titleArea}>
         <Text style={styles.title}>{title}</Text>
       </View>
@@ -40,11 +42,8 @@ const styles = StyleSheet.create({
   img: {
     width: 50 * SCALE_WIDTH,
     height: 50 * SCALE_WIDTH,
-    marginTop: 21 * SCALE_HEIGHT,
-    marginBottom: 10 * SCALE_HEIGHT,
-    borderWidth: 1,
-    borderColor: '#fff',
-    marginLeft: 13 * SCALE_WIDTH,
+    marginVertical: 20 * SCALE_HEIGHT,
+    marginLeft: 11 * SCALE_WIDTH,
   },
   title: {
     color: '#fff',
@@ -54,5 +53,6 @@ const styles = StyleSheet.create({
   titleArea: {
     width: 95 * SCALE_WIDTH,
     marginRight: 16 * SCALE_WIDTH,
+    marginLeft: 13 * SCALE_WIDTH,
   },
 });
