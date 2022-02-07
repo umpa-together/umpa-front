@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
@@ -17,6 +17,7 @@ import StoryViewerModal from 'components/Modal/StoryViewerModal';
 import ActionModal from 'components/Modal/ActionModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
+import PlayAnimation from 'components/PlayAnimation';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
@@ -116,61 +117,6 @@ const SongBody = () => {
         textStyle={styles.artist}
         center
       />
-    </View>
-  );
-};
-
-const ProgressBar = () => {
-  const { position, duration } = useTrackPlayer();
-  const animatedValue = useRef(new Animated.Value(-1000)).current;
-  const reactive = useRef(new Animated.Value(-1000)).current;
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: reactive,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  useEffect(() => {
-    if (duration !== 0) {
-      reactive.setValue(-width + width * (position / duration));
-    } else {
-      reactive.setValue(-1000);
-    }
-  }, [position, width, duration]);
-  return (
-    <View style={styles.progressContainer}>
-      <View style={styles.progressBox}>
-        <View
-          onLayout={(e) => {
-            const newWidth = e.nativeEvent.layout.width;
-            setWidth(newWidth);
-          }}
-          style={styles.progressBar}
-        >
-          <Animated.View
-            style={{
-              width: '100%',
-              backgroundColor: '#fff',
-              height: '100%',
-              transform: [
-                {
-                  translateX: animatedValue,
-                },
-              ],
-            }}
-          />
-        </View>
-      </View>
-      <View style={[style.flexRow, style.space_between, { width: '100%' }]}>
-        <Text style={styles.time}>
-          00:{Math.floor(position) < 10 ? `0${Math.floor(position)}` : Math.floor(position)}
-        </Text>
-        <Text style={styles.time}>00:30</Text>
-      </View>
     </View>
   );
 };
@@ -356,7 +302,13 @@ const ModalView = ({ onClose }) => {
       <View style={styles.viewBox}>
         <Header onClose={onClose} />
         <SongBody />
-        <ProgressBar />
+        <PlayAnimation
+          container={styles.progressContainer}
+          outContainer={styles.progressBar}
+          innerContainer={styles.innerContainer}
+          textContianer={styles.textContianer}
+          textStyle={styles.time}
+        />
         <AddedProvider>
           <Footer onClose={onClose} />
         </AddedProvider>
@@ -467,14 +419,18 @@ const styles = StyleSheet.create({
     width: 276 * SCALE_WIDTH,
     marginTop: 30 * SCALE_HEIGHT,
   },
-  progressBox: {
-    width: '100%',
-    overflow: 'hidden',
-  },
   progressBar: {
+    width: '100%',
     height: 3.5 * SCALE_HEIGHT,
     backgroundColor: 'rgba(255,255,255,0.3)',
     borderRadius: 100 * SCALE_HEIGHT,
+  },
+  innerContainer: {
+    backgroundColor: '#fff',
+    height: '100%',
+  },
+  textContianer: {
+    width: '100%',
   },
   icon: {
     width: 45 * SCALE_WIDTH,

@@ -9,6 +9,7 @@ import Icon from 'widgets/Icon';
 import completeChecker from 'lib/utils/relayPlaylist';
 import { push } from 'lib/utils/navigation';
 import Text from 'components/Text';
+import ParticipantCount from './ParticipantCount';
 
 export default function RelayCardView({ relay }) {
   const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateCount } = relay;
@@ -49,13 +50,11 @@ export default function RelayCardView({ relay }) {
                 </View>
               );
             })}
-            <Icon
-              style={styles.peopleIcon}
-              source={require('public/icons/relay-card-people.png')}
+            <ParticipantCount
+              challenge={postUserId.length}
+              vote={evaluateCount}
+              container={styles.customContainer}
             />
-            <Text style={styles.peopleText}>
-              {`도전자 ${postUserId.length}명 / 평가 ${evaluateCount}명`}
-            </Text>
           </View>
         </View>
       </FastImage>
@@ -137,15 +136,8 @@ const styles = StyleSheet.create({
   peopleContainer: {
     marginTop: 3 * SCALE_HEIGHT,
   },
-  peopleIcon: {
-    width: 12 * SCALE_WIDTH,
-    height: 13 * SCALE_HEIGHT,
+  customContainer: {
     marginLeft: 3 * SCALE_WIDTH,
-    marginRight: 4 * SCALE_WIDTH,
-  },
-  peopleText: {
-    color: COLOR_5,
-    fontSize: FS(12),
   },
   box: {
     paddingHorizontal: 7 * SCALE_WIDTH,
