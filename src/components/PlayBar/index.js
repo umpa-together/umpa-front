@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
@@ -8,12 +8,11 @@ import style from 'constants/styles';
 import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import { useModal } from 'providers/modal';
+import PlayAnimation from 'components/PlayAnimation';
 
 export default function PlayBar() {
   const { currentSong, position, duration, isPlayingId, onClickPause, isStop } = useTrackPlayer();
-  const animatedValue = useRef(new Animated.Value(-1000)).current;
   const reactive = useRef(new Animated.Value(-1000)).current;
-  const [width, setWidth] = useState(0);
   const { name, artistName, contentRating } = currentSong.attributes;
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
@@ -24,14 +23,6 @@ export default function PlayBar() {
   };
 
   useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: reactive,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  useEffect(() => {
     if (duration !== 0) {
       reactive.setValue(-width + width * (position / duration));
     }
@@ -39,26 +30,11 @@ export default function PlayBar() {
 
   return (
     <View style={styles.container}>
-      <View
-        onLayout={(e) => {
-          const newWidth = e.nativeEvent.layout.width;
-          setWidth(newWidth);
-        }}
-        style={styles.statusBar}
-      >
-        <Animated.View
-          style={{
-            width: '100%',
-            backgroundColor: MAIN_COLOR,
-            height: '100%',
-            transform: [
-              {
-                translateX: animatedValue,
-              },
-            ],
-          }}
-        />
-      </View>
+      <PlayAnimation
+        outContainer={styles.statusBar}
+        innerContainer={styles.innerContainer}
+        textHidden
+      />
       <View style={[style.flexRow, styles.infoContainer, style.space_between]}>
         <View style={styles.textArea}>
           <MoveText
@@ -96,6 +72,10 @@ const styles = StyleSheet.create({
     height: 56 * SCALE_HEIGHT,
     paddingLeft: 24 * SCALE_WIDTH,
     paddingRight: 11 * SCALE_WIDTH,
+  },
+  innerContainer: {
+    backgroundColor: MAIN_COLOR,
+    height: '100%',
   },
   textArea: {
     width: 250 * SCALE_WIDTH,

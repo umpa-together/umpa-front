@@ -3,10 +3,10 @@ import { StyleSheet, Animated } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
-export default function AddedModal({ title }) {
+export default function AddedModal({ title, customContainer }) {
   const { opacity } = useModal();
   return (
-    <Animated.View style={[styles.container, { opacity }]}>
+    <Animated.View style={[styles.container, { opacity }, customContainer]}>
       <Animated.Text style={[styles.text, { opacity }]}>{title}</Animated.Text>
     </Animated.View>
   );

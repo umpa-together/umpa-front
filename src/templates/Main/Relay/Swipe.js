@@ -15,6 +15,9 @@ import style from 'constants/styles';
 import SwipeCard from 'components/Relay/SwipeCard';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Background from 'components/Relay/Background';
+import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 export default function Swipe() {
   const { state, likeRelaySong, unlikeRelaySong } = useContext(RelayContext);
@@ -33,6 +36,7 @@ export default function Swipe() {
   const opacityleft = useDerivedValue(() =>
     interpolate(translateX.value, [-300, -100, 0], [1, 1, 0]),
   );
+  const { addedModal } = useModal();
 
   const cardStyle = useAnimatedStyle(() => ({
     transform: [
@@ -128,7 +132,7 @@ export default function Swipe() {
   }, [isEnd]);
 
   return (
-    <View style={style.background}>
+    <View>
       <Background />
       {state.swipeSongs && (
         <GestureHandlerRootView>
@@ -146,15 +150,17 @@ export default function Swipe() {
           )}
         </GestureHandlerRootView>
       )}
+      {addedModal && (
+        <AddedModal
+          title="1곡을 저장한 곡 목록에 담았습니다."
+          customContainer={styles.addedModal}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    width: 350,
-  },
   profileImg: {
     width: 30,
     height: 30,
@@ -163,5 +169,8 @@ const styles = StyleSheet.create({
   songImg: {
     width: '100%',
     height: 350,
+  },
+  addedModal: {
+    bottom: -60,
   },
 });
