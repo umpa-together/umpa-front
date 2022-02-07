@@ -40,7 +40,7 @@ export default function Feed() {
   } = useContext(UserContext);
   const { state, setFeedType, getFeeds, getFeedWithFollowing, getFeedType } =
     useContext(FeedContext);
-  const { getMyStory } = useContext(StoryContext);
+  const { getMyStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
   const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
 
@@ -92,9 +92,9 @@ export default function Feed() {
 
   const dataFetch = async () => {
     if (state.type) {
-      await Promise.all([getFeeds(), getMyStory()]);
+      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
     } else {
-      await Promise.all([getFeedWithFollowing(), getMyStory()]);
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithFollower()]);
     }
   };
 

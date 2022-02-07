@@ -1,6 +1,11 @@
 import ImagePicker from 'react-native-image-crop-picker';
+import { Platform } from 'react-native';
 
 const MAX_FILES = 5;
+
+const getName = (name) => {
+  return Platform.OS === 'ios' ? name : `image${Math.floor(Math.random() * 100)}`;
+};
 
 export const onClickCamera = (setImages) => {
   ImagePicker.openCamera({
@@ -10,7 +15,7 @@ export const onClickCamera = (setImages) => {
   }).then((image) => {
     setImages((prev) => [
       ...prev,
-      { name: image.filename, type: image.mime, uri: `file://${image.path}` },
+      { name: getName(image.filename), type: 'image/jpeg', uri: `file://${image.path}` },
     ]);
   });
 };
@@ -22,7 +27,7 @@ export const onClickSingle = (setImages) => {
     includeBase64: true,
     mediaType: 'photo',
   }).then((image) => {
-    setImages({ name: image.filename, type: image.mime, uri: `file://${image.path}` });
+    setImages({ name: getName(image.filename), type: 'image/jpeg', uri: `file://${image.path}` });
   });
 };
 
@@ -36,10 +41,10 @@ export const onClickMultiple = (setImages) => {
     maxFiles: MAX_FILES,
   }).then((images) => {
     const arr = [];
-    images.forEach(({ filename, path, mime }) => {
+    images.forEach(({ filename, path }) => {
       arr.push({
-        name: filename,
-        type: mime,
+        name: getName(filename),
+        type: 'image/jpeg',
         uri: `file://${path}`,
       });
     });
@@ -53,6 +58,6 @@ export const onClickCrop = (setImages) => {
     height: 120,
     cropping: true,
   }).then((image) => {
-    setImages({ name: image.filename, type: image.mime, uri: `file://${image.path}` });
+    setImages({ name: getName(image.filename), type: 'image/jpeg', uri: `file://${image.path}` });
   });
 };

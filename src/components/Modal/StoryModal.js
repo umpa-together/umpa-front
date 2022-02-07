@@ -4,6 +4,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
 import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
 import { Context as StoryContext } from 'context/Story';
+import { Context as FeedContext } from 'context/Feed';
 import Icon from 'widgets/Icon';
 import { useStory } from 'providers/story';
 import { SongImageBackStory, SongImage } from 'widgets/SongImage';
@@ -25,7 +26,10 @@ const Header = ({ onClose }) => {
     state: { user },
     follow,
   } = useContext(UserContext);
-  const { deleteStory } = useContext(StoryContext);
+  const { deleteStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
+  const {
+    state: { type },
+  } = useContext(FeedContext);
   const {
     currentSong: {
       postUserId: { profileImage, name, _id: id },
@@ -37,6 +41,11 @@ const Header = ({ onClose }) => {
   const onExit = () => {
     onClose();
     stoptracksong();
+    if (type) {
+      getOtherStoryWithAll();
+    } else {
+      getOtherStoryWithFollower();
+    }
   };
 
   const onClickOption = () => {

@@ -51,6 +51,7 @@ export default function DailyCreate({ data, edit }) {
   const { setParams } = useDailyCreate();
   const { validityModal } = useModal();
   const [validityMsg, setValidityMsg] = useState('');
+
   useEffect(() => {
     if (data) {
       setParams(data);
