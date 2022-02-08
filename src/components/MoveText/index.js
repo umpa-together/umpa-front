@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   explicit: {
     width: 20 * SCALE_WIDTH,
     height: 20 * SCALE_WIDTH,
-    marginRight: 2 * SCALE_WIDTH,
+    left: -4 * SCALE_WIDTH,
   },
   center: {
     justifyContent: 'center',

@@ -6,7 +6,6 @@ import style from 'constants/styles';
 import Songbackground from 'components/Search/SongBackground';
 import { Playlist, Daily, DJ } from 'components/Search/SelectedSection';
 import TabView from 'components/TabView';
-import { Provider as AddedProvider } from 'context/Added';
 import SelectedTabBar from 'components/TabView/SelectedTabBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
@@ -44,9 +43,7 @@ export default function SelectedSong({ song }) {
 
   return (
     <View style={[style.background, styles.container]}>
-      <AddedProvider>
-        <Songbackground song={song} />
-      </AddedProvider>
+      <Songbackground song={song} />
       {state.selected && (
         <TabView
           routesMap={[

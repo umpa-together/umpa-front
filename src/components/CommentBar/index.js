@@ -8,6 +8,7 @@ import { useKeyboard } from 'providers/keyboard';
 import { useComment } from 'providers/comment';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Text from 'components/Text';
+import PlayBar from 'components/PlayBar';
 
 export default function CommentBar() {
   const {
@@ -39,22 +40,25 @@ export default function CommentBar() {
   );
 
   return (
-    <View style={[keyboardStyle, style.flexRow, styles.container]}>
-      <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
-      <TextInput
-        style={styles.textInput}
-        onChangeText={(txt) => {
-          setCommentRef(txt);
-        }}
-        placeholder="코멘트를 남겨주세요"
-        autoCorrect={false}
-        ref={commentRef}
-        multiline
-      />
-      <TouchableOpacity style={styles.submitButton} onPress={onPressSubmit}>
-        <Text style={styles.submitText}>등록</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <PlayBar />
+      <View style={[keyboardStyle, style.flexRow, styles.container]}>
+        <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(txt) => {
+            setCommentRef(txt);
+          }}
+          placeholder="코멘트를 남겨주세요"
+          autoCorrect={false}
+          ref={commentRef}
+          multiline
+        />
+        <TouchableOpacity style={styles.submitButton} onPress={onPressSubmit}>
+          <Text style={styles.submitText}>등록</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 

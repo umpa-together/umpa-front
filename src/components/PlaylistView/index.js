@@ -8,7 +8,7 @@ import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Text from 'components/Text';
 
-export default function PlaylistCard({ playlist, actions = null, landings = null, play = true }) {
+export default function PlaylistView({ playlist, actions = null, landings = null, play = true }) {
   const { image, songs, title, time } = playlist;
   const { name } = songs[0].attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();

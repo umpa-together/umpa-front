@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
 import Icon from 'widgets/Icon';
@@ -11,9 +11,7 @@ import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 
 export default function PlayBar() {
-  const { currentSong, position, duration, isPlayingId, onClickPause, isStop } = useTrackPlayer();
-  const reactive = useRef(new Animated.Value(-1000)).current;
-  const { name, artistName, contentRating } = currentSong.attributes;
+  const { currentSong, state, onClickPlayBar } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
 
@@ -21,47 +19,48 @@ export default function PlayBar() {
     postAddedSong({ song: currentSong });
     onClickAdded();
   };
-
-  useEffect(() => {
-    if (duration !== 0) {
-      reactive.setValue(-width + width * (position / duration));
-    }
-  }, [position, width, duration]);
-
   return (
-    <View style={styles.container}>
-      <PlayAnimation
-        outContainer={styles.statusBar}
-        innerContainer={styles.innerContainer}
-        textHidden
-      />
-      <View style={[style.flexRow, styles.infoContainer, style.space_between]}>
-        <View style={styles.textArea}>
-          <MoveText
-            isExplicit={contentRating === 'explicit'}
-            text={name}
-            isMove={currentSong.id === isPlayingId}
-            textStyle={styles.name}
+    <>
+      {currentSong && (
+        <View style={styles.container}>
+          <PlayAnimation
+            outContainer={styles.statusBar}
+            innerContainer={styles.innerContainer}
+            textHidden
           />
-          <MoveText
-            text={artistName}
-            isMove={currentSong.id === isPlayingId}
-            textStyle={styles.artist}
-          />
+          <View style={[style.flexRow, styles.infoContainer, style.space_between]}>
+            <View style={styles.textArea}>
+              <MoveText
+                isExplicit={currentSong.attributes.contentRating === 'explicit'}
+                text={currentSong.attributes.name}
+                isMove={state === 'play'}
+                textStyle={styles.name}
+              />
+              <MoveText
+                text={currentSong.attributes.artistName}
+                isMove={state === 'play'}
+                textStyle={styles.artist}
+              />
+            </View>
+            <View style={style.flexRow}>
+              <TouchableOpacity onPress={onClickPlayBar} activeOpacity={0.8}>
+                <Icon
+                  source={
+                    state === 'play'
+                      ? require('public/icons/stop.png')
+                      : require('public/icons/play.png')
+                  }
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onClickAdd} activeOpacity={0.8}>
+                <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <View style={style.flexRow}>
-          <TouchableOpacity onPress={onClickPause} activeOpacity={0.8}>
-            <Icon
-              source={!isStop ? require('public/icons/stop.png') : require('public/icons/play.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onClickAdd} activeOpacity={0.8}>
-            <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+      )}
+    </>
   );
 }
 const styles = StyleSheet.create({

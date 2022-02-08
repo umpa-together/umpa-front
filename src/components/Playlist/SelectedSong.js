@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
@@ -29,11 +29,9 @@ export default function SelectedSong({ songs }) {
     <View style={styles.container}>
       <Text style={styles.titleText}>총 {songs.length}곡</Text>
       <View>
-        <AddedProvider>
-          {songs.map((item) => {
-            return <SongView key={item.id} song={item} actions={onClickAddActions(item)} />;
-          })}
-        </AddedProvider>
+        {songs.map((item) => {
+          return <SongView key={item.id} song={item} actions={onClickAddActions(item)} playlist />;
+        })}
       </View>
     </View>
   );

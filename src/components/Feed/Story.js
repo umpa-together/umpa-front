@@ -41,9 +41,9 @@ export default function Story() {
   };
 
   const postStoryFunction = async (song) => {
+    setSearchModal(false);
     await postStory({ song });
     getMyStory();
-    setSearchModal(false);
   };
 
   useFocusEffect(

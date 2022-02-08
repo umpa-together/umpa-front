@@ -185,6 +185,7 @@ export default function ({ comment, opt }) {
   const onClickReport = () => {
     setReportModal(true);
   };
+
   return (
     <View
       style={[

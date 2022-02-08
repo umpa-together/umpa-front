@@ -30,6 +30,7 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
     postAddedSong({ song: info.song });
     onClickAdded();
   };
+
   const onClickSongView = async () => {
     if (isSelected) {
       push('SelectedDaily', { post: false, id, postUserId });
@@ -51,12 +52,12 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
             <MoveText
               isExplicit={contentRating === 'explicit'}
               text={name}
-              isMove={song.id === isPlayingId}
+              isMove={isPlayingId === song.id}
               textStyle={styles.name}
             />
             <MoveText
               text={artistName}
-              isMove={song.id === isPlayingId}
+              isMove={isPlayingId === song.id}
               textStyle={styles.artist}
             />
           </View>
@@ -66,7 +67,7 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
             <TouchableOpacity onPress={() => onClickSong(song)}>
               <Icon
                 source={
-                  song.id === isPlayingId
+                  isPlayingId === song.id
                     ? require('public/icons/stop.png')
                     : require('public/icons/play.png')
                 }

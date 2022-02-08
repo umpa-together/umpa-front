@@ -15,6 +15,9 @@ import FloatingButton from 'components/Feed/FloatingButton';
 import SongActionsProvider from 'providers/songActions';
 import { COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
+import PlayBar from 'components/PlayBar';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -43,6 +46,7 @@ export default function Feed() {
   const { getMyStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
   const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
+  const { addedModal } = useModal();
 
   const sortLists = [
     { title: '전체보기', key: 'all' },
@@ -118,6 +122,8 @@ export default function Feed() {
           <Contents setIsScroll={setIsScroll} />
         </RefreshProvider>
       </SongActionsProvider>
+      <PlayBar />
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <FloatingButton show={isScroll} />
       <SortModal
         modal={sortModal}

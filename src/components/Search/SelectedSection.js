@@ -5,7 +5,6 @@ import { Context as SearchContext } from 'context/Search';
 import PostingCard from 'components/PostingCard';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { Provider as AddedProvider } from 'context/Added';
 import Icon from 'widgets/Icon';
 import DailyView from 'components/DailyView';
 import EmptyData from 'components/EmptyData';
@@ -80,12 +79,12 @@ export const Daily = ({ actions, song, hashtag }) => {
   return (
     <View style={styles.dailyContainer}>
       {count > 0 ? (
-        <AddedProvider>
+        <>
           {state.selected.daily.map((daily) => {
             const { _id: id } = daily;
             return <DailyView info={daily} key={id} actions={actions} isSelected />;
           })}
-        </AddedProvider>
+        </>
       ) : (
         <EmptyData
           action={!hashtag && <NavigateButton onPress={onPress} text="이 곡으로 데일리 만들기" />}

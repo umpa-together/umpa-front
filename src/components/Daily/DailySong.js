@@ -11,13 +11,17 @@ import Text from 'components/Text';
 
 export default function DailySong({ song, containerStyle, time, selected }) {
   const { isPlayingId, onClickSong } = useTrackPlayer();
-  const { attributes, id } = song;
-  const { contentRating, name, artistName } = attributes;
+  const {
+    id,
+    attributes: { contentRating, name, artistName },
+  } = song;
+
   useEffect(() => {
     if (selected && contentRating !== 'explicit') {
       onClickSong(song);
     }
   }, []);
+
   return (
     <View style={[containerStyle, style.flexRow, style.space_between]}>
       <TouchableOpacity
@@ -27,7 +31,7 @@ export default function DailySong({ song, containerStyle, time, selected }) {
         <MoveText
           isExplicit={contentRating === 'explicit'}
           text={`${name}-${artistName}`}
-          isMove={id === isPlayingId}
+          isMove={isPlayingId === id}
           textStyle={styles.textStyle}
           container={styles.moveArea}
         />

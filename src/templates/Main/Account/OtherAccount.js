@@ -2,7 +2,6 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { View } from 'react-native';
 import { Context as UserContext } from 'context/User';
-import { Provider as AddedProvider } from 'context/Added';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import TabView from 'components/TabView';
@@ -85,10 +84,7 @@ export default function OtherAccount({ id }) {
             renderSceneProps={renderScene}
             renderTabBar={(props) => <AccountTabBar props={props} />}
           />
-
-          <AddedProvider>
-            <RepresentModal />
-          </AddedProvider>
+          <RepresentModal />
         </>
       ) : (
         <LoadingIndicator />

@@ -8,18 +8,18 @@ import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
 
-export default function SongView({ song, actions = null, landings = null, play = true }) {
+export default function SongView({ song, actions = null, landings = null, play = true, playlist }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
-  const playingCheck = song.id === isPlayingId;
+  const playingCheck = song.id === isPlayingId && !playlist;
   const widthCount = (play && 1) + (actions && 1) + (landings && 1);
-
+  const defaultArea = contentRating !== 'explicit' ? 280 : 260;
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
         {landings}
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <View style={{ maxWidth: (280 - 40 * widthCount) * SCALE_WIDTH }}>
+        <View style={{ maxWidth: (defaultArea - 40 * widthCount) * SCALE_WIDTH }}>
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}

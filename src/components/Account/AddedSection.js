@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { FlatList, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
-import PlaylistCard from 'components/PlaylistView';
+import PlaylistView from 'components/PlaylistView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import DeleteModal from 'components/Modal/DeleteModal';
@@ -86,7 +86,7 @@ export function AddedPlaylist({ edit }) {
           renderItem={({ item }) => {
             const { playlistId: playlist, _id: id } = item;
             return (
-              <PlaylistCard
+              <PlaylistView
                 playlist={playlist}
                 landings={edit && <DeleteLandings type="playlist" id={id} />}
                 play={!edit}

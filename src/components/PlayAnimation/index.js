@@ -32,6 +32,7 @@ export default function PlayAnimation({
       duration: 1000,
     });
   }, [position]);
+
   return (
     <View style={container}>
       <View style={outContainer}>

@@ -24,6 +24,7 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
+          {user.name} 님이
           {type === 'dlike' ? (
             <Text style={styles.contentText}> 데일리를 좋아합니다.</Text>
           ) : type === 'dcom' ? (

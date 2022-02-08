@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16 * SCALE_WIDTH,
     width: 343 * SCALE_WIDTH,
-    paddingVertical: 10 * SCALE_HEIGHT,
+    paddingVertical: 5 * SCALE_HEIGHT,
+    minHeight: 40 * SCALE_HEIGHT,
     paddingLeft: 15 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     backgroundColor: '#EEE',

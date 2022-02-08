@@ -7,7 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 
 export default function SongLists({ songs }) {
-  const { isPlayingId, onClickSong } = useTrackPlayer();
+  const { onClickSong, isPlayingId } = useTrackPlayer();
   return (
     <FlatList
       contentContainerStyle={styles.songsContainer}
@@ -33,26 +33,19 @@ export default function SongLists({ songs }) {
               activeOpacity={0.9}
             >
               <SongImage url={url} imgStyle={styles.playlistsImg} />
-              <Icon
-                source={
-                  id === isPlayingId
-                    ? require('public/icons/feed-playlist-stop.png')
-                    : require('public/icons/feed-playlist-play.png')
-                }
-                style={styles.play}
-              />
+              <Icon source={require('public/icons/feed-playlist-play.png')} style={styles.play} />
             </TouchableOpacity>
             <MoveText
               isExplicit={contentRating === 'explicit'}
               container={contentRating === 'explicit' ? styles.explicitName : styles.nameBox}
               text={name}
-              isMove={id === isPlayingId}
+              isMove={isPlayingId === id}
               textStyle={styles.name}
             />
             <MoveText
               container={styles.artistBox}
               text={artistName}
-              isMove={id === isPlayingId}
+              isMove={isPlayingId === id}
               textStyle={styles.artist}
             />
           </View>

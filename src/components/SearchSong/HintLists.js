@@ -8,11 +8,11 @@ import Text from 'components/Text';
 
 export default function HintLists() {
   const { state } = useContext(AppleMusicContext);
-  const { onSearchContents, textInputRef, text } = useSearch();
+  const { onSearchKeyword, textInputRef, text } = useSearch();
   const opacity = useRef(new Animated.Value(0)).current;
 
   const onClickHint = (hint) => {
-    onSearchContents(hint);
+    onSearchKeyword(hint);
     textInputRef.current.blur();
   };
 

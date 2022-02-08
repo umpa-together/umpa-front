@@ -13,6 +13,9 @@ import { navigate } from 'lib/utils/navigation';
 import EmptyData from 'components/EmptyData';
 import NavigateButton from 'components/EmptyData/NavigateButton';
 import Text from 'components/Text';
+import PlayBar from 'components/PlayBar';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 export default function Notice() {
   const { state, getNotice, getNextNotice } = useContext(NoticeContext);
@@ -21,6 +24,7 @@ export default function Notice() {
   const [weekNotice, setWeekNotice] = useState([]);
   const [lastNotice, setLastNotice] = useState([]);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
+  const { addedModal } = useModal();
 
   const now = new Date();
   const textList = ['아직 새로운 알림이 없습니다'];
@@ -138,6 +142,8 @@ export default function Notice() {
           }}
         />
       )}
+      <PlayBar />
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 }

@@ -8,12 +8,12 @@ import SearchProvider, { useSearch } from 'providers/search';
 import { Provider as SearchProviderC } from 'context/Search';
 import { useSongActions } from 'providers/songActions';
 import AddedSongLists from 'components/SearchSong/AddedSongLists';
-import { Provider as AddedProvider } from 'context/Added';
 import SearchLists from 'components/SearchSong/SearchLists';
 import { COLOR_3, MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import ValidityModal from 'components/Modal/ValidityModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import Modal from '.';
 import RelayActionModal from './RelayActionModal';
 
@@ -45,9 +45,9 @@ const ModalView = ({ onClose, activeCheck }) => {
     };
 
     return (
-      <TouchableOpacity style={styles.headerTouch} onPress={onClickAction}>
+      <TouchableNoDouble style={styles.headerTouch} onPress={onClickAction}>
         <Text style={activeCheck ? styles.activeText : styles.inactiveText}>완료</Text>
-      </TouchableOpacity>
+      </TouchableNoDouble>
     );
   });
 
@@ -60,13 +60,7 @@ const ModalView = ({ onClose, activeCheck }) => {
         action={completeLists.includes(searchInfoRef.current.key) && <Action />}
       />
       <SearchBar />
-      {text === '' && !searching ? (
-        <AddedProvider>
-          <AddedSongLists />
-        </AddedProvider>
-      ) : (
-        <SearchLists />
-      )}
+      {text === '' && !searching ? <AddedSongLists /> : <SearchLists />}
       {validityModal && <ValidityModal title={validityMsg} />}
       <HarmfulModal />
       <RelayActionModal modal={relayModal} setModal={setRelayModal} onClose={onClose} />

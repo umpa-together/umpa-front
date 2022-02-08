@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
-import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import { Context as StoryContext } from 'context/Story';
 import { Context as FeedContext } from 'context/Feed';
 import Icon from 'widgets/Icon';
@@ -22,7 +22,7 @@ import PlayAnimation from 'components/PlayAnimation';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
-  const { stoptracksong } = useTrackPlayer();
+  const { stopTrackSong } = useTrackPlayer();
   const {
     state: { user },
     follow,
@@ -41,7 +41,7 @@ const Header = ({ onClose }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const onExit = () => {
     onClose();
-    stoptracksong();
+    stopTrackSong();
     if (type) {
       getOtherStoryWithAll();
     } else {
@@ -156,7 +156,7 @@ const ViewerImage = () => {
 };
 
 const Footer = ({ onClose }) => {
-  const { onClickSong, isPlayingId, onClickPause, isStop } = useTrackPlayer();
+  const { onClickPlayBar, state } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const {
     currentSong: {
@@ -178,14 +178,6 @@ const Footer = ({ onClose }) => {
   const isMyStory = user._id === id;
   const [isLike, setIsLike] = useState(likes.includes(user._id));
   const [viewerModal, setViewerModal] = useState(false);
-
-  const onClickPlay = () => {
-    if (isPlayingId !== song.id) {
-      onClickSong(song);
-    } else {
-      onClickPause();
-    }
-  };
 
   const onClickLeftOption = () => {
     if (isMyStory) {
@@ -232,10 +224,10 @@ const Footer = ({ onClose }) => {
           <Icon source={require('public/icons/story-add-song.png')} style={styles.icon} />
         )}
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlay}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlayBar}>
         <Icon
           source={
-            isPlayingId === song.id && !isStop
+            state === 'play'
               ? require('public/icons/story-pause.png')
               : require('public/icons/story-play.png')
           }
@@ -269,7 +261,7 @@ const Footer = ({ onClose }) => {
 };
 
 const ModalView = ({ onClose }) => {
-  const { onClickSong, stoptracksong } = useTrackPlayer();
+  const { onClickSong, stopTrackSong } = useTrackPlayer();
   const {
     state: { user },
   } = useContext(UserContext);
@@ -297,7 +289,7 @@ const ModalView = ({ onClose }) => {
     if (contentRating !== 'explicit') {
       onClickSong(song);
     } else {
-      stoptracksong();
+      stopTrackSong();
     }
   }, [song]);
 
@@ -318,9 +310,7 @@ const ModalView = ({ onClose }) => {
           textContianer={styles.textContianer}
           textStyle={styles.time}
         />
-        <AddedProvider>
-          <Footer onClose={onClose} />
-        </AddedProvider>
+        <Footer onClose={onClose} />
       </View>
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <HarmfulModal />

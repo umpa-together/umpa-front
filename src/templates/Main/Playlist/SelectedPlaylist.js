@@ -18,10 +18,8 @@ import SelectedHashtag from 'components/Playlist/SelectedHashtag';
 import { useModal } from 'providers/modal';
 import AddedModal from 'components/Modal/AddedModal';
 import Footer from 'components/Footer';
-import { Provider as AddedProvider, Context as AddedContext } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import HarmfulModal from 'components/Modal/HarmfulModal';
-import PlayBar from 'components/PlayBar';
-import { useTrackPlayer } from 'providers/trackPlayer';
 import ActionModal from 'components/Modal/ActionModal';
 import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
@@ -54,7 +52,6 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
   const [selectModal, setSelectModal] = useState(false);
   const [actionModal, setActionModal] = useState(false);
   const [actions, setActions] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState(null);
   const [playlist, setPlaylist] = useState({
     _id: '',
@@ -86,10 +83,9 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
     }
   };
   const setSelected = () => {
-    if (currentPlaylist != null && currentPlaylist._id === id) {
+    if (currentPlaylist && currentPlaylist._id === id) {
       setPlaylist(currentPlaylist);
       setComment(currentComments);
-      setLoading(false);
     }
   };
 
@@ -99,12 +95,11 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
 
   useEffect(() => {
     setSelected();
-  }, [currentPlaylist]);
+  }, [currentPlaylist, currentComments]);
 
   const { postUserId: postUser, _id, likes, title, textcontent, hashtag, songs, image } = playlist;
 
   const checkMyPost = postUser._id === user._id;
-  const { currentSong, duration } = useTrackPlayer();
   const footerData = {
     _id,
     likes,
@@ -202,32 +197,27 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
         back={!post}
         actions={[<PostUserAction setSelectModal={setSelectModal} />]}
       />
-      {!loading ? (
+      {comment ? (
         <>
           <CommentProvider>
             <ScrollView>
               <SelectedInfo playlist={playlist} />
               <SelectedHashtag hashtag={hashtag} />
-              <AddedProvider>
-                <SelectedSong songs={songs} />
-              </AddedProvider>
+              <SelectedSong songs={songs} />
               <Footer object={footerData} type="playlist" />
               <Divider containerStyle={styles.dividerContainer} />
               <SelectedComment opt="playlist" comments={comment} />
             </ScrollView>
-            {currentSong && duration !== 0 && <PlayBar />}
             <KeyboardProvider>
               <CommentBar />
             </KeyboardProvider>
           </CommentProvider>
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
-
           <SelectModal
             modal={selectModal}
             setModal={setSelectModal}
             selectInfo={{ setActionModal, func: selectFunction, list: selectLists }}
           />
-
           {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
           <HarmfulModal />
         </>

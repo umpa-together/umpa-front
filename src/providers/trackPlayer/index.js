@@ -7,18 +7,16 @@ const TrackPlayerContext = createContext(null);
 export const useTrackPlayer = () => useContext(TrackPlayerContext);
 
 export default function TrackPlayerProvider({ children }) {
-  const [isPlayingId, setIsPlayingId] = useState('0');
+  const [state, setState] = useState('stop'); // stop, pause, play
   const [currentSong, setCurrentSong] = useState(null);
-  const [isMute, setIsMute] = useState(false);
-  const [isStop, setIsStop] = useState(false);
-
+  const [isPlayingId, setIsPlayingId] = useState(0);
   const { setHarmfulModal } = useModal();
   const { position, duration } = useProgress();
-  const addtracksong = async ({ data }) => {
-    setIsStop(false);
-    data.attributes.artwork.url = data.attributes.artwork.url.replace('{w}', '300');
-    data.attributes.artwork.url = data.attributes.artwork.url.replace('{h}', '300');
-    const { attributes } = data;
+
+  const addTrackSong = async (song) => {
+    const { attributes, id } = song;
+    attributes.artwork.url = attributes.artwork.url.replace('{w}', '300');
+    attributes.artwork.url = attributes.artwork.url.replace('{h}', '300');
     const {
       previews,
       name,
@@ -30,7 +28,7 @@ export default function TrackPlayerProvider({ children }) {
       contentRating,
     } = attributes;
     const track = {
-      id: data.id,
+      id,
       url: previews[0].url,
       title: name,
       artist: artistName,
@@ -39,69 +37,60 @@ export default function TrackPlayerProvider({ children }) {
       duration: durationInMillis,
       artwork: artwork.url,
     };
-    if (contentRating !== 'explicit') {
-      setIsPlayingId(data.id);
-      await TrackPlayer.reset();
-      await TrackPlayer.add(track);
-      TrackPlayer.play();
-      setCurrentSong(data);
-    } else {
+
+    if (contentRating === 'explicit') {
       setHarmfulModal(true);
-    }
-  };
-
-  const stoptracksong = async () => {
-    setIsStop(false);
-    setIsPlayingId('0');
-    setCurrentSong(null);
-    await TrackPlayer.reset();
-  };
-
-  const onClickSong = (data) => {
-    if (isPlayingId !== data.id) {
-      addtracksong({ data });
     } else {
-      stoptracksong();
-    }
-  };
-
-  const onClickVolume = () => {
-    if (isMute) {
-      TrackPlayer.setVolume(1.0);
-    } else {
-      TrackPlayer.setVolume(0);
-    }
-    setIsMute(!isMute);
-  };
-
-  const onClickPause = () => {
-    if (isStop) {
+      await Promise.all([TrackPlayer.reset(), TrackPlayer.add(track)]);
       TrackPlayer.play();
-    } else {
-      TrackPlayer.pause();
+      setCurrentSong(song);
+      setIsPlayingId(song.id);
+      setState('play');
     }
-    setIsStop(!isStop);
+  };
+
+  const stopTrackSong = async () => {
+    await TrackPlayer.reset();
+    setCurrentSong(null);
+    setIsPlayingId(0);
+    setState('stop');
+  };
+
+  const onClickSong = (song) => {
+    if (isPlayingId === song.id) {
+      stopTrackSong();
+    } else {
+      addTrackSong(song);
+    }
+  };
+
+  const onClickPlayBar = () => {
+    if (state === 'play') {
+      setState('pause');
+      TrackPlayer.pause();
+    } else {
+      setState('play');
+      TrackPlayer.play();
+    }
   };
 
   const value = {
-    isPlayingId,
     currentSong,
     position,
     duration,
-    isMute,
-    isStop,
-    addtracksong,
-    stoptracksong,
-    onClickVolume,
+    state,
+    isPlayingId,
+    addTrackSong,
+    stopTrackSong,
     onClickSong,
-    onClickPause,
+    onClickPlayBar,
   };
 
   useEffect(() => {
     if (duration !== 0 && position !== 0 && duration === position) {
-      stoptracksong();
+      stopTrackSong();
     }
-  }, [isPlayingId, duration, position]);
+  }, [duration, position]);
 
   return <TrackPlayerContext.Provider value={value}>{children}</TrackPlayerContext.Provider>;
 }
