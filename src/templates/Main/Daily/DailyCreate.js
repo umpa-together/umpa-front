@@ -10,11 +10,12 @@ import CreateInput from 'components/Daily/CreateInput';
 import CreatePhoto from 'components/Daily/CreatePhoto';
 import CreateImageLists from 'components/Daily/CreateImageLists';
 import { COLOR_5, MAIN_COLOR } from 'constants/colors';
-import FS from 'lib/utils/normalize';
+import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import { useScroll } from 'providers/scroll';
 import { useModal } from 'providers/modal';
 import ValidityModal from 'components/Modal/ValidityModal';
 import Text from 'components/Text';
+import KeyboardProvider from 'providers/keyboard';
 
 const NextActions = ({ edit, setValidityMsg }) => {
   const [validity, setValidity] = useState(false);
@@ -70,7 +71,9 @@ export default function DailyCreate({ data, edit }) {
       </SongActionsProvider>
       <CreateInput />
       <CreateImageLists edit={edit} />
-      <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
+      <KeyboardProvider>
+        <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
+      </KeyboardProvider>
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );
@@ -80,6 +83,8 @@ const styles = StyleSheet.create({
   activeText: {
     fontSize: FS(14),
     color: MAIN_COLOR,
+    paddingVertical: 10 * SCALE_WIDTH,
+    paddingHorizontal: 10 * SCALE_WIDTH,
   },
   inactiveText: {
     fontSize: FS(14),

@@ -32,8 +32,9 @@ const HashtagModalView = ({ onCloseModal, info }) => {
   });
 
   return (
-    <View style={styles.modal}>
+    <View keyboardShouldPersistTaps="always" keyboardDismissMode="on-drag" style={styles.modal}>
       <Header
+        headerStyle={styles.headerContainer}
         titleStyle={style.headertitle}
         landings={[<Landing />]}
         actions={[<Action />]}
@@ -92,24 +93,31 @@ const styles = StyleSheet.create({
   container: {
     margin: 0,
   },
+  headerContainer: {
+    height: 67 * SCALE_HEIGHT,
+  },
   modal: {
     borderTopLeftRadius: 12 * SCALE_HEIGHT,
     borderTopRightRadius: 12 * SCALE_HEIGHT,
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '70%',
+    height: 600 * SCALE_HEIGHT,
     backgroundColor: '#fff',
   },
   divideContainer: {
     marginTop: 29 * SCALE_HEIGHT,
   },
   landingText: {
-    fontSize: FS(12),
+    paddingVertical: 10 * SCALE_HEIGHT,
+    paddingHorizontal: 15 * SCALE_WIDTH,
+    fontSize: FS(14),
     color: COLOR_5,
   },
   actionText: {
-    fontSize: FS(12),
+    paddingVertical: 10 * SCALE_HEIGHT,
+    paddingHorizontal: 15 * SCALE_WIDTH,
+    fontSize: FS(14),
     color: MAIN_COLOR,
   },
   hashtagBox: {

@@ -29,9 +29,10 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: '100%',
-    height: 420 * SCALE_HEIGHT,
+    height: 400 * SCALE_HEIGHT,
     paddingHorizontal: 18 * SCALE_WIDTH,
-    marginBottom: 12 * SCALE_HEIGHT,
+    paddingBottom: 100 * SCALE_HEIGHT,
+    marginBottom: 32 * SCALE_HEIGHT,
     fontSize: FS(14),
   },
 });

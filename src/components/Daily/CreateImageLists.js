@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
-import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import ScrollImage from 'components/ScrollImage';
@@ -22,6 +22,7 @@ export default function CreateImageLists({ edit = false }) {
                 <FastImage source={{ uri }} style={styles.imageNotEdit} />
               ) : (
                 <Movable key={uri} imagesCount={images.length} id={uri}>
+                  <View style={styles.blur} />
                   <FastImage source={{ uri }} style={styles.imageContainer} />
                   <TouchableOpacity onPress={() => onClickDeleteImage(item)}>
                     <Icon
@@ -42,7 +43,7 @@ export default function CreateImageLists({ edit = false }) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingLeft: 18 * SCALE_WIDTH,
+    paddingBottom: 80 * SCALE_WIDTH,
   },
   imageContainer: {
     width: 90 * SCALE_WIDTH,
@@ -50,12 +51,11 @@ const styles = StyleSheet.create({
     paddingRight: 12 * SCALE_WIDTH,
   },
   deleteIcon: {
-    zIndex: 2,
     width: 30 * SCALE_WIDTH,
     height: 30 * SCALE_WIDTH,
     position: 'absolute',
     right: 2 * SCALE_WIDTH,
-    top: -45 * SCALE_HEIGHT,
+    top: -43 * SCALE_WIDTH,
   },
   imageNotEdit: {
     width: 90 * SCALE_WIDTH,

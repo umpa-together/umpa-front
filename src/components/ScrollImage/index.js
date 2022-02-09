@@ -11,7 +11,7 @@ export default function ScrollImage({ images, children }) {
     updatePositionImg(images);
     setTimeout(() => {
       setRender(!render);
-    }, 10);
+    }, 20);
   }, [images]);
 
   return (

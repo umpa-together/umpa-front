@@ -17,11 +17,10 @@ export default function CreateHashtag({ addAction, hashtagCount, onValidityModal
       onValidityModal();
       return;
     }
-    if (hashtagRef.current.value !== '') {
+    if (hashtagRef.current.value !== '' && hashtagRef.current.value !== undefined) {
       addAction(hashtagRef);
     }
   };
-
   const onChangeHashtag = (text) => {
     hashtagRef.current.value = text;
   };
@@ -33,6 +32,7 @@ export default function CreateHashtag({ addAction, hashtagCount, onValidityModal
         onChangeText={(txt) => onChangeHashtag(txt)}
         placeholder="해시태그를 입력해주세요. (최대 9글자)"
         placeholderTextColor="#c4c4c4"
+        returnKeyType="done"
         autoCapitalize="none"
         onSubmitEditing={onPressAdd}
         autoCorrect={false}
@@ -43,8 +43,9 @@ export default function CreateHashtag({ addAction, hashtagCount, onValidityModal
       <TouchableOpacity onPress={onPressCancle}>
         <Icon source={require('public/icons/search-modal-cancel.png')} style={styles.cancelIcon} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={onPressAdd}>
-        <Text style={styles.addText}>+ 추가</Text>
+      <TouchableOpacity style={[style.flexRow, styles.createContainer]} onPress={onPressAdd}>
+        <Icon source={require('public/icons/hashtag-create.png')} style={styles.createIcon} />
+        <Text style={styles.addText}>추가</Text>
       </TouchableOpacity>
     </View>
   );
@@ -54,6 +55,11 @@ const styles = StyleSheet.create({
   textInputContainer: {
     paddingLeft: 16 * SCALE_WIDTH,
     paddingRight: 13 * SCALE_WIDTH,
+  },
+  createContainer: {
+    paddingLeft: 8 * SCALE_WIDTH,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     width: 294 * SCALE_WIDTH,
@@ -80,5 +86,9 @@ const styles = StyleSheet.create({
     fontSize: FS(14),
     color: MAIN_COLOR,
     marginLeft: 8 * SCALE_WIDTH,
+  },
+  createIcon: {
+    width: 11 * SCALE_WIDTH,
+    height: 11 * SCALE_WIDTH,
   },
 });
