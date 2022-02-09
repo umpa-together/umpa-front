@@ -13,52 +13,48 @@ const SideModalView = ({ onCloseModal }) => {
   const { state } = useContext(UserContext);
 
   const { name, profileImage } = state.user;
-  const emptyfunction = () => {};
 
-  const onClickAddedSong = () => {
-    navigate('Added', { type: 'Song' });
+  const onClickTopMenu = (type) => {
+    navigate('Added', { type });
     onCloseModal();
   };
 
-  const onClickAddedPlaylist = () => {
-    navigate('Added', { type: 'Playlist' });
+  const onClickBottomMenu = (type) => {
+    navigate('Side', { type });
     onCloseModal();
   };
 
   const menuListsTop = [
     {
       title: '저장한 곡',
-      onClick: onClickAddedSong,
+      onClick: () => onClickTopMenu('Song'),
     },
     {
       title: '저장한 플레이리스트',
-      onClick: onClickAddedPlaylist,
+      onClick: () => onClickTopMenu('Playlist'),
     },
   ];
+
   const menuListsBottom = [
     {
-      title: '계정 정보 설정',
-      onClick: emptyfunction,
-    },
-    {
       title: '알림 설정',
-      onClick: emptyfunction,
+      onClick: () => onClickBottomMenu('Notice'),
     },
     {
       title: '공지 사항',
-      onClick: emptyfunction,
+      onClick: () => onClickBottomMenu('Announcement'),
     },
     {
       title: '서비스 이용약관',
-      onClick: emptyfunction,
+      onClick: () => onClickBottomMenu('Service'),
     },
     {
       title: '개인정보 처리방침',
-      onClick: emptyfunction,
+      onClick: () => onClickBottomMenu('Privacy'),
     },
     {
-      title: '피드백 건의사항',
-      onClick: emptyfunction,
+      title: '피드백 및 건의사항',
+      onClick: () => onClickBottomMenu('Feedback'),
     },
   ];
 
@@ -78,7 +74,7 @@ const SideModalView = ({ onCloseModal }) => {
           return <SideMenu key={title} title={title} onClick={onClick} />;
         })}
       </View>
-      <ModalSign />
+      <ModalSign onCloseModal={onCloseModal} />
     </View>
   );
 };

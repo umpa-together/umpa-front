@@ -6,16 +6,29 @@ import { Context as MainContentsContext } from 'context/MainContents';
 import RecommendPlaylist from 'components/Search/RecommendPlaylist';
 import RecommendAccount from 'components/Search/RecommendAccount';
 import SearchBarView from 'components/Search/SearchBarView';
-import RecentDailies from 'components/Search/RecentDailies';
+import RecommendDailies from 'components/Search/RecommendDailies';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
+import PlayBar from 'components/PlayBar';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 export default function Search() {
-  const { state, getMainRecommendPlaylist, getMainRecommendDJ, getRecentDailies } =
-    useContext(MainContentsContext);
+  const {
+    state: { mainPlaylist, mainDJ, mainDailies },
+    getMainRecommendPlaylist,
+    getMainRecommendDJ,
+    getMainRecommendDailies,
+  } = useContext(MainContentsContext);
+  const { addedModal } = useModal();
 
   const dataFetch = async () => {
-    await Promise.all([getMainRecommendPlaylist(), getMainRecommendDJ(), getRecentDailies()]);
+    await Promise.all([
+      getMainRecommendPlaylist(),
+      getMainRecommendDJ(),
+      getMainRecommendDailies(),
+    ]);
   };
 
   useEffect(() => {
@@ -25,14 +38,18 @@ export default function Search() {
   return (
     <View style={style.background}>
       <TabTitle title="검색" titleStyle={styles.title} />
-      {state.mainPlaylist && state.mainDJ && state.recentDailies && (
+      {mainPlaylist && mainDJ && mainDailies ? (
         <ScrollView showsVerticalScrollIndicator={false}>
           <SearchBarView />
           <RecommendPlaylist />
           <RecommendAccount />
-          <RecentDailies />
+          <RecommendDailies />
         </ScrollView>
+      ) : (
+        <LoadingIndicator />
       )}
+      <PlayBar />
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
 }

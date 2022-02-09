@@ -8,7 +8,7 @@ import style from 'constants/styles';
 import Text from 'components/Text';
 
 export default function UserRepresentSong({ song, action, account }) {
-  const { onClickSong, isPlayingId } = useTrackPlayer();
+  const { onClickSong } = useTrackPlayer();
   const { name: songName, artistName } = song.attributes;
 
   const maxWidthStyle = {

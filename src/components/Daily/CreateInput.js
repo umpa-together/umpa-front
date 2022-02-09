@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function CreateInput() {
   const { information, onChangeValue } = useDailyCreate();
-
+  const onChangeText = useCallback((text) => onChangeValue(text), []);
   return (
     <View style={styles.container}>
       <TextInput
@@ -16,7 +16,7 @@ export default function CreateInput() {
         textAlignVertical="top"
         autoCapitalize="none"
         autoCorrect={false}
-        onChangeText={(text) => onChangeValue(text)}
+        onChangeText={onChangeText}
         placeholderTextColor="rgb(164,164,164)"
       />
     </View>

@@ -31,7 +31,7 @@ const UploadActions = ({ signUp }) => {
   }, [state]);
 
   return (
-    <TouchableOpacity onPress={onClickEdit}>
+    <TouchableOpacity onPress={() => onClickEdit(signUp)}>
       <Text
         style={profile.nickName.length > 0 && songs.length > 0 ? styles.complete : styles.notActive}
       >

@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import style from 'constants/styles';
+import { useProgress } from 'providers/progress';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 export default function PlayAnimation({
@@ -21,7 +22,8 @@ export default function PlayAnimation({
   textStyle,
   textHidden,
 }) {
-  const { position, isPlayingId } = useTrackPlayer();
+  const { isPlayingId } = useTrackPlayer();
+  const { duration, position } = useProgress();
   const time = useSharedValue(position >= 0 ? position : 0);
 
   const nowWidth = useDerivedValue(() => `${interpolate(time.value, [-30, 0, 30], [0, 0, 100])}%`);
@@ -50,7 +52,8 @@ export default function PlayAnimation({
 
   useEffect(() => {
     setAnimationValue();
-  }, [position]);
+  }, [position, duration]); 
+ 
   return (
     <View style={container}>
       <View style={outContainer}>

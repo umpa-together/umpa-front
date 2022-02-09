@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
@@ -9,8 +9,9 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
 import { COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
+import FollowAction from './FollowAction';
 
-export default function Daily({ daily }) {
+export default memo(function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
   const onClickDaily = () => {
     push('SelectedDaily', { post: false, id, postUserId: postUser._id });
@@ -18,7 +19,7 @@ export default function Daily({ daily }) {
 
   return (
     <View style={styles.container}>
-      <PostUser user={postUser} />
+      <PostUser user={postUser} action={<FollowAction id={postUser._id} />} />
       {image.length > 0 && <DailyImage image={image} />}
       <DailySong song={song} containerStyle={styles.dailySongContainer} />
       <TouchableNoDouble style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
@@ -30,7 +31,7 @@ export default function Daily({ daily }) {
       <View style={styles.divider} />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

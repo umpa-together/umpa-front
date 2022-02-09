@@ -6,9 +6,12 @@ import { SUB_COLOR } from 'constants/colors';
 
 export default function ValidityModal({ title }) {
   const { opacity } = useModal();
+  const opacityStyle = {
+    opacity,
+  };
   return (
-    <Animated.View style={[styles.container, { opacity }]}>
-      <Animated.Text style={[styles.text, { opacity }]}>{title}</Animated.Text>
+    <Animated.View style={[styles.container, opacityStyle]}>
+      <Animated.Text style={[styles.text, opacityStyle]}>{title}</Animated.Text>
     </Animated.View>
   );
 }

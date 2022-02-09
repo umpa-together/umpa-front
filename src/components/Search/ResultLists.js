@@ -64,9 +64,7 @@ export default function ResultLists() {
             return (
               <View key={title}>
                 {data.length > 0 && (
-                  <>
-                    <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
-                  </>
+                  <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
                 )}
               </View>
             );
@@ -111,25 +109,29 @@ export default function ResultLists() {
     );
   };
 
+  const routesMap = [
+    { key: 'all', title: '전체' },
+    { key: 'song', title: '곡' },
+    { key: 'playlist', title: '플레이리스트' },
+    { key: 'daily', title: '데일리' },
+    { key: 'account', title: '계정' },
+    { key: 'hashtag', title: '해시태그' },
+  ];
+
+  const sceneMap = {
+    all: memo(All),
+    song: Song,
+    playlist: memo(Playlist),
+    daily: memo(Daily),
+    account: memo(Account),
+    hashtag: memo(Hashtag),
+  };
+
   return (
     <>
       <TabView
-        routesMap={[
-          { key: 'all', title: '전체' },
-          { key: 'song', title: '곡' },
-          { key: 'playlist', title: '플레이리스트' },
-          { key: 'daily', title: '데일리' },
-          { key: 'account', title: '계정' },
-          { key: 'hashtag', title: '해시태그' },
-        ]}
-        sceneMap={{
-          all: memo(All),
-          song: Song,
-          playlist: memo(Playlist),
-          daily: memo(Daily),
-          account: memo(Account),
-          hashtag: memo(Hashtag),
-        }}
+        routesMap={routesMap}
+        sceneMap={sceneMap}
         renderTabBar={(props) => <SearchTabBar props={props} />}
       />
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}

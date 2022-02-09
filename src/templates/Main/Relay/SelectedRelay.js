@@ -12,7 +12,6 @@ import Header from 'components/Header';
 import { COLOR_1 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import SongActionsProvider from 'providers/songActions';
-import { Provider as AddedProvider } from 'context/Added';
 import AddedModal from 'components/Modal/AddedModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import ValidityModal from 'components/Modal/ValidityModal';
@@ -71,13 +70,9 @@ const NotCompletedRelay = () => {
         <SongActionsProvider>
           <NavButton isSwipe={swipeSongs.length > 0} setValidityMsg={setValidityMsg} />
         </SongActionsProvider>
-        <AddedProvider>
-          {challengeSong.length > 0 && (
-            <MusicSection title="내가 도전한 곡" songs={challengeSong} />
-          )}
-          <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
-          {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
-        </AddedProvider>
+        {challengeSong.length > 0 && <MusicSection title="내가 도전한 곡" songs={challengeSong} />}
+        <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
+        {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
       </ScrollView>
       {validityModal && <ValidityModal title={validityMsg} />}
     </>
@@ -98,9 +93,7 @@ const CompletedRelay = () => {
         <ScrollView>
           <Information />
           <HashtagView />
-          <AddedProvider>
-            <MusicSection title={`총 ${songs.length}곡`} songs={songs} />
-          </AddedProvider>
+          <MusicSection title={`총 ${songs.length}곡`} songs={songs} />
           <Divider />
           <Participant />
           <Footer

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   View,
   FlatList,
@@ -8,7 +8,6 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { Provider as AddedProvider } from 'context/Added';
 import { Context as SearchContext } from 'context/Search';
 import SearchSongView from 'components/SongView/SearchSongView';
 import { useTrackPlayer } from 'providers/trackPlayer';
@@ -43,24 +42,28 @@ const SongLists = () => {
     navigate('SelectedSong', { song });
   };
 
+  const keyExtractor = useCallback((_) => _.song.id, []);
+  const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);
+  const renderItem = useCallback(({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => onClickSongView(item.song)}>
+        <SearchSongView info={item} />
+      </TouchableOpacity>
+    );
+  }, []);
+
   return (
-    <AddedProvider>
-      <FlatList
-        data={state.result.song}
-        keyExtractor={(item) => item.song.id}
-        contentContainerStyle={styles.songContainer}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.6}
-        ListFooterComponent={loading && <ActivityIndicator />}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity onPress={() => onClickSongView(item.song)}>
-              <SearchSongView info={item} />
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </AddedProvider>
+    <FlatList
+      data={state.result.song}
+      keyExtractor={keyExtractor}
+      contentContainerStyle={styles.songContainer}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.6}
+      ListFooterComponent={ListFooterComponent}
+      renderItem={renderItem}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+    />
   );
 };
 
@@ -89,29 +92,27 @@ export default function MoreLists({ title, data }) {
         <SongLists />
       ) : (
         <ScrollView>
-          <AddedProvider>
-            {data.map((item) => {
-              const { _id: id } = item;
-              return (
-                <View key={id}>
-                  {title === '플레이리스트' ? (
-                    <PostingCard
-                      item={item}
-                      opt="playlist"
-                      round
-                      action={<PlayAction song={item.songs[0]} />}
-                    />
-                  ) : title === '데일리' ? (
-                    <DailyView info={item} actions />
-                  ) : title === '계정' ? (
-                    <UserView user={item} />
-                  ) : (
-                    <HashtagView info={item} />
-                  )}
-                </View>
-              );
-            })}
-          </AddedProvider>
+          {data.map((item) => {
+            const { _id: id } = item;
+            return (
+              <View key={id}>
+                {title === '플레이리스트' ? (
+                  <PostingCard
+                    item={item}
+                    opt="playlist"
+                    round
+                    action={<PlayAction song={item.songs[0]} />}
+                  />
+                ) : title === '데일리' ? (
+                  <DailyView info={item} actions />
+                ) : title === '계정' ? (
+                  <UserView user={item} />
+                ) : (
+                  <HashtagView info={item} />
+                )}
+              </View>
+            );
+          })}
         </ScrollView>
       )}
       <HarmfulModal />

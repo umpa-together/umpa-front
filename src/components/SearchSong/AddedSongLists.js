@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import AddSongView from 'components/SongView/AddSongView';
@@ -19,6 +19,11 @@ export default function AddedSongLists() {
     getAddedSong();
   }, []);
 
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(({ item }) => {
+    const { song } = item;
+    return <AddSongView song={song} />;
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.text}>저장한 곡</Text>
@@ -27,11 +32,10 @@ export default function AddedSongLists() {
         <FlatList
           style={styles.listContainter}
           data={songLists}
-          keyExtractor={(_) => _._id}
-          renderItem={({ item }) => {
-            const { song } = item;
-            return <AddSongView song={song} />;
-          }}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       ) : (
         <EmptyData textList={textList} icon />

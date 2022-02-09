@@ -46,6 +46,7 @@ export default function CreatePhoto({ edit, setValidityMsg }) {
     Keyboard.dismiss();
   };
 
+
   return (
     <View style={[styles.container, keyboardStyle]}>
       <View style={[style.flexRow, styles.touchContainer]}>

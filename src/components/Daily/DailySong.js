@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
@@ -9,10 +9,17 @@ import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
 
-export default function DailySong({ song, containerStyle, time, selected }) {
-  const { isPlayingId, onClickSong } = useTrackPlayer();
-  const { attributes, id } = song;
-  const { contentRating, name, artistName } = attributes;
+export default memo(function DailySong({ song, containerStyle, time, selected }) {
+  const { onClickSong, isPlayingId } = useTrackPlayer();
+  const {
+    id,
+    attributes: { contentRating, name, artistName },
+  } = song;
+
+  const onClickPlay = () => {
+    onClickSong(song);
+  };
+
   useEffect(() => {
     if (selected && contentRating !== 'explicit') {
       onClickSong(song);
@@ -20,14 +27,11 @@ export default function DailySong({ song, containerStyle, time, selected }) {
   }, []);
   return (
     <View style={[containerStyle, style.flexRow, style.space_between]}>
-      <TouchableOpacity
-        onPress={() => onClickSong(song)}
-        style={[style.flexRow, style.alignCenter]}
-      >
+      <TouchableOpacity onPress={onClickPlay} style={[style.flexRow, style.alignCenter]}>
         <MoveText
           isExplicit={contentRating === 'explicit'}
           text={`${name}-${artistName}`}
-          isMove={id === isPlayingId}
+          isMove={isPlayingId === id}
           textStyle={styles.textStyle}
           container={styles.moveArea}
         />
@@ -37,7 +41,7 @@ export default function DailySong({ song, containerStyle, time, selected }) {
       <HarmfulModal />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   textStyle: {

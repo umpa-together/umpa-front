@@ -21,7 +21,11 @@ const HeaderActions = ({ edit, setEdit }) => {
 };
 
 export default function Added({ type }) {
-  const { state, getAddedSong, getAddedPlaylist } = useContext(AddedContext);
+  const {
+    state: { songLists, playlists },
+    getAddedSong,
+    getAddedPlaylist,
+  } = useContext(AddedContext);
   const [edit, setEdit] = useState(false);
 
   const titleLists = {
@@ -55,7 +59,8 @@ export default function Added({ type }) {
         titleStyle={styles.titleStyle}
         actions={[<HeaderActions edit={edit} setEdit={setEdit} />]}
       />
-      {(state.songLists || state.playlists) && titleLists[type].component}
+      {((type === 'Song' && songLists) || (type === 'Playlist' && playlists)) &&
+        titleLists[type].component}
       <HarmfulModal />
     </View>
   );

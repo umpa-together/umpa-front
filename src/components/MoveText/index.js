@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import TextTicker from 'react-native-text-ticker';
 import style from 'constants/styles';
@@ -6,7 +6,7 @@ import { SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import Text from 'components/Text';
 
-export default function MoveText({
+export default memo(function MoveText({
   container,
   text,
   isMove,
@@ -36,13 +36,13 @@ export default function MoveText({
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   explicit: {
     width: 20 * SCALE_WIDTH,
     height: 20 * SCALE_WIDTH,
-    marginRight: 2 * SCALE_WIDTH,
+    left: -4 * SCALE_WIDTH,
   },
   center: {
     justifyContent: 'center',

@@ -12,8 +12,10 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import { MAIN_COLOR } from 'constants/colors';
 import Text from 'components/Text';
+import { useTrackPlayer } from 'providers/trackPlayer';
 
 const FloatingButton = ({ show }) => {
+  const { currentSong } = useTrackPlayer();
   const opacity = useSharedValue(1);
   const animation = useSharedValue(0);
   const [isopen, setIsopen] = useState(false);
@@ -35,8 +37,9 @@ const FloatingButton = ({ show }) => {
     transform: [{ scale: opacity.value }],
     opacity: opacity.value,
   }));
+
   return (
-    <Animated.View style={[styles.container, opacityStyle]}>
+    <Animated.View style={[currentSong ? styles.playingContainer : styles.container, opacityStyle]}>
       {writeList.map((item, index) => {
         const translateY = useDerivedValue(() =>
           interpolate(animation.value, [0, 1], [0, -80 * (index + 1)]),
@@ -69,6 +72,11 @@ const FloatingButton = ({ show }) => {
 };
 
 const styles = StyleSheet.create({
+  playingContainer: {
+    position: 'absolute',
+    bottom: 120 * SCALE_HEIGHT,
+    right: 70 * SCALE_WIDTH,
+  },
   container: {
     position: 'absolute',
     bottom: 70 * SCALE_HEIGHT,

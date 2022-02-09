@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
@@ -15,10 +15,15 @@ import FloatingButton from 'components/Feed/FloatingButton';
 import SongActionsProvider from 'providers/songActions';
 import { COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
+import PlayBar from 'components/PlayBar';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
-  const { state } = useContext(FeedContext);
+  const {
+    state: { type },
+  } = useContext(FeedContext);
 
   const onClickActions = async () => {
     setModal(true);
@@ -26,7 +31,7 @@ const FeedActions = ({ setModal }) => {
 
   return (
     <TouchableOpacity onPress={onClickActions} activeOpacity={0.9} style={style.flexRow}>
-      <Text style={styles.type}>{state.type ? '전체보기' : '팔로잉'}</Text>
+      <Text style={styles.type}>{type ? '전체보기' : '팔로잉'}</Text>
       <Icon source={require('public/icons/feed-down.png')} style={styles.actions} />
     </TouchableOpacity>
   );
@@ -38,11 +43,17 @@ export default function Feed() {
   const {
     state: { user },
   } = useContext(UserContext);
-  const { state, setFeedType, getFeeds, getFeedWithFollowing, getFeedType } =
-    useContext(FeedContext);
-  const { getMyStory } = useContext(StoryContext);
+  const {
+    state: { type },
+    setFeedType,
+    getFeeds,
+    getFeedWithFollowing,
+    getFeedType,
+  } = useContext(FeedContext);
+  const { getMyStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
   const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
+  const { addedModal } = useModal();
 
   const sortLists = [
     { title: '전체보기', key: 'all' },
@@ -71,7 +82,13 @@ export default function Feed() {
     }
   };
 
-  const AlertModal = () => {
+  const sortInfo = {
+    list: sortLists,
+    func: sortFunction,
+    current: type ? '전체보기' : '팔로우한 유저들만 보기',
+  };
+
+  const AlertModal = useCallback(() => {
     return (
       <>
         {alertModal && (
@@ -88,13 +105,13 @@ export default function Feed() {
         )}
       </>
     );
-  };
+  }, [alertModal]);
 
   const dataFetch = async () => {
-    if (state.type) {
-      await Promise.all([getFeeds(), getMyStory()]);
+    if (type) {
+      await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
     } else {
-      await Promise.all([getFeedWithFollowing(), getMyStory()]);
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithFollower()]);
     }
   };
 
@@ -103,8 +120,8 @@ export default function Feed() {
   }, []);
 
   useEffect(() => {
-    if (state.type !== null) dataFetch();
-  }, [state.type]);
+    if (type !== null) dataFetch();
+  }, [type]);
 
   return (
     <View style={style.background}>
@@ -118,15 +135,13 @@ export default function Feed() {
           <Contents setIsScroll={setIsScroll} />
         </RefreshProvider>
       </SongActionsProvider>
+      <PlayBar />
       <FloatingButton show={isScroll} />
+      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <SortModal
         modal={sortModal}
         setModal={setSortModal}
-        sortInfo={{
-          list: sortLists,
-          func: sortFunction,
-          current: state.type ? '전체보기' : '팔로우한 유저들만 보기',
-        }}
+        sortInfo={sortInfo}
         actions={<AlertModal />}
       />
     </View>

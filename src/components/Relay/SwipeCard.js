@@ -7,7 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Text from 'components/Text';
 import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
-import { Provider as AddedProvider, Context as AddedContext } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 import { navigate } from 'lib/utils/navigation';

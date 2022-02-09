@@ -5,9 +5,12 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function AddedModal({ title, customContainer }) {
   const { opacity } = useModal();
+  const opacityStyle = {
+    opacity,
+  };
   return (
-    <Animated.View style={[styles.container, { opacity }, customContainer]}>
-      <Animated.Text style={[styles.text, { opacity }]}>{title}</Animated.Text>
+    <Animated.View style={[styles.container, opacityStyle, customContainer]}>
+      <Animated.Text style={[styles.text, opacityStyle]}>{title}</Animated.Text>
     </Animated.View>
   );
 }

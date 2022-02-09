@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
@@ -24,12 +24,12 @@ export default function CreateHashtag({ addAction, hashtagCount, onValidityModal
   const onChangeHashtag = (text) => {
     hashtagRef.current.value = text;
   };
-
+  const onChangeText = useCallback((text) => onChangeHashtag(text), []);
   return (
     <View style={[style.flexRow, styles.textInputContainer]}>
       <TextInput
         style={styles.textInput}
-        onChangeText={(txt) => onChangeHashtag(txt)}
+        onChangeText={onChangeText}
         placeholder="해시태그를 입력해주세요. (최대 9글자)"
         placeholderTextColor="#c4c4c4"
         returnKeyType="done"

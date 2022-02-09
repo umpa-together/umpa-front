@@ -1,25 +1,32 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { memo, useCallback } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
-import style from 'constants/styles';
 import Text from 'components/Text';
 
-export default function SelectedHashtag({ hashtag }) {
-  return (
-    <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-      <View style={[style.flexRow, styles.container]}>
-        {hashtag.map((item) => {
-          return (
-            <View key={item} style={styles.hashtagBox}>
-              <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
-            </View>
-          );
-        })}
+export default memo(function SelectedHashtag({ hashtag }) {
+  const keyExtractor = useCallback((_) => _, []);
+  const renderItem = useCallback(
+    ({ item }) => (
+      <View style={styles.hashtagBox}>
+        <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
       </View>
-    </ScrollView>
+    ),
+    [],
   );
-}
+  return (
+    <FlatList
+      data={hashtag}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      contentContainerStyle={styles.container}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+    />
+  );
+});
 
 const styles = StyleSheet.create({
   container: {

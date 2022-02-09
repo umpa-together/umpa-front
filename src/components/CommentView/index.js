@@ -15,6 +15,7 @@ import { useComment } from 'providers/comment';
 import Hyperlink from 'react-native-hyperlink';
 import openURL from 'lib/utils/openUrl';
 import Text from 'components/Text';
+import { navigate, push } from 'lib/utils/navigation';
 
 const CommentAction = ({ postUserId, commentId, likes, opt }) => {
   const {
@@ -123,6 +124,11 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
     }
   };
 
+  const actionInfo = {
+    mainTitle: '댓글을 삭제하시겠습니까??',
+    func: actionFunction,
+    list: actionLists,
+  };
   return (
     <View style={[style.flexRow, styles.actionContainer]}>
       <TouchableOpacity onPress={onPressLike}>
@@ -142,15 +148,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
           <Text style={styles.actionText}>지우기</Text>
         </TouchableOpacity>
       )}
-      <ActionModal
-        modal={deleteModal}
-        setModal={setDeleteModal}
-        actionInfo={{
-          mainTitle: '댓글을 삭제하시겠습니까??',
-          func: actionFunction,
-          list: actionLists,
-        }}
-      />
+      <ActionModal modal={deleteModal} setModal={setDeleteModal} actionInfo={actionInfo} />
     </View>
   );
 };
@@ -163,7 +161,6 @@ export default function ({ comment, opt }) {
     likes,
     _id: commentId,
   } = comment;
-  console.log(comment)
   const timeConverted = timeConverter(time);
   const RecommentChecker = ['playlistRecomment', 'dailyRecomment', 'relayRecomment'];
   const {
@@ -186,6 +183,20 @@ export default function ({ comment, opt }) {
   const onClickReport = () => {
     setReportModal(true);
   };
+
+  const onClickProfile = () => {
+    if (postUserId === user._id) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id: postUserId });
+    }
+  };
+
+  const actionInfo = {
+    mainTitle: '댓글을 신고하시겠습니까?',
+    func: actionFunction,
+    list: actionLists,
+  };
   return (
     <View
       style={[
@@ -196,7 +207,9 @@ export default function ({ comment, opt }) {
         },
       ]}
     >
-      <ProfileImage img={profileImage} imgStyle={styles.img} />
+      <TouchableOpacity onPress={onClickProfile}>
+        <ProfileImage img={profileImage} imgStyle={styles.img} />
+      </TouchableOpacity>
       <View style={styles.commentContainer}>
         <View style={[style.flexRow, style.space_between]}>
           <View style={style.flexRow}>
@@ -214,15 +227,7 @@ export default function ({ comment, opt }) {
         </Hyperlink>
         <CommentAction postUserId={postUserId} likes={likes} commentId={commentId} opt={opt} />
       </View>
-      <ActionModal
-        modal={reportModal}
-        setModal={setReportModal}
-        actionInfo={{
-          mainTitle: '댓글을 신고하시겠습니까?',
-          func: actionFunction,
-          list: actionLists,
-        }}
-      />
+      <ActionModal modal={reportModal} setModal={setReportModal} actionInfo={actionInfo} />
     </View>
   );
 }

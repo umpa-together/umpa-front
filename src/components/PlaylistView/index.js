@@ -8,19 +8,22 @@ import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Text from 'components/Text';
 
-export default function PlaylistCard({ playlist, actions = null, landings = null, play = true }) {
+export default function PlaylistView({ playlist, actions = null, landings = null, play = true }) {
   const { image, songs, title, time } = playlist;
   const { name } = songs[0].attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const playingCheck = songs[0].id === isPlayingId;
   const widthCount = (play && 1) + (actions && 1) + (landings && 1);
 
+  const defaultArea = 220;
+  const areaWidth = { maxWidth: (defaultArea - 40 * widthCount) * SCALE_WIDTH };
+
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
         {landings}
         <PlaylistAlbumImage image={image} songs={songs} size={85} />
-        <View style={[styles.infoContainer, { maxWidth: (220 - 40 * widthCount) * SCALE_WIDTH }]}>
+        <View style={[styles.infoContainer, areaWidth]}>
           <Text style={styles.title} numberOfLines={1}>
             {title}
           </Text>

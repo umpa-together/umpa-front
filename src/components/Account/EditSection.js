@@ -59,7 +59,10 @@ export function GenreSection() {
   return (
     <View style={styles.genreContainer}>
       <Text style={styles.title}>선호장르</Text>
-      <TouchableOpacity style={styles.sectionBox} onPress={onClickSelect}>
+      <TouchableOpacity
+        style={[styles.sectionBox, style.flexRow, style.space_between]}
+        onPress={onClickSelect}
+      >
         {profile.genre.length === 0 ? (
           <Text style={styles.genreText}>선호 장르 선택</Text>
         ) : (
@@ -74,6 +77,7 @@ export function GenreSection() {
             })}
           </View>
         )}
+        <Icon source={require('public/icons/right-action.png')} style={styles.rightAction} />
       </TouchableOpacity>
       <GenreModal modal={genreModal} setModal={setGenreModal} />
     </View>
@@ -170,7 +174,6 @@ export default function EditSection({ title, placeholder }) {
         autoCorrect={false}
         placeholderTextColor={COLOR_3}
         maxLength={title === '닉네임' ? 10 : null}
-        // multiline={title === '소개글'}
         onChangeText={(text) => onChangeValue(title, text)}
       />
       {title === '닉네임' && (
@@ -312,5 +315,9 @@ const styles = StyleSheet.create({
   },
   genreContainer: {
     marginBottom: 62 * SCALE_HEIGHT,
+  },
+  rightAction: {
+    width: 6 * SCALE_WIDTH,
+    height: 13 * SCALE_HEIGHT,
   },
 });

@@ -9,8 +9,10 @@ import style from 'constants/styles';
 import { push } from 'lib/utils/navigation';
 import Text from 'components/Text';
 
-export default function RecentDailies() {
-  const { state } = useContext(MainContentsContext);
+export default function RecommendDailies() {
+  const {
+    state: { mainDailies },
+  } = useContext(MainContentsContext);
 
   const onClickSong = async (id, postUser) => {
     push('SelectedDaily', { post: false, id, postUserId: postUser });
@@ -20,8 +22,8 @@ export default function RecentDailies() {
     <View style={styles.container}>
       <Text style={styles.title}>지금 뜨는 데일리</Text>
       <View style={[style.flexRow, styles.wrap]}>
-        {state.recentDailies &&
-          state.recentDailies.map((daily) => {
+        {mainDailies &&
+          mainDailies.map((daily) => {
             const { _id: id, song, postUserId: postUser } = daily;
             return (
               <TouchableNoDouble

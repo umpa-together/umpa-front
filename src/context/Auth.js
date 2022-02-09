@@ -160,6 +160,19 @@ const getNaverInfo =
     }
   };
 
+const withdrawal =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      await server.delete(`/withdrawal/${id}`);
+      await AsyncStorage.removeItem('token');
+      dispatch({ type: 'signOut' });
+      navigate('SignIn');
+    } catch (err) {
+      dispatch({ type: 'add_error', payload: 'Something went wrong with withdrawal' });
+    }
+  };
+
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
@@ -172,6 +185,7 @@ export const { Provider, Context } = createDataContext(
     getKakaoInfo,
     getNaverInfo,
     clearErrorMessage,
+    withdrawal,
   },
   { token: null, errorMessage: '' },
 );

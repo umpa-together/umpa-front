@@ -17,8 +17,8 @@ export default function UserNoticeForm({ notice, onClickProfile }) {
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
-          {user.name}
-          <Text style={styles.contentText}> 님이 회원님을 팔로우 했습니다.</Text>
+          {`${user.name} 님이 `}
+          <Text style={styles.contentText}>회원님을 팔로우 했습니다.</Text>
           <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
