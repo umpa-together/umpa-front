@@ -13,7 +13,6 @@ import ProgressProvider from 'providers/progress';
 
 export default memo(function PlayBar() {
   const { currentSong, state, onClickPlayBar } = useTrackPlayer();
-  
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
 
