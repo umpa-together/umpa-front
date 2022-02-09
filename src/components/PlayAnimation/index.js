@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { View } from 'react-native';
 import React, { useEffect } from 'react';
 import Text from 'components/Text';
@@ -10,8 +11,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import style from 'constants/styles';
 import { useProgress } from 'providers/progress';
+import { useTrackPlayer } from 'providers/trackPlayer';
 
 export default function PlayAnimation({
+  songId,
   container,
   outContainer,
   innerContainer,
@@ -19,20 +22,38 @@ export default function PlayAnimation({
   textStyle,
   textHidden,
 }) {
+  const { isPlayingId } = useTrackPlayer();
   const { duration, position } = useProgress();
-  const time = useSharedValue(position);
+  const time = useSharedValue(position >= 0 ? position : 0);
 
-  const nowWidth = useDerivedValue(() => `${interpolate(time.value, [0, 30], [0, 100])}%`);
+  const nowWidth = useDerivedValue(() => `${interpolate(time.value, [-30, 0, 30], [0, 0, 100])}%`);
 
   const innerStyle = useAnimatedStyle(() => ({
     width: nowWidth.value,
   }));
-  useEffect(() => {
-    time.value = withTiming(position, {
-      duration: 1000,
-    });
-  }, [position, duration]);
+  const setAnimationValue = () => {
+    if (songId) {
+      if (songId === isPlayingId)
+        time.value = withTiming(position, {
+          duration: 500,
+        });
+    } else {
+      time.value = withTiming(position, {
+        duration: 500,
+      });
+    }
+  };
+  const timeText =
+    Math.floor(time.value) <= 0
+      ? '00'
+      : Math.floor(time.value) < 10
+      ? `0${Math.floor(time.value)}`
+      : Math.floor(time.value);
 
+  useEffect(() => {
+    setAnimationValue();
+  }, [position, duration]); 
+ 
   return (
     <View style={container}>
       <View style={outContainer}>
@@ -40,9 +61,7 @@ export default function PlayAnimation({
       </View>
       {!textHidden && (
         <View style={[style.flexRow, style.space_between, textContainer]}>
-          <Text style={textStyle}>
-            00:{Math.floor(position) < 10 ? `0${Math.floor(position)}` : Math.floor(position)}
-          </Text>
+          <Text style={textStyle}>00:{timeText}</Text>
           <Text style={textStyle}>00:30</Text>
         </View>
       )}

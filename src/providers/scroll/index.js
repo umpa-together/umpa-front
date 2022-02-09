@@ -8,7 +8,7 @@ import {
 } from 'react-native-reanimated';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 
-const SONG_HEIGHT = 50 * SCALE_HEIGHT;
+const SONG_HEIGHT = 50 * SCALE_WIDTH;
 const SCROLL_HEIGHT_THRESHOLD = 10;
 const MARGIN_BOTTOM = 14 * SCALE_HEIGHT;
 const INIT_MARGIN_TOP = 13 * SCALE_HEIGHT;

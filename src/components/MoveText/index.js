@@ -6,12 +6,23 @@ import { SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 import Text from 'components/Text';
 
-export default memo(function MoveText({ container, text, isMove, isExplicit, textStyle, center }) {
+export default memo(function MoveText({
+  container,
+  text,
+  isMove,
+  isExplicit,
+  textStyle,
+  center,
+  iconCustom,
+}) {
   return (
     <View style={container}>
       <View style={[style.flexRow, center && styles.center]}>
         {isExplicit && (
-          <Icon source={require('public/icons/19-notice.png')} style={styles.explicit} />
+          <Icon
+            source={require('public/icons/19-notice.png')}
+            style={[styles.explicit, iconCustom]}
+          />
         )}
         {isMove ? (
           <TextTicker duration={7000} bounce={false} marqueeDelay={1000} style={textStyle}>

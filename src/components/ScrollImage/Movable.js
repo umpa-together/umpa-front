@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useScroll } from 'providers/scroll';
-import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import { SCALE_WIDTH } from 'lib/utils/normalize';
 import FastImage from 'react-native-fast-image';
 
 export default function Movable({ id, imagesCount, children }) {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     width: 30 * SCALE_WIDTH,
     height: 30 * SCALE_WIDTH,
     position: 'absolute',
-    right: 12 * SCALE_WIDTH,
-    top: 10 * SCALE_HEIGHT,
+    right: 4 * SCALE_WIDTH,
+    top: 10 * SCALE_WIDTH,
   },
 });

@@ -12,6 +12,8 @@ import { NaverLogin } from '@react-native-seoul/naver-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import * as env from 'constants/app';
 import Text from 'components/Text';
+// eslint-disable-next-line camelcase
+import jwt_decode from 'jwt-decode';
 
 const webclientid = Platform.select({
   ios: env.webClientIdIOS,
@@ -70,10 +72,9 @@ export default function SocialLogin() {
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user,
       );
-
       // use credentialState response to ensure the user is authenticated
       if (credentialState === appleAuth.State.AUTHORIZED) {
-        const decodedToken = jwtDecode(appleAuthRequestResponse.identityToken);
+        const decodedToken = jwt_decode(appleAuthRequestResponse.identityToken);
         await getAppleInfo({ email: decodedToken.email, id: decodedToken.sub });
       }
     } catch (error) {

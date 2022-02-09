@@ -126,7 +126,7 @@ export function RepresentSongSection() {
   );
 
   return (
-    <View>
+    <View style={styles.representContainer}>
       <View style={[styles.songHeader, style.flexRow, style.space_between]}>
         <Text style={styles.title}>
           대표곡<Text style={styles.accent}>*</Text> (최대 3곡)
@@ -184,6 +184,9 @@ export default function EditSection({ title, placeholder }) {
 }
 
 const styles = StyleSheet.create({
+  representContainer: {
+    paddingBottom: 100 * SCALE_HEIGHT,
+  },
   background: {
     height: 122 * SCALE_HEIGHT,
     marginBottom: 60 * SCALE_HEIGHT,

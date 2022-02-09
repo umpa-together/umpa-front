@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     paddingLeft: 21 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     paddingTop: 11 * SCALE_HEIGHT,
+    paddingBottom: 100 * SCALE_HEIGHT,
     lineHeight: 26 * SCALE_HEIGHT,
     color: COLOR_1,
     fontSize: FS(14),
