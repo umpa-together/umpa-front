@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import PostingCard from 'components/PostingCard';
 import DailyView from 'components/DailyView';
-import { Provider as AddedProvider } from 'context/Added';
 import EmptyPosting from './EmptyPosting';
 
 export default function PostingResult({ data, opt, my }) {
@@ -11,12 +10,11 @@ export default function PostingResult({ data, opt, my }) {
     <View style={styles.container}>
       {data.length > 0 ? (
         data.map((item) => {
+          const keyId = item._id || item.playlist._id;
           return opt === 'daily' ? (
-            <AddedProvider key={item._id}>
-              <DailyView titleCustom={styles.wideTitle} isSelected info={item} />
-            </AddedProvider>
+            <DailyView key={keyId} titleCustom={styles.wideTitle} isSelected info={item} />
           ) : (
-            <PostingCard key={item._id} item={item} opt={opt} />
+            <PostingCard key={keyId} item={item} opt={opt} />
           );
         })
       ) : (

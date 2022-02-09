@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-export default function Divider({ containerStyle }) {
+export default memo(function Divider({ containerStyle }) {
   return <View style={[styles.container, containerStyle]} />;
-}
+});
 
 const styles = StyleSheet.create({
   container: {

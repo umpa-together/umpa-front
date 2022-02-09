@@ -43,20 +43,17 @@ export default function TabSection({ my, data, opt }) {
     }
     setSortModal(false);
   };
+  const sortInfo = {
+    list: sortList,
+    func: sortFunction,
+    current: sortOpt,
+  };
   return (
     <ScrollView>
       <SortPosting count={data.length} onPressModal={onPressModal} title={sortOpt} />
       {my && opt !== 'relay' && <CreateButton opt={opt} />}
       <PostingResult my={my} data={data} opt={opt} />
-      <SortModal
-        modal={sortModal}
-        setModal={setSortModal}
-        sortInfo={{
-          list: sortList,
-          func: sortFunction,
-          current: sortOpt,
-        }}
-      />
+      <SortModal modal={sortModal} setModal={setSortModal} sortInfo={sortInfo} />
     </ScrollView>
   );
 }

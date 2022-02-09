@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
@@ -27,13 +27,13 @@ const ModalView = () => {
     onClickAdded();
   };
 
-  const onClickAddActions = (song) => {
+  const onClickAddActions = useCallback((song) => {
     return (
       <TouchableOpacity onPress={() => onClickAdd(song)}>
         <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
       </TouchableOpacity>
     );
-  };
+  });
 
   const onClickActions = () => {
     if (!state.otherUser) {
@@ -42,6 +42,10 @@ const ModalView = () => {
     onCloseRepresentModal();
   };
 
+  const keyExtractor = useCallback((_) => _.id, []);
+  const renderItem = useCallback(({ item }) => (
+    <SongView song={item} actions={onClickAddActions(item)} />
+  ));
   return (
     <View style={styles.viewContainer}>
       <TouchableOpacity onPress={onClickActions} style={styles.actions}>
@@ -51,11 +55,11 @@ const ModalView = () => {
       {representSongs ? (
         <FlatList
           data={representSongs}
-          keyExtractor={(song) => song.id}
+          keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <SongView song={item} actions={onClickAddActions(item)} />;
-          }}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       ) : (
         <LoadingIndicator />

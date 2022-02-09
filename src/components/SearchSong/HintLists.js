@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { FlatList, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
@@ -8,11 +8,11 @@ import Text from 'components/Text';
 
 export default function HintLists() {
   const { state } = useContext(AppleMusicContext);
-  const { onSearchContents, textInputRef, text } = useSearch();
+  const { onSearchKeyword, textInputRef, text } = useSearch();
   const opacity = useRef(new Animated.Value(0)).current;
 
   const onClickHint = (hint) => {
-    onSearchContents(hint);
+    onSearchKeyword(hint);
     textInputRef.current.blur();
   };
 
@@ -24,41 +24,49 @@ export default function HintLists() {
     }).start();
   };
 
-  const findKeyword = (hint) => {
-    return (
-      <>
-        {hint.indexOf(text) === -1 ? (
-          <Text style={styles.keyword}>{hint}</Text>
-        ) : (
-          <>
-            <Text style={styles.keyword}>
-              {hint.indexOf(text) !== 0 && <Text>{hint.substr(0, hint.indexOf(text))}</Text>}
-              <Text style={styles.active}>{hint.substr(hint.indexOf(text), text.length)}</Text>
-              {hint.substr(hint.indexOf(text) + text.length)}
-            </Text>
-          </>
-        )}
-      </>
-    );
-  };
+  const findKeyword = useCallback(
+    (hint) => {
+      return (
+        <>
+          {hint.indexOf(text) === -1 ? (
+            <Text style={styles.keyword}>{hint}</Text>
+          ) : (
+            <>
+              <Text style={styles.keyword}>
+                {hint.indexOf(text) !== 0 && <Text>{hint.substr(0, hint.indexOf(text))}</Text>}
+                <Text style={styles.active}>{hint.substr(hint.indexOf(text), text.length)}</Text>
+                {hint.substr(hint.indexOf(text) + text.length)}
+              </Text>
+            </>
+          )}
+        </>
+      );
+    },
+    [text],
+  );
 
   useEffect(() => {
     fadeIn();
   }, []);
 
+  const keyExtractor = useCallback((_) => _, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <TouchableOpacity onPress={() => onClickHint(item)}>{findKeyword(item)}</TouchableOpacity>
+      );
+    },
+    [text],
+  );
   return (
     <Animated.View style={[styles.container, { opacity }]}>
       {state.hint && (
         <FlatList
           data={state.hint}
-          keyExtractor={(hint) => hint}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => onClickHint(item)}>
-                {findKeyword(item)}
-              </TouchableOpacity>
-            );
-          }}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       )}
     </Animated.View>

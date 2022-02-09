@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
@@ -6,7 +6,7 @@ import { goBack } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import ProfileBackground from './ProfileBackground';
 
-export default function AccountHeader({ user, back, hamburger }) {
+export default memo(function AccountHeader({ user, back, hamburger }) {
   const { backgroundImage } = user;
   const onPressBack = () => {
     goBack();
@@ -28,7 +28,7 @@ export default function AccountHeader({ user, back, hamburger }) {
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

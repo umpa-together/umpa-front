@@ -11,7 +11,9 @@ export default function SongCard({ song }) {
 
   return (
     <View style={[styles.container, style.flexRow]}>
-      {contentRating === 'explicit' && <View style={styles.explicit} />}
+      {contentRating === 'explicit' && (
+        <Icon source={require('public/icons/19-notice.png')} style={styles.explicit} />
+      )}
       <View style={[styles.infoArea, style.flexRow]}>
         <Text style={styles.title} numberOfLines={1}>
           {name}
@@ -46,9 +48,8 @@ const styles = StyleSheet.create({
     color: COLOR_3,
   },
   explicit: {
-    width: 12 * SCALE_WIDTH,
-    height: 12 * SCALE_WIDTH,
-    borderWidth: 1 * SCALE_WIDTH,
-    marginRight: 5 * SCALE_WIDTH,
+    width: 15 * SCALE_WIDTH,
+    height: 15 * SCALE_WIDTH,
+    left: -2 * SCALE_WIDTH,
   },
 });

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { Context as UserContext } from 'context/User';
-import { Context as AddedContext, Provider as AddedProvider } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import { Context as StoryContext } from 'context/Story';
 import { Context as FeedContext } from 'context/Feed';
 import Icon from 'widgets/Icon';
@@ -19,10 +19,11 @@ import ActionModal from 'components/Modal/ActionModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
 import PlayAnimation from 'components/PlayAnimation';
+import ProgressProvider from 'providers/progress';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
-  const { stoptracksong } = useTrackPlayer();
+  const { stopTrackSong } = useTrackPlayer();
   const {
     state: { user },
     follow,
@@ -41,7 +42,7 @@ const Header = ({ onClose }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const onExit = () => {
     onClose();
-    stoptracksong();
+    stopTrackSong();
     if (type) {
       getOtherStoryWithAll();
     } else {
@@ -71,6 +72,12 @@ const Header = ({ onClose }) => {
     }
   };
 
+  const actionInfo = {
+    mainTitle: '스토리를 삭제하겠습니까?',
+    func: actionFunction,
+    list: actionLists,
+  };
+
   return (
     <View style={[style.flexRow, styles.profileContainer, style.space_between]}>
       <View style={style.flexRow}>
@@ -85,26 +92,16 @@ const Header = ({ onClose }) => {
       <TouchableOpacity onPress={onExit} activeOpacity={0.8}>
         <Icon source={require('public/icons/story-exit.png')} style={styles.exitIcon} />
       </TouchableOpacity>
-      <ActionModal
-        modal={deleteModal}
-        setModal={setDeleteModal}
-        actionInfo={{
-          mainTitle: '스토리를 삭제하겠습니까?',
-          func: actionFunction,
-          list: actionLists,
-        }}
-      />
+      <ActionModal modal={deleteModal} setModal={setDeleteModal} actionInfo={actionInfo} />
     </View>
   );
 };
 
 const SongBody = () => {
-  const { isPlayingId } = useTrackPlayer();
   const {
     currentSong: {
       song: {
         attributes: { name, artistName, contentRating, artwork },
-        id,
       },
     },
   } = useStory();
@@ -115,14 +112,14 @@ const SongBody = () => {
         isExplicit={contentRating === 'explicit'}
         container={styles.textArea}
         text={name}
-        isMove={id === isPlayingId}
+        isMove
         textStyle={styles.name}
         center
       />
       <MoveText
         container={[styles.textArea, styles.textBetween]}
         text={artistName}
-        isMove={id === isPlayingId}
+        isMove
         textStyle={styles.artist}
         center
       />
@@ -156,7 +153,7 @@ const ViewerImage = () => {
 };
 
 const Footer = ({ onClose }) => {
-  const { onClickSong, isPlayingId, onClickPause, isStop } = useTrackPlayer();
+  const { onClickPlayBar, state } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const {
     currentSong: {
@@ -179,14 +176,6 @@ const Footer = ({ onClose }) => {
   const [isLike, setIsLike] = useState(likes.includes(user._id));
   const [viewerModal, setViewerModal] = useState(false);
 
-  const onClickPlay = () => {
-    if (isPlayingId !== song.id) {
-      onClickSong(song);
-    } else {
-      onClickPause();
-    }
-  };
-
   const onClickLeftOption = () => {
     if (isMyStory) {
       setViewerModal(true);
@@ -205,26 +194,23 @@ const Footer = ({ onClose }) => {
     setIsLike(!isLike);
   };
 
+  const viewerMargin = {
+    marginTop: storyViewer.length >= 2 ? 45 * SCALE_HEIGHT : 7 * SCALE_HEIGHT,
+  };
+
   useEffect(() => {
     setIsLike(likes.includes(user._id));
   }, [song]);
 
   return (
-    <View style={[styles.footerContainer, style.flexRow, { justifyContent: 'center' }]}>
+    <View style={[styles.footerContainer, style.flexRow]}>
       <TouchableOpacity onPress={onClickLeftOption} style={styles.left}>
         {isMyStory ? (
           <>
             {storyViewer.length > 0 && (
               <View style={style.alignCenter}>
                 <ViewerImage />
-                <Text
-                  style={[
-                    styles.optionText,
-                    { marginTop: storyViewer.length >= 2 ? 45 * SCALE_HEIGHT : 7 * SCALE_HEIGHT },
-                  ]}
-                >
-                  {storyViewer.length}명 읽음
-                </Text>
+                <Text style={[styles.optionText, viewerMargin]}>{storyViewer.length}명 읽음</Text>
               </View>
             )}
           </>
@@ -232,10 +218,10 @@ const Footer = ({ onClose }) => {
           <Icon source={require('public/icons/story-add-song.png')} style={styles.icon} />
         )}
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlay}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlayBar}>
         <Icon
           source={
-            isPlayingId === song.id && !isStop
+            state === 'play'
               ? require('public/icons/story-pause.png')
               : require('public/icons/story-play.png')
           }
@@ -269,7 +255,7 @@ const Footer = ({ onClose }) => {
 };
 
 const ModalView = ({ onClose }) => {
-  const { onClickSong, stoptracksong } = useTrackPlayer();
+  const { onClickSong, stopTrackSong } = useTrackPlayer();
   const {
     state: { user },
   } = useContext(UserContext);
@@ -297,12 +283,12 @@ const ModalView = ({ onClose }) => {
     if (contentRating !== 'explicit') {
       onClickSong(song);
     } else {
-      stoptracksong();
+      stopTrackSong();
     }
   }, [song]);
 
   return (
-    <View style={[styles.viewContainer, { flexDirection: 'row' }]}>
+    <View style={styles.viewContainer}>
       <SongImageBackStory url={artwork.url} border={0} imgStyle={styles.backgroundImg} />
       {!isMyStory &&
         touchableLists.map(({ key, func }) => {
@@ -311,16 +297,16 @@ const ModalView = ({ onClose }) => {
       <View style={styles.viewBox}>
         <Header onClose={onClose} />
         <SongBody />
-        <PlayAnimation
-          container={styles.progressContainer}
-          outContainer={styles.progressBar}
-          innerContainer={styles.innerContainer}
-          textContianer={styles.textContianer}
-          textStyle={styles.time}
-        />
-        <AddedProvider>
-          <Footer onClose={onClose} />
-        </AddedProvider>
+        <ProgressProvider>
+          <PlayAnimation
+            container={styles.progressContainer}
+            outContainer={styles.progressBar}
+            innerContainer={styles.innerContainer}
+            textContianer={styles.textContianer}
+            textStyle={styles.time}
+          />
+        </ProgressProvider>
+        <Footer onClose={onClose} />
       </View>
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <HarmfulModal />
@@ -352,6 +338,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 1,
+    flexDirection: 'row',
   },
   backgroundImg: {
     width: '100%',
@@ -360,13 +347,11 @@ const styles = StyleSheet.create({
   },
   touchable: {
     flex: 1,
-    zIndex: 98,
   },
   viewBox: {
     position: 'absolute',
     left: 29 * SCALE_WIDTH,
     top: 119 * SCALE_HEIGHT,
-    zIndex: 98,
     alignItems: 'center',
   },
   profileContainer: {
@@ -418,7 +403,7 @@ const styles = StyleSheet.create({
   exitIcon: {
     width: 40 * SCALE_WIDTH,
     height: 40 * SCALE_WIDTH,
-    zIndex: 98,
+    zIndex: 99,
   },
   optionText: {
     fontSize: FS(12),
@@ -444,11 +429,13 @@ const styles = StyleSheet.create({
   icon: {
     width: 45 * SCALE_WIDTH,
     height: 45 * SCALE_WIDTH,
+    zIndex: 99,
   },
   footerContainer: {
     width: '100%',
     paddingHorizontal: 11 * SCALE_WIDTH,
     marginTop: 17 * SCALE_HEIGHT,
+    justifyContent: 'center',
   },
   time: {
     marginTop: 11 * SCALE_HEIGHT,

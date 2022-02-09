@@ -10,7 +10,6 @@ import FS, { SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { COLOR_1 } from 'constants/colors';
 import HashtagView from 'components/Search/HashtagView';
-import { Provider as AddedProvider } from 'context/Added';
 import DailyView from 'components/DailyView';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
@@ -50,31 +49,29 @@ export default function ResultSection({ title, data, jumpTo, routeKey }) {
   return (
     <View>
       <Header title={title} jumpTo={jumpTo} routeKey={routeKey} />
-      <AddedProvider>
-        {data.slice(0, 3).map((item) => {
-          const id = item._id !== undefined ? item._id : item.song.id;
-          return (
-            <View key={id}>
-              {title === '곡' ? (
-                <SearchSongView info={item} />
-              ) : title === '플레이리스트' ? (
-                <PostingCard
-                  item={item}
-                  opt="playlist"
-                  round
-                  action={<PlayAction song={item.songs[0]} />}
-                />
-              ) : title === '데일리' ? (
-                <DailyView info={item} actions />
-              ) : title === '계정' ? (
-                <UserView user={item} />
-              ) : (
-                <HashtagView info={item} />
-              )}
-            </View>
-          );
-        })}
-      </AddedProvider>
+      {data.slice(0, 3).map((item) => {
+        const id = item._id !== undefined ? item._id : item.song.id;
+        return (
+          <View key={id}>
+            {title === '곡' ? (
+              <SearchSongView info={item} />
+            ) : title === '플레이리스트' ? (
+              <PostingCard
+                item={item}
+                opt="playlist"
+                round
+                action={<PlayAction song={item.songs[0]} />}
+              />
+            ) : title === '데일리' ? (
+              <DailyView info={item} actions />
+            ) : title === '계정' ? (
+              <UserView user={item} />
+            ) : (
+              <HashtagView info={item} />
+            )}
+          </View>
+        );
+      })}
       <HarmfulModal />
     </View>
   );

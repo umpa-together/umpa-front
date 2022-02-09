@@ -61,6 +61,12 @@ export default function SelectedComment({ opt, comments }) {
     }
   }, []);
 
+  const sortInfo = {
+    list: sortList,
+    func: sortFunction,
+    current: sortType,
+  };
+
   return (
     <View style={styles.container}>
       <View style={[style.flexRow, style.space_between]}>
@@ -88,15 +94,7 @@ export default function SelectedComment({ opt, comments }) {
           })}
         </ReportProvider>
       </View>
-      <SortModal
-        modal={sortModal}
-        setModal={setSortModal}
-        sortInfo={{
-          list: sortList,
-          func: sortFunction,
-          current: sortType,
-        }}
-      />
+      <SortModal modal={sortModal} setModal={setSortModal} sortInfo={sortInfo} />
     </View>
   );
 }

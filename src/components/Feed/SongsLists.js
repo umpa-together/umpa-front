@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { SongImage } from 'widgets/SongImage';
 import { useTrackPlayer } from 'providers/trackPlayer';
@@ -6,61 +6,64 @@ import MoveText from 'components/MoveText';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
 
-export default function SongLists({ songs }) {
-  const { isPlayingId, onClickSong } = useTrackPlayer();
+const SONG_SIZE = 117;
+
+export default memo(function SongLists({ songs }) {
+  const { onClickSong } = useTrackPlayer();
+  const keyExtractor = useCallback((_) => _.id, []);
+  const renderItem = useCallback(({ item }) => {
+    const {
+      attributes: {
+        contentRating,
+        name,
+        artistName,
+        artwork: { url },
+      },
+    } = item;
+    return (
+      <View style={styles.songBox}>
+        <TouchableOpacity
+          style={styles.margin}
+          onPress={() => onClickSong(item)}
+          activeOpacity={0.9}
+        >
+          <SongImage url={url} imgStyle={styles.playlistsImg} />
+          <Icon source={require('public/icons/feed-playlist-play.png')} style={styles.play} />
+        </TouchableOpacity>
+        <MoveText
+          container={contentRating === 'explicit' && styles.explicit}
+          isExplicit={contentRating === 'explicit'}
+          text={name}
+          textStyle={styles.name}
+        />
+        <MoveText text={artistName} textStyle={styles.artist} />
+      </View>
+    );
+  });
+
+  const getItemLayout = useCallback(
+    (data, index) => ({
+      length: SONG_SIZE * SCALE_WIDTH,
+      offset: SONG_SIZE * SCALE_WIDTH * index,
+      index,
+    }),
+    [],
+  );
+
   return (
     <FlatList
       contentContainerStyle={styles.songsContainer}
       data={songs}
-      keyExtractor={(playlist) => playlist.id}
+      keyExtractor={keyExtractor}
       horizontal
       showsHorizontalScrollIndicator={false}
-      renderItem={({ item }) => {
-        const {
-          attributes: {
-            contentRating,
-            name,
-            artistName,
-            artwork: { url },
-          },
-          id,
-        } = item;
-        return (
-          <View style={styles.songBox}>
-            <TouchableOpacity
-              style={styles.margin}
-              onPress={() => onClickSong(item)}
-              activeOpacity={0.9}
-            >
-              <SongImage url={url} imgStyle={styles.playlistsImg} />
-              <Icon
-                source={
-                  id === isPlayingId
-                    ? require('public/icons/feed-playlist-stop.png')
-                    : require('public/icons/feed-playlist-play.png')
-                }
-                style={styles.play}
-              />
-            </TouchableOpacity>
-            <MoveText
-              isExplicit={contentRating === 'explicit'}
-              container={contentRating === 'explicit' ? styles.explicitName : styles.nameBox}
-              text={name}
-              isMove={id === isPlayingId}
-              textStyle={styles.name}
-            />
-            <MoveText
-              container={styles.artistBox}
-              text={artistName}
-              isMove={id === isPlayingId}
-              textStyle={styles.artist}
-            />
-          </View>
-        );
-      }}
+      renderItem={renderItem}
+      maxToRenderPerBatch={3}
+      windowSize={5}
+      getItemLayout={getItemLayout}
     />
   );
-}
+});
 
 const styles = StyleSheet.create({
   songsContainer: {
@@ -70,11 +73,14 @@ const styles = StyleSheet.create({
   },
   songBox: {
     marginRight: 8 * SCALE_WIDTH,
-    width: 117 * SCALE_WIDTH,
+    width: SONG_SIZE * SCALE_WIDTH,
+  },
+  explicit: {
+    width: 95 * SCALE_WIDTH,
   },
   playlistsImg: {
-    width: 117 * SCALE_WIDTH,
-    height: 117 * SCALE_WIDTH,
+    width: SONG_SIZE * SCALE_WIDTH,
+    height: SONG_SIZE * SCALE_WIDTH,
     borderRadius: 4 * SCALE_HEIGHT,
   },
   margin: {

@@ -14,7 +14,7 @@ export default function UploadInfo() {
     information: { content },
   } = useDailyCreate();
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={styles.container}>
       {song && <DailySong containerStyle={styles.songContainer} song={song} />}
       {images.length > 0 && <DailyImage upload image={images} />}
       <Text style={styles.textStyle}>{content}</Text>
@@ -23,6 +23,9 @@ export default function UploadInfo() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   songContainer: {
     paddingLeft: 18 * SCALE_WIDTH,
     paddingTop: 18 * SCALE_HEIGHT,

@@ -14,6 +14,8 @@ const NoticeReducer = (state, action) => {
       };
     case 'notNext':
       return { ...state, notNextNotice: true };
+    case 'getAnnouncement':
+      return { ...state, announcement: action.payload };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -72,8 +74,23 @@ const deleteNoticeToken = (dispatch) => async () => {
   }
 };
 
+const getAnnouncement = (dispatch) => async () => {
+  try {
+    const response = await server.get('/notice/announcements');
+    dispatch({ type: 'getAnnouncement', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with deleteNoticeToken' });
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   NoticeReducer,
-  { getNotice, getNextNotice, readNotice, setNoticeToken, deleteNoticeToken },
-  { notice: null, errorMessage: '', currentNoticePage: 1, notNextNotice: false },
+  { getNotice, getNextNotice, readNotice, setNoticeToken, deleteNoticeToken, getAnnouncement },
+  {
+    notice: null,
+    errorMessage: '',
+    currentNoticePage: 1,
+    notNextNotice: false,
+    announcement: null,
+  },
 );

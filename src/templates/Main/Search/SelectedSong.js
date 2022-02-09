@@ -6,13 +6,15 @@ import style from 'constants/styles';
 import Songbackground from 'components/Search/SongBackground';
 import { Playlist, Daily, DJ } from 'components/Search/SelectedSection';
 import TabView from 'components/TabView';
-import { Provider as AddedProvider } from 'context/Added';
 import SelectedTabBar from 'components/TabView/SelectedTabBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 
 export default function SelectedSong({ song }) {
-  const { state, getSelectedContents } = useContext(SearchContext);
+  const {
+    state: { selected },
+    getSelectedContents,
+  } = useContext(SearchContext);
   const { addedModal } = useModal();
   useEffect(() => {
     getSelectedContents({ id: song.id });
@@ -42,23 +44,24 @@ export default function SelectedSong({ song }) {
     );
   };
 
+  const routesMap = [
+    { key: 'playlist', title: '플레이리스트' },
+    { key: 'daily', title: '데일리' },
+    { key: 'dj', title: '대표곡' },
+  ];
+
+  const sceneMap = {
+    playlist: memo(PlaylistSection),
+    daily: memo(DailySection),
+    dj: memo(DJSection),
+  };
   return (
     <View style={[style.background, styles.container]}>
-      <AddedProvider>
-        <Songbackground song={song} />
-      </AddedProvider>
-      {state.selected && (
+      <Songbackground song={song} />
+      {selected && (
         <TabView
-          routesMap={[
-            { key: 'playlist', title: '플레이리스트' },
-            { key: 'daily', title: '데일리' },
-            { key: 'dj', title: '대표곡' },
-          ]}
-          sceneMap={{
-            playlist: memo(PlaylistSection),
-            daily: memo(DailySection),
-            dj: memo(DJSection),
-          }}
+          routesMap={routesMap}
+          sceneMap={sceneMap}
           renderTabBar={(props) => <SelectedTabBar props={props} />}
         />
       )}

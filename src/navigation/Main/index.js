@@ -16,6 +16,8 @@ import ProfileEdit from 'screens/Main/Account/ProfileEditScreen';
 import SelectedPlaylist from 'screens/Main/Playlist/SelectedPlaylistScreen';
 import SelectedDaily from 'screens/Main/Daily/SelectedDailyScreen';
 import Participant from 'screens/Main/Relay/ParticipantScreen';
+import Side from 'screens/Main/Account/SideScreen';
+import SelectedAnnouncement from 'screens/Main/Account/SelectedAnnouncementScreen';
 import Tab from './Tab';
 
 const MainStack = createNativeStackNavigator();
@@ -38,6 +40,8 @@ const screenLists = [
   { title: 'SelectedPlaylist', component: SelectedPlaylist },
   { title: 'SelectedDaily', component: SelectedDaily },
   { title: 'Participant', component: Participant },
+  { title: 'Side', component: Side },
+  { title: 'SelectedAnnouncement', component: SelectedAnnouncement },
 ];
 
 const MainStackScreen = () => (

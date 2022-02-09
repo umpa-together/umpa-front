@@ -20,8 +20,8 @@ const mainContentsReducer = (state, action) => {
       return { ...state, notAllPlaylistsNext: true };
     case 'getRecentPlaylists':
       return { ...state, recentPlaylists: action.payload };
-    case 'getRecentDailies':
-      return { ...state, recentDailies: action.payload };
+    case 'getMainRecommendDailies':
+      return { ...state, mainDailies: action.payload };
     case 'getMainRecommendDJ':
       return { ...state, mainDJ: action.payload };
     case 'getMainRecommendPlaylist':
@@ -75,12 +75,12 @@ const getMainRecommendDJ = (dispatch) => async () => {
   }
 };
 
-const getRecentDailies = (dispatch) => async () => {
+const getMainRecommendDailies = (dispatch) => async () => {
   try {
-    const response = await server.get('/main/recent-dailies');
-    dispatch({ type: 'getRecentDailies', payload: response.data });
+    const response = await server.get('/main/recommend-dailies');
+    dispatch({ type: 'getMainRecommendDailies', payload: response.data });
   } catch (err) {
-    dispatch({ type: 'error', payload: 'Something went wrong with getRecentDailies' });
+    dispatch({ type: 'error', payload: 'Something went wrong with getMainRecommendDailies' });
   }
 };
 
@@ -99,7 +99,7 @@ export const { Provider, Context } = createDataContext(
     getAllPlaylists,
     nextAllPlaylists,
     getRecentPlaylists,
-    getRecentDailies,
+    getMainRecommendDailies,
     getMainRecommendDJ,
     getMainRecommendPlaylist,
   },
@@ -108,7 +108,7 @@ export const { Provider, Context } = createDataContext(
     notAllPlaylistsNext: false,
     currentAllPlaylistsPage: 1,
     recentPlaylists: null,
-    recentDailies: null,
+    mainDailies: null,
     mainDJ: null,
     mainPlaylist: null,
     errorMessage: '',

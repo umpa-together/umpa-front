@@ -18,6 +18,7 @@ export default function Footer({ object, type }) {
   const { likeRelayPlaylist, unlikeRelayPlaylist } = useContext(RelayContext);
   const { likes, comments, _id: id } = object;
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
+
   const onClickLikes = () => {
     if (isLike) {
       if (type === 'playlist') {

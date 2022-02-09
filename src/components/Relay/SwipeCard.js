@@ -7,7 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Text from 'components/Text';
 import Icon from 'widgets/Icon';
 import { useTrackPlayer } from 'providers/trackPlayer';
-import { Provider as AddedProvider, Context as AddedContext } from 'context/Added';
+import { Context as AddedContext } from 'context/Added';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 
@@ -80,9 +80,7 @@ export default function SwipeCard({ card }) {
         textContainer={styles.textContainer}
         textStyle={styles.textStyle}
       />
-      <AddedProvider>
-        <Footer song={song} />
-      </AddedProvider>
+      <Footer song={song} />
     </View>
   );
 }

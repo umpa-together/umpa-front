@@ -33,12 +33,17 @@ const relayConverter = (el) => {
   const { artwork, name } = song.attributes;
   const convertTime = createdTime.slice(0, 10).replaceAll('-', '.');
 
+  const onClickRelay = async () => {
+    push('SelectedRelay', { id: _id });
+  };
+
   return {
     _id,
     image: <SongImage url={artwork.url} imgStyle={styles.imagePlaylist} />,
     title,
     content: name,
     time: convertTime,
+    onClick: onClickRelay,
   };
 };
 

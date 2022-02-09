@@ -11,7 +11,10 @@ import HashtagView from 'components/Search/HashtagView';
 import SelectedTabBar from 'components/TabView/SelectedTabBar';
 
 export default function SelectedHashtag({ id, info }) {
-  const { state, getAllContentsWithHashatg } = useContext(SearchContext);
+  const {
+    state: { selected },
+    getAllContentsWithHashatg,
+  } = useContext(SearchContext);
 
   useEffect(() => {
     getAllContentsWithHashatg({ id });
@@ -33,6 +36,16 @@ export default function SelectedHashtag({ id, info }) {
     );
   };
 
+  const routesMap = [
+    { key: 'playlist', title: '플레이리스트' },
+    { key: 'daily', title: '데일리' },
+  ];
+
+  const sceneMap = {
+    playlist: memo(PlaylistSection),
+    daily: memo(DailySection),
+  };
+
   return (
     <View style={[style.background, styles.container]}>
       <Header
@@ -42,16 +55,10 @@ export default function SelectedHashtag({ id, info }) {
         back
       />
       <HashtagView info={info} containerStyle={styles.hashtagContainer} />
-      {state.selected && (
+      {selected && (
         <TabView
-          routesMap={[
-            { key: 'playlist', title: '플레이리스트' },
-            { key: 'daily', title: '데일리' },
-          ]}
-          sceneMap={{
-            playlist: memo(PlaylistSection),
-            daily: memo(DailySection),
-          }}
+          routesMap={routesMap}
+          sceneMap={sceneMap}
           renderTabBar={(props) => <SelectedTabBar props={props} />}
         />
       )}

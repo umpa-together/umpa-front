@@ -1,21 +1,38 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useContext, memo } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Context as UserContext } from 'context/User';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 import Text from 'components/Text';
+import { navigate, push } from 'lib/utils/navigation';
 
-export default function SelectedInfo({ playlist }) {
+export default memo(function SelectedInfo({ playlist }) {
   const {
     image,
     title,
     textcontent,
-    postUserId: { name },
+    postUserId: { name, _id: postUserId },
     songs,
     time,
   } = playlist;
+  const {
+    state: {
+      user: { _id: myId },
+    },
+  } = useContext(UserContext);
+
   const convertedTime = time.slice(0, 10);
+
+  const onClickProfile = () => {
+    if (myId === postUserId) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id: postUserId });
+    }
+  };
+
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={style.flexRow}>
@@ -26,12 +43,14 @@ export default function SelectedInfo({ playlist }) {
             {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
             <Text style={styles.contextText}>{convertedTime}</Text>
           </View>
-          <Text style={styles.nameText}>by {name}</Text>
+          <TouchableOpacity onPress={onClickProfile}>
+            <Text style={styles.nameText}>by {name}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

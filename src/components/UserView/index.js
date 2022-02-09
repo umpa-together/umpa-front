@@ -6,7 +6,7 @@ import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import style from 'constants/styles';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
-import { push } from 'lib/utils/navigation';
+import { push, navigate } from 'lib/utils/navigation';
 import { COLOR_1 } from 'constants/colors';
 import FollowButton from 'components/FollowButton';
 import UserRepresentSong from 'components/UserRepresentSong';
@@ -21,7 +21,11 @@ export default function UserView({ user, func }) {
   } = useContext(UserContext);
   const onClickAccount = () => {
     if (func) func();
-    push('OtherAccount', { id });
+    if (userId === id) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id });
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useCallback, useContext } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { Context as StoryContext } from 'context/Story';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import UserView from 'components/UserView';
@@ -14,13 +14,18 @@ const ModalView = ({ onClose }) => {
     onClose();
   };
 
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(({ item }) => <UserView user={item} func={onClickProfile} />, []);
   return (
     <View style={styles.viewContainer}>
-      <ScrollView contentContainerStyle={styles.padding}>
-        {storyViewer.map((viewer) => {
-          return <UserView user={viewer} key={viewer._id} func={onClickProfile} />;
-        })}
-      </ScrollView>
+      <FlatList
+        data={storyViewer}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        contentContainerStyle={styles.padding}
+      />
     </View>
   );
 };

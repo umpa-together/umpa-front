@@ -1,22 +1,26 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, FlatList } from 'react-native';
 import { SCALE_HEIGHT } from 'lib/utils/normalize';
 import UserView from 'components/UserView';
 
 export default function UserList({ users }) {
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(({ item }) => <UserView user={item} />, [users]);
+
   return (
-    <View style={styles.container}>
-      {users &&
-        users.map((item) => {
-          // eslint-disable-next-line no-underscore-dangle
-          return <UserView key={item._id} user={item} />;
-        })}
-    </View>
+    <FlatList
+      data={users}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      contentContainerStyle={styles.container}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20 * SCALE_HEIGHT,
+    paddingVertical: 20 * SCALE_HEIGHT,
   },
 });
