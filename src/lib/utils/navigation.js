@@ -29,6 +29,12 @@ export const goBack = () => {
   }
 };
 
+export const popToTop = () => {
+  if (navigationRef.current) {
+    navigationRef.current.dispatch(StackActions.popToTop());
+  }
+};
+
 export const addListener = (type, callback) => {
   if (navigationRef.current) {
     navigationRef.current.addListener(type, callback());

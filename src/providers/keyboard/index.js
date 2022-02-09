@@ -29,6 +29,7 @@ export default function KeyboardProvider({ children }) {
   };
 
   const value = {
+    keyboardHeight,
     onKeyboardDidShow,
     onKeyboardDidHide,
     keyboardHideOpt,

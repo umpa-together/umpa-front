@@ -16,7 +16,6 @@ export default function () {
   } = useContext(RelayContext);
   const { getMyInformation } = useContext(UserContext);
   const [time, setTime] = useState(1);
-
   const dataFetch = async () => {
     await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation()]);
   };

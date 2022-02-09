@@ -28,17 +28,6 @@ import CommentProvider from 'providers/comment';
 import LoadingIndicator from 'components/LoadingIndicator';
 import KeyboardProvider from 'providers/keyboard';
 
-const LandingAction = () => {
-  const onPressLanding = () => {
-    navigate('Feed');
-  };
-  return (
-    <TouchableOpacity onPress={onPressLanding} style={styles.back} activeOpacity={0.9}>
-      <Icon source={require('public/icons/back-40.png')} style={style.icons} />
-    </TouchableOpacity>
-  );
-};
-
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
     setSelectModal(true);
@@ -50,7 +39,7 @@ const PostUserAction = ({ setSelectModal }) => {
   );
 };
 
-export default function SelectedPlaylist({ post, id, postUserId }) {
+export default function SelectedPlaylist({ id, postUserId }) {
   const [selectModal, setSelectModal] = useState(false);
   const [actionModal, setActionModal] = useState(false);
   const [actions, setActions] = useState(null);
@@ -198,8 +187,7 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
       <Header
         title="플레이리스트"
         titleStyle={style.headertitle}
-        landings={post && [<LandingAction />]}
-        back={!post}
+        back
         actions={[<PostUserAction setSelectModal={setSelectModal} />]}
       />
       {!loading ? (

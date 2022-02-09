@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -8,6 +8,7 @@ import { StatusBarHeight } from 'components/StatusBar';
 import Icon from 'widgets/Icon';
 import GuideBox from 'components/Relay/GuideBox';
 import Text from 'components/Text';
+import { Context as RelayContext } from 'context/Relay';
 
 const TemplateA = ({ title }) => {
   return (
@@ -80,17 +81,23 @@ export default function CurrentSection({ relay }) {
     opacityTop,
     opacityBottom,
     createdTime,
+    relaySong,
   } = relay;
 
+  const { setRelaySong } = useContext(RelayContext);
   const templateLists = {
     A: <TemplateA title={title} />,
     B: <TemplateB title={title} />,
     C: <TemplateC title={title} />,
     D: <TemplateD title={title} />,
   };
-
   const onClickRelay = (id) => {
-    navigate('SelectedRelay', { id });
+    if (relaySong.length > 0) {
+      setRelaySong({ data: [relay, relaySong] });
+      navigate('Swipe');
+    } else {
+      navigate('SelectedRelay', { id });
+    }
   };
 
   return (

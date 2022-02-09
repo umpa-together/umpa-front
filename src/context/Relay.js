@@ -11,6 +11,12 @@ const relayReducer = (state, action) => {
       return { ...state, relayLists: action.payload };
     case 'getSelectedRelay':
       return { ...state, selectedRelay: action.payload[0], currentComments: action.payload[1] };
+    case 'setRelaySong':
+      return {
+        ...state,
+        selectedRelay: { playlist: action.payload[0], songs: [] },
+        swipeSongs: action.payload[1],
+      };
     case 'getRelaySong':
       return { ...state, swipeSongs: action.payload };
     case 'updateRelayWithComment':
@@ -66,6 +72,12 @@ const getSelectedRelay =
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with getSelectedRelay' });
     }
+  };
+
+const setRelaySong =
+  (dispatch) =>
+  ({ data }) => {
+    dispatch({ type: 'setRelaySong', payload: data });
   };
 
 const getRelaySong =
@@ -238,6 +250,7 @@ export const { Provider, Context } = createDataContext(
     unLikeComment,
     likeRecomment,
     unLikeRecomment,
+    setRelaySong,
   },
   {
     currentRelay: null,

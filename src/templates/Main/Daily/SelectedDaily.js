@@ -39,18 +39,7 @@ const PostUserAction = ({ setSelectModal }) => {
   );
 };
 
-const LandingAction = () => {
-  const onPressLanding = () => {
-    navigate('Feed');
-  };
-  return (
-    <TouchableOpacity onPress={onPressLanding} style={styles.back} activeOpacity={0.9}>
-      <Icon source={require('public/icons/back-40.png')} style={style.icons} />
-    </TouchableOpacity>
-  );
-};
-
-export default function SelectedDaily({ post, id, postUserId }) {
+export default function SelectedDaily({ id, postUserId }) {
   const [selectModal, setSelectModal] = useState(false);
   const [actionModal, setActionModal] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -182,12 +171,7 @@ export default function SelectedDaily({ post, id, postUserId }) {
       };
   return (
     <View style={style.background}>
-      <Header
-        title="데일리"
-        titleStyle={styles.headerTitle}
-        landings={post && [<LandingAction />]}
-        back={!post}
-      />
+      <Header title="데일리" titleStyle={styles.headerTitle} back />
       {!loading ? (
         <>
           <CommentProvider>

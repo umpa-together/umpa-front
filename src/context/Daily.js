@@ -1,4 +1,4 @@
-import { navigate } from 'lib/utils/navigation';
+import { navigate, popToTop } from 'lib/utils/navigation';
 import server from 'lib/api/server';
 import createDataContext from 'lib/utils/createDataContext';
 
@@ -34,6 +34,7 @@ const addDaily =
       }
       if (fd._parts.length > 0) {
         dispatch({ type: 'getSelectedDaily', payload: imgResponse.data });
+        popToTop();
         navigate('SelectedDaily', {
           post: true,
           id: imgResponse.data[0]._id,
@@ -41,8 +42,8 @@ const addDaily =
         });
       } else {
         dispatch({ type: 'getSelectedDaily', payload: response.data });
+        popToTop();
         navigate('SelectedDaily', {
-          post: true,
           id: response.data[0]._id,
           postUserId: response.data[0].postUserId,
         });

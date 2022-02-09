@@ -7,6 +7,7 @@ import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { useTrackPlayer } from 'providers/trackPlayer';
+
 import ParticipantCount from './ParticipantCount';
 
 export default function Background() {
@@ -24,7 +25,9 @@ export default function Background() {
       <View style={styles.blurContainer} />
       <FastImage source={{ uri: image }} style={styles.backgroundImg} />
       <View style={styles.infoContainer}>
-        <Text style={[styles.whiteText, styles.playlistTitle]}>{title}</Text>
+        <Text style={[styles.whiteText, styles.playlistTitle]}>
+          {title.map((item) => `${item} `)}
+        </Text>
         <Text style={[styles.whiteText, styles.header]}>첫 곡</Text>
         <TouchableOpacity
           onPress={() => onClickSong(representSong)}
@@ -34,7 +37,7 @@ export default function Background() {
             style={styles.playIcon}
             source={
               playingCheck
-                ? require('public/icons/swipe-play-small.png')
+                ? require('public/icons/swipe-stop-small.png')
                 : require('public/icons/swipe-play-small.png')
             }
           />

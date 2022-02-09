@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
@@ -10,8 +10,12 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import { Provider as AddedProvider, Context as AddedContext } from 'context/Added';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
+import { navigate } from 'lib/utils/navigation';
+import TouchableNoDouble from 'components/TouchableNoDouble';
+import FastImage from 'react-native-fast-image';
+import MoveText from 'components/MoveText';
 
-const Footer = ({ song }) => {
+const Footer = ({ song, like, setLike }) => {
   const { id } = song;
   const { onClickSong, isPlayingId, onClickPause, isStop } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
@@ -30,6 +34,9 @@ const Footer = ({ song }) => {
     }
   };
 
+  const onClickLike = () => {
+    setLike(!like);
+  };
   return (
     <View style={[style.flexRow, styles.footerContainer]}>
       <TouchableOpacity onPress={onClickPlay}>
@@ -42,8 +49,15 @@ const Footer = ({ song }) => {
           }
         />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Icon style={styles.likeIcon} source={require('public/icons/swipe-heart-empty.png')} />
+      <TouchableOpacity onPress={onClickLike}>
+        <Icon
+          style={styles.likeIcon}
+          source={
+            like
+              ? require('public/icons/swipe-heart-full.png')
+              : require('public/icons/swipe-heart-empty.png')
+          }
+        />
       </TouchableOpacity>
       <TouchableOpacity onPress={onClickAdd}>
         <Icon style={styles.songIcon} source={require('public/icons/swipe-save.png')} />
@@ -52,28 +66,66 @@ const Footer = ({ song }) => {
   );
 };
 
-export default function SwipeCard({ card }) {
-  const { postUserId, song } = card;
+export default function SwipeCard({ image, card, like, setLike }) {
+  const { postUserId, song, playlistId } = card;
   const { name, profileImage } = postUserId;
-  const { attributes } = song;
-  const { artwork, artistName, name: songName } = attributes;
+  const { id, attributes } = song;
+  const { artwork, artistName, name: songName, contentRating } = attributes;
+  const [topOffset, setTopOffset] = useState(0);
+  const { stoptracksong, isPlayingId } = useTrackPlayer();
+
+  const onClickMove = () => {
+    stoptracksong();
+    navigate('SelectedRelay', { id: playlistId });
+  };
+  const imageTop = {
+    top: -1 * topOffset - 2 * SCALE_HEIGHT,
+  };
+  const ParentView = useRef();
   return (
-    <View style={styles.container}>
+    <View
+      ref={ParentView}
+      onLayout={() => {
+        ParentView.current.measure((fx, fy, width, height, px, py) => {
+          setTopOffset(py);
+        });
+      }}
+      style={styles.container}
+    >
+      {image && (
+        <View style={styles.imgContainer}>
+          <View style={styles.blurContainerFirst} />
+          <View style={styles.blurContainerSecond} />
+          <FastImage source={{ uri: image }} style={[styles.backImageContainer, imageTop]} />
+        </View>
+      )}
       <View style={[style.flexRow, styles.headerContainer]}>
         <View style={style.flexRow}>
           <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
           <Text style={styles.nameText}>{name}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableNoDouble onPress={onClickMove}>
           <Text style={styles.rankingText}>현재 순위 보기</Text>
-        </TouchableOpacity>
+        </TouchableNoDouble>
       </View>
       <SongImage url={artwork.url} imgStyle={styles.songImg} />
       <View style={styles.songContainer}>
-        <Text style={styles.songTitle}>{songName}</Text>
-        <Text style={styles.songArtist}>{artistName}</Text>
+        <MoveText
+          isExplicit={contentRating === 'explicit'}
+          text={songName}
+          isMove={song.id === isPlayingId}
+          textStyle={styles.songTitle}
+          iconCustom={styles.adultIcon}
+          center
+        />
+        <MoveText
+          text={artistName}
+          isMove={song.id === isPlayingId}
+          textStyle={styles.songArtist}
+        />
       </View>
       <PlayAnimation
+        songId={id}
         container={styles.progressContainer}
         outContainer={styles.outContainer}
         innerContainer={styles.innerContainer}
@@ -81,7 +133,7 @@ export default function SwipeCard({ card }) {
         textStyle={styles.textStyle}
       />
       <AddedProvider>
-        <Footer song={song} />
+        <Footer song={song} like={like} setLike={setLike} />
       </AddedProvider>
     </View>
   );
@@ -89,6 +141,7 @@ export default function SwipeCard({ card }) {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
     width: 339 * SCALE_WIDTH,
     height: 400 * SCALE_WIDTH,
     marginLeft: 18 * SCALE_WIDTH,
@@ -98,6 +151,38 @@ const styles = StyleSheet.create({
     borderColor: '#E4E4E450',
     backgroundColor: '#00000050',
   },
+  imgContainer: {
+    width: 335 * SCALE_WIDTH,
+    height: 396 * SCALE_WIDTH,
+    borderRadius: 15 * SCALE_HEIGHT,
+    overflow: 'hidden',
+    position: 'absolute',
+  },
+  blurContainerFirst: {
+    zIndex: -1,
+    width: 335 * SCALE_WIDTH,
+    height: 396 * SCALE_WIDTH,
+    borderRadius: 15 * SCALE_HEIGHT,
+    backgroundColor: '#00000050',
+    position: 'absolute',
+  },
+  blurContainerSecond: {
+    zIndex: -2,
+    width: 335 * SCALE_WIDTH,
+    height: 396 * SCALE_WIDTH,
+    borderRadius: 15 * SCALE_HEIGHT,
+    backgroundColor: '#19191980',
+    position: 'absolute',
+  },
+  backImageContainer: {
+    width: 375 * SCALE_WIDTH,
+    height: 812 * SCALE_HEIGHT,
+    top: -215 * SCALE_HEIGHT,
+    left: -20 * SCALE_WIDTH,
+    borderRadius: 15 * SCALE_HEIGHT,
+    position: 'absolute',
+    zIndex: -3,
+  },
   headerContainer: {
     paddingTop: 16 * SCALE_HEIGHT,
     paddingHorizontal: 16 * SCALE_WIDTH,
@@ -105,6 +190,8 @@ const styles = StyleSheet.create({
   },
   songContainer: {
     alignItems: 'center',
+    marginLeft: 17 * SCALE_WIDTH,
+    width: 301 * SCALE_WIDTH,
   },
   footerContainer: {
     paddingHorizontal: 28 * SCALE_WIDTH,
@@ -176,5 +263,10 @@ const styles = StyleSheet.create({
     marginTop: 7 * SCALE_HEIGHT,
     fontSize: FS(12),
     color: '#fff',
+  },
+  adultIcon: {
+    position: 'absolute',
+    top: 18 * SCALE_HEIGHT,
+    right: 10 * SCALE_WIDTH,
   },
 });

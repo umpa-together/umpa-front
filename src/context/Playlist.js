@@ -1,5 +1,5 @@
 import server from 'lib/api/server';
-import { navigate } from 'lib/utils/navigation';
+import { navigate, popToTop } from 'lib/utils/navigation';
 import createDataContext from 'lib/utils/createDataContext';
 
 const playlistReducer = (state, action) => {
@@ -33,6 +33,7 @@ const addPlaylist =
       }
       if (fd) {
         dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
+        popToTop();
         navigate('SelectedPlaylist', {
           post: true,
           id: imgResponse.data[0]._id,
@@ -40,8 +41,8 @@ const addPlaylist =
         });
       } else {
         dispatch({ type: 'getSelectedPlaylist', payload: response.data });
+        popToTop();
         navigate('SelectedPlaylist', {
-          post: true,
           id: response.data[0]._id,
           postUserId: response.data[0].postUserId,
         });

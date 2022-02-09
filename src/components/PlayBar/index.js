@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
 import Icon from 'widgets/Icon';
@@ -11,8 +11,7 @@ import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 
 export default function PlayBar() {
-  const { currentSong, position, duration, isPlayingId, onClickPause, isStop } = useTrackPlayer();
-  const reactive = useRef(new Animated.Value(-1000)).current;
+  const { currentSong, isPlayingId, onClickPause, isStop } = useTrackPlayer();
   const { name, artistName, contentRating } = currentSong.attributes;
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
@@ -21,12 +20,6 @@ export default function PlayBar() {
     postAddedSong({ song: currentSong });
     onClickAdded();
   };
-
-  useEffect(() => {
-    if (duration !== 0) {
-      reactive.setValue(-width + width * (position / duration));
-    }
-  }, [position, width, duration]);
 
   return (
     <View style={styles.container}>
