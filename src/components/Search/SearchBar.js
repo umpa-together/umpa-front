@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSearch } from 'providers/search';
 import style from 'constants/styles';
@@ -12,14 +12,12 @@ export default function SearchBar() {
     useSearch();
   const { getAllContents } = useContext(SearchContext);
 
-  const onSubmitEditing = () => {
+  const onSubmitEditing = useCallback(() => {
     onSearchContents(text);
     getAllContents({ term: text });
-  };
+  }, [text]);
 
-  const onChangeInput = (input) => {
-    onChangeText(input);
-  };
+  const onChangeInput = useCallback((input) => onChangeText(input), []);
 
   return (
     <View style={[style.flexRow, styles.container]}>
@@ -35,7 +33,7 @@ export default function SearchBar() {
             placeholder="검색어를 입력하세요."
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={(input) => onChangeInput(input)}
+            onChangeText={onChangeInput}
             placeholderTextColor="rgb(164,164,164)"
             onSubmitEditing={onSubmitEditing}
             autoFocus

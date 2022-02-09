@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import style from 'constants/styles';
 import TouchableNoDouble from 'components/TouchableNoDouble';
@@ -6,19 +6,15 @@ import { COLOR_1, COLOR_3 } from 'constants/colors';
 import ProfileImage from 'widgets/ProfileImage';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { push } from 'lib/utils/navigation';
-import { Context as UserContext } from 'context/User';
 import Text from 'components/Text';
 
-export default function PostingInfo({ my, user, posting }) {
-  const { getFollow } = useContext(UserContext);
+export default memo(function PostingInfo({ my, user, posting }) {
   const { _id: userId, follower, following, profileImage } = user;
   const onClickFollowing = async () => {
-    await getFollow({ id: userId, opt: 'following' });
-    push('Follow', { opt: 'following', my });
+    push('Follow', { opt: 'following', my, id: userId });
   };
   const onClickFollower = async () => {
-    await getFollow({ id: userId, opt: 'follower' });
-    push('Follow', { opt: 'follower' });
+    push('Follow', { opt: 'follower', id: userId });
   };
   const optionLists = [
     {
@@ -54,7 +50,7 @@ export default function PostingInfo({ my, user, posting }) {
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

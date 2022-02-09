@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
@@ -9,8 +9,9 @@ import { MAIN_COLOR, COLOR_2 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
+import ProgressProvider from 'providers/progress';
 
-export default function PlayBar() {
+export default memo(function PlayBar() {
   const { currentSong, state, onClickPlayBar } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
@@ -19,15 +20,18 @@ export default function PlayBar() {
     postAddedSong({ song: currentSong });
     onClickAdded();
   };
+
   return (
     <>
       {currentSong && (
         <View style={styles.container}>
-          <PlayAnimation
-            outContainer={styles.statusBar}
-            innerContainer={styles.innerContainer}
-            textHidden
-          />
+          <ProgressProvider>
+            <PlayAnimation
+              outContainer={styles.statusBar}
+              innerContainer={styles.innerContainer}
+              textHidden
+            />
+          </ProgressProvider>
           <View style={[style.flexRow, styles.infoContainer, style.space_between]}>
             <View style={styles.textArea}>
               <MoveText
@@ -62,7 +66,8 @@ export default function PlayBar() {
       )}
     </>
   );
-}
+});
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',

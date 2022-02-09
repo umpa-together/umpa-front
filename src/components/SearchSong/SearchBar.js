@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSearch } from 'providers/search';
 import { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -24,6 +24,9 @@ export default function SearchBar() {
     setSearching(false);
     textInputRef.current.blur();
   };
+
+  const onChangeInput = useCallback((input) => onChangeText(input), []);
+  const onSubmitEditing = useCallback(() => onSearchKeyword(text), [text]);
   return (
     <View style={[styles.container, style.flexRow, style.space_between]}>
       <View style={style.flexRow}>
@@ -39,9 +42,9 @@ export default function SearchBar() {
           placeholder="노래 및 아티스트 입력"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={(input) => onChangeText(input)}
+          onChangeText={onChangeInput}
           placeholderTextColor={COLOR_3}
-          onSubmitEditing={() => onSearchKeyword(text)}
+          onSubmitEditing={onSubmitEditing}
         />
       </View>
       {(searching || text.length > 0) && (

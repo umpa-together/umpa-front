@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { FlatList, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
@@ -42,7 +42,20 @@ export function AddedSong({ edit }) {
   const {
     state: { songLists },
   } = useContext(AddedContext);
-
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      const { song, _id: id } = item;
+      return (
+        <SongView
+          song={song}
+          landings={edit && <DeleteLandings type="song" id={id} />}
+          play={!edit}
+        />
+      );
+    },
+    [edit],
+  );
   return (
     <>
       <Text style={styles.length}>총 {songLists.length}개</Text>
@@ -50,17 +63,10 @@ export function AddedSong({ edit }) {
         <>
           <FlatList
             data={songLists}
-            keyExtractor={(song) => song._id}
-            renderItem={({ item }) => {
-              const { song, _id: id } = item;
-              return (
-                <SongView
-                  song={song}
-                  landings={edit && <DeleteLandings type="song" id={id} />}
-                  play={!edit}
-                />
-              );
-            }}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            maxToRenderPerBatch={5}
+            windowSize={5}
           />
         </>
       ) : (
@@ -74,25 +80,31 @@ export function AddedPlaylist({ edit }) {
   const {
     state: { playlists },
   } = useContext(AddedContext);
-
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      const { playlistId: playlist, _id: id } = item;
+      return (
+        <PlaylistView
+          playlist={playlist}
+          landings={edit && <DeleteLandings type="playlist" id={id} />}
+          play={!edit}
+        />
+      );
+    },
+    [edit],
+  );
   return (
     <>
       <Text style={styles.length}>총 {playlists.length}개</Text>
       {playlists.length > 0 ? (
         <FlatList
           data={playlists}
-          keyExtractor={(playlist) => playlist._id}
+          keyExtractor={keyExtractor}
           contentContainerStyle={styles.contentContainer}
-          renderItem={({ item }) => {
-            const { playlistId: playlist, _id: id } = item;
-            return (
-              <PlaylistView
-                playlist={playlist}
-                landings={edit && <DeleteLandings type="playlist" id={id} />}
-                play={!edit}
-              />
-            );
-          }}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       ) : (
         <EmptySaved opt="playlist" />

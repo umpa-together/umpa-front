@@ -37,6 +37,7 @@ const FloatingButton = ({ show }) => {
     transform: [{ scale: opacity.value }],
     opacity: opacity.value,
   }));
+
   return (
     <Animated.View style={[currentSong ? styles.playingContainer : styles.container, opacityStyle]}>
       {writeList.map((item, index) => {

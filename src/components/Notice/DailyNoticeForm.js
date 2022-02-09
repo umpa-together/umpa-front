@@ -17,6 +17,27 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
     dailyrecomment,
     time,
   } = notice;
+  const textLists = {
+    dlike: <Text style={styles.contentText}>데일리를 좋아합니다.</Text>,
+    dcom: (
+      <Text style={styles.contentText}>댓글을 달았습니다: {dailycomment && dailycomment.text}</Text>
+    ),
+    dcomlike: (
+      <Text style={styles.contentText}>
+        댓글: {dailycomment && dailycomment.text}를 좋아합니다.
+      </Text>
+    ),
+    drecom: (
+      <Text style={styles.contentText}>
+        대댓글을 달았습니다: {dailyrecomment && dailyrecomment.text}
+      </Text>
+    ),
+    drecomlike: (
+      <Text style={styles.contentText}>
+        대댓글: {dailyrecomment && dailyrecomment.text}을 좋아합니다.
+      </Text>
+    ),
+  };
   return (
     <>
       <TouchableOpacity onPress={onClickProfile}>
@@ -24,22 +45,12 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
-          {user.name} 님이
-          {type === 'dlike' ? (
-            <Text style={styles.contentText}> 데일리를 좋아합니다.</Text>
-          ) : type === 'dcom' ? (
-            <Text style={styles.contentText}> 댓글을 달았습니다: {dailycomment.text}</Text>
-          ) : type === 'dcomlike' ? (
-            <Text style={styles.contentText}> 댓글: {dailycomment.text}를 좋아합니다.</Text>
-          ) : type === 'drecom' ? (
-            <Text style={styles.contentText}> 대댓글을 달았습니다: {dailyrecomment.text}</Text>
-          ) : (
-            <Text style={styles.contentText}> 대댓글: {dailyrecomment.text}을 좋아합니다.</Text>
-          )}
+          {`${user.name} 님이 `}
+          {textLists[type]}
           <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
-      {daily.image[0] && <FastImage style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
+      {daily && <FastImage style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
     </>
   );
 }

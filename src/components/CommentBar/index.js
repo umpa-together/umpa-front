@@ -27,6 +27,7 @@ export default function CommentBar() {
     commentRef.current.clear();
   };
 
+  const onChangeText = useCallback((text) => setCommentRef(text), []);
   useFocusEffect(
     useCallback(() => {
       const showSubscription = Keyboard.addListener(keyboardShowOpt, onKeyboardDidShow);
@@ -46,9 +47,7 @@ export default function CommentBar() {
         <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
         <TextInput
           style={styles.textInput}
-          onChangeText={(txt) => {
-            setCommentRef(txt);
-          }}
+          onChangeText={onChangeText}
           placeholder="코멘트를 남겨주세요"
           autoCorrect={false}
           ref={commentRef}

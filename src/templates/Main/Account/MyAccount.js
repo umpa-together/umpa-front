@@ -24,6 +24,7 @@ export default function MyAccount() {
     },
     initRepresentSongs,
     initOtherInformation,
+    initFollow,
   } = useContext(UserContext);
 
   const postingCount = playlist.length + daily.length + relay.length;
@@ -38,6 +39,7 @@ export default function MyAccount() {
     useCallback(() => {
       initOtherInformation();
       initRepresentSongs();
+      initFollow();
     }, []),
   );
 
@@ -54,6 +56,13 @@ export default function MyAccount() {
     }
   };
 
+  const routesMap = [
+    { key: 'playlist', title: '플레이리스트' },
+    { key: 'daily', title: '데일리' },
+    { key: 'relay', title: '릴레이플리' },
+  ];
+  const renderTabBar = useCallback((props) => <AccountTabBar props={props} />, []);
+
   return (
     <View style={style.background}>
       {user && (
@@ -62,13 +71,9 @@ export default function MyAccount() {
           <PostingInfo my posting={postingCount} user={user} />
           <UserInfo myaccount user={user} />
           <TabView
-            routesMap={[
-              { key: 'playlist', title: '플레이리스트' },
-              { key: 'daily', title: '데일리' },
-              { key: 'relay', title: '릴레이플리' },
-            ]}
+            routesMap={routesMap}
             renderSceneProps={renderScene}
-            renderTabBar={(props) => <AccountTabBar props={props} />}
+            renderTabBar={renderTabBar}
           />
         </>
       )}

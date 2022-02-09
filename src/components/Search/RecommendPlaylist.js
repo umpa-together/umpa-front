@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
 import PlaylistCard from 'components/Search/PlaylistCard';
@@ -8,18 +8,20 @@ import Text from 'components/Text';
 
 export default function RecommendPlaylist() {
   const { state } = useContext(MainContentsContext);
+  const keyExtractor = useCallback((_) => _.title, []);
+  const renderItem = useCallback(({ item }) => <PlaylistCard info={item} />, []);
   return (
     <>
       <Text style={styles.title}>추천 플레이리스트</Text>
       <FlatList
         data={state.mainPlaylist}
-        keyExtractor={(playlist) => playlist.title}
+        keyExtractor={keyExtractor}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatList}
-        renderItem={({ item }) => {
-          return <PlaylistCard info={item} />;
-        }}
+        renderItem={renderItem}
+        maxToRenderPerBatch={5}
+        windowSize={5}
       />
     </>
   );

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSearch } from 'providers/search';
@@ -9,7 +9,11 @@ import { COLOR_5, COLOR_3 } from 'constants/colors';
 import Text from 'components/Text';
 
 export default function RecentKeywords({ modal }) {
-  const { state, getRecentKeywords, getAllContents } = useContext(SearchContext);
+  const {
+    state: { recentKeyword },
+    getRecentKeywords,
+    getAllContents,
+  } = useContext(SearchContext);
   const { onSearchContents, onSearchKeyword, textInputRef } = useSearch();
 
   useEffect(() => {
@@ -26,21 +30,29 @@ export default function RecentKeywords({ modal }) {
     textInputRef.current.blur();
   };
 
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(({ item }) => {
+    const { keyword } = item;
+    return (
+      <TouchableOpacity onPress={() => onClickKeyword(keyword)} key={keyword}>
+        <Text style={styles.keyword}>{keyword}</Text>
+      </TouchableOpacity>
+    );
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>최근 검색어</Text>
       <Divider containerStyle={styles.dividerContainer} />
-      <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.modalContainer}>
-        {state.recentKeyword &&
-          state.recentKeyword.map((item) => {
-            const { keyword } = item;
-            return (
-              <TouchableOpacity onPress={() => onClickKeyword(keyword)} key={keyword}>
-                <Text style={styles.keyword}>{keyword}</Text>
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
+      <FlatList
+        contentContainerStyle={styles.scrollContainer}
+        data={recentKeyword}
+        style={styles.modalContainer}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+      />
     </View>
   );
 }

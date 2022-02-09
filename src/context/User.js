@@ -23,6 +23,8 @@ const userReducer = (state, action) => {
       return { ...state, user: action.payload };
     case 'getFollow':
       return { ...state, follow: action.payload };
+    case 'initFollow':
+      return { ...state, follow: null };
     case 'getGenreLists':
       return { ...state, genreLists: action.payload };
     case 'initRepresentSongs':
@@ -33,6 +35,14 @@ const userReducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     default:
       return state;
+  }
+};
+
+const initFollow = (dispatch) => () => {
+  try {
+    dispatch({ type: 'initFollow' });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with initFollow' });
   }
 };
 
@@ -66,15 +76,10 @@ const getOtherInformation =
 
 const editProfile =
   (dispatch) =>
-  async ({ nickName, name, introduction, genre, songs, profileFd, backgroundFd }) => {
+  async ({ nickName, name, introduction, genre, songs, fd }) => {
     try {
-      if (profileFd) {
-        profileResponse = await server.post('/user/editProfileImage', profileFd, {
-          header: { 'content-type': 'multipart/form-data' },
-        });
-      }
-      if (backgroundFd) {
-        backgroundResponse = await server.post('/user/editBackgroundImage', backgroundFd, {
+      if (fd._parts.length > 0) {
+        await server.post('/user/editImage', fd, {
           header: { 'content-type': 'multipart/form-data' },
         });
       }
@@ -189,6 +194,7 @@ const postGenre =
 export const { Provider, Context } = createDataContext(
   userReducer,
   {
+    initFollow,
     initOtherInformation,
     getMyInformation,
     getOtherInformation,

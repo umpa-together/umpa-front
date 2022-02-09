@@ -9,7 +9,9 @@ import Text from 'components/Text';
 import Modal from '.';
 
 const ModalView = ({ onCloseGenreModal }) => {
-  const { state } = useContext(UserContext);
+  const {
+    state: { genreLists },
+  } = useContext(UserContext);
   const { profile, onClickGenre } = useProfileEdit();
 
   return (
@@ -19,13 +21,16 @@ const ModalView = ({ onCloseGenreModal }) => {
         <Text style={styles.complete}>완료</Text>
       </TouchableOpacity>
       <ScrollView>
-        {state.genreLists &&
-          state.genreLists.map(({ genre }) => {
+        {genreLists &&
+          genreLists.map(({ genre }) => {
+            const onClickSelection = () => {
+              onClickGenre(genre);
+            };
             return (
               <TouchableOpacity
                 key={genre}
                 style={[style.flexRow, styles.box]}
-                onPress={() => onClickGenre(genre)}
+                onPress={onClickSelection}
                 activeOpacity={0.9}
               >
                 <View style={styles.circle}>
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     top: 29 * SCALE_HEIGHT,
   },
   complete: {
-    fontSize: FS(12),
+    fontSize: FS(16),
     color: MAIN_COLOR,
   },
   box: {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Context as MainContentsContext } from 'context/MainContents';
 import UserCard from 'components/Search/UserCard';
@@ -8,18 +8,21 @@ import Text from 'components/Text';
 
 export default function RecommendAcocunt() {
   const { state } = useContext(MainContentsContext);
+  const keyExtractor = useCallback((_) => _._id, []);
+  const renderItem = useCallback(({ item }) => <UserCard user={item} />);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>추천 계정</Text>
       <FlatList
         data={state.mainDJ}
-        keyExtractor={(user) => user._id}
+        keyExtractor={keyExtractor}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatList}
-        renderItem={({ item }) => {
-          return <UserCard user={item} />;
-        }}
+        renderItem={renderItem}
+        maxToRenderPerBatch={5}
+        windowSize={5}
       />
     </View>
   );

@@ -19,7 +19,6 @@ const ModalView = () => {
 
 export default function HarmfulModal() {
   const { harmfulModal, onCloseHarmfulModal } = useModal();
-
   return (
     <Modal isVisible={harmfulModal} onBackdropPress={onCloseHarmfulModal} style={styles.container}>
       <ModalView />

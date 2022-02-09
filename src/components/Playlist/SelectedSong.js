@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
@@ -8,34 +8,34 @@ import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
 
-export default function SelectedSong({ songs }) {
+const AddActions = (song) => {
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
 
-  const onClickAdd = (song) => {
+  const onClickAdd = () => {
     postAddedSong({ song });
     onClickAdded();
   };
 
-  const onClickAddActions = (song) => {
-    return (
-      <TouchableOpacity onPress={() => onClickAdd(song)}>
-        <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-      </TouchableOpacity>
-    );
-  };
+  return (
+    <TouchableOpacity onPress={() => onClickAdd(song)}>
+      <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
+    </TouchableOpacity>
+  );
+};
 
+export default memo(function SelectedSong({ songs }) {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>총 {songs.length}곡</Text>
       <View>
         {songs.map((item) => {
-          return <SongView key={item.id} song={item} actions={onClickAddActions(item)} playlist />;
+          return <SongView key={item.id} song={item} actions={AddActions(item)} playlist />;
         })}
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

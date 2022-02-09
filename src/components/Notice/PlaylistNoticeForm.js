@@ -18,6 +18,29 @@ export default function PlaylistNoticeForm({ notice, onClickProfile }) {
     time,
   } = notice;
   const { image, songs } = playlist;
+  const textLists = {
+    plike: <Text style={styles.contentText}>플레이리스트를 좋아합니다.</Text>,
+    pcom: (
+      <Text style={styles.contentText}>
+        댓글을 달았습니다: {playlistcomment && playlistcomment.text}
+      </Text>
+    ),
+    pcomlike: (
+      <Text style={styles.contentText}>
+        댓글: {playlistcomment && playlistcomment.text}를 좋아합니다.
+      </Text>
+    ),
+    precom: (
+      <Text style={styles.contentText}>
+        대댓글을 달았습니다: {playlistrecomment && playlistrecomment.text}
+      </Text>
+    ),
+    precomlike: (
+      <Text style={styles.contentText}>
+        대댓글: {playlistrecomment && playlistrecomment.text}을 좋아합니다.
+      </Text>
+    ),
+  };
   return (
     <>
       <TouchableOpacity onPress={onClickProfile}>
@@ -25,18 +48,8 @@ export default function PlaylistNoticeForm({ notice, onClickProfile }) {
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
-          {user.name} 님이
-          {type === 'plike' ? (
-            <Text style={styles.contentText}> 플레이리스트를 좋아합니다.</Text>
-          ) : type === 'pcom' ? (
-            <Text style={styles.contentText}> 댓글을 달았습니다: {playlistcomment.text}</Text>
-          ) : type === 'pcomlike' ? (
-            <Text style={styles.contentText}> 댓글: {playlistcomment.text}를 좋아합니다.</Text>
-          ) : type === 'precom' ? (
-            <Text style={styles.contentText}> 대댓글을 달았습니다: {playlistrecomment.text}</Text>
-          ) : (
-            <Text style={styles.contentText}> 대댓글: {playlistrecomment.text}을 좋아합니다.</Text>
-          )}
+          {`${user.name} 님이 `}
+          {textLists[type]}
           <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>

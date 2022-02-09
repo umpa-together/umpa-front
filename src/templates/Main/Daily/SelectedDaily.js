@@ -174,6 +174,8 @@ export default function SelectedDaily({ post, id, postUserId }) {
           }, 400);
         }
       };
+
+  const selectInfo = { func: selectFunction, list: selectLists };
   return (
     <View style={style.background}>
       <Header
@@ -206,14 +208,9 @@ export default function SelectedDaily({ post, id, postUserId }) {
               <CommentBar />
             </KeyboardProvider>
           </CommentProvider>
-          <SelectModal
-            modal={selectModal}
-            setModal={setSelectModal}
-            selectInfo={{ func: selectFunction, list: selectLists }}
-          />
-
-          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+          <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
+          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
         </>
       ) : (
         <LoadingIndicator />

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Context as AppleMusicContext } from 'context/AppleMusic';
 import { useSearch } from 'providers/search';
@@ -15,6 +15,9 @@ export default function ResultLists() {
   const { state } = useContext(AppleMusicContext);
   const { text, searching, loading, onEndReached } = useSearch();
   const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
+  const keyExtractor = useCallback((_) => _.id, []);
+  const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);
+  const renderItem = useCallback(({ item }) => <AddSongView song={item} />, []);
   return (
     <View style={styles.container}>
       <Text style={styles.searchText}>
@@ -30,13 +33,13 @@ export default function ResultLists() {
             <FlatList
               style={styles.listContainter}
               data={state.songData}
-              keyExtractor={(_) => _.id}
+              keyExtractor={keyExtractor}
               onEndReached={onEndReached}
               onEndReachedThreshold={0.6}
-              ListFooterComponent={loading && <ActivityIndicator />}
-              renderItem={({ item }) => {
-                return <AddSongView song={item} />;
-              }}
+              ListFooterComponent={ListFooterComponent}
+              renderItem={renderItem}
+              maxToRenderPerBatch={5}
+              windowSize={5}
             />
           ) : (
             <EmptyData textList={textList} icon />

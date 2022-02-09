@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   View,
   FlatList,
@@ -42,21 +42,27 @@ const SongLists = () => {
     navigate('SelectedSong', { song });
   };
 
+  const keyExtractor = useCallback((_) => _.song.id, []);
+  const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);
+  const renderItem = useCallback(({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => onClickSongView(item.song)}>
+        <SearchSongView info={item} />
+      </TouchableOpacity>
+    );
+  }, []);
+
   return (
     <FlatList
       data={state.result.song}
-      keyExtractor={(item) => item.song.id}
+      keyExtractor={keyExtractor}
       contentContainerStyle={styles.songContainer}
       onEndReached={onEndReached}
       onEndReachedThreshold={0.6}
-      ListFooterComponent={loading && <ActivityIndicator />}
-      renderItem={({ item }) => {
-        return (
-          <TouchableOpacity onPress={() => onClickSongView(item.song)}>
-            <SearchSongView info={item} />
-          </TouchableOpacity>
-        );
-      }}
+      ListFooterComponent={ListFooterComponent}
+      renderItem={renderItem}
+      maxToRenderPerBatch={5}
+      windowSize={5}
     />
   );
 };

@@ -14,12 +14,13 @@ export default function SongView({ song, actions = null, landings = null, play =
   const playingCheck = song.id === isPlayingId && !playlist;
   const widthCount = (play && 1) + (actions && 1) + (landings && 1);
   const defaultArea = contentRating !== 'explicit' ? 280 : 260;
+  const areaStyles = { maxWidth: (defaultArea - 40 * widthCount) * SCALE_WIDTH };
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>
       <View style={style.flexRow}>
         {landings}
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <View style={{ maxWidth: (defaultArea - 40 * widthCount) * SCALE_WIDTH }}>
+        <View style={areaStyles}>
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}

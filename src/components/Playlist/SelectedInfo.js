@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import PlaylistAlbumImage from 'components/PlaylistAlbumImage';
@@ -8,7 +8,7 @@ import style from 'constants/styles';
 import Text from 'components/Text';
 import { navigate, push } from 'lib/utils/navigation';
 
-export default function SelectedInfo({ playlist }) {
+export default memo(function SelectedInfo({ playlist }) {
   const {
     image,
     title,
@@ -50,7 +50,7 @@ export default function SelectedInfo({ playlist }) {
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

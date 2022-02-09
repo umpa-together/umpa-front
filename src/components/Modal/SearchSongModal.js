@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeText: {
-    fontSize: FS(12),
+    fontSize: FS(16),
     color: MAIN_COLOR,
   },
   inactiveText: {

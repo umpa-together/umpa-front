@@ -10,10 +10,11 @@ export default function PostingResult({ data, opt, my }) {
     <View style={styles.container}>
       {data.length > 0 ? (
         data.map((item) => {
+          const keyId = item._id || item.playlist._id;
           return opt === 'daily' ? (
-            <DailyView key={item._id} titleCustom={styles.wideTitle} isSelected info={item} />
+            <DailyView key={keyId} titleCustom={styles.wideTitle} isSelected info={item} />
           ) : (
-            <PostingCard key={item._id} item={item} opt={opt} />
+            <PostingCard key={keyId} item={item} opt={opt} />
           );
         })
       ) : (

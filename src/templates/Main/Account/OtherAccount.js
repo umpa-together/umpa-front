@@ -68,6 +68,12 @@ export default function OtherAccount({ id }) {
     }
   };
 
+  const routesMap = [
+    { key: 'playlist', title: '플레이리스트' },
+    { key: 'daily', title: '데일리' },
+    { key: 'relay', title: '릴레이플리' },
+  ];
+  const renderTabBar = useCallback((props) => <AccountTabBar props={props} />, []);
   return (
     <View style={style.background}>
       {!loading ? (
@@ -76,13 +82,9 @@ export default function OtherAccount({ id }) {
           <PostingInfo posting={postingCount} user={user} />
           <UserInfo user={user} />
           <TabView
-            routesMap={[
-              { key: 'playlist', title: '플레이리스트' },
-              { key: 'daily', title: '데일리' },
-              { key: 'relay', title: '릴레이플리' },
-            ]}
+            routesMap={routesMap}
             renderSceneProps={renderScene}
-            renderTabBar={(props) => <AccountTabBar props={props} />}
+            renderTabBar={renderTabBar}
           />
           <RepresentModal />
         </>

@@ -97,14 +97,10 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
     setSelected();
   }, [currentPlaylist, currentComments]);
 
-  const { postUserId: postUser, _id, likes, title, textcontent, hashtag, songs, image } = playlist;
+  const { postUserId: postUser, _id, title, textcontent, hashtag, songs, image } = playlist;
 
   const checkMyPost = postUser._id === user._id;
-  const footerData = {
-    _id,
-    likes,
-    comments: comment,
-  };
+
   const selectLists = checkMyPost
     ? [
         { title: '편집하기', key: 'edit' },
@@ -188,6 +184,7 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
         }
       };
 
+  const selectInfo = { setActionModal, func: selectFunction, list: selectLists };
   return (
     <View style={style.background}>
       <Header
@@ -204,7 +201,7 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
               <SelectedInfo playlist={playlist} />
               <SelectedHashtag hashtag={hashtag} />
               <SelectedSong songs={songs} />
-              <Footer object={footerData} type="playlist" />
+              <Footer object={currentPlaylist} type="playlist" />
               <Divider containerStyle={styles.dividerContainer} />
               <SelectedComment opt="playlist" comments={comment} />
             </ScrollView>
@@ -213,11 +210,7 @@ export default function SelectedPlaylist({ post, id, postUserId }) {
             </KeyboardProvider>
           </CommentProvider>
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
-          <SelectModal
-            modal={selectModal}
-            setModal={setSelectModal}
-            selectInfo={{ setActionModal, func: selectFunction, list: selectLists }}
-          />
+          <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
           {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
           <HarmfulModal />
         </>

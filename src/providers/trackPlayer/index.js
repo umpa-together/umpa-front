@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useModal } from 'providers/modal';
-import TrackPlayer, { useProgress } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 
 const TrackPlayerContext = createContext(null);
 
@@ -11,7 +11,6 @@ export default function TrackPlayerProvider({ children }) {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlayingId, setIsPlayingId] = useState(0);
   const { setHarmfulModal } = useModal();
-  const { position, duration } = useProgress();
 
   const addTrackSong = async (song) => {
     const { attributes, id } = song;
@@ -76,8 +75,6 @@ export default function TrackPlayerProvider({ children }) {
 
   const value = {
     currentSong,
-    position,
-    duration,
     state,
     isPlayingId,
     addTrackSong,
@@ -85,12 +82,6 @@ export default function TrackPlayerProvider({ children }) {
     onClickSong,
     onClickPlayBar,
   };
-
-  useEffect(() => {
-    if (duration !== 0 && position !== 0 && duration === position) {
-      stopTrackSong();
-    }
-  }, [duration, position]);
 
   return <TrackPlayerContext.Provider value={value}>{children}</TrackPlayerContext.Provider>;
 }

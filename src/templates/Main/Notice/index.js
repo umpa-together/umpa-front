@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { FlatList, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/Notice';
 import style from 'constants/styles';
@@ -18,7 +18,11 @@ import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 
 export default function Notice() {
-  const { state, getNotice, getNextNotice } = useContext(NoticeContext);
+  const {
+    state: { notice, currentNoticePage, notNextNotice },
+    getNotice,
+    getNextNotice,
+  } = useContext(NoticeContext);
   const [loading, setLoading] = useState(false);
   const [newNotice, setNewNotice] = useState([]);
   const [weekNotice, setWeekNotice] = useState([]);
@@ -30,9 +34,9 @@ export default function Notice() {
   const textList = ['아직 새로운 알림이 없습니다'];
 
   const getData = async () => {
-    if (state.notice.length >= 20 && !state.notNextNotice) {
+    if (notice.length >= 20 && !notNextNotice) {
       setLoading(true);
-      await getNextNotice({ page: state.currentNoticePage });
+      await getNextNotice({ page: currentNoticePage });
       setLoading(false);
     }
   };
@@ -45,16 +49,16 @@ export default function Notice() {
 
   const divideSection = (data) => {
     // eslint-disable-next-line array-callback-return
-    data.map((notice) => {
-      const { time } = notice;
+    data.map((item) => {
+      const { time } = item;
       const postTime = new Date(time);
       const betweenTime = Math.floor((now.getTime() - postTime.getTime()) / 1000 / 60 / 60 / 24);
       if (betweenTime < 3) {
-        setNewNotice((prev) => [...prev, notice]);
+        setNewNotice((prev) => [...prev, item]);
       } else if (betweenTime <= 7) {
-        setWeekNotice((prev) => [...prev, notice]);
+        setWeekNotice((prev) => [...prev, item]);
       } else {
-        setLastNotice((prev) => [...prev, notice]);
+        setLastNotice((prev) => [...prev, item]);
       }
     });
   };
@@ -103,19 +107,32 @@ export default function Notice() {
   }, []);
 
   useEffect(() => {
-    if (state.notice) {
-      divideSection(
-        state.notice.slice(20 * (state.currentNoticePage - 1), 20 * state.currentNoticePage),
-      );
+    if (notice) {
+      divideSection(notice.slice(20 * (currentNoticePage - 1), 20 * currentNoticePage));
     }
-  }, [state.notice]);
+  }, [notice]);
+
+  const keyExtractor = useCallback((_) => _._id, []);
+  const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <>
+          {getSectionHeader(item)}
+          <Section data={item} />
+          {getDivider(item)}
+        </>
+      );
+    },
+    [newNotice, lastNotice, weekNotice],
+  );
 
   return (
-    <View style={[style.background]}>
+    <View style={style.background}>
       <Header titleStyle={style.headertitle} title="알림" />
-      {state.notice === null ? (
+      {notice === null ? (
         <LoadingIndicator />
-      ) : state.notice.length === 0 ? (
+      ) : notice.length === 0 ? (
         <EmptyData
           textList={textList}
           icon
@@ -123,23 +140,16 @@ export default function Notice() {
         />
       ) : (
         <FlatList
-          data={state.notice}
-          keyExtractor={(_) => _._id}
+          data={notice}
+          keyExtractor={keyExtractor}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.6}
-          ListFooterComponent={loading && <ActivityIndicator />}
+          ListFooterComponent={ListFooterComponent}
           onRefresh={onRefresh}
           refreshing={refreshing}
-          renderItem={({ item }) => {
-            getSectionHeader(item);
-            return (
-              <>
-                {getSectionHeader(item)}
-                <Section data={item} />
-                {getDivider(item)}
-              </>
-            );
-          }}
+          renderItem={renderItem}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       )}
       <PlayBar />

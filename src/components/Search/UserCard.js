@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Context as UserContext } from 'context/User';
 import ProfileImage from 'widgets/ProfileImage';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
 import { COLOR_2, COLOR_5 } from 'constants/colors';
-import { push } from 'lib/utils/navigation';
+import { push, navigate } from 'lib/utils/navigation';
 import Text from 'components/Text';
 
 export default function UserCard({ user }) {
   const { _id: id, genre, name, profileImage } = user;
+  const {
+    state: {
+      user: { _id: userId },
+    },
+  } = useContext(UserContext);
   const onClickCard = () => {
-    push('OtherAccount', { id });
+    if (userId === id) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id });
+    }
   };
 
   return (
