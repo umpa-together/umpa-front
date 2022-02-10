@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     paddingTop: 17 * SCALE_HEIGHT,
     paddingLeft: 26 * SCALE_WIDTH,
     paddingRight: 18 * SCALE_WIDTH,
-    borderWidth: 1,
   },
   imageContainer: {
     width: 140 * SCALE_WIDTH,
