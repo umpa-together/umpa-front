@@ -8,3 +8,12 @@ export default function OpenYoutube() {
     return Linking.openURL('https://www.youtube.com/channel/UCgXncrrjH8ROg9KW9_EIg9A');
   });
 }
+
+export const OpenPlaylist = (url) => {
+  Linking.canOpenURL(url).then((supported) => {
+    if (supported) {
+      return Linking.openURL(url);
+    }
+    return Linking.openURL(url);
+  });
+};

@@ -7,8 +7,18 @@ import { COLOR_3 } from 'constants/colors';
 import Text from 'components/Text';
 
 export default function YoutubeLink({ func, relay = false }) {
+  const widthStyle = {
+    width: relay ? 96 * SCALE_WIDTH : 123 * SCALE_WIDTH,
+  };
+  const paddingStyle = {
+    right: relay ? -10 * SCALE_WIDTH : 10 * SCALE_WIDTH,
+  };
   return (
-    <TouchableOpacity style={styles.touchArea} onPress={func} activeOpacity={0.6}>
+    <TouchableOpacity
+      style={[styles.touchArea, widthStyle, paddingStyle]}
+      onPress={func}
+      activeOpacity={0.6}
+    >
       <View style={[style.flexRow, styles.container]}>
         <Icon source={require('public/icons/youtube.png')} style={styles.youtube} />
         <Text style={styles.text}>플리{!relay && ' 전체'} 듣기</Text>
@@ -21,11 +31,10 @@ export default function YoutubeLink({ func, relay = false }) {
 const styles = StyleSheet.create({
   touchArea: {
     padding: 5 * SCALE_WIDTH,
-    right: -10 * SCALE_WIDTH,
   },
   container: {
-    paddingLeft: 4 * SCALE_WIDTH,
-    paddingRight: 8 * SCALE_WIDTH,
+    paddingLeft: 6 * SCALE_WIDTH,
+    paddingRight: 4 * SCALE_WIDTH,
     paddingVertical: 2 * SCALE_HEIGHT,
     backgroundColor: '#ededed',
     borderRadius: 4 * SCALE_HEIGHT,

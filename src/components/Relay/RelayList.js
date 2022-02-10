@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import RelayCardView from 'components/Relay/RelayCardView';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
@@ -8,19 +8,22 @@ import YoutubeLink from 'components/youtubeLink';
 import OpenYoutube from 'lib/utils/youtube';
 import Text from 'components/Text';
 
-export default function RelayList({ relayList }) {
+export default memo(function RelayList({ relayList }) {
+  const onClickYoutube = () => {
+    OpenYoutube();
+  };
   return (
     <View style={styles.container}>
       <View style={[style.flexRow, style.space_between, styles.margin]}>
         <Text style={styles.titleText}>릴레이 플레이리스트</Text>
-        <YoutubeLink relay func={OpenYoutube} />
+        <YoutubeLink relay func={onClickYoutube} />
       </View>
       {relayList.map((relay) => {
         return <RelayCardView relay={relay} key={relay._id} />;
       })}
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

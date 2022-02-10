@@ -7,6 +7,8 @@ import { COLOR_5 } from 'constants/colors';
 import style from 'constants/styles';
 import Text from 'components/Text';
 import { navigate, push } from 'lib/utils/navigation';
+import YoutubeLink from 'components/youtubeLink';
+import { OpenPlaylist } from 'lib/utils/youtube';
 
 export default memo(function SelectedInfo({ playlist }) {
   const {
@@ -16,6 +18,7 @@ export default memo(function SelectedInfo({ playlist }) {
     postUserId: { name, _id: postUserId },
     songs,
     time,
+    youtubeUrl,
   } = playlist;
   const {
     state: {
@@ -32,7 +35,9 @@ export default memo(function SelectedInfo({ playlist }) {
       push('OtherAccount', { id: postUserId });
     }
   };
-
+  const onClickYoutube = () => {
+    OpenPlaylist(youtubeUrl);
+  };
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={style.flexRow}>
@@ -43,6 +48,7 @@ export default memo(function SelectedInfo({ playlist }) {
             {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
             <Text style={styles.contextText}>{convertedTime}</Text>
           </View>
+          <YoutubeLink url={youtubeUrl} func={onClickYoutube} />
           <TouchableOpacity onPress={onClickProfile}>
             <Text style={styles.nameText}>by {name}</Text>
           </TouchableOpacity>
@@ -57,6 +63,7 @@ const styles = StyleSheet.create({
     paddingTop: 17 * SCALE_HEIGHT,
     paddingLeft: 26 * SCALE_WIDTH,
     paddingRight: 18 * SCALE_WIDTH,
+    borderWidth: 1,
   },
   imageContainer: {
     width: 140 * SCALE_WIDTH,
