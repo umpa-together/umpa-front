@@ -48,7 +48,7 @@ export default memo(function SelectedInfo({ playlist }) {
             {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
             <Text style={styles.contextText}>{convertedTime}</Text>
           </View>
-          <YoutubeLink url={youtubeUrl} func={onClickYoutube} />
+          {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} func={onClickYoutube} />}
           <TouchableOpacity onPress={onClickProfile}>
             <Text style={styles.nameText}>by {name}</Text>
           </TouchableOpacity>
