@@ -16,7 +16,7 @@ export default function PlaylistCard({ info }) {
   } = info;
 
   const onClickPlaylist = async () => {
-    push('SelectedPlaylist', { post: false, id, postUserId });
+    push('SelectedPlaylist', { id, postUserId });
   };
 
   return (

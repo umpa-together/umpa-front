@@ -35,7 +35,6 @@ const addPlaylist =
         dispatch({ type: 'getSelectedPlaylist', payload: imgResponse.data });
         popToTop();
         navigate('SelectedPlaylist', {
-          post: true,
           id: imgResponse.data[0]._id,
           postUserId: imgResponse.data[0].postUserId,
         });
@@ -64,7 +63,7 @@ const editPlaylist =
         playlistId,
       });
       dispatch({ type: 'getPlaylist', payload: response.data });
-      navigate('SelectedPlaylist', { post: false });
+      navigate('SelectedPlaylist');
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editPlaylist' });
     }

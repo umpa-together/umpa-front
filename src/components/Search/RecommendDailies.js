@@ -15,7 +15,7 @@ export default function RecommendDailies() {
   } = useContext(MainContentsContext);
 
   const onClickSong = async (id, postUser) => {
-    push('SelectedDaily', { post: false, id, postUserId: postUser });
+    push('SelectedDaily', { id, postUserId: postUser });
   };
 
   return (

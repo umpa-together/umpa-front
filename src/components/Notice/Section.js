@@ -28,12 +28,11 @@ export default function Section({ data }) {
       onClickProfile();
     } else if (playlistTypeLists.includes(type)) {
       push('SelectedPlaylist', {
-        post: false,
         id: playlist._id,
         postUserId: playlist.postUserId,
       });
     } else if (dailyTypeLists.includes(type)) {
-      push('SelectedDaily', { post: false, id: daily._id, postUserId: daily.postUserId });
+      push('SelectedDaily', { id: daily._id, postUserId: daily.postUserId });
     } else if (relayTypeLists.includes(type)) {
       push('SelectedRelay', { id });
     }
