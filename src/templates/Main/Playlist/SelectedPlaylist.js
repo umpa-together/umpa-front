@@ -173,7 +173,7 @@ export default function SelectedPlaylist({ id, postUserId }) {
         }
       };
 
-  const selectInfo = { setActionModal, func: selectFunction, list: selectLists };
+  const selectInfo = { func: selectFunction, list: selectLists };
   return (
     <View style={style.background}>
       <Header

@@ -8,6 +8,17 @@ const SendList = async ({ playlist }) => {
     attributes.artwork.url = attributes.artwork.url.replace('{w}', '300');
     attributes.artwork.url = attributes.artwork.url.replace('{h}', '300');
   });
+  const contents = songs.map((song) => {
+    return {
+      title: song.attributes.name,
+      imageUrl: song.attributes.artwork.url,
+      link: {
+        webUrl: 'https://developers.kakao.com/',
+        mobileWebUrl: 'https://developers.kakao.com/',
+      },
+      description: song.attributes.artistName,
+    };
+  });
 
   try {
     await KakaoShareLink.sendList({
@@ -16,35 +27,7 @@ const SendList = async ({ playlist }) => {
         webUrl: 'https://developers.kakao.com/',
         mobileWebUrl: 'https://developers.kakao.com/',
       },
-      contents: [
-        {
-          title: songs[0].attributes.name,
-          imageUrl: songs[0].attributes.artwork.url,
-          link: {
-            webUrl: 'https://developers.kakao.com/',
-            mobileWebUrl: 'https://developers.kakao.com/',
-          },
-          description: songs[0].attributes.artistName,
-        },
-        {
-          title: songs[1].attributes.name,
-          imageUrl: songs[1].attributes.artwork.url,
-          link: {
-            webUrl: 'https://developers.kakao.com/',
-            mobileWebUrl: 'https://developers.kakao.com/',
-          },
-          description: songs[1].attributes.artistName,
-        },
-        {
-          title: songs[2].attributes.name,
-          imageUrl: songs[2].attributes.artwork.url,
-          link: {
-            webUrl: 'https://developers.kakao.com/',
-            mobileWebUrl: 'https://developers.kakao.com/',
-          },
-          description: songs[2].attributes.artistName,
-        },
-      ],
+      contents,
       buttons: [
         {
           title: '음파 이용하러 가기',

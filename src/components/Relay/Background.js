@@ -11,14 +11,19 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import ParticipantCount from './ParticipantCount';
 
 export default function Background() {
-  const { state } = useContext(RelayContext);
-  const { playlist } = state.selectedRelay;
-  const { title, image, representSong, evaluateCount, postUserId } = playlist;
-  const { attributes } = representSong;
-  const { artistName, name } = attributes;
-
+  const {
+    state: {
+      selectedRelay: {
+        playlist: { title, image, representSong, evaluateCount, postUserId },
+      },
+    },
+  } = useContext(RelayContext);
+  const {
+    id: representSongId,
+    attributes: { artistName, name },
+  } = representSong;
   const { onClickSong, isPlayingId } = useTrackPlayer();
-  const playingCheck = representSong.id === isPlayingId;
+  const playingCheck = representSongId === isPlayingId;
 
   return (
     <View>

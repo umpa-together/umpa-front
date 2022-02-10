@@ -24,10 +24,10 @@ export default function SongView({ song, actions = null, landings = null, play =
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}
-            isMove={song.id === isPlayingId}
+            isMove={playingCheck}
             textStyle={styles.title}
           />
-          <MoveText text={artistName} isMove={song.id === isPlayingId} textStyle={styles.artist} />
+          <MoveText text={artistName} isMove={playingCheck} textStyle={styles.artist} />
         </View>
       </View>
       <View style={[style.flexRow, styles.actions]}>
