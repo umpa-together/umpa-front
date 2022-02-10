@@ -14,7 +14,7 @@ const playlistConverter = (el, round) => {
   const { image, songs, title, time, _id, postUserId } = el;
   const convertTime = time.slice(0, 10).replaceAll('-', '.');
   const onClickPlaylist = async () => {
-    push('SelectedPlaylist', { post: false, id: _id, postUserId });
+    push('SelectedPlaylist', { id: _id, postUserId });
   };
 
   return {

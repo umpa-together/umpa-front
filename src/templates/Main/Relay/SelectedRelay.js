@@ -87,6 +87,15 @@ const CompletedRelay = () => {
     },
   } = useContext(RelayContext);
 
+  const FooterData = {
+    likes: playlist.likes,
+    comments: playlist.comments,
+    _id: playlist._id,
+    title: playlist.title,
+    songs: songs.map(({ song }) => {
+      return song;
+    }),
+  };
   return (
     <>
       <CommentProvider>
@@ -96,18 +105,7 @@ const CompletedRelay = () => {
           <MusicSection title={`총 ${songs.length}곡`} songs={songs} />
           <Divider />
           <Participant />
-          <Footer
-            object={{
-              likes: playlist.likes,
-              comments: playlist.comments,
-              _id: playlist._id,
-              title: playlist.title,
-              songs: songs.map(({ song }) => {
-                return song;
-              }),
-            }}
-            type="relay"
-          />
+          <Footer object={FooterData} type="relay" />
           <Divider containerStyle={styles.dividerContainer} />
           <SelectedComment opt="relay" comments={currentComments} />
         </ScrollView>
@@ -177,6 +175,12 @@ export default function ({ id }) {
     }, []),
   );
 
+  const selectInfo = { func: selectFunction, list: selectLists };
+  const actionInfo = {
+    mainTitle: '플레이리스트를 신고하시겠습니까?',
+    func: reportActionFunction,
+    list: actionLists,
+  };
   return (
     <View style={style.background}>
       {selectedRelay && swipeSongs && (
@@ -200,20 +204,8 @@ export default function ({ id }) {
           <HarmfulModal />
         </>
       )}
-      <SelectModal
-        modal={selectModal}
-        setModal={setSelectModal}
-        selectInfo={{ func: selectFunction, list: selectLists }}
-      />
-      <ActionModal
-        modal={actionModal}
-        setModal={setActionModal}
-        actionInfo={{
-          mainTitle: '플레이리스트를 신고하시겠습니까?',
-          func: reportActionFunction,
-          list: actionLists,
-        }}
-      />
+      <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actionInfo} />
     </View>
   );
 }

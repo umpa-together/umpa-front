@@ -14,10 +14,11 @@ import { navigate } from 'lib/utils/navigation';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
 import MoveText from 'components/MoveText';
+import ProgressProvider from 'providers/progress';
 
 const Footer = ({ song, like, setLike }) => {
   const { id } = song;
-  const { onClickSong, isPlayingId, onClickPause, isStop } = useTrackPlayer();
+  const { isPlayingId, onClickPlayBar, state, addTrackSong } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const { onClickAdded } = useModal();
 
@@ -26,26 +27,27 @@ const Footer = ({ song, like, setLike }) => {
     onClickAdded();
   };
 
-  const onClickPlay = () => {
-    if (isPlayingId !== song.id) {
-      onClickSong(song);
-    } else {
-      onClickPause();
-    }
-  };
-
   const onClickLike = () => {
     setLike(!like);
   };
+
+  const onClickPlay = () => {
+    if (isPlayingId === id) {
+      onClickPlayBar();
+    } else {
+      addTrackSong(song);
+    }
+  };
+
   return (
     <View style={[style.flexRow, styles.footerContainer]}>
       <TouchableOpacity onPress={onClickPlay}>
         <Icon
           style={styles.songIcon}
           source={
-            id === isPlayingId && !isStop
-              ? require('public/icons/swipe-stop.png')
-              : require('public/icons/swipe-play.png')
+            id !== isPlayingId || (id === isPlayingId && state !== 'play')
+              ? require('public/icons/swipe-play.png')
+              : require('public/icons/swipe-stop.png')
           }
         />
       </TouchableOpacity>
@@ -67,21 +69,29 @@ const Footer = ({ song, like, setLike }) => {
 };
 
 export default function SwipeCard({ image, card, like, setLike }) {
-  const { postUserId, song, playlistId } = card;
-  const { name, profileImage } = postUserId;
-  const { id, attributes } = song;
-  const { artwork, artistName, name: songName, contentRating } = attributes;
+  const {
+    postUserId: { name, profileImage },
+    song,
+    playlistId,
+  } = card;
+  const {
+    id,
+    attributes: { artwork, artistName, name: songName, contentRating },
+  } = song;
   const [topOffset, setTopOffset] = useState(0);
-  const { stoptracksong, isPlayingId } = useTrackPlayer();
+  const { stopTrackSong, isPlayingId } = useTrackPlayer();
 
   const onClickMove = () => {
-    stoptracksong();
+    stopTrackSong();
     navigate('SelectedRelay', { id: playlistId });
   };
+
   const imageTop = {
     top: -1 * topOffset - 2 * SCALE_HEIGHT,
   };
+
   const ParentView = useRef();
+
   return (
     <View
       ref={ParentView}
@@ -124,17 +134,17 @@ export default function SwipeCard({ image, card, like, setLike }) {
           textStyle={styles.songArtist}
         />
       </View>
-      <PlayAnimation
-        songId={id}
-        container={styles.progressContainer}
-        outContainer={styles.outContainer}
-        innerContainer={styles.innerContainer}
-        textContainer={styles.textContainer}
-        textStyle={styles.textStyle}
-      />
-      <AddedProvider>
-        <Footer song={song} like={like} setLike={setLike} />
-      </AddedProvider>
+      <ProgressProvider>
+        <PlayAnimation
+          songId={id}
+          container={styles.progressContainer}
+          outContainer={styles.outContainer}
+          innerContainer={styles.innerContainer}
+          textContainer={styles.textContainer}
+          textStyle={styles.textStyle}
+        />
+      </ProgressProvider>
+      <Footer song={song} like={like} setLike={setLike} />
     </View>
   );
 }

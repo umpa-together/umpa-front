@@ -33,7 +33,7 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
 
   const onClickSongView = async () => {
     if (isSelected) {
-      push('SelectedDaily', { post: false, id, postUserId });
+      push('SelectedDaily', { id, postUserId });
     } else {
       navigate('SelectedSong', { song });
     }

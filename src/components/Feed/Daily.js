@@ -14,7 +14,7 @@ import FollowAction from './FollowAction';
 export default memo(function Daily({ daily }) {
   const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
   const onClickDaily = () => {
-    push('SelectedDaily', { post: false, id, postUserId: postUser._id });
+    push('SelectedDaily', { id, postUserId: postUser._id });
   };
 
   return (

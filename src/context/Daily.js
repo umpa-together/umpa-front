@@ -36,7 +36,6 @@ const addDaily =
         dispatch({ type: 'getSelectedDaily', payload: imgResponse.data });
         popToTop();
         navigate('SelectedDaily', {
-          post: true,
           id: imgResponse.data[0]._id,
           postUserId: imgResponse.data[0].postUserId._id,
         });
@@ -59,7 +58,7 @@ const editDaily =
     try {
       const response = await server.post('/daily/edit', { textcontent, song, hashtag, DailyId });
       dispatch({ type: 'getDaily', payload: response.data });
-      navigate('SelectedDaily', { post: false });
+      navigate('SelectedDaily');
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
     }

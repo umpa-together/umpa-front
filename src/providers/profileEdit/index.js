@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Context as UserContext } from 'context/User';
 import { Context as AuthContext } from 'context/Auth';
-import { goBack } from 'lib/utils/navigation';
+import { goBack, popToTop } from 'lib/utils/navigation';
 import { useScroll } from 'providers/scroll';
 import server from 'lib/api/server';
 import { useModal } from 'providers/modal';
@@ -106,6 +106,7 @@ export default function ProfileEditProvider({ children }) {
           fd,
         });
         if (signUp) {
+          popToTop();
           await tryLocalSignIn();
         } else {
           goBack();

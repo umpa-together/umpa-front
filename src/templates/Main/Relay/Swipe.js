@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -20,12 +20,18 @@ import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import RecommendButton from 'components/Relay/RecommendButton';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Swipe() {
-  const { state, likeRelaySong, unlikeRelaySong } = useContext(RelayContext);
-  const { addtracksong, stoptracksong } = useTrackPlayer();
+  const {
+    state: { selectedRelay, swipeSongs },
+    likeRelaySong,
+    unlikeRelaySong,
+    getCurrentRelay,
+  } = useContext(RelayContext);
+  const { addTrackSong, stopTrackSong } = useTrackPlayer();
   const translateX = useSharedValue(0);
-  const { _id: playlistId, image } = state.selectedRelay.playlist;
+  const { _id: playlistId, image } = selectedRelay.playlist;
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [like, setLike] = useState(false);
@@ -75,25 +81,24 @@ export default function Swipe() {
 
   useEffect(() => {
     translateX.value = 0;
-    if (state.swipeSongs[currentIdx]) {
-      const { contentRating } = state.swipeSongs[currentIdx].song.attributes;
+    if (swipeSongs[currentIdx]) {
+      const { contentRating } = swipeSongs[currentIdx].song.attributes;
       if (contentRating !== 'explicit') {
-        addtracksong({ data: state.swipeSongs[currentIdx].song });
+        addTrackSong(swipeSongs[currentIdx].song);
       }
     }
   }, [currentIdx]);
 
   useEffect(() => {
     if (isEnd) {
-      const targetId = state.swipeSongs[currentIdx]._id;
-      /*
+      const targetId = swipeSongs[currentIdx]._id;
       if (like) {
         likeRelaySong({ id: targetId });
       } else {
         unlikeRelaySong({ id: targetId });
-      }*/
+      }
       setLike(false);
-      stoptracksong();
+      stopTrackSong();
       setTimeout(() => {
         setCurrentIdx(currentIdx + 1);
       }, 400);
@@ -101,16 +106,26 @@ export default function Swipe() {
   }, [isEnd]);
   useEffect(() => {
     return () => {
-      stoptracksong();
+      stopTrackSong();
+      getCurrentRelay();
     };
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (swipeSongs[currentIdx]) {
+        addTrackSong(swipeSongs[currentIdx].song);
+      }
+    }, [currentIdx]),
+  );
+
   return (
     <View>
       <Background />
-      {state.swipeSongs &&
-        state.swipeSongs.map((item, index) => {
+      {swipeSongs &&
+        swipeSongs.map((item, index) => {
           return (
-            <PanGestureHandler key={item.id} onGestureEvent={gestureHandler}>
+            <PanGestureHandler key={item._id} onGestureEvent={gestureHandler}>
               <Animated.View
                 style={[
                   currentIdx === index && cardStyle,

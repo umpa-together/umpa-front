@@ -91,21 +91,17 @@ export default function CurrentSection({ relay }) {
     C: <TemplateC title={title} />,
     D: <TemplateD title={title} />,
   };
-  const onClickRelay = (id) => {
+  const onClickRelay = () => {
     if (relaySong.length > 0) {
       setRelaySong({ data: [relay, relaySong] });
       navigate('Swipe');
     } else {
-      navigate('SelectedRelay', { id });
+      navigate('SelectedRelay', { id: _id });
     }
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => onClickRelay(_id)}
-      style={styles.container}
-      activeOpacity={0.9}
-    >
+    <TouchableOpacity onPress={onClickRelay} style={styles.container} activeOpacity={0.9}>
       <FastImage source={{ uri: image }} style={styles.img} />
       {opacityTop && (
         <Icon source={require('public/icons/opacity-top.png')} style={styles.opacityTop} />

@@ -52,8 +52,8 @@ export default function PlayAnimation({
 
   useEffect(() => {
     setAnimationValue();
-  }, [position, duration]); 
- 
+  }, [position, duration]);
+
   return (
     <View style={container}>
       <View style={outContainer}>

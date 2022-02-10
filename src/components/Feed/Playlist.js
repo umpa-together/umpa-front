@@ -14,7 +14,7 @@ export default memo(function Playlist({ playlist }) {
   const { _id: id, postUserId: postUser, songs, title, textcontent } = playlist;
 
   const onClickPlaylist = async () => {
-    push('SelectedPlaylist', { post: false, id, postUserId: postUser._id });
+    push('SelectedPlaylist', { id, postUserId: postUser._id });
   };
 
   return (

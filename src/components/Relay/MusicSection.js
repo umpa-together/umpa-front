@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
@@ -18,13 +18,13 @@ export default function MusicSection({ title, songs, icon }) {
     onClickAdded();
   };
 
-  const onClickAddActions = (song) => {
+  const onClickAddActions = useCallback((song) => {
     return (
       <TouchableOpacity onPress={() => onClickAdd(song)}>
         <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
       </TouchableOpacity>
     );
-  };
+  }, []);
 
   return (
     <>

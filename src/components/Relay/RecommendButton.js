@@ -8,9 +8,9 @@ import { navigate } from 'lib/utils/navigation';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 export default function RecommendButton({ playlistId }) {
-  const { stoptracksong } = useTrackPlayer();
+  const { stopTrackSong } = useTrackPlayer();
   const onClickMove = () => {
-    stoptracksong();
+    stopTrackSong();
     navigate('SelectedRelay', { id: playlistId });
   };
   return (

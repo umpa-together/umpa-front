@@ -20,7 +20,9 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
       },
     },
   } = useContext(RelayContext);
-  const { state: user } = useContext(UserContext);
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const { searchInfoRef, selectedSongs } = useSongActions();
   const [searchModal, setSearchModal] = useState(false);
   const { onValidityModal } = useModal();
@@ -47,7 +49,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
     {
       title: '릴레이 곡 도전',
       onClick: onClickAdd,
-      isValid: !postUserId.includes(user.user._id),
+      isValid: !postUserId.includes(user._id),
       icon: <Icon source={require('public/icons/relay-like.png')} style={styles.icon} />,
     },
     {
