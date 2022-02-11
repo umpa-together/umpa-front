@@ -45,6 +45,7 @@ export default function LoginInput() {
               onChangeText={(txt) => {
                 onChangeValue(txt, key);
               }}
+              returnKeyType="done"
               autoCorrect={false}
               style={styles.textBox}
               secureTextEntry={key !== 'email'}
