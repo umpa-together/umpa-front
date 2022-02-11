@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fcmService } from 'lib/utils/fcmService';
 import { localNotificationService } from 'lib/utils/localNotificationService';
 
+import SplashScreen from 'react-native-splash-screen';
 import MainNavigator from './src/navigation';
 
 export default () => {
@@ -40,6 +41,10 @@ export default () => {
     function onOpenNotification(notify) {
       console.log('[App] onOpenNotification: ', notify);
     }
+
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
 
     return () => {
       console.log('[App] unRegsiter');

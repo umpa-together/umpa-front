@@ -35,11 +35,11 @@ export default function PlayAnimation({
     if (songId) {
       if (songId === isPlayingId)
         time.value = withTiming(position, {
-          duration: 500,
+          duration: 1000,
         });
     } else {
       time.value = withTiming(position, {
-        duration: 500,
+        duration: 1000,
       });
     }
   };
