@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "RNSplashScreen.h" // 추가
 #import <Firebase.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -8,6 +9,8 @@
 #import <RNKakaoLogins.h>
 #import <RNCPushNotificationIOS.h>
 #import <UserNotifications/UserNotifications.h>
+#import <AVFoundation/AVFoundation.h>
+
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -57,7 +60,8 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
+
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   
