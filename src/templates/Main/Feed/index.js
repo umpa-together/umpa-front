@@ -94,13 +94,11 @@ export default function Feed() {
         {alertModal && (
           <Animated.View style={[styles.alertBox, { opacity }]}>
             <Animated.Image source={require('public/icons/tool-tip.png')} style={styles.tooltip} />
-            <Animated.Text style={[styles.alertText, { opacity }]}>
+            <Text style={styles.alertText}>
               팔로우한 유저 <Text style={styles.bold}>{FOLLOWING_NUMBER}</Text>명 이상부터
               가능합니다.
-            </Animated.Text>
-            <Animated.Text style={[styles.alertText, { opacity }]}>
-              더 많은 유저들을 팔로우 해보세요!
-            </Animated.Text>
+            </Text>
+            <Text style={[styles.alertText]}>더 많은 유저들을 팔로우 해보세요!</Text>
           </Animated.View>
         )}
       </>
