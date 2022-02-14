@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -24,15 +24,15 @@ const ModalView = ({ onClose, activeCheck }) => {
   const [relayModal, setRelayModal] = useState(false);
   const completeLists = ['playlist', 'represent', 'relay'];
 
-  const Exit = memo(() => {
+  const Exit = useCallback(() => {
     return (
       <TouchableOpacity style={styles.headerTouch} onPress={onClose}>
         <Text style={styles.inactiveText}>닫기</Text>
       </TouchableOpacity>
     );
-  });
+  }, []);
 
-  const Action = memo(() => {
+  const Action = useCallback(() => {
     const onClickAction = () => {
       if (activeCheck) {
         if (searchInfoRef.current.key !== 'relay') {
@@ -49,7 +49,7 @@ const ModalView = ({ onClose, activeCheck }) => {
         <Text style={activeCheck ? styles.activeText : styles.inactiveText}>완료</Text>
       </TouchableNoDouble>
     );
-  });
+  }, [activeCheck]);
 
   return (
     <View style={styles.viewContainer}>
