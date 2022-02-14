@@ -52,7 +52,7 @@ export default function RelayCardView({ relay }) {
             })}
             <ParticipantCount
               challenge={postUserId.length}
-              vote={evaluateCount}
+              vote={evaluateCount.length}
               container={styles.customContainer}
             />
           </View>

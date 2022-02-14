@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { Context as RelayContext } from 'context/Relay';
+import { Context as UserContext } from 'context/User';
 import SwipeCard from 'components/Relay/SwipeCard';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import Background from 'components/Relay/Background';
@@ -29,12 +30,16 @@ export default function Swipe() {
     unlikeRelaySong,
     getCurrentRelay,
   } = useContext(RelayContext);
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const { addTrackSong, stopTrackSong } = useTrackPlayer();
   const translateX = useSharedValue(0);
-  const { _id: playlistId, image } = selectedRelay.playlist;
+  const { _id: playlistId, image, evaluateCount, representSong } = selectedRelay.playlist;
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [like, setLike] = useState(false);
+  const [firstView, setFirstView] = useState(true);
 
   const hiddentranslateX = 800;
   const rotate = useDerivedValue(() => `${interpolate(translateX.value, [0, 600], [0, 60])}deg`);
@@ -104,7 +109,9 @@ export default function Swipe() {
       }, 400);
     }
   }, [isEnd]);
+
   useEffect(() => {
+    setFirstView(!evaluateCount.includes(user._id));
     return () => {
       stopTrackSong();
       getCurrentRelay();
@@ -113,16 +120,29 @@ export default function Swipe() {
 
   useFocusEffect(
     useCallback(() => {
-      if (swipeSongs[currentIdx]) {
+      if (firstView) {
+        addTrackSong(representSong);
+      } else if (swipeSongs[currentIdx]) {
         addTrackSong(swipeSongs[currentIdx].song);
       }
-    }, [currentIdx]),
+    }, [currentIdx, firstView]),
   );
-
+  const representCard = {
+    postUserId: {
+      name: '첫 곡',
+      profileImage: 'https://umpa.s3.ap-northeast-2.amazonaws.com/dev/icons/main1-icon.png',
+    },
+    song: representSong,
+    playlistId,
+  };
   return (
     <View>
       <Background />
-      {swipeSongs &&
+      {firstView ? (
+        <View>
+          <SwipeCard image={image} card={representCard} like={like} setLike={setLike} />
+        </View>
+      ) : (
         swipeSongs.map((item, index) => {
           return (
             <PanGestureHandler key={item._id} onGestureEvent={gestureHandler}>
@@ -140,14 +160,15 @@ export default function Swipe() {
               </Animated.View>
             </PanGestureHandler>
           );
-        })}
+        })
+      )}
       {addedModal && (
         <AddedModal
           title="1곡을 저장한 곡 목록에 담았습니다."
           customContainer={styles.addedModal}
         />
       )}
-      <RecommendButton playlistId={playlistId} />
+      <RecommendButton playlistId={playlistId} firstView={firstView} setFirstView={setFirstView} />
       <HarmfulModal />
     </View>
   );

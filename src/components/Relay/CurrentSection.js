@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -69,7 +69,7 @@ const TemplateD = ({ title }) => {
   );
 };
 
-export default function CurrentSection({ relay }) {
+export default memo(function CurrentSection({ relay }) {
   const {
     title,
     image,
@@ -123,7 +123,7 @@ export default function CurrentSection({ relay }) {
       <GuideBox time={createdTime} />
     </TouchableOpacity>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
