@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import Header from 'components/Header';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
@@ -25,20 +25,25 @@ export default function SignUp({ data }) {
         information.passwordCheck.length > 0,
     );
   }, [information]);
+  const CompleteBox = useCallback(() => {
+    return (
+      <TouchableOpacity
+        style={[styles.completeBox, isComplete && styles.active]}
+        onPress={() => onClickComplete(social)}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.complete}>완료</Text>
+      </TouchableOpacity>
+    );
+  }, [isComplete]);
   return (
-    <View style={[styles.container, style.background]}>
+    <View style={style.background}>
       <Header title="회원가입" back titleStyle={styles.header} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {!social && <InformationInput />}
         <View>
           <Terms />
-          <TouchableOpacity
-            style={[styles.completeBox, isComplete && styles.active]}
-            onPress={() => onClickComplete(social)}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.complete}>완료</Text>
-          </TouchableOpacity>
+          <CompleteBox />
         </View>
       </ScrollView>
     </View>
@@ -50,12 +55,10 @@ const styles = StyleSheet.create({
     color: COLOR_1,
     fontSize: FS(18),
   },
-  container: {
-    paddingLeft: 16 * SCALE_WIDTH,
-  },
   scrollContainer: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingLeft: 16 * SCALE_WIDTH,
   },
   completeBox: {
     width: 343 * SCALE_WIDTH,

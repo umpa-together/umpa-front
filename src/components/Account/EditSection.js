@@ -58,7 +58,9 @@ export function GenreSection() {
 
   return (
     <View style={styles.genreContainer}>
-      <Text style={styles.title}>선호장르</Text>
+      <Text style={styles.title}>
+        선호장르<Text style={styles.accent}>*</Text>
+      </Text>
       <TouchableOpacity
         style={[styles.sectionBox, style.flexRow, style.space_between]}
         onPress={onClickSelect}
