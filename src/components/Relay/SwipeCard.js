@@ -15,7 +15,7 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
 import MoveText from 'components/MoveText';
 import ProgressProvider from 'providers/progress';
-import CopySongName from '../CopySongName';
+import CopySongName from 'components/CopySongName';
 
 const Footer = ({ song, like, setLike }) => {
   const { id } = song;
