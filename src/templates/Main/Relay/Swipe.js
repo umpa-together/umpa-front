@@ -141,12 +141,7 @@ export default function Swipe() {
             </PanGestureHandler>
           );
         })}
-      {addedModal && (
-        <AddedModal
-          title="1곡을 저장한 곡 목록에 담았습니다."
-          customContainer={styles.addedModal}
-        />
-      )}
+      {addedModal && <AddedModal customContainer={styles.addedModal} />}
       <RecommendButton playlistId={playlistId} />
       <HarmfulModal />
     </View>

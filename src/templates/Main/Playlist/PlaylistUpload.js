@@ -35,7 +35,7 @@ const BackLandings = ({ edit }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.backContainer} title="back" onPress={onPressBack}>
+    <TouchableOpacity onPress={onPressBack}>
       <Icon source={require('public/icons/back-40.png')} style={style.icons} />
     </TouchableOpacity>
   );

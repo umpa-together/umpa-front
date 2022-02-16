@@ -24,7 +24,7 @@ export default function Songbackground({ song }) {
 
   const onClickAdd = () => {
     postAddedSong({ song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   const optionLists = [

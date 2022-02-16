@@ -181,7 +181,7 @@ const Footer = ({ onClose }) => {
       setViewerModal(true);
     } else {
       postAddedSong({ song });
-      onClickAdded();
+      onClickAdded({ opt: 'save' });
     }
   };
 
@@ -308,7 +308,7 @@ const ModalView = ({ onClose }) => {
         </ProgressProvider>
         <Footer onClose={onClose} />
       </View>
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      {addedModal && <AddedModal />}
       <HarmfulModal />
     </View>
   );

@@ -49,7 +49,7 @@ export default function Search() {
         <LoadingIndicator />
       )}
       <PlayBar />
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      {addedModal && <AddedModal />}
     </View>
   );
 }

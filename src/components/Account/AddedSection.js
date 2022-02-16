@@ -7,6 +7,8 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import DeleteModal from 'components/Modal/DeleteModal';
 import Text from 'components/Text';
+import AddedModal from 'components/Modal/AddedModal';
+import { useModal } from 'providers/modal';
 import EmptySaved from './EmptySaved';
 
 const DeleteLandings = ({ type, id }) => {
@@ -43,6 +45,8 @@ export function AddedSong({ edit }) {
     state: { songLists },
   } = useContext(AddedContext);
   const keyExtractor = useCallback((_) => _._id, []);
+  const { addedModal } = useModal();
+
   const renderItem = useCallback(
     ({ item }) => {
       const { song, _id: id } = item;
@@ -68,6 +72,7 @@ export function AddedSong({ edit }) {
             maxToRenderPerBatch={5}
             windowSize={5}
           />
+          {addedModal && < />}
         </>
       ) : (
         <EmptySaved opt="song" />
