@@ -203,7 +203,7 @@ export default function ({ comment, opt }) {
         style.flexRow,
         styles.container,
         {
-          marginLeft: RecommentChecker.includes(opt) && 47 * SCALE_WIDTH,
+          marginLeft: RecommentChecker.includes(opt) ? 47 * SCALE_WIDTH : 0,
         },
       ]}
     >
