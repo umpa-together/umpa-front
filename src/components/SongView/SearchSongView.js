@@ -11,6 +11,7 @@ import Icon from 'widgets/Icon';
 import { push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
+import CopySongName from 'components/CopySongName';
 
 export default function SearchSongView({ info }) {
   const { id } = info.song;
@@ -22,7 +23,7 @@ export default function SearchSongView({ info }) {
 
   const onClickAdd = () => {
     postAddedSong({ song: info.song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   const onClickSongView = () => {
@@ -38,13 +39,15 @@ export default function SearchSongView({ info }) {
       <View style={style.flexRow}>
         <SongImage url={artwork.url} imgStyle={styles.img} />
         <View style={styles.area}>
-          <MoveText
-            isExplicit={contentRating === 'explicit'}
-            text={name}
-            isMove={id === isPlayingId}
-            textStyle={styles.title}
-          />
-          <MoveText text={artistName} isMove={id === isPlayingId} textStyle={styles.artist} />
+          <CopySongName name={name}>
+            <MoveText
+              isExplicit={contentRating === 'explicit'}
+              text={name}
+              isMove={id === isPlayingId}
+              textStyle={styles.title}
+            />
+            <MoveText text={artistName} isMove={id === isPlayingId} textStyle={styles.artist} />
+          </CopySongName>
           <View style={style.flexRow}>
             <Text style={[styles.count, styles.margin]}>
               플리 <Text style={styles.active}>{playlistCount}</Text>

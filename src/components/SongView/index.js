@@ -7,6 +7,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
+import CopySongName from 'components/CopySongName';
 
 export default function SongView({ song, actions = null, landings = null, play = true, playlist }) {
   const { artwork, artistName, name, contentRating } = song.attributes;
@@ -20,15 +21,17 @@ export default function SongView({ song, actions = null, landings = null, play =
       <View style={style.flexRow}>
         {landings}
         <SongImage url={artwork.url} imgStyle={styles.img} />
-        <View style={areaStyles}>
-          <MoveText
-            isExplicit={contentRating === 'explicit'}
-            text={name}
-            isMove={playingCheck}
-            textStyle={styles.title}
-          />
-          <MoveText text={artistName} isMove={playingCheck} textStyle={styles.artist} />
-        </View>
+        <CopySongName name={name}>
+          <View style={areaStyles}>
+            <MoveText
+              isExplicit={contentRating === 'explicit'}
+              text={name}
+              isMove={playingCheck}
+              textStyle={styles.title}
+            />
+            <MoveText text={artistName} isMove={playingCheck} textStyle={styles.artist} />
+          </View>
+        </CopySongName>
       </View>
       <View style={[style.flexRow, styles.actions]}>
         {play && (
