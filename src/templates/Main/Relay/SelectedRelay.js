@@ -76,7 +76,6 @@ const NotCompletedRelay = () => {
         {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
       </ScrollView>
       <PlayBar />
-
       {validityModal && <ValidityModal title={validityMsg} />}
     </>
   );

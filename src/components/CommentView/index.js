@@ -197,16 +197,11 @@ export default function ({ comment, opt }) {
     func: actionFunction,
     list: actionLists,
   };
+
+  const recommentStyle = { marginLeft: RecommentChecker.includes(opt) ? 47 * SCALE_WIDTH : 0 };
+
   return (
-    <View
-      style={[
-        style.flexRow,
-        styles.container,
-        {
-          marginLeft: RecommentChecker.includes(opt) ? 47 * SCALE_WIDTH : 0,
-        },
-      ]}
-    >
+    <View style={[style.flexRow, styles.container, recommentStyle]}>
       <TouchableOpacity onPress={onClickProfile}>
         <ProfileImage img={profileImage} imgStyle={styles.img} />
       </TouchableOpacity>

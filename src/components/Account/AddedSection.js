@@ -72,7 +72,7 @@ export function AddedSong({ edit }) {
             maxToRenderPerBatch={5}
             windowSize={5}
           />
-          {addedModal && < />}
+          {addedModal && <AddedModal />}
         </>
       ) : (
         <EmptySaved opt="song" />

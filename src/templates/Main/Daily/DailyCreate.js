@@ -66,7 +66,7 @@ export default function DailyCreate({ data, edit }) {
 
   const deleteActionLists = [
     { title: '작성취소', key: 'cancel' },
-    { title: '작성계속', key: 'delete' },
+    { title: '작성계속', key: 'continue' },
   ];
 
   const deleteActionFunction = async (key) => {
@@ -94,7 +94,6 @@ export default function DailyCreate({ data, edit }) {
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onPressBack);
-
     return () => backHandler.remove();
   }, []);
 

@@ -62,7 +62,7 @@ export default function PlaylistCreate({ data, edit }) {
 
   const deleteActionLists = [
     { title: '작성취소', key: 'cancel' },
-    { title: '작성계속', key: 'delete' },
+    { title: '작성계속', key: 'continue' },
   ];
 
   const deleteActionFunction = async (key) => {
@@ -83,6 +83,7 @@ export default function PlaylistCreate({ data, edit }) {
   };
 
   const validityMsg = '최소 3곡을 담아주세요';
+
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -91,7 +92,6 @@ export default function PlaylistCreate({ data, edit }) {
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onPressBack);
-
     return () => backHandler.remove();
   }, []);
 
