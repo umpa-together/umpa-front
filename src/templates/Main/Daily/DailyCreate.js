@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, BackHandler } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
-import { navigate } from 'lib/utils/navigation';
+import { navigate, goBack } from 'lib/utils/navigation';
 import { useDailyCreate } from 'providers/dailyCreate';
 import SongActionsProvider from 'providers/songActions';
 import CreateSong from 'components/Daily/CreateSong';
@@ -16,6 +16,8 @@ import { useModal } from 'providers/modal';
 import ValidityModal from 'components/Modal/ValidityModal';
 import Text from 'components/Text';
 import KeyboardProvider from 'providers/keyboard';
+import Icon from 'widgets/Icon';
+import ActionModal from 'components/Modal/ActionModal';
 
 const NextActions = ({ edit, setValidityMsg }) => {
   const [validity, setValidity] = useState(false);
@@ -48,10 +50,41 @@ const NextActions = ({ edit, setValidityMsg }) => {
   );
 };
 
+const BackLandings = ({ onPressBack }) => {
+  return (
+    <TouchableOpacity onPress={onPressBack}>
+      <Icon source={require('public/icons/back-40.png')} style={[style.icons, styles.iconMargin]} />
+    </TouchableOpacity>
+  );
+};
+
 export default function DailyCreate({ data, edit }) {
   const { setParams } = useDailyCreate();
   const { validityModal } = useModal();
   const [validityMsg, setValidityMsg] = useState('');
+  const [actionModal, setActionModal] = useState(false);
+
+  const deleteActionLists = [
+    { title: '작성취소', key: 'cancel' },
+    { title: '작성계속', key: 'continue' },
+  ];
+
+  const deleteActionFunction = async (key) => {
+    if (key === 'cancel') {
+      goBack();
+    }
+    setActionModal(false);
+  };
+
+  const actions = {
+    mainTitle: '작성된 내용은 저장되지 않고 사라집니다. \n정말로 작성을 취소 하시겠습니까?',
+    func: deleteActionFunction,
+    list: deleteActionLists,
+  };
+
+  const onPressBack = () => {
+    setActionModal(true);
+  };
 
   useEffect(() => {
     if (data) {
@@ -59,12 +92,17 @@ export default function DailyCreate({ data, edit }) {
     }
   }, [data]);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', onPressBack);
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <View style={style.background}>
       <Header
         title={edit ? '데일리 편집' : '데일리 작성'}
         titleStyle={style.headertitle}
-        back
+        landings={[<BackLandings onPressBack={onPressBack} />]}
         actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
       />
       <SongActionsProvider>
@@ -75,6 +113,7 @@ export default function DailyCreate({ data, edit }) {
       <KeyboardProvider>
         <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
       </KeyboardProvider>
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );
@@ -90,5 +129,8 @@ const styles = StyleSheet.create({
   inactiveText: {
     fontSize: FS(14),
     color: COLOR_5,
+  },
+  iconMargin: {
+    right: 10 * SCALE_WIDTH,
   },
 });

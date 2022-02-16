@@ -80,7 +80,7 @@ export default function MyAccount() {
       <PlayBar />
       <SideModal modal={sideModal} setModal={setSideModal} />
       <RepresentModal />
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      {addedModal && <AddedModal />}
     </View>
   );
 }

@@ -25,6 +25,7 @@ import { Context as ReportContext } from 'context/Report';
 import ActionModal from 'components/Modal/ActionModal';
 import LoadingIndicator from 'components/LoadingIndicator';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import SelectedHashtag from 'components/SelectedHashtag';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -47,6 +48,7 @@ export default function SelectedDaily({ id, postUserId }) {
     postUserId: '',
     image: '',
     time: '',
+    hashtag: [],
     song: null,
   });
 
@@ -82,8 +84,7 @@ export default function SelectedDaily({ id, postUserId }) {
     setSelected();
   }, [currentDaily, currentComments]);
 
-  const { postUserId: postUser, image, time, song } = daily;
-
+  const { postUserId: postUser, image, time, song, hashtag } = daily;
   const timeConverted = timeConverter(time);
   const checkMyPost = user._id === postUser._id;
 
@@ -164,7 +165,6 @@ export default function SelectedDaily({ id, postUserId }) {
           }, 400);
         }
       };
-
   const selectInfo = { func: selectFunction, list: selectLists };
   return (
     <View style={style.background}>
@@ -185,6 +185,9 @@ export default function SelectedDaily({ id, postUserId }) {
               />
               {image.length > 0 && <Dailyimage image={image} />}
               <SelectedText />
+              {hashtag.length > 0 && (
+                <SelectedHashtag hashtag={hashtag} customContainer={styles.hashtagContainer} />
+              )}
               <Footer object={daily} type="daily" />
               <Divider containerStyle={styles.dividerContainer} />
               <SelectedComment opt="daily" comments={comment} />
@@ -195,7 +198,7 @@ export default function SelectedDaily({ id, postUserId }) {
           </CommentProvider>
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
           <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
-          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+          {addedModal && <AddedModal />}
           <HarmfulModal />
         </>
       ) : (
@@ -225,5 +228,9 @@ const styles = StyleSheet.create({
   icon: {
     width: 40 * SCALE_HEIGHT,
     height: 40 * SCALE_WIDTH,
+  },
+  hashtagContainer: {
+    paddingVertical: 8 * SCALE_HEIGHT,
+    paddingHorizontal: 18 * SCALE_WIDTH,
   },
 });

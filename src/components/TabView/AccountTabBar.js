@@ -10,7 +10,7 @@ export default function AccountTabBar({ props }) {
     height: 3 * SCALE_HEIGHT,
   };
   const indicatorContainerStyle = {
-    marginTop: 44 * SCALE_WIDTH,
+    marginTop: 46 * SCALE_WIDTH,
     backgroundColor: COLOR_6,
     height: 3 * SCALE_HEIGHT,
   };

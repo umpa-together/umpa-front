@@ -10,8 +10,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
-import { MAIN_COLOR } from 'constants/colors';
+import { SUB_COLOR } from 'constants/colors';
 import Text from 'components/Text';
+import { navigate } from 'lib/utils/navigation';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
 const FloatingButton = ({ show }) => {
@@ -33,16 +34,42 @@ const FloatingButton = ({ show }) => {
       duration: 200,
     });
   }, [show]);
+  const rotate = useDerivedValue(
+    () => `${interpolate(animation.value, [-1, 0, 1, 2], [0, 0, 45, 45])}deg`,
+  );
+
+  const onPressCreate = (opt) => {
+    if (animation.value === 1) {
+      if (opt === 0) {
+        navigate('DailyCreate');
+      } else {
+        navigate('PlaylistCreate');
+      }
+    }
+  };
   const opacityStyle = useAnimatedStyle(() => ({
     transform: [{ scale: opacity.value }],
     opacity: opacity.value,
   }));
 
+  const backgroundOpacity = useAnimatedStyle(() => ({
+    transform: [{ scale: animation.value !== 0 ? 1 : 0 }],
+    opacity: animation.value,
+  }));
+
+  const rotateStyle = useAnimatedStyle(() => ({
+    alignSelf: 'center',
+    transform: [{ rotate: rotate.value }],
+  }));
+  const textList = ['데일리 생성', '플레이리스트 생성'];
   return (
     <Animated.View style={[currentSong ? styles.playingContainer : styles.container, opacityStyle]}>
+      <TouchableWithoutFeedback onPress={toggleMenu}>
+        <Animated.View style={[styles.backContainer, backgroundOpacity]} />
+      </TouchableWithoutFeedback>
       {writeList.map((item, index) => {
         const translateY = useDerivedValue(() =>
-          interpolate(animation.value, [0, 1], [0, -80 * (index + 1)]),
+          interpolate(animation.value, [0, 1], [0, -60 * (index + 1)]),
         );
         const pinStyle = useAnimatedStyle(() => ({
           transform: [
@@ -53,18 +80,32 @@ const FloatingButton = ({ show }) => {
           ],
         }));
         return (
-          <TouchableWithoutFeedback key={item.key}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              onPressCreate(index);
+            }}
+            key={item.key}
+          >
             <Animated.View style={[styles.button, pinStyle]}>
-              <Text style={styles.store} numberOfLines={2}>
-                {`버튼${index}`}
-              </Text>
+              <Icon
+                style={styles.createIcon}
+                source={
+                  index === 0
+                    ? require('public/icons/feed-daily-create.png')
+                    : require('public/icons/feed-playlist-create.png')
+                }
+              />
+              <Text style={styles.textStyle}>{textList[index]}</Text>
             </Animated.View>
           </TouchableWithoutFeedback>
         );
       })}
       <TouchableWithoutFeedback onPress={toggleMenu}>
         <Animated.View>
-          <Icon source={require('public/icons/create-floating.png')} style={styles.floating} />
+          <Animated.Image
+            source={require('public/icons/create-floating.png')}
+            style={[styles.floating, rotateStyle]}
+          />
         </Animated.View>
       </TouchableWithoutFeedback>
     </Animated.View>
@@ -83,13 +124,19 @@ const styles = StyleSheet.create({
     right: 70 * SCALE_WIDTH,
   },
   button: {
-    width: 59 * SCALE_WIDTH,
-    height: 59 * SCALE_WIDTH,
-    borderRadius: 59 * SCALE_WIDTH,
-    backgroundColor: MAIN_COLOR,
+    width: 49 * SCALE_WIDTH,
+    height: 49 * SCALE_WIDTH,
+    borderRadius: 49 * SCALE_WIDTH,
+    backgroundColor: SUB_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
+    left: 6 * SCALE_WIDTH,
+  },
+  createIcon: {
+    width: 30 * SCALE_WIDTH,
+    height: 30 * SCALE_WIDTH,
+    borderRadius: 30 * SCALE_WIDTH,
   },
   store: {
     fontSize: FS(12),
@@ -104,9 +151,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   floating: {
+    left: 0,
     width: 59 * SCALE_WIDTH,
     height: 59 * SCALE_WIDTH,
     position: 'absolute',
+  },
+  backContainer: {
+    position: 'absolute',
+    right: -70 * SCALE_WIDTH,
+    bottom: -120 * SCALE_HEIGHT,
+    width: 375 * SCALE_WIDTH,
+    height: 812 * SCALE_HEIGHT,
+    backgroundColor: '#00000050',
+  },
+  textStyle: {
+    textAlign: 'right',
+    width: 120 * SCALE_WIDTH,
+    position: 'absolute',
+    right: 61 * SCALE_WIDTH,
+    fontSize: FS(14),
+    fontWeight: 'bold',
+    color: '#FFF',
   },
 });
 export default FloatingButton;

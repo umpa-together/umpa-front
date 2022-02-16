@@ -14,7 +14,7 @@ const AddActions = (song) => {
 
   const onClickAdd = () => {
     postAddedSong({ song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   return (

@@ -5,6 +5,7 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Icon from 'widgets/Icon';
+import CopySongName from 'components/CopySongName';
 
 const SONG_SIZE = 117;
 
@@ -30,13 +31,15 @@ export default memo(function SongLists({ songs }) {
           <SongImage url={url} imgStyle={styles.playlistsImg} />
           <Icon source={require('public/icons/feed-playlist-play.png')} style={styles.play} />
         </TouchableOpacity>
-        <MoveText
-          container={contentRating === 'explicit' && styles.explicit}
-          isExplicit={contentRating === 'explicit'}
-          text={name}
-          textStyle={styles.name}
-        />
-        <MoveText text={artistName} textStyle={styles.artist} />
+        <CopySongName name={name}>
+          <MoveText
+            container={contentRating === 'explicit' && styles.explicit}
+            isExplicit={contentRating === 'explicit'}
+            text={name}
+            textStyle={styles.name}
+          />
+          <MoveText text={artistName} textStyle={styles.artist} />
+        </CopySongName>
       </View>
     );
   });

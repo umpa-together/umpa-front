@@ -29,6 +29,7 @@ import SelectModal from 'components/Modal/SelectModal';
 import ActionModal from 'components/Modal/ActionModal';
 import Icon from 'widgets/Icon';
 import SendList from 'lib/utils/kakaoShare';
+import PlayBar from 'components/PlayBar';
 
 const UserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -74,6 +75,7 @@ const NotCompletedRelay = () => {
         <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
         {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
       </ScrollView>
+      <PlayBar />
       {validityModal && <ValidityModal title={validityMsg} />}
     </>
   );
@@ -200,7 +202,7 @@ export default function ({ id }) {
           ) : (
             <CompletedRelay />
           )}
-          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+          {addedModal && <AddedModal />}
           <HarmfulModal />
         </>
       )}

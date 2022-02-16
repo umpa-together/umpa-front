@@ -31,9 +31,9 @@ const screenLists = [
   { title: 'SearchDetail', component: SearchDetail },
   { title: 'SelectedSong', component: SelectedSong },
   { title: 'SelectedHashtag', component: SelectedHashtag },
-  { title: 'PlaylistCreate', component: PlaylistCreate },
+  { title: 'PlaylistCreate', component: PlaylistCreate, swipe: false },
   { title: 'PlaylistUpload', component: PlaylistUpload },
-  { title: 'DailyCreate', component: DailyCreate },
+  { title: 'DailyCreate', component: DailyCreate, swipe: false },
   { title: 'DailyUpload', component: DailyUpload },
   { title: 'Added', component: Added },
   { title: 'ProfileEdit', component: ProfileEdit },
@@ -52,7 +52,16 @@ const MainStackScreen = () => (
   >
     {screenLists.map((screen) => {
       const { title, component } = screen;
-      return <MainStack.Screen name={title} component={component} key={title} />;
+      return (
+        <MainStack.Screen
+          name={title}
+          component={component}
+          key={title}
+          options={{
+            gestureEnabled: screen.swipe && screen.swipe,
+          }}
+        />
+      );
     })}
   </MainStack.Navigator>
 );

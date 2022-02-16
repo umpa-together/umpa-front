@@ -15,6 +15,7 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
 import MoveText from 'components/MoveText';
 import ProgressProvider from 'providers/progress';
+import CopySongName from 'components/CopySongName';
 
 const Footer = ({ song, like, setLike }) => {
   const { id } = song;
@@ -24,7 +25,7 @@ const Footer = ({ song, like, setLike }) => {
 
   const onClickAdd = () => {
     postAddedSong({ song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   const onClickLike = () => {
@@ -119,21 +120,23 @@ export default function SwipeCard({ image, card, like, setLike }) {
         </TouchableNoDouble>
       </View>
       <SongImage url={artwork.url} imgStyle={styles.songImg} />
-      <View style={styles.songContainer}>
-        <MoveText
-          isExplicit={contentRating === 'explicit'}
-          text={songName}
-          isMove={song.id === isPlayingId}
-          textStyle={styles.songTitle}
-          iconCustom={styles.adultIcon}
-          center
-        />
-        <MoveText
-          text={artistName}
-          isMove={song.id === isPlayingId}
-          textStyle={styles.songArtist}
-        />
-      </View>
+      <CopySongName name={songName}>
+        <View style={styles.songContainer}>
+          <MoveText
+            isExplicit={contentRating === 'explicit'}
+            text={songName}
+            isMove={song.id === isPlayingId}
+            textStyle={styles.songTitle}
+            iconCustom={styles.adultIcon}
+            center
+          />
+          <MoveText
+            text={artistName}
+            isMove={song.id === isPlayingId}
+            textStyle={styles.songArtist}
+          />
+        </View>
+      </CopySongName>
       <ProgressProvider>
         <PlayAnimation
           songId={id}
