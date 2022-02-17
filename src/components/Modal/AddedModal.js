@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30 * SCALE_HEIGHT,
     left: 15 * SCALE_WIDTH,
+    elevation: 100,
   },
   text: {
     fontSize: FS(13),

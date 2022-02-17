@@ -19,7 +19,7 @@ export default function SongCard({ song }) {
           {name}
         </Text>
       </View>
-      <Icon source={require('public/icons/daily-song-play.png')} style={styles.icon} />
+      <Icon source={require('public/icons/search-daily.png')} style={styles.icon} />
     </View>
   );
 }
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     maxWidth: 160 * SCALE_WIDTH,
   },
   icon: {
-    width: 15 * SCALE_WIDTH,
-    height: 15 * SCALE_WIDTH,
+    width: 14 * SCALE_WIDTH,
+    height: 14 * SCALE_WIDTH,
     marginLeft: 3 * SCALE_WIDTH,
   },
   title: {
