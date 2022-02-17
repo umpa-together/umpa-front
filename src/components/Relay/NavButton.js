@@ -53,7 +53,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
       icon: <Icon source={require('public/icons/relay-like.png')} style={styles.icon} />,
     },
     {
-      title: '심사하기',
+      title: '투표하기',
       onClick: onClickSwipe,
       isValid: isSwipe,
       icon: <Icon source={require('public/icons/relay-estimate.png')} style={styles.icon} />,
@@ -77,7 +77,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
           <TouchableOpacity
             style={[
               style.flexRow,
-              title === '심사하기' ? styles.optionBoxVote : styles.optionBoxTry,
+              title === '투표하기' ? styles.optionBoxVote : styles.optionBoxTry,
             ]}
             onPress={() => onClick(isValid)}
             key={title}

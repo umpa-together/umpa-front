@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import AnnouncementForm from 'components/Setting/AnnouncementForm';
 import Header from 'components/Header';
 import style from 'constants/styles';
@@ -7,6 +7,7 @@ import { COLOR_1, COLOR_2 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import Hyperlink from 'react-native-hyperlink';
 import openURL from 'lib/utils/openUrl';
+import Text from 'components/Text';
 
 export default function SelectedAnnouncement({ title, content, time }) {
   return (

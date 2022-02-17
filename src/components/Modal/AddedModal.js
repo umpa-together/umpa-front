@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
+import Text from 'components/Text';
 
 export default function AddedModal({ customContainer }) {
   const { opacity, addedModalText } = useModal();
@@ -10,7 +11,7 @@ export default function AddedModal({ customContainer }) {
   };
   return (
     <Animated.View style={[styles.container, opacityStyle, customContainer]}>
-      <Animated.Text style={[styles.text, opacityStyle]}>{addedModalText}</Animated.Text>
+      <Text style={styles.text}>{addedModalText}</Text>
     </Animated.View>
   );
 }

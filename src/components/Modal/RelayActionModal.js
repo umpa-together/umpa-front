@@ -29,10 +29,10 @@ const ModalView = ({ onCloseSearchSongModal, onClose }) => {
     if (key === 'cancel') {
       onClose();
     } else if (key === 'add') {
-      await postRelaySong({ song: selectedSongs[0], playlistId });
-      getSelectedRelay({ id: playlistId });
       onCloseSearchSongModal();
       onClose();
+      await postRelaySong({ song: selectedSongs[0], playlistId });
+      getSelectedRelay({ id: playlistId });
     }
   };
 

@@ -9,7 +9,7 @@ import LoginInput from 'components/Auth/LoginInput';
 import SocialLogin from 'components/Auth/SocialLogin';
 import LoginSignUp from 'components/Auth/LoginSignUp';
 
-const SignIn = () => {
+export default function SignIn() {
   return (
     <View style={[style.background, styles.container]}>
       <Header title="로그인" titleStyle={styles.header} />
@@ -19,7 +19,7 @@ const SignIn = () => {
       <LoginSignUp />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   header: {
@@ -30,4 +30,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default SignIn;

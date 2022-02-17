@@ -42,9 +42,11 @@ export default function Follow({ opt, my, id }) {
         users.length > 0 ? (
           <UserList users={users} />
         ) : (
-          <MainContentsProvider>
-            <EmptyUser opt={opt} my={my} />
-          </MainContentsProvider>
+          follow.length === 0 && (
+            <MainContentsProvider>
+              <EmptyUser opt={opt} my={my} />
+            </MainContentsProvider>
+          )
         )
       ) : (
         <LoadingIndicator />

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import {
   View,
-  Text,
   ScrollView,
   StyleSheet,
   FlatList,
@@ -24,6 +23,7 @@ import { navigate, goBack } from 'lib/utils/navigation';
 import KeyboardProvider, { useKeyboard } from 'providers/keyboard';
 import { useFocusEffect } from '@react-navigation/native';
 import WithDrawalSection from 'components/Setting/WithDrawalSection';
+import Text from 'components/Text';
 
 const Notice = () => {
   const onClickSetting = () => {

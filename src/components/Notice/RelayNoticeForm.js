@@ -15,18 +15,17 @@ export default function RelayNoticeForm({ notice, onClickProfile }) {
     relay,
     relaycomment,
     relayrecomment,
-    relaysong: {
-      song: {
-        attributes: { artistName, name },
-      },
-    },
+    relaysong,
     time,
   } = notice;
   const { image } = relay;
+
   const textLists = {
     relay: (
       <Text style={styles.contentText}>
-        {`${name} - ${artistName} 곡이 릴레이 플리에 선정되었습니다.`}
+        {`${relaysong && relaysong.song.attributes.name} - ${
+          relaysong && relaysong.song.attributes.artistName
+        } 곡이 릴레이 플리에 선정되었습니다.`}
       </Text>
     ),
     rcomlike: (

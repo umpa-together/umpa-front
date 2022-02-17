@@ -11,6 +11,7 @@ export default function ModalProvider({ children }) {
   const [addedModal, setAddedModal] = useState(false);
   const [addedModalText, setAddedModalText] = useState('');
   const [validityModal, setValidityModal] = useState(false);
+  const [guideModal, setGuideModal] = useState(null);
 
   const opacity = useState(new Animated.Value(1))[0];
 
@@ -69,11 +70,13 @@ export default function ModalProvider({ children }) {
     addedModal,
     addedModalText,
     validityModal,
+    guideModal,
     opacity,
+    deleteParams,
     setHarmfulModal,
     setRepresentModal,
-    deleteParams,
     setDeleteParams,
+    setGuideModal,
     onCloseHarmfulModal,
     onCloseRepresentModal,
     onClickAdded,

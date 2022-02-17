@@ -6,9 +6,10 @@ import PlaylistNoticeForm from 'components/Notice/PlaylistNoticeForm';
 import DailyNoticeForm from 'components/Notice/DailyNoticeForm';
 import UserNoticeForm from 'components/Notice/UserNoticeForm';
 import RelayNoticeForm from 'components/Notice/RelayNoticeForm';
+import StoryNoticeForm from 'components/Notice/StoryNoticeForm';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
-import { push } from 'lib/utils/navigation';
+import { push, navigate } from 'lib/utils/navigation';
 
 export default function Section({ data }) {
   const { noticinguser: user, _id: id, isRead, noticetype: type, playlist, daily } = data;
@@ -17,6 +18,7 @@ export default function Section({ data }) {
   const dailyTypeLists = ['dlike', 'dcom', 'dcomlike', 'drecom', 'drecomlike'];
   const userTypeLists = ['follow'];
   const relayTypeLists = ['relay', 'rrecom', 'rcomlike', 'rrecomlike'];
+  const storyTypeLists = ['story'];
 
   const onClickProfile = async () => {
     push('OtherAccount', { id: user._id });
@@ -35,6 +37,8 @@ export default function Section({ data }) {
       push('SelectedDaily', { id: daily._id, postUserId: daily.postUserId });
     } else if (relayTypeLists.includes(type)) {
       push('SelectedRelay', { id });
+    } else if (storyTypeLists.includes(type)) {
+      navigate('Feed');
     }
   };
 
@@ -46,8 +50,10 @@ export default function Section({ data }) {
         <DailyNoticeForm notice={data} onClickProfile={onClickProfile} />
       ) : userTypeLists.includes(type) ? (
         <UserNoticeForm notice={data} onClickProfile={onClickProfile} />
-      ) : (
+      ) : relayTypeLists.includes(type) ? (
         <RelayNoticeForm notice={data} onClickProfile={onClickProfile} />
+      ) : (
+        <StoryNoticeForm notice={data} onClickProfile={onClickProfile} />
       )}
     </TouchableOpacity>
   );

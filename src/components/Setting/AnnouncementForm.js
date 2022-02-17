@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FS, { SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1, COLOR_5 } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function AnnouncementForm({ title, time }) {
   return (

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Context as UserContext } from 'context/User';
-import { Context as AuthContext } from 'context/Auth';
-import { goBack, popToTop } from 'lib/utils/navigation';
+import { goBack, popToTop, navigate } from 'lib/utils/navigation';
 import { useScroll } from 'providers/scroll';
 import server from 'lib/api/server';
 import { useModal } from 'providers/modal';
@@ -15,9 +14,9 @@ export default function ProfileEditProvider({ children }) {
     state: { user, genreLists },
     editProfile,
   } = useContext(UserContext);
-  const { tryLocalSignIn } = useContext(AuthContext);
   const [profile, setProfile] = useState({
-    nickName: user ? user.name : '',
+    // eslint-disable-next-line no-nested-ternary
+    nickName: user ? (user.name !== undefined ? user.name : '') : '',
     realName: user ? user.realName : '',
     introduction: user ? user.introduction : '',
     genre: [],
@@ -36,7 +35,6 @@ export default function ProfileEditProvider({ children }) {
   const [validityMsg, setValidityMsg] = useState(null);
   const { arraySort } = useScroll();
   const { onValidityModal } = useModal();
-
   const onChangeValue = (type, value) => {
     if (type === '닉네임') {
       setProfile({
@@ -71,8 +69,8 @@ export default function ProfileEditProvider({ children }) {
   };
 
   const onClickEdit = async (signUp) => {
-    if (profile.nickName.length === 0 || songs.length === 0) {
-      setValidityMsg('※ 닉네임, 대표곡을 입력해주세요.');
+    if (profile.nickName.length === 0 || songs.length === 0 || profile.genre.length === 0) {
+      setValidityMsg('※ 닉네임, 대표곡, 선호장르를 입력해주세요.');
       onValidityModal();
       return;
     }
@@ -107,7 +105,7 @@ export default function ProfileEditProvider({ children }) {
         });
         if (signUp) {
           popToTop();
-          await tryLocalSignIn();
+          navigate('Landing');
         } else {
           goBack();
         }
