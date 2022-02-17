@@ -38,6 +38,7 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
       </Text>
     ),
   };
+
   return (
     <>
       <TouchableOpacity onPress={onClickProfile}>
@@ -50,7 +51,9 @@ export default function DailyNoticeForm({ notice, onClickProfile }) {
           <Text style={styles.time}>{`  ${timeConverter(time)}`}</Text>
         </Text>
       </View>
-      {daily && <FastImage style={styles.dailyImg} source={{ uri: daily.image[0] }} />}
+      {daily && daily.image.length > 0 && (
+        <FastImage style={styles.dailyImg} source={{ uri: daily.image[0] }} />
+      )}
     </>
   );
 }
