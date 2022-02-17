@@ -25,7 +25,13 @@ export default memo(function MoveText({
           />
         )}
         {isMove ? (
-          <TextTicker duration={7000} bounce={false} marqueeDelay={1000} style={textStyle}>
+          <TextTicker
+            duration={7000}
+            bounce={false}
+            marqueeDelay={1000}
+            style={textStyle}
+            allowFontScaling={false}
+          >
             {text}
           </TextTicker>
         ) : (
