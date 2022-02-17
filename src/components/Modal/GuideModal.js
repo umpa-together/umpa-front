@@ -1,14 +1,13 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 import FastImage from 'react-native-fast-image';
+import Swiper from 'react-native-swiper';
 import Modal from '.';
 
 const ModalView = ({ onClose }) => {
-  const [currentIdx, setCurrentIdx] = useState(0);
   const { guideModal } = useModal();
-
   const guideLists = {
     swipe: [
       <FastImage
@@ -27,48 +26,61 @@ const ModalView = ({ onClose }) => {
         source={require('public/images/swipe-guide-4.png')}
         style={styles.backgroundImg}
       />,
-      <FastImage
-        source={require('public/images/swipe-guide-5.png')}
-        style={styles.backgroundImg}
-      />,
+      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
+        <FastImage
+          source={require('public/images/swipe-guide-5.png')}
+          style={styles.backgroundImg}
+        />
+      </TouchableOpacity>,
     ],
     feed: [
       <FastImage source={require('public/images/feed-guide-1.png')} style={styles.backgroundImg} />,
       <FastImage source={require('public/images/feed-guide-2.png')} style={styles.backgroundImg} />,
       <FastImage source={require('public/images/feed-guide-3.png')} style={styles.backgroundImg} />,
       <FastImage source={require('public/images/feed-guide-4.png')} style={styles.backgroundImg} />,
-      <FastImage source={require('public/images/feed-guide-5.png')} style={styles.backgroundImg} />,
+      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
+        <FastImage
+          source={require('public/images/feed-guide-5.png')}
+          style={styles.backgroundImg}
+        />
+      </TouchableOpacity>,
     ],
     playlist: [
       <FastImage
         source={require('public/images/playlist-guide-1.png')}
         style={styles.backgroundImg}
       />,
-      <FastImage
-        source={require('public/images/playlist-guide-2.png')}
-        style={styles.backgroundImg}
-      />,
+      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
+        <FastImage
+          source={require('public/images/playlist-guide-2.png')}
+          style={styles.backgroundImg}
+        />
+      </TouchableOpacity>,
     ],
     search: [
-      <FastImage
-        source={require('public/images/search-guide-1.png')}
-        style={styles.backgroundImg}
-      />,
+      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
+        <FastImage
+          source={require('public/images/search-guide-1.png')}
+          style={styles.backgroundImg}
+        />
+      </TouchableOpacity>,
     ],
-  };
-
-  const onClickNext = () => {
-    if (currentIdx < guideLists[guideModal].length - 1) {
-      setCurrentIdx(currentIdx + 1);
-    } else {
-      onClose();
-    }
   };
 
   return (
-    <TouchableOpacity style={styles.viewContainer} activeOpacity={1} onPress={onClickNext}>
-      {guideModal && guideLists[guideModal][currentIdx]}
-    </TouchableOpacity>
+    <>
+      {guideModal && (
+        <Swiper height="100%" loop={false}>
+          {guideLists[guideModal].map((guide) => {
+            return (
+              <View key={Math.random()} style={styles.backgroundImg}>
+                {guide}
+              </View>
+            );
+          })}
+        </Swiper>
+      )}
+    </>
   );
 };
 
@@ -76,8 +88,8 @@ export default function GuideModal({ modal, setModal }) {
   const { checkGuide } = useContext(UserContext);
   const { guideModal } = useModal();
   const onBackdropPress = () => {
-    checkGuide({ type: guideModal });
     setModal(null);
+    checkGuide({ type: guideModal });
   };
   return (
     <Modal isVisible={modal} onBackdropPress={onBackdropPress} style={styles.container}>

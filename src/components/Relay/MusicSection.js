@@ -42,7 +42,7 @@ export default function MusicSection({ title, songs, icon }) {
           const song = item.song ? item.song : item;
           return (
             <View style={title === '내가 도전한 곡' && styles.active} key={key}>
-              <SongView song={song} actions={onClickAddActions(song)} />
+              <SongView song={song} actions={onClickAddActions(song)} playlist />
             </View>
           );
         })}
