@@ -107,7 +107,6 @@ const getAppleInfo =
         });
         await AsyncStorage.setItem('token', res.data.token);
         dispatch({ type: 'signIn', payload: res.data.token });
-        // navigate('Main');
       }
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -130,7 +129,6 @@ const getKakaoInfo =
         });
         await AsyncStorage.setItem('token', res.data.token);
         dispatch({ type: 'signIn', payload: res.data.token });
-        // navigate('Main');
       }
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
@@ -153,7 +151,6 @@ const getNaverInfo =
         });
         await AsyncStorage.setItem('token', res.data.token);
         dispatch({ type: 'signIn', payload: res.data.token });
-        // navigate('Main');
       }
     } catch (err) {
       dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });

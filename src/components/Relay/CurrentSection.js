@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import style from 'constants/styles';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -69,7 +69,7 @@ const TemplateD = ({ title }) => {
   );
 };
 
-export default function CurrentSection({ relay }) {
+export default memo(function CurrentSection({ relay }) {
   const {
     title,
     image,
@@ -80,6 +80,7 @@ export default function CurrentSection({ relay }) {
     template,
     opacityTop,
     opacityBottom,
+    opacityNumber,
     createdTime,
     relaySong,
   } = relay;
@@ -99,10 +100,15 @@ export default function CurrentSection({ relay }) {
       navigate('SelectedRelay', { id: _id });
     }
   };
-
+  const backgroundOpacity = {
+    backgroundColor: `rgba(0,0,0,${(opacityNumber / 100).toFixed(2)})`,
+  };
   return (
     <TouchableOpacity onPress={onClickRelay} style={styles.container} activeOpacity={0.9}>
-      <FastImage source={{ uri: image }} style={styles.img} />
+      <View>
+        <FastImage source={{ uri: image }} style={styles.img} />
+        <View style={[styles.overlay, backgroundOpacity]} />
+      </View>
       {opacityTop && (
         <Icon source={require('public/icons/opacity-top.png')} style={styles.opacityTop} />
       )}
@@ -123,7 +129,7 @@ export default function CurrentSection({ relay }) {
       <GuideBox time={createdTime} />
     </TouchableOpacity>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -134,6 +140,10 @@ const styles = StyleSheet.create({
     height: 495 * SCALE_HEIGHT,
     position: 'absolute',
     zIndex: -1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    height: 495 * SCALE_HEIGHT,
   },
   templateAContainer: {
     paddingTop: (80 + StatusBarHeight) * SCALE_HEIGHT,

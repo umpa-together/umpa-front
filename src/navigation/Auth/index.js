@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from 'screens/Auth/SignInScreen';
 import SignUp from 'screens/Auth/SignUpScreen';
 import ProfileEdit from 'screens/Main/Account/ProfileEditScreen';
+import Landing from 'screens/Auth/LandingScreen';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -10,6 +11,7 @@ const screenLists = [
   { title: 'SignIn', component: SignIn },
   { title: 'SignUp', component: SignUp },
   { title: 'ProfileEdit', component: ProfileEdit, swipe: false },
+  { title: 'Landing', component: Landing },
 ];
 
 const AuthStackScreen = () => (

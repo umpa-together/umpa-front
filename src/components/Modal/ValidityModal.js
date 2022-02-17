@@ -3,6 +3,7 @@ import { StyleSheet, Animated } from 'react-native';
 import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { SUB_COLOR } from 'constants/colors';
+import Text from 'components/Text';
 
 export default function ValidityModal({ title }) {
   const { opacity } = useModal();
@@ -11,7 +12,7 @@ export default function ValidityModal({ title }) {
   };
   return (
     <Animated.View style={[styles.container, opacityStyle]}>
-      <Animated.Text style={[styles.text, opacityStyle]}>{title}</Animated.Text>
+      <Text style={styles.text}>{title}</Text>
     </Animated.View>
   );
 }

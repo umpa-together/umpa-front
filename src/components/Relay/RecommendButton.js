@@ -7,15 +7,21 @@ import Text from 'components/Text';
 import { navigate } from 'lib/utils/navigation';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
-export default function RecommendButton({ playlistId }) {
+export default function RecommendButton({ playlistId, firstView, setFirstView }) {
   const { stopTrackSong } = useTrackPlayer();
-  const onClickMove = () => {
-    stopTrackSong();
-    navigate('SelectedRelay', { id: playlistId });
+
+  const onClickMove = async () => {
+    if (firstView) {
+      setFirstView(false);
+    } else {
+      navigate('SelectedRelay', { id: playlistId });
+      stopTrackSong();
+    }
   };
+
   return (
     <TouchableNoDouble style={styles.container} onPress={onClickMove}>
-      <Text style={styles.text}>나도 곡 추천하기</Text>
+      <Text style={styles.text}>{firstView ? '투표 시작하기' : '나도 곡 추천하기'}</Text>
     </TouchableNoDouble>
   );
 }
