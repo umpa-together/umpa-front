@@ -21,7 +21,7 @@ export default function UserIntroduction({ introduction, song, id }) {
         {introduction === '' ? '소개글 없음' : introduction}
       </Text>
       <TouchableOpacity style={[style.flexRow]}>
-        <UserRepresentSong account song={song} action={onClickRepresentSong} />
+        {song && <UserRepresentSong account song={song} action={onClickRepresentSong} />}
       </TouchableOpacity>
     </View>
   );

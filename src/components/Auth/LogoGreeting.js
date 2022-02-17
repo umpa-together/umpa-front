@@ -4,28 +4,23 @@ import { COLOR_1 } from 'constants/colors';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import Icon from 'widgets/Icon';
-import Text from 'components/Text';
 
 export default function LogoGreeting() {
   return (
     <View style={[style.flexRow, styles.container]}>
-      <Icon style={styles.icon} source={require('public/icons/auth-logo.png')} />
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>음파에 오신</Text>
-        <Text style={styles.text}>여러분 반가워요!</Text>
-      </View>
+      <Icon style={styles.icon} source={require('public/images/logo.png')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 35.5 * SCALE_HEIGHT,
-    paddingBottom: 38.5 * SCALE_HEIGHT,
+    paddingTop: 30 * SCALE_HEIGHT,
+    paddingBottom: 25 * SCALE_HEIGHT,
   },
   icon: {
-    width: 58 * SCALE_WIDTH,
-    height: 58 * SCALE_WIDTH,
+    width: 204 * SCALE_WIDTH,
+    height: 57.2 * SCALE_WIDTH,
   },
   textContainer: {
     paddingLeft: 11 * SCALE_WIDTH,
