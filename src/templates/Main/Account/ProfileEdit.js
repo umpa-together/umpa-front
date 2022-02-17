@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Context as AuthContext } from 'context/Auth';
-import { Context as UserContext } from 'context/User';
 import style from 'constants/styles';
 import Header from 'components/Header';
 import EditSection, {
@@ -47,11 +46,8 @@ const UploadActions = ({ signUp }) => {
 };
 
 export default function ProfileEdit({ signUp }) {
-  const {
-    state: { user },
-  } = useContext(UserContext);
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
-  const { validityModal, setGuideModal } = useModal();
+  const { validityModal } = useModal();
   const { validityMsg } = useProfileEdit();
 
   const sectionLists = [
@@ -68,16 +64,6 @@ export default function ProfileEdit({ signUp }) {
       placeholder: '간단한 소개를 입력해주세요.',
     },
   ];
-
-  const guideModalCheck = () => {
-    if (!user.guide.relay && !signUp) {
-      setGuideModal('relay');
-    }
-  };
-
-  useEffect(() => {
-    return () => guideModalCheck();
-  }, []);
 
   return (
     <View style={style.background}>

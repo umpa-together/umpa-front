@@ -18,6 +18,7 @@ import Text from 'components/Text';
 import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import GuideModal from 'components/Modal/GuideModal';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -53,7 +54,7 @@ export default function Feed() {
   const { getMyStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
   const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
-  const { addedModal } = useModal();
+  const { addedModal, guideModal, setGuideModal } = useModal();
 
   const sortLists = [
     { title: '전체보기', key: 'all' },
@@ -98,7 +99,7 @@ export default function Feed() {
               팔로우한 유저 <Text style={styles.bold}>{FOLLOWING_NUMBER}</Text>명 이상부터
               가능합니다.
             </Text>
-            <Text style={[styles.alertText]}>더 많은 유저들을 팔로우 해보세요!</Text>
+            <Text style={styles.alertText}>더 많은 유저들을 팔로우 해보세요!</Text>
           </Animated.View>
         )}
       </>
@@ -121,6 +122,12 @@ export default function Feed() {
     if (type !== null) dataFetch();
   }, [type]);
 
+  useEffect(() => {
+    if (user && !user.guide.feed) {
+      setGuideModal('feed');
+    }
+  }, [user]);
+
   return (
     <View style={style.background}>
       <TabTitle
@@ -135,6 +142,7 @@ export default function Feed() {
       </SongActionsProvider>
       <PlayBar />
       <FloatingButton show={isScroll} />
+      <GuideModal modal={guideModal === 'feed'} setModal={setGuideModal} />
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
       <SortModal
         modal={sortModal}
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
     bottom: 157 * SCALE_HEIGHT,
     left: 40 * SCALE_WIDTH,
     width: 278 * SCALE_WIDTH,
-    height: 93 * SCALE_HEIGHT,
+    height: 100 * SCALE_HEIGHT,
     paddingTop: 19 * SCALE_HEIGHT,
   },
   alertText: {
@@ -183,13 +191,14 @@ const styles = StyleSheet.create({
     lineHeight: 20 * SCALE_HEIGHT,
     color: '#fff',
     zIndex: 98,
+    marginTop: 3 * SCALE_HEIGHT,
   },
   bold: {
     fontWeight: 'bold',
   },
   tooltip: {
     width: 278 * SCALE_WIDTH,
-    height: 93 * SCALE_HEIGHT,
+    height: 103 * SCALE_HEIGHT,
     position: 'absolute',
   },
 });

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Context as UserContext } from 'context/User';
 import { navigate } from 'lib/utils/navigation';
 import CreateInput from 'components/Playlist/CreateInput';
 import CreateSongList from 'components/Playlist/CreateSongList';
@@ -13,6 +14,7 @@ import SongActionsProvider from 'providers/songActions';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
+import GuideModal from 'components/Modal/GuideModal';
 
 const NextActions = ({ edit }) => {
   const [validity, setValidity] = useState(false);
@@ -45,15 +47,24 @@ const NextActions = ({ edit }) => {
 };
 
 export default function PlaylistCreate({ data, edit }) {
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const { setParams } = usePlaylistCreate();
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
-  const { validityModal } = useModal();
+  const { validityModal, guideModal, setGuideModal } = useModal();
   const validityMsg = '최소 3곡을 담아주세요';
   useEffect(() => {
     if (data) {
       setParams(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (user && !user.guide.playlist) {
+      setGuideModal('playlist');
+    }
+  }, [user]);
 
   return (
     <View style={style.background}>
@@ -75,6 +86,7 @@ export default function PlaylistCreate({ data, edit }) {
           <CreateSongList />
         </SongActionsProvider>
       </ScrollView>
+      <GuideModal modal={guideModal === 'playlist'} setModal={setGuideModal} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>
   );

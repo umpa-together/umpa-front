@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as MainContentsContext } from 'context/MainContents';
+import { Context as UserContext } from 'context/User';
 import RecommendPlaylist from 'components/Search/RecommendPlaylist';
 import RecommendAccount from 'components/Search/RecommendAccount';
 import SearchBarView from 'components/Search/SearchBarView';
@@ -13,6 +14,7 @@ import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import LoadingIndicator from 'components/LoadingIndicator';
+import GuideModal from 'components/Modal/GuideModal';
 
 export default function Search() {
   const {
@@ -21,7 +23,10 @@ export default function Search() {
     getMainRecommendDJ,
     getMainRecommendDailies,
   } = useContext(MainContentsContext);
-  const { addedModal } = useModal();
+  const {
+    state: { user },
+  } = useContext(UserContext);
+  const { addedModal, guideModal, setGuideModal } = useModal();
 
   const dataFetch = async () => {
     await Promise.all([
@@ -34,6 +39,12 @@ export default function Search() {
   useEffect(() => {
     dataFetch();
   }, []);
+
+  useEffect(() => {
+    if (user && !user.guide.search) {
+      setGuideModal('search');
+    }
+  }, [user]);
 
   return (
     <View style={style.background}>
@@ -49,6 +60,7 @@ export default function Search() {
         <LoadingIndicator />
       )}
       <PlayBar />
+      <GuideModal modal={guideModal === 'search'} setModal={setGuideModal} />
       {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
     </View>
   );
