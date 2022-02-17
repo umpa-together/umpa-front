@@ -42,11 +42,10 @@ const FloatingButton = ({ show }) => {
     if (animation.value === 1) {
       if (opt === 0) {
         navigate('DailyCreate');
-        toggleMenu();
       } else {
         navigate('PlaylistCreate');
-        toggleMenu();
       }
+      toggleMenu();
     }
   };
   const opacityStyle = useAnimatedStyle(() => ({

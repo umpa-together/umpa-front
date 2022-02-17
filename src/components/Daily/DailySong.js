@@ -9,9 +9,8 @@ import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
 import { useModal } from 'providers/modal';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { hapticOptions, hapticTriggerType } from 'constants/option';
+import HapticFeedback from 'lib/utils/haptic';
 
 export default memo(function DailySong({ song, containerStyle, time, selected }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
@@ -28,7 +27,7 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
 
   const onClickCopy = () => {
     onClickAdded({ opt: 'copy' });
-    ReactNativeHapticFeedback.trigger(hapticTriggerType, hapticOptions);
+    HapticFeedback();
     Clipboard.setString(name);
   };
 
