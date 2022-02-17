@@ -117,7 +117,7 @@ export default function SocialLogin() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 61 * SCALE_HEIGHT,
+    paddingTop: 121 * SCALE_HEIGHT,
   },
   iconMargin: {
     marginTop: 19.5 * SCALE_HEIGHT,

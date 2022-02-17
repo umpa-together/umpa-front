@@ -10,7 +10,7 @@ const AuthStack = createNativeStackNavigator();
 const screenLists = [
   { title: 'SignIn', component: SignIn },
   { title: 'SignUp', component: SignUp },
-  { title: 'ProfileEdit', component: ProfileEdit },
+  { title: 'ProfileEdit', component: ProfileEdit, swipe: false },
   { title: 'Landing', component: Landing },
 ];
 
@@ -22,7 +22,16 @@ const AuthStackScreen = () => (
   >
     {screenLists.map((screen) => {
       const { title, component } = screen;
-      return <AuthStack.Screen name={title} component={component} key={title} />;
+      return (
+        <AuthStack.Screen
+          name={title}
+          component={component}
+          key={title}
+          options={{
+            gestureEnabled: screen.swipe && screen.swipe,
+          }}
+        />
+      );
     })}
   </AuthStack.Navigator>
 );

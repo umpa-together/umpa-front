@@ -29,6 +29,7 @@
     "react-native": "0.66.4",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "2.1.0",
+    "react-native-haptic-feedback": "^1.13.0",
     "react-native-hyperlink": "0.0.19",
     "react-native-image-crop-picker": "0.37.2",
     "react-native-kakao-share-link": "1.0.6",

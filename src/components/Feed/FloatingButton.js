@@ -45,6 +45,7 @@ const FloatingButton = ({ show }) => {
       } else {
         navigate('PlaylistCreate');
       }
+      toggleMenu();
     }
   };
   const opacityStyle = useAnimatedStyle(() => ({
@@ -53,7 +54,7 @@ const FloatingButton = ({ show }) => {
   }));
 
   const backgroundOpacity = useAnimatedStyle(() => ({
-    transform: [{ scale: animation.value !== 0 ? 1 : 0 }],
+    transform: [{ scale: animation.value >= 0.9 ? 1 : 0 }],
     opacity: animation.value,
   }));
 
