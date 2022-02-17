@@ -16,6 +16,8 @@ import FastImage from 'react-native-fast-image';
 import MoveText from 'components/MoveText';
 import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
+import { hapticOptions, hapticTriggerType } from 'constants/option';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const Footer = ({ song, like, setLike }) => {
   const { id } = song;
@@ -29,6 +31,9 @@ const Footer = ({ song, like, setLike }) => {
   };
 
   const onClickLike = () => {
+    if (like === false) {
+      ReactNativeHapticFeedback.trigger(hapticTriggerType, hapticOptions);
+    }
     setLike(!like);
   };
 

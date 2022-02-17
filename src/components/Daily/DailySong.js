@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import { View, TouchableOpacity, StyleSheet, Vibration } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,8 +8,10 @@ import Icon from 'widgets/Icon';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { useModal } from 'providers/modal';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { hapticOptions, hapticTriggerType } from 'constants/option';
 
 export default memo(function DailySong({ song, containerStyle, time, selected }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
@@ -26,7 +28,7 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
 
   const onClickCopy = () => {
     onClickAdded({ opt: 'copy' });
-    Vibration.vibrate();
+    ReactNativeHapticFeedback.trigger(hapticTriggerType, hapticOptions);
     Clipboard.setString(name);
   };
 

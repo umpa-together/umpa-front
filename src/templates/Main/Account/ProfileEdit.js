@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, ScrollView, StyleSheet, BackHandler } from 'react-native';
 import { Context as AuthContext } from 'context/Auth';
 import style from 'constants/styles';
 import Header from 'components/Header';
@@ -60,6 +60,18 @@ export default function ProfileEdit({ signUp }) {
       placeholder: '간단한 소개를 입력해주세요.',
     },
   ];
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (signUp) {
+        return true;
+      }
+      return false;
+    });
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={style.background}>

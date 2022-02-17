@@ -6,5 +6,8 @@ include ':app'
 include ':react-native-seoul-naver-login'
 include ':react-native-push-notification'
 
+include ':react-native-haptic-feedback'
+project(':react-native-haptic-feedback').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-haptic-feedback/android')
+
 project(':react-native-seoul-naver-login').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-seoul/naver-login/android')
 project(':react-native-push-notification').projectDir = file('../node_modules/react-native-push-notification/android')

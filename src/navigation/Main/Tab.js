@@ -54,11 +54,9 @@ const TabScreen = () => (
   <Tab.Navigator
     screenOptions={() => ({
       headerShown: false,
-    })}
-    tabBarOptions={{
       activeTintColor: MAIN_COLOR,
       inactiveTintColor: '#4B4B4B',
-    }}
+    })}
   >
     {tabLists.map((tab) => {
       const { name, title, component, activeIcon, inactiveIcon } = tab;
