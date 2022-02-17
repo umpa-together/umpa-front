@@ -45,7 +45,10 @@ export function ImageSection() {
   );
 }
 export function GenreSection() {
-  const { getGenreLists } = useContext(UserContext);
+  const {
+    state: { genreLists },
+    getGenreLists,
+  } = useContext(UserContext);
   const { profile } = useProfileEdit();
   const [genreModal, setGenreModal] = useState(false);
   const onClickSelect = () => {
@@ -53,9 +56,10 @@ export function GenreSection() {
   };
 
   useEffect(() => {
-    getGenreLists();
-  }, []);
-
+    if (!genreLists) {
+      getGenreLists();
+    }
+  }, [genreLists]);
   return (
     <View style={styles.genreContainer}>
       <Text style={styles.title}>

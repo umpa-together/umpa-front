@@ -3,7 +3,6 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 import FastImage from 'react-native-fast-image';
-import Swiper from 'react-native-swiper';
 import Modal from '.';
 
 const ModalView = ({ onClose }) => {

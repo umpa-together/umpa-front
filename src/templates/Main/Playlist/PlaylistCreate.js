@@ -100,7 +100,7 @@ export default function PlaylistCreate({ data, edit }) {
       setGuideModal('playlist');
     }
   }, [user]);
-  
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onPressBack);
     return () => backHandler.remove();
