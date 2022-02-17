@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { View, TouchableOpacity, ImageBackground, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import { Context as StoryContext } from 'context/Story';
 import ProfileImage from 'widgets/ProfileImage';
 import Icon from 'widgets/Icon';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import Text from 'components/Text';
 
 export default function StoryPerson({ person, onClickStory, viewer }) {
   const {
