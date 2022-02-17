@@ -12,7 +12,7 @@ import Text from 'components/Text';
 import ParticipantCount from './ParticipantCount';
 
 export default function RelayCardView({ relay }) {
-  const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateCount } = relay;
+  const { _id: id, image, title, postUserId, createdTime, hashtags, evaluateUserId } = relay;
   const currentStatus = completeChecker(createdTime);
 
   const onClickRelayPlaylist = () => {
@@ -52,7 +52,7 @@ export default function RelayCardView({ relay }) {
             })}
             <ParticipantCount
               challenge={postUserId.length}
-              vote={evaluateCount.length}
+              vote={evaluateUserId.length}
               container={styles.customContainer}
             />
           </View>
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3 * SCALE_WIDTH,
     shadowOpacity: 0.2,
     elevation: 2,
+    marginHorizontal: 17 * SCALE_WIDTH,
   },
   infoContainer: {
     width: '100%',

@@ -8,7 +8,15 @@ const relayReducer = (state, action) => {
     case 'getCurrentRelay':
       return { ...state, currentRelay: action.payload };
     case 'getRelayLists':
-      return { ...state, relayLists: action.payload };
+      return { ...state, relayLists: action.payload, notNextRelay: false, currentRelayPage: 1 };
+    case 'nextRelayLists':
+      return {
+        ...state,
+        relayLists: state.relayLists.concat(action.payload),
+        currentRelayPage: state.currentRelayPage + 1,
+      };
+    case 'notNext':
+      return { ...state, notNextRelay: true };
     case 'getSelectedRelay':
       return { ...state, selectedRelay: action.payload[0], currentComments: action.payload[1] };
     case 'setRelaySong':
@@ -62,6 +70,21 @@ const getRelayLists = (dispatch) => async () => {
     dispatch({ type: 'error', payload: 'Something went wrong with getRelayLists' });
   }
 };
+
+const getNextRelayLists =
+  (dispatch) =>
+  async ({ page }) => {
+    try {
+      const response = await server.get(`/relay/lists/${page}`);
+      if (response.data.length !== 0) {
+        dispatch({ type: 'nextRelayLists', payload: response.data });
+      } else {
+        dispatch({ type: 'notNext' });
+      }
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with getNextRelayLists' });
+    }
+  };
 
 const getSelectedRelay =
   (dispatch) =>
@@ -235,6 +258,7 @@ export const { Provider, Context } = createDataContext(
     initRelay,
     getCurrentRelay,
     getRelayLists,
+    getNextRelayLists,
     getSelectedRelay,
     getRelaySong,
     postRelaySong,
@@ -254,6 +278,8 @@ export const { Provider, Context } = createDataContext(
   },
   {
     currentRelay: null,
+    currentRelayPage: 1,
+    notNextRelay: false,
     relayLists: null,
     selectedRelay: null,
     swipeSongs: null,

@@ -21,7 +21,7 @@ export default function RecommendButton({ playlistId, firstView, setFirstView })
 
   return (
     <TouchableNoDouble style={styles.container} onPress={onClickMove}>
-      <Text style={styles.text}>{firstView ? '곡 심사하기' : '나도 곡 추천하기'}</Text>
+      <Text style={styles.text}>{firstView ? '투표 시작하기' : '나도 곡 추천하기'}</Text>
     </TouchableNoDouble>
   );
 }

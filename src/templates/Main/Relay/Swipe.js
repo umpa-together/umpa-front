@@ -22,6 +22,7 @@ import { useModal } from 'providers/modal';
 import RecommendButton from 'components/Relay/RecommendButton';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useFocusEffect } from '@react-navigation/native';
+import GuideModal from 'components/Modal/GuideModal';
 
 export default function Swipe() {
   const {
@@ -35,7 +36,7 @@ export default function Swipe() {
   } = useContext(UserContext);
   const { addTrackSong, stopTrackSong } = useTrackPlayer();
   const translateX = useSharedValue(0);
-  const { _id: playlistId, image, evaluateCount, representSong } = selectedRelay.playlist;
+  const { _id: playlistId, image, evaluateUserId, representSong } = selectedRelay.playlist;
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [like, setLike] = useState(false);
@@ -44,7 +45,7 @@ export default function Swipe() {
   const hiddentranslateX = 800;
   const rotate = useDerivedValue(() => `${interpolate(translateX.value, [0, 600], [0, 60])}deg`);
 
-  const { addedModal } = useModal();
+  const { addedModal, guideModal, setGuideModal } = useModal();
 
   const cardStyle = useAnimatedStyle(() => ({
     transform: [
@@ -111,7 +112,7 @@ export default function Swipe() {
   }, [isEnd]);
 
   useEffect(() => {
-    setFirstView(!evaluateCount.includes(user._id));
+    setFirstView(!evaluateUserId.includes(user._id));
     return () => {
       stopTrackSong();
       getCurrentRelay();
@@ -127,6 +128,13 @@ export default function Swipe() {
       }
     }, [currentIdx, firstView]),
   );
+
+  useEffect(() => {
+    if (user && !user.guide.swipe) {
+      setGuideModal('swipe');
+    }
+  }, [user]);
+
   const representCard = {
     postUserId: {
       name: '첫 곡',
@@ -135,6 +143,7 @@ export default function Swipe() {
     song: representSong,
     playlistId,
   };
+
   return (
     <View>
       <Background />
@@ -169,6 +178,7 @@ export default function Swipe() {
         />
       )}
       <RecommendButton playlistId={playlistId} firstView={firstView} setFirstView={setFirstView} />
+      <GuideModal modal={guideModal === 'swipe'} setModal={setGuideModal} />
       <HarmfulModal />
     </View>
   );

@@ -14,7 +14,7 @@ export default function Background() {
   const {
     state: {
       selectedRelay: {
-        playlist: { title, image, representSong, evaluateCount, postUserId },
+        playlist: { title, image, representSong, evaluateUserId, postUserId },
       },
     },
   } = useContext(RelayContext);
@@ -60,7 +60,7 @@ export default function Background() {
           </TouchableOpacity>
           <ParticipantCount
             challenge={postUserId.length}
-            vote={evaluateCount.length}
+            vote={evaluateUserId.length}
             container={styles.customContainer}
           />
         </View>

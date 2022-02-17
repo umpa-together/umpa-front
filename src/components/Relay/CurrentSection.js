@@ -80,6 +80,7 @@ export default memo(function CurrentSection({ relay }) {
     template,
     opacityTop,
     opacityBottom,
+    opacityNumber,
     createdTime,
     relaySong,
   } = relay;
@@ -99,10 +100,15 @@ export default memo(function CurrentSection({ relay }) {
       navigate('SelectedRelay', { id: _id });
     }
   };
-
+  const backgroundOpacity = {
+    backgroundColor: `rgba(0,0,0,${(opacityNumber / 100).toFixed(2)})`,
+  };
   return (
     <TouchableOpacity onPress={onClickRelay} style={styles.container} activeOpacity={0.9}>
-      <FastImage source={{ uri: image }} style={styles.img} />
+      <View>
+        <FastImage source={{ uri: image }} style={styles.img} />
+        <View style={[styles.overlay, backgroundOpacity]} />
+      </View>
       {opacityTop && (
         <Icon source={require('public/icons/opacity-top.png')} style={styles.opacityTop} />
       )}
@@ -134,6 +140,10 @@ const styles = StyleSheet.create({
     height: 495 * SCALE_HEIGHT,
     position: 'absolute',
     zIndex: -1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    height: 495 * SCALE_HEIGHT,
   },
   templateAContainer: {
     paddingTop: (80 + StatusBarHeight) * SCALE_HEIGHT,

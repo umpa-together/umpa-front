@@ -15,7 +15,7 @@ export default function Information() {
   const {
     state: {
       selectedRelay: {
-        playlist: { createdTime, postUserId, title, image, evaluateCount, youtubeUrl },
+        playlist: { createdTime, postUserId, title, image, evaluateUserId, youtubeUrl },
       },
     },
   } = useContext(RelayContext);
@@ -32,7 +32,7 @@ export default function Information() {
         <View style={[style.flexRow, styles.callengerContainer]}>
           <Icon source={require('public/icons/challenger.png')} style={styles.icon} />
           <Text style={styles.challenger}>
-            도전 {postUserId.length}명 / 평가 {evaluateCount.length}명
+            도전 {postUserId.length}명 / 평가 {evaluateUserId.length}명
           </Text>
         </View>
         {currentStatus && <Timer time={createdTime} timeStyle={styles.time} />}
