@@ -11,7 +11,7 @@ export default function SearchTabBar({ props }) {
     height: 2 * SCALE_HEIGHT,
   };
   const indicatorContainerStyle = {
-    marginTop: 45 * SCALE_WIDTH,
+    marginTop: 47 * SCALE_WIDTH,
     backgroundColor: COLOR_6,
     height: 2 * SCALE_HEIGHT,
   };

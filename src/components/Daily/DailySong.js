@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Vibration } from 'react-native';
 import { useTrackPlayer } from 'providers/trackPlayer';
 import MoveText from 'components/MoveText';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
@@ -8,6 +8,8 @@ import Icon from 'widgets/Icon';
 import { COLOR_2, MAIN_COLOR } from 'constants/colors';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { useModal } from 'providers/modal';
 
 export default memo(function DailySong({ song, containerStyle, time, selected }) {
   const { onClickSong, isPlayingId } = useTrackPlayer();
@@ -20,6 +22,14 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
     onClickSong(song);
   };
 
+  const { onClickAdded } = useModal();
+
+  const onClickCopy = () => {
+    onClickAdded({ opt: 'copy' });
+    Vibration.vibrate();
+    Clipboard.setString(name);
+  };
+
   useEffect(() => {
     if (selected && contentRating !== 'explicit') {
       onClickSong(song);
@@ -27,7 +37,11 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
   }, []);
   return (
     <View style={[containerStyle, style.flexRow, style.space_between]}>
-      <TouchableOpacity onPress={onClickPlay} style={[style.flexRow, style.alignCenter]}>
+      <TouchableOpacity
+        onLongPress={onClickCopy}
+        onPress={onClickPlay}
+        style={[style.flexRow, style.alignCenter]}
+      >
         <MoveText
           isExplicit={contentRating === 'explicit'}
           text={`${name}-${artistName}`}

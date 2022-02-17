@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
+import { COLOR_3 } from 'constants/colors';
 import Text from 'components/Text';
 
-export default memo(function SelectedHashtag({ hashtag }) {
+export default memo(function SelectedHashtag({ hashtag, customContainer }) {
   const keyExtractor = useCallback((_) => _, []);
   const renderItem = useCallback(
     ({ item }) => (
@@ -21,7 +21,7 @@ export default memo(function SelectedHashtag({ hashtag }) {
       showsHorizontalScrollIndicator={false}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={[styles.container, customContainer]}
       maxToRenderPerBatch={5}
       windowSize={5}
     />
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   hashtagBox: {
     borderRadius: 43 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
-    borderColor: MAIN_COLOR,
+    borderColor: COLOR_3,
     marginRight: 10 * SCALE_WIDTH,
     alignSelf: 'flex-start',
   },
@@ -45,11 +45,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8 * SCALE_WIDTH,
     paddingRight: 9 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
-    fontSize: FS(14),
-    color: MAIN_COLOR,
-  },
-  hashtagEdit: {
+    fontSize: FS(12),
     color: COLOR_3,
-    borderColor: COLOR_3,
   },
 });

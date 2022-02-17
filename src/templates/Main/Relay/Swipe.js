@@ -171,14 +171,9 @@ export default function Swipe() {
           );
         })
       )}
-      {addedModal && (
-        <AddedModal
-          title="1곡을 저장한 곡 목록에 담았습니다."
-          customContainer={styles.addedModal}
-        />
-      )}
       <RecommendButton playlistId={playlistId} firstView={firstView} setFirstView={setFirstView} />
       <GuideModal modal={guideModal === 'swipe'} setModal={setGuideModal} />
+      {addedModal && <AddedModal customContainer={styles.addedModal} />}
       <HarmfulModal />
     </View>
   );

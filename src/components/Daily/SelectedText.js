@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     paddingLeft: 18 * SCALE_WIDTH,
     paddingRight: 14 * SCALE_WIDTH,
     paddingTop: 11 * SCALE_HEIGHT,
-    paddingBottom: 10 * SCALE_HEIGHT,
+    paddingBottom: 3 * SCALE_HEIGHT,
   },
   content: {
     fontSize: FS(14),

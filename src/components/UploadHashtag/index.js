@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   hashtagBox: {
     borderRadius: 43 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
-    borderColor: MAIN_COLOR,
+    borderColor: COLOR_3,
     marginRight: 10 * SCALE_WIDTH,
     alignSelf: 'flex-start',
   },
@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
     paddingRight: 9 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
     fontSize: FS(12),
-    color: MAIN_COLOR,
+    color: COLOR_3,
   },
   hashtagEdit: {
-    color: COLOR_3,
-    borderColor: COLOR_3,
+    color: MAIN_COLOR,
+    borderColor: MAIN_COLOR,
   },
 });

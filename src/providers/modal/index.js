@@ -9,6 +9,7 @@ export default function ModalProvider({ children }) {
   const [harmfulModal, setHarmfulModal] = useState(false);
   const [representModal, setRepresentModal] = useState(false);
   const [addedModal, setAddedModal] = useState(false);
+  const [addedModalText, setAddedModalText] = useState('');
   const [validityModal, setValidityModal] = useState(false);
   const [guideModal, setGuideModal] = useState(null);
 
@@ -28,19 +29,24 @@ export default function ModalProvider({ children }) {
     childId: '',
   });
 
-  const onClickAdded = () => {
+  const onClickAdded = ({ opt }) => {
+    if (opt === 'save') {
+      setAddedModalText('1곡을 저장한 곡 목록에 담았습니다.');
+    } else {
+      setAddedModalText('노래제목을 복사하였습니다.');
+    }
     setAddedModal(true);
     setTimeout(() => {
       Animated.timing(opacity, {
         toValue: 0,
-        duration: 1500,
+        duration: 1000,
         useNativeDriver: true,
       }).start();
       setTimeout(() => {
         setAddedModal(false);
         opacity.setValue(1);
-      }, 1500);
-    }, 1500);
+      }, 1000);
+    }, 1000);
   };
 
   const onValidityModal = () => {
@@ -62,6 +68,7 @@ export default function ModalProvider({ children }) {
     harmfulModal,
     representModal,
     addedModal,
+    addedModalText,
     validityModal,
     guideModal,
     opacity,

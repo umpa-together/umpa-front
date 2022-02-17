@@ -14,7 +14,7 @@ import { navigate, goBack } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import SelectModal from 'components/Modal/SelectModal';
-import SelectedHashtag from 'components/Playlist/SelectedHashtag';
+import SelectedHashtag from 'components/SelectedHashtag';
 import { useModal } from 'providers/modal';
 import AddedModal from 'components/Modal/AddedModal';
 import Footer from 'components/Footer';
@@ -199,7 +199,7 @@ export default function SelectedPlaylist({ id, postUserId }) {
           </CommentProvider>
           <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
           <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
-          {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+          {addedModal && <AddedModal />}
           <HarmfulModal />
         </>
       ) : (

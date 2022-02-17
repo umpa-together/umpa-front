@@ -15,7 +15,7 @@ export default function MusicSection({ title, songs, icon }) {
 
   const onClickAdd = (song) => {
     postAddedSong({ song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   const onClickAddActions = useCallback((song) => {

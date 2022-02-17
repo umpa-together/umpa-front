@@ -143,7 +143,7 @@ export default function Feed() {
       <PlayBar />
       <FloatingButton show={isScroll} />
       <GuideModal modal={guideModal === 'feed'} setModal={setGuideModal} />
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      {addedModal && <AddedModal />}
       <SortModal
         modal={sortModal}
         setModal={setSortModal}

@@ -10,6 +10,7 @@ import MoveText from 'components/MoveText';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 import ProgressProvider from 'providers/progress';
+import CopySongName from 'components/CopySongName';
 
 export default memo(function PlayBar() {
   const { currentSong, state, onClickPlayBar } = useTrackPlayer();
@@ -18,7 +19,7 @@ export default memo(function PlayBar() {
 
   const onClickAdd = () => {
     postAddedSong({ song: currentSong });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   return (
@@ -33,19 +34,21 @@ export default memo(function PlayBar() {
             />
           </ProgressProvider>
           <View style={[style.flexRow, styles.infoContainer, style.space_between]}>
-            <View style={styles.textArea}>
-              <MoveText
-                isExplicit={currentSong.attributes.contentRating === 'explicit'}
-                text={currentSong.attributes.name}
-                isMove={state === 'play'}
-                textStyle={styles.name}
-              />
-              <MoveText
-                text={currentSong.attributes.artistName}
-                isMove={state === 'play'}
-                textStyle={styles.artist}
-              />
-            </View>
+            <CopySongName name={currentSong.attributes.name}>
+              <View style={styles.textArea}>
+                <MoveText
+                  isExplicit={currentSong.attributes.contentRating === 'explicit'}
+                  text={currentSong.attributes.name}
+                  isMove={state === 'play'}
+                  textStyle={styles.name}
+                />
+                <MoveText
+                  text={currentSong.attributes.artistName}
+                  isMove={state === 'play'}
+                  textStyle={styles.artist}
+                />
+              </View>
+            </CopySongName>
             <View style={style.flexRow}>
               <TouchableOpacity onPress={onClickPlayBar} activeOpacity={0.8}>
                 <Icon
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   textArea: {
-    width: 250 * SCALE_WIDTH,
+    width: 220 * SCALE_WIDTH,
   },
   name: {
     fontSize: FS(14),

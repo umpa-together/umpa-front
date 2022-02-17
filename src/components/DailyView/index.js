@@ -28,7 +28,7 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
 
   const onClickAdd = () => {
     postAddedSong({ song: info.song });
-    onClickAdded();
+    onClickAdded({ opt: 'save' });
   };
 
   const onClickSongView = async () => {

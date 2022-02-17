@@ -4,14 +4,14 @@ import { useModal } from 'providers/modal';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Text from 'components/Text';
 
-export default function AddedModal({ title, customContainer }) {
-  const { opacity } = useModal();
+export default function AddedModal({ customContainer }) {
+  const { opacity, addedModalText } = useModal();
   const opacityStyle = {
     opacity,
   };
   return (
     <Animated.View style={[styles.container, opacityStyle, customContainer]}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text}>{addedModalText}</Text>
     </Animated.View>
   );
 }

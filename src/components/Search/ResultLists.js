@@ -45,38 +45,41 @@ export default function ResultLists() {
     },
   ];
 
-  const All = (props) => {
-    const { jumpTo } = props;
-    const { daily, dj, hashtag, playlist, song } = state.result != null && state.result;
-    const checkData =
-      state.result != null &&
-      (daily.length || dj.length || hashtag.length || playlist.length || song.length);
-    const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
-    const { searching } = useSearch();
+  const All = useCallback(
+    (props) => {
+      const { jumpTo } = props;
+      const { daily, dj, hashtag, playlist, song } = state.result != null && state.result;
+      const checkData =
+        state.result != null &&
+        (daily.length || dj.length || hashtag.length || playlist.length || song.length);
+      const textList = ['검색결과가 없습니다', '다른 검색어를 입력해보세요'];
+      const { searching } = useSearch();
 
-    return state.result ? (
-      !checkData ? (
-        <EmptyData textList={textList} icon />
-      ) : !searching ? (
-        <ScrollView contentContainerStyle={styles.container}>
-          {resultLists.map((option) => {
-            const { title, data, key } = option;
-            return (
-              <View key={title}>
-                {data.length > 0 && (
-                  <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
-                )}
-              </View>
-            );
-          })}
-        </ScrollView>
+      return state.result ? (
+        !checkData ? (
+          <EmptyData textList={textList} icon />
+        ) : !searching ? (
+          <ScrollView contentContainerStyle={styles.container}>
+            {resultLists.map((option) => {
+              const { title, data, key } = option;
+              return (
+                <View key={title}>
+                  {data.length > 0 && (
+                    <ResultSection title={title} data={data} jumpTo={jumpTo} routeKey={key} />
+                  )}
+                </View>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <LoadingIndicator />
+        )
       ) : (
         <LoadingIndicator />
-      )
-    ) : (
-      <LoadingIndicator />
-    );
-  };
+      );
+    },
+    [state.result && state.result.playlist],
+  );
   const Song = useCallback(() => {
     return <MoreLists title={resultLists[0].title} data={resultLists[0].data} />;
   }, [state.result && state.result.playlist]);
@@ -119,7 +122,7 @@ export default function ResultLists() {
   ];
 
   const sceneMap = {
-    all: memo(All),
+    all: All,
     song: Song,
     playlist: memo(Playlist),
     daily: memo(Daily),
@@ -134,7 +137,7 @@ export default function ResultLists() {
         sceneMap={sceneMap}
         renderTabBar={(props) => <SearchTabBar props={props} />}
       />
-      {addedModal && <AddedModal title="1곡을 저장한 곡 목록에 담았습니다." />}
+      {addedModal && <AddedModal />}
     </>
   );
 }
