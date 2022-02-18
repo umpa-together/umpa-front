@@ -62,10 +62,11 @@ const TabScreen = () => (
       const { name, title, component, activeIcon, inactiveIcon } = tab;
       return (
         <Tab.Screen
-          name={name}
+          name={title}
           key={title}
           component={component}
           options={{
+            tabBarLabel: name,
             tabBarIcon: ({ focused }) => {
               return <Icon style={style.icons} source={focused ? activeIcon : inactiveIcon} />;
             },
