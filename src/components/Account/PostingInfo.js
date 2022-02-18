@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   countText: {
     fontSize: FS(14),
     color: COLOR_1,
+    marginBottom: 6 * SCALE_HEIGHT,
   },
   titleText: {
     fontSize: FS(11),
