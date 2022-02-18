@@ -44,7 +44,7 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
             <data android:host="oauth"
-                android:scheme="kakao7c1b48e5eb809fe6e923f3006e57c6f0" />
+                android:scheme="kakaob754cdf62b33d818f51425d17d87018c" />
         </intent-filter>
       </activity>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
@@ -55,8 +55,8 @@
 
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
                 <data android:host="oauth"
-                    android:scheme="kakao7c1b48e5eb809fe6e923f3006e57c6f0" />
-                <data android:host="kakaolink" android:scheme="kakao7c1b48e5eb809fe6e923f3006e57c6f0" />
+                    android:scheme="kakaob754cdf62b33d818f51425d17d87018c" />
+                <data android:host="kakaolink" android:scheme="kakaob754cdf62b33d818f51425d17d87018c" />
 
             </intent-filter>
         </activity>
