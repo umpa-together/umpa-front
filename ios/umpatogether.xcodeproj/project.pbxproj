@@ -12,7 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		688A62AA279862A900DF4021 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688A62A9279862A900DF4021 /* File.swift */; };
-		7DACD6F727AD4D90004583EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DACD6F627AD4D90004583EC /* GoogleService-Info.plist */; };
+		7D8372ED27BF648D002086DC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D8372EC27BF648D002086DC /* GoogleService-Info.plist */; };
 		7DF0002F27BE703F00601D04 /* RNReactNativeHapticFeedback.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7DF0002E27BE703F00601D04 /* RNReactNativeHapticFeedback.podspec */; };
 		7DF0003127BE70F000601D04 /* libRNReactNativeHapticFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF0003027BE70F000601D04 /* libRNReactNativeHapticFeedback.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -45,7 +45,7 @@
 		47DDC35D199C8489F52E89F1 /* Pods-umpatogether.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-umpatogether.release.xcconfig"; path = "Target Support Files/Pods-umpatogether/Pods-umpatogether.release.xcconfig"; sourceTree = "<group>"; };
 		688A62A8279862A800DF4021 /* umpatogether-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "umpatogether-Bridging-Header.h"; sourceTree = "<group>"; };
 		688A62A9279862A900DF4021 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		7DACD6F627AD4D90004583EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		7D8372EC27BF648D002086DC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/AppIcons (3)/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DE4643B276F97EC005A90FD /* umpatogether.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = umpatogether.entitlements; path = umpatogether/umpatogether.entitlements; sourceTree = "<group>"; };
 		7DF0002E27BE703F00601D04 /* RNReactNativeHapticFeedback.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = RNReactNativeHapticFeedback.podspec; path = "../node_modules/react-native-haptic-feedback/RNReactNativeHapticFeedback.podspec"; sourceTree = "<group>"; };
 		7DF0003027BE70F000601D04 /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				7DE4643B276F97EC005A90FD /* umpatogether.entitlements */,
-				7DACD6F627AD4D90004583EC /* GoogleService-Info.plist */,
+				7D8372EC27BF648D002086DC /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -262,7 +262,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				7DACD6F727AD4D90004583EC /* GoogleService-Info.plist in Resources */,
+				7D8372ED27BF648D002086DC /* GoogleService-Info.plist in Resources */,
 				7DF0002F27BE703F00601D04 /* RNReactNativeHapticFeedback.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -530,12 +530,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 5.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.umpa8;
 				PRODUCT_NAME = umpatogether;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "umpatogether-Bridging-Header.h";
@@ -561,12 +562,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 5.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.umpa8;
 				PRODUCT_NAME = umpatogether;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "umpatogether-Bridging-Header.h";

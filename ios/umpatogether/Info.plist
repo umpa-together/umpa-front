@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -29,7 +29,7 @@
 			<string>googlelogin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.217008100787-j3ohrpjsma12v7lkm6fnr6l9b14b4f7t</string>
+				<string>com.googleusercontent.apps.217008100787-fe5u8u3ejdp73d73rabbqefjctdgbvto</string>
 			</array>
 		</dict>
 		<dict>
@@ -49,17 +49,17 @@
 			<string>kakao</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao7c1b48e5eb809fe6e923f3006e57c6f0</string>
+				<string>kakaob754cdf62b33d818f51425d17d87018c</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>7c1b48e5eb809fe6e923f3006e57c6f0</string>
+	<string>b754cdf62b33d818f51425d17d87018c</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>kakao7c1b48e5eb809fe6e923f3006e57c6f0</string>
+		<string>kakaob754cdf62b33d818f51425d17d87018c</string>
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
 		<string>kakaokompassauth</string>
