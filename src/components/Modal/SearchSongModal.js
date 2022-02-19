@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useCallback } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useModal } from 'providers/modal';
@@ -32,7 +33,7 @@ const ModalView = ({ onClose, activeCheck }) => {
     );
   }, []);
 
-  const Action = useCallback(() => {
+  const Action = () => {
     const onClickAction = () => {
       if (activeCheck) {
         if (searchInfoRef.current.key !== 'relay') {
@@ -49,7 +50,7 @@ const ModalView = ({ onClose, activeCheck }) => {
         <Text style={activeCheck ? styles.activeText : styles.inactiveText}>완료</Text>
       </TouchableNoDouble>
     );
-  }, [activeCheck]);
+  };
 
   return (
     <View style={styles.viewContainer}>

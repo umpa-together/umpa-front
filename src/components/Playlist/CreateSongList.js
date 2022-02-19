@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { usePlaylistCreate } from 'providers/playlistCreate';
 import ScrollSong from 'components/ScrollSong';
@@ -42,12 +42,14 @@ const SongLandings = ({ song }) => {
 
 export default function CreateSongList() {
   const [searchModal, setSearchModal] = useState(false);
+  const [songReady, setSongReady] = useState(false);
   const { songs, setSongs } = usePlaylistCreate();
   const { searchInfoRef, setSelectedSongs, selectedSongs } = useSongActions();
 
   const onClickAddSong = () => {
     setSelectedSongs(songs);
     setSearchModal(true);
+    setSongReady(false);
   };
 
   useFocusEffect(
@@ -55,6 +57,12 @@ export default function CreateSongList() {
       searchInfoRef.current = { title: '곡 추가', key: 'playlist', completeFunc: setSongs };
     }, []),
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSongReady(true);
+    }, 50);
+  }, [songs]);
 
   return (
     <View style={styles.container}>
@@ -67,7 +75,7 @@ export default function CreateSongList() {
         </TouchableOpacity>
       </View>
       <TrackPlayerProvider>
-        <ScrollSong songs={songs}>
+        <ScrollSong songReady={songReady} songs={songs}>
           {songs.map((song) => {
             return (
               <Movable key={song.id} id={song.id} songsCount={songs.length}>

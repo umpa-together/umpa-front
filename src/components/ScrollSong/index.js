@@ -3,7 +3,7 @@ import Animated from 'react-native-reanimated';
 import { View } from 'react-native';
 import { useScroll } from 'providers/scroll';
 
-export default function ScrollSong({ songs, children }) {
+export default function ScrollSong({ songs, songReady, children }) {
   const { positions, scrollViewRef, updatePosition, handleScroll, onLayoutScroll, TOTAL_HEIGHT } =
     useScroll();
   const [render, setRender] = useState(false);
@@ -14,7 +14,7 @@ export default function ScrollSong({ songs, children }) {
   }, [songs]);
   return (
     <>
-      {songs.length <= Object.keys(positions.current.value).length && (
+      {songReady && songs.length <= Object.keys(positions.current.value).length && (
         <View>
           <Animated.ScrollView
             ref={scrollViewRef}
