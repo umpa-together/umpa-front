@@ -44,7 +44,7 @@ export default () => {
 
     setTimeout(() => {
       SplashScreen.hide();
-    }, 1000);
+    }, 2000);
 
     return () => {
       console.log('[App] unRegsiter');
