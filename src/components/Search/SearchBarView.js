@@ -17,26 +17,25 @@ export default function SearchBarView() {
     <View style={[style.alignCenter, styles.container]}>
       <TouchableOpacity style={[style.flexRow, styles.bar]} onPress={onClickBar}>
         <Icon source={require('public/icons/search-glass.png')} style={styles.icon} />
-        <Text style={styles.searchInput}>검색어를 입력하세요</Text>
+        <Text style={styles.searchInput}>‘신나는’ ‘새벽’ 키워드 검색도 가능해요!</Text>
       </TouchableOpacity>
-      <Text style={styles.description}>계정, 키워드, 노래 및 아티스트를 </Text>
+      <Text style={styles.description}>계정,아티스트 및 노래를</Text>
       <Text style={[styles.description, styles.margin]}>검색해보세요</Text>
-      <Text style={styles.exampleText}>ex. ‘신나는', ‘힐링', ‘새벽'</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24 * SCALE_HEIGHT,
-    marginBottom: 26 * SCALE_HEIGHT,
+    marginTop: 17 * SCALE_HEIGHT,
+    marginBottom: 49 * SCALE_HEIGHT,
   },
   bar: {
     width: 343 * SCALE_WIDTH,
     height: 40 * SCALE_HEIGHT,
     backgroundColor: '#eeeeee',
     borderRadius: 6 * SCALE_HEIGHT,
-    marginBottom: 26 * SCALE_HEIGHT,
+    marginBottom: 44 * SCALE_HEIGHT,
   },
   icon: {
     width: 16 * SCALE_WIDTH,
