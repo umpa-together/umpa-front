@@ -25,19 +25,19 @@ export default function Background() {
   const { onClickSong, isPlayingId, state } = useTrackPlayer();
   const playingCheck = representSongId === isPlayingId && state === 'play';
   const paddingStyle = {
-    paddingLeft: Platform.OS === 'ios' ? 17 * SCALE_WIDTH : 33 * SCALCW,
+    paddingLeft: Platform.OS === 'ios' ? 45 * SCALE_WIDTH : 33 * SCALE_WIDTH,
   };
   return (
     <View>
       <View style={styles.blurContainer} />
       <FastImage source={{ uri: image }} style={styles.backgroundImg} />
-      <View style={[styles.infoContainer, paddingStyle, style.flexRow]}>
-        {Platform.OS === 'ios' && (
-          <TouchableOpacity onPress={goBack}>
-            <Icon source={require('public/icons/relay-back.png')} style={styles.back} />
-          </TouchableOpacity>
-        )}
+      <View style={[styles.infoContainer, style.flexRow, paddingStyle]}>
         <View>
+          {Platform.OS === 'ios' && (
+            <TouchableOpacity onPress={goBack}>
+              <Icon source={require('public/icons/relay-back.png')} style={styles.back} />
+            </TouchableOpacity>
+          )}
           <Text style={[styles.whiteText, styles.playlistTitle]}>
             {title.map((item) => `${item} `)}
           </Text>
@@ -113,6 +113,9 @@ const styles = StyleSheet.create({
     paddingTop: 5 * SCALE_HEIGHT,
   },
   back: {
+    position: 'absolute',
+    left: -30 * SCALE_WIDTH,
+    top: 89 * SCALE_HEIGHT,
     width: 24 * SCALE_WIDTH,
     height: 24 * SCALE_WIDTH,
     marginRight: 4 * SCALE_WIDTH,

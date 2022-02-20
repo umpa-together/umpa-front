@@ -47,7 +47,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
 
   const optionLists = [
     {
-      title: '릴레이 곡 도전',
+      title: '곡 추천하기',
       onClick: onClickAdd,
       isValid: !postUserId.includes(user._id),
       icon: <Icon source={require('public/icons/relay-like.png')} style={styles.icon} />,

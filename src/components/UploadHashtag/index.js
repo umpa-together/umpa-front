@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
+import { MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import HashtagModal from 'components/Modal/HashtagModal';
 import Text from 'components/Text';
@@ -25,11 +25,8 @@ export default function UploadHashtag({ info, containerStyle }) {
             </View>
           );
         })}
-        <TouchableOpacity
-          onPress={onPressAdd}
-          style={[styles.hashtagBox, hashtagCheck && styles.hashtagEdit]}
-        >
-          <Text style={[styles.hashtagsStyle, hashtagCheck && styles.hashtagEdit]}>
+        <TouchableOpacity onPress={onPressAdd} style={[styles.hashtagBox, styles.hashtagEdit]}>
+          <Text style={[styles.hashtagsStyle, styles.hashtagEdit]}>
             {hashtagCheck ? '+ 태그 편집' : '+ 태그 추가'}
           </Text>
         </TouchableOpacity>
@@ -43,7 +40,7 @@ const styles = StyleSheet.create({
   hashtagBox: {
     borderRadius: 43 * SCALE_HEIGHT,
     borderWidth: 1 * SCALE_WIDTH,
-    borderColor: COLOR_3,
+    borderColor: MAIN_COLOR,
     marginRight: 10 * SCALE_WIDTH,
     alignSelf: 'flex-start',
   },
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
     paddingRight: 9 * SCALE_WIDTH,
     paddingVertical: 6 * SCALE_HEIGHT,
     fontSize: FS(12),
-    color: COLOR_3,
+    color: MAIN_COLOR,
   },
   hashtagEdit: {
     color: MAIN_COLOR,

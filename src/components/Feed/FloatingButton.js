@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     bottom: -120 * SCALE_HEIGHT,
     width: 375 * SCALE_WIDTH,
     height: 812 * SCALE_HEIGHT,
-    backgroundColor: '#00000050',
+    backgroundColor: '#00000070',
   },
   textStyle: {
     textAlign: 'right',

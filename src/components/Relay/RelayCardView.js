@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     paddingTop: 6.6 * SCALE_HEIGHT,
-    width: 300 * SCALE_WIDTH,
+    width: 317 * SCALE_WIDTH,
   },
   img: {
     width: '100%',
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     color: COLOR_1,
     fontWeight: 'bold',
     marginLeft: 5.4 * SCALE_WIDTH,
+    maxWidth: 280 * SCALE_WIDTH,
   },
   peopleContainer: {
     marginTop: 3 * SCALE_HEIGHT,

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { View, StyleSheet, Keyboard, TouchableOpacity } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { MAIN_COLOR, COLOR_3, COLOR_5 } from 'constants/colors';
+import { MAIN_COLOR, COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import { onClickMultiple } from 'lib/utils/imageEditor';
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   keyboardText: {
     fontSize: FS(14),
-    color: COLOR_5,
+    color: MAIN_COLOR,
     paddingVertical: 5 * SCALE_HEIGHT,
     paddingHorizontal: 10 * SCALE_WIDTH,
   },

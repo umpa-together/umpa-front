@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     height: 40 * SCALE_HEIGHT,
     backgroundColor: '#eeeeee',
     borderRadius: 6 * SCALE_HEIGHT,
-    marginBottom: 41 * SCALE_HEIGHT,
+    marginBottom: 26 * SCALE_HEIGHT,
   },
   icon: {
     width: 16 * SCALE_WIDTH,

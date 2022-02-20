@@ -15,6 +15,7 @@ import TabSection from 'components/Account/TabSection';
 import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import { Provider as NoticeProvider } from 'context/Notice';
 
 export default function MyAccount() {
   const {
@@ -78,7 +79,9 @@ export default function MyAccount() {
         </>
       )}
       <PlayBar />
-      <SideModal modal={sideModal} setModal={setSideModal} />
+      <NoticeProvider>
+        <SideModal modal={sideModal} setModal={setSideModal} />
+      </NoticeProvider>
       <RepresentModal />
       {addedModal && <AddedModal />}
     </View>
