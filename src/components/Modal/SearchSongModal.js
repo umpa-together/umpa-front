@@ -64,7 +64,9 @@ const ModalView = ({ onClose, activeCheck }) => {
       {text === '' && !searching ? <AddedSongLists /> : <SearchLists />}
       {validityModal && <ValidityModal title={validityMsg} />}
       <HarmfulModal />
-      <RelayActionModal modal={relayModal} setModal={setRelayModal} onClose={onClose} />
+      {relayModal && (
+        <RelayActionModal modal={relayModal} setModal={setRelayModal} onClose={onClose} />
+      )}
     </View>
   );
 };

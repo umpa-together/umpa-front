@@ -137,7 +137,7 @@ const ViewerImage = () => {
         const { profileImage } = item;
         return (
           <ProfileImage
-            key={profileImage}
+            key={Math.random()}
             img={profileImage}
             imgStyle={[
               styles.profileImg,
@@ -153,7 +153,7 @@ const ViewerImage = () => {
 };
 
 const Footer = ({ onClose }) => {
-  const { onClickPlayBar, state } = useTrackPlayer();
+  const { onClickPlayBar, state, currentSong, onClickSong } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
   const {
     currentSong: {
@@ -198,6 +198,14 @@ const Footer = ({ onClose }) => {
     marginTop: storyViewer.length >= 2 ? 45 * SCALE_HEIGHT : 7 * SCALE_HEIGHT,
   };
 
+  const onClickPlay = () => {
+    if (currentSong) {
+      onClickPlayBar();
+    } else {
+      onClickSong(song);
+    }
+  };
+
   useEffect(() => {
     setIsLike(likes.includes(user._id));
   }, [song]);
@@ -218,7 +226,7 @@ const Footer = ({ onClose }) => {
           <Icon source={require('public/icons/story-add-song.png')} style={styles.icon} />
         )}
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlayBar}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onClickPlay}>
         <Icon
           source={
             state === 'play'
@@ -273,9 +281,23 @@ const ModalView = ({ onClose }) => {
   const { readStory } = useContext(StoryContext);
   const { addedModal } = useModal();
   const isMyStory = user._id === id;
+  const onClickStoryLeft = () => {
+    if (!isMyStory) {
+      onClickLeft();
+    }
+  };
+
+  const onClickStoryRight = () => {
+    if (!isMyStory) {
+      onClickRight();
+    } else {
+      stopTrackSong();
+      onClose();
+    }
+  };
   const touchableLists = [
-    { key: 'left', func: onClickLeft },
-    { key: 'right', func: onClickRight },
+    { key: 'left', func: onClickStoryLeft },
+    { key: 'right', func: onClickStoryRight },
   ];
 
   useEffect(() => {
@@ -290,10 +312,9 @@ const ModalView = ({ onClose }) => {
   return (
     <View style={styles.viewContainer}>
       <SongImageBackStory url={artwork.url} border={0} imgStyle={styles.backgroundImg} />
-      {!isMyStory &&
-        touchableLists.map(({ key, func }) => {
-          return <TouchableOpacity style={styles.touchable} key={key} onPress={func} />;
-        })}
+      {touchableLists.map(({ key, func }) => {
+        return <TouchableOpacity style={styles.touchable} key={key} onPress={func} />;
+      })}
       <View style={styles.viewBox}>
         <Header onClose={onClose} />
         <SongBody />

@@ -13,6 +13,7 @@ export default function PlaylistCreateProvider({ children }) {
     title: '',
     content: '',
     hashtags: [],
+    playlistId: '',
   });
   const [songs, setSongs] = useState([]);
   const [image, setImage] = useState(null);
@@ -34,25 +35,25 @@ export default function PlaylistCreateProvider({ children }) {
 
   const onChangeValue = (type, value) => {
     if (type === 'title') {
-      setInformation({
-        ...information,
+      setInformation((prev) => ({
+        ...prev,
         title: value,
-      });
+      }));
     } else if (type === 'content') {
-      setInformation({
-        ...information,
+      setInformation((prev) => ({
+        ...prev,
         content: value,
-      });
+      }));
     }
   };
 
   const onClickAddHashtag = (textRef) => {
     const addhashtag = (txt) => {
       if (txt !== '' && !information.hashtags.includes(txt)) {
-        setInformation({
-          ...information,
-          hashtags: [...information.hashtags, txt],
-        });
+        setInformation((prev) => ({
+          ...prev,
+          hashtags: [...prev.hashtags, txt],
+        }));
         return true;
       }
       return false;
@@ -71,10 +72,10 @@ export default function PlaylistCreateProvider({ children }) {
   };
 
   const onClickDeleteHashtag = (text) => {
-    setInformation({
-      ...information,
-      hashtags: information.hashtags.filter((item) => item !== text),
-    });
+    setInformation((prev) => ({
+      ...prev,
+      hashtags: prev.hashtags.filter((item) => item !== text),
+    }));
   };
 
   const onClickUpload = async (edit) => {

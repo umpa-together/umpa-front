@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: 343 * SCALE_WIDTH,
-    borderBottomColor: '#dcdcdc',
+    borderBottomColor: 'rgba(220, 220, 220, 0.5)',
     borderBottomWidth: 1 * SCALE_WIDTH,
     marginLeft: 16 * SCALE_WIDTH,
   },

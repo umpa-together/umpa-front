@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Context as UserContext } from 'context/User';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, BackHandler } from 'react-native';
 import { navigate, goBack } from 'lib/utils/navigation';
 import CreateInput from 'components/Playlist/CreateInput';
@@ -14,7 +13,6 @@ import SongActionsProvider from 'providers/songActions';
 import ValidityModal from 'components/Modal/ValidityModal';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
-import GuideModal from 'components/Modal/GuideModal';
 import Icon from 'widgets/Icon';
 import ActionModal from 'components/Modal/ActionModal';
 
@@ -57,12 +55,9 @@ const BackLandings = ({ onPressBack }) => {
 };
 
 export default function PlaylistCreate({ data, edit }) {
-  const {
-    state: { user },
-  } = useContext(UserContext);
   const { setParams } = usePlaylistCreate();
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
-  const { validityModal, guideModal, setGuideModal } = useModal();
+  const { validityModal } = useModal();
   const [actionModal, setActionModal] = useState(false);
 
   const deleteActionLists = [
@@ -96,12 +91,6 @@ export default function PlaylistCreate({ data, edit }) {
   }, [data]);
 
   useEffect(() => {
-    if (user && !user.guide.playlist) {
-      setGuideModal('playlist');
-    }
-  }, [user]);
-
-  useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onPressBack);
     return () => backHandler.remove();
   }, []);
@@ -126,7 +115,6 @@ export default function PlaylistCreate({ data, edit }) {
           <CreateSongList />
         </SongActionsProvider>
       </ScrollView>
-      <GuideModal modal={guideModal === 'playlist'} setModal={setGuideModal} />
       <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
       {validityModal && <ValidityModal title={validityMsg} />}
     </View>

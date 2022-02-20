@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { FlatList, View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Context as NoticeContext } from 'context/Notice';
 import style from 'constants/styles';
-import Header from 'components/Header';
 import Section from 'components/Notice/Section';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { useRefresh } from 'providers/refresh';
@@ -16,6 +15,8 @@ import Text from 'components/Text';
 import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import { useTabRef } from 'providers/tabRef';
+import TabTitle from 'components/TabTitle';
 
 export default function Notice() {
   const {
@@ -29,7 +30,7 @@ export default function Notice() {
   const [lastNotice, setLastNotice] = useState([]);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
   const { addedModal } = useModal();
-
+  const { noticeRef } = useTabRef();
   const now = new Date();
   const textList = ['아직 새로운 알림이 없습니다'];
 
@@ -129,7 +130,7 @@ export default function Notice() {
 
   return (
     <View style={style.background}>
-      <Header titleStyle={style.headertitle} title="알림" />
+      <TabTitle title="알림" titleStyle={styles.title} />
       {notice === null ? (
         <LoadingIndicator />
       ) : notice.length === 0 ? (
@@ -150,6 +151,7 @@ export default function Notice() {
           renderItem={renderItem}
           maxToRenderPerBatch={5}
           windowSize={5}
+          ref={noticeRef}
         />
       )}
       <PlayBar />
@@ -159,15 +161,23 @@ export default function Notice() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: FS(24),
+    color: COLOR_1,
+    marginLeft: 16 * SCALE_WIDTH,
+    marginVertical: 20 * SCALE_HEIGHT,
+    fontWeight: 'bold',
+  },
   divider: {
     marginTop: 16 * SCALE_HEIGHT,
     height: 0.7 * SCALE_HEIGHT,
     width: '100%',
     backgroundColor: '#CFCFCF',
+    marginBottom: 20 * SCALE_HEIGHT,
   },
   titleText: {
     marginLeft: 20 * SCALE_WIDTH,
-    marginTop: 20 * SCALE_HEIGHT,
+    // marginTop: 20 * SCALE_HEIGHT,
     fontSize: FS(16),
     fontWeight: 'bold',
     color: COLOR_1,

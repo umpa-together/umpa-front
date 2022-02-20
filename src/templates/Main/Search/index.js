@@ -15,6 +15,7 @@ import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import LoadingIndicator from 'components/LoadingIndicator';
 import GuideModal from 'components/Modal/GuideModal';
+import { useTabRef } from 'providers/tabRef';
 
 export default function Search() {
   const {
@@ -27,7 +28,7 @@ export default function Search() {
     state: { user },
   } = useContext(UserContext);
   const { addedModal, guideModal, setGuideModal } = useModal();
-
+  const { searchRef } = useTabRef();
   const dataFetch = async () => {
     await Promise.all([
       getMainRecommendPlaylist(),
@@ -50,7 +51,7 @@ export default function Search() {
     <View style={style.background}>
       <TabTitle title="검색" titleStyle={styles.title} />
       {mainPlaylist && mainDJ && mainDailies ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} ref={searchRef}>
           <SearchBarView />
           <RecommendPlaylist />
           <RecommendAccount />
@@ -73,5 +74,6 @@ const styles = StyleSheet.create({
     lineHeight: 35 * SCALE_HEIGHT,
     marginTop: 6 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
+    fontWeight: 'bold',
   },
 });

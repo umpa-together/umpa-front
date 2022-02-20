@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Context as FeedContext } from 'context/Feed';
 import { Context as StoryContext } from 'context/Story';
+import { Context as UserContext } from 'context/User';
 import Playlist from 'components/Feed/Playlist';
 import Daily from 'components/Feed/Daily';
 import Story from 'components/Feed/Story';
@@ -9,6 +10,7 @@ import { useRefresh } from 'providers/refresh';
 import LoadingIndicator from 'components/LoadingIndicator';
 import StoryProvider from 'providers/story';
 import HarmfulModal from 'components/Modal/HarmfulModal';
+import { useTabRef } from 'providers/tabRef';
 
 export default function Contents({ setIsScroll }) {
   const {
@@ -18,10 +20,13 @@ export default function Contents({ setIsScroll }) {
     getFeedWithFollowing,
     getNextFeedWithFollowing,
   } = useContext(FeedContext);
+  const {
+    state: { user },
+  } = useContext(UserContext);
   const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
-
+  const { feedRef } = useTabRef();
   const getData = async () => {
     if (feed.length >= 20 && !notNextFeed) {
       setLoading(true);
@@ -60,11 +65,16 @@ export default function Contents({ setIsScroll }) {
   );
   const keyExtractor = useCallback((_) => _._id, []);
   const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);
-  const renderItem = useCallback(({ item }) => {
-    // eslint-disable-next-line no-shadow
-    const { playlist, type, daily } = item;
-    return <>{type === 'playlist' ? <Playlist playlist={playlist} /> : <Daily daily={daily} />}</>;
-  }, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      // eslint-disable-next-line no-shadow
+      const { playlist, type, daily } = item;
+      return (
+        <>{type === 'playlist' ? <Playlist playlist={playlist} /> : <Daily daily={daily} />}</>
+      );
+    },
+    [user],
+  );
 
   useEffect(() => {
     setRefresh(fetchData);
@@ -91,6 +101,7 @@ export default function Contents({ setIsScroll }) {
           renderItem={renderItem}
           maxToRenderPerBatch={5}
           windowSize={5}
+          ref={feedRef}
         />
       ) : (
         <LoadingIndicator />

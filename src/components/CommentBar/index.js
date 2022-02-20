@@ -25,6 +25,7 @@ export default function CommentBar() {
   const onPressSubmit = () => {
     commentAction(commentRef.current.value);
     commentRef.current.clear();
+    commentRef.current.blur();
   };
 
   const onChangeText = useCallback((text) => setCommentRef(text), []);

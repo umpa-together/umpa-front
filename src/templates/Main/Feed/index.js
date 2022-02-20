@@ -55,7 +55,6 @@ export default function Feed() {
   const [isScroll, setIsScroll] = useState(false);
   const opacity = useState(new Animated.Value(1))[0];
   const { addedModal, guideModal, setGuideModal } = useModal();
-
   const sortLists = [
     { title: '전체보기', key: 'all' },
     { title: '팔로우한 유저들만 보기', key: 'following' },
@@ -64,7 +63,7 @@ export default function Feed() {
     if (key === 'all') {
       setFeedType();
     } else if (key === 'following') {
-      if (user.following.length > FOLLOWING_NUMBER) {
+      if (user.following.length >= FOLLOWING_NUMBER) {
         setFeedType();
       } else {
         setAlertModal(true);
@@ -161,6 +160,7 @@ const styles = StyleSheet.create({
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 15 * SCALE_HEIGHT,
+    fontWeight: 'bold',
   },
   floating: {
     width: 52 * SCALE_WIDTH,
