@@ -5,12 +5,19 @@ import style from 'constants/styles';
 import { Context as AuthContext } from 'context/Auth';
 import Text from 'components/Text';
 import { navigate } from 'lib/utils/navigation';
+import { Context as NoticeContext } from 'context/Notice';
 
 export default function ModalSign({ onCloseModal }) {
   const { signOut } = useContext(AuthContext);
+  const { deleteNoticeToken } = useContext(NoticeContext);
+
   const onClickWithDrawal = () => {
     onCloseModal();
     navigate('Side', { type: 'WithDrawal' });
+  };
+  const onClickSignOut = async () => {
+    await deleteNoticeToken();
+    signOut();
   };
 
   return (
@@ -18,7 +25,7 @@ export default function ModalSign({ onCloseModal }) {
       <TouchableOpacity onPress={onClickWithDrawal}>
         <Text style={styles.text}>회원탈퇴</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={signOut}>
+      <TouchableOpacity onPress={onClickSignOut}>
         <Text style={styles.text}>로그아웃</Text>
       </TouchableOpacity>
     </View>

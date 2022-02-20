@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useProfileEdit } from 'providers/profileEdit';
@@ -117,10 +118,12 @@ export function RepresentSongSection() {
   const [searchModal, setSearchModal] = useState(false);
   const { songs, setSongs } = useProfileEdit();
   const { searchInfoRef, setSelectedSongs, selectedSongs } = useSongActions();
+  const [songReady, setSongReady] = useState(false);
 
   const onClickAddSong = () => {
     setSelectedSongs(songs);
     setSearchModal(true);
+    setSongReady(false);
   };
 
   useFocusEffect(
@@ -128,6 +131,10 @@ export function RepresentSongSection() {
       searchInfoRef.current = { title: '대표곡 선택', key: 'represent', completeFunc: setSongs };
     }, []),
   );
+
+  useEffect(() => {
+    setSongReady(!searchModal);
+  }, [searchModal]);
 
   return (
     <View style={styles.representContainer}>
@@ -137,7 +144,7 @@ export function RepresentSongSection() {
           <Text style={styles.plusText}>+ 곡 추가</Text>
         </TouchableOpacity>
       </View>
-      <ScrollSong songs={songs}>
+      <ScrollSong songReady={songReady} songs={songs}>
         {songs.map((song) => {
           return (
             <Movable key={song.id} id={song.id} songsCount={songs.length}>
@@ -175,11 +182,13 @@ export default function EditSection({ title, placeholder }) {
         autoCapitalize="none"
         autoCorrect={false}
         placeholderTextColor={COLOR_3}
-        maxLength={title === '닉네임' ? 10 : null}
+        maxLength={title === '닉네임' ? 10 : title === '소개글' ? 17 : null}
         onChangeText={(text) => onChangeValue(title, text)}
       />
-      {title === '닉네임' && (
+      {title === '닉네임' ? (
         <Text style={styles.subText}>* 한글 7자 이내, 영문 포함 10자 이내</Text>
+      ) : (
+        title === '소개글' && <Text style={styles.subText}>* 17자 이내</Text>
       )}
     </View>
   );

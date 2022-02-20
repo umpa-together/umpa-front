@@ -30,6 +30,8 @@ export default function UserIntroduction({ introduction, song, id }) {
 const styles = StyleSheet.create({
   introductionBox: {
     marginTop: 11 * SCALE_HEIGHT,
+    width: 340 * SCALE_WIDTH,
+    justifyContent: 'space-between',
   },
   introductionText: {
     width: 191 * SCALE_WIDTH,

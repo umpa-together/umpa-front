@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, BackHandler } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  BackHandler,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate, goBack } from 'lib/utils/navigation';
@@ -26,16 +33,19 @@ const NextActions = ({ edit, setValidityMsg }) => {
   const { onValidityModal } = useModal();
 
   const onPressNext = async () => {
-    if (validity) {
-      const imageChange = arraySortImage(images, setImages);
-      navigate('DailyUpload', {
-        data: { information, song, images: imageChange },
-        edit,
-      });
-    } else if (!song) {
-      setValidityMsg('※ 데일리 곡을 선택해주세요');
-      onValidityModal();
-    }
+    Keyboard.dismiss();
+    setTimeout(() => {
+      if (validity) {
+        const imageChange = arraySortImage(images, setImages);
+        navigate('DailyUpload', {
+          data: { information, song, images: imageChange },
+          edit,
+        });
+      } else if (!song) {
+        setValidityMsg('※ 데일리 곡을 선택해주세요');
+        onValidityModal();
+      }
+    }, 30);
   };
   useEffect(() => {
     if (information.content.length > 0 && song) {
@@ -86,6 +96,10 @@ export default function DailyCreate({ data, edit }) {
     setActionModal(true);
   };
 
+  const onPressEmpty = () => {
+    Keyboard.dismiss();
+  };
+
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -98,24 +112,26 @@ export default function DailyCreate({ data, edit }) {
   }, []);
 
   return (
-    <View style={style.background}>
-      <Header
-        title={edit ? '데일리 편집' : '데일리 작성'}
-        titleStyle={style.headertitle}
-        landings={[<BackLandings onPressBack={onPressBack} />]}
-        actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
-      />
-      <SongActionsProvider>
-        <CreateSong />
-      </SongActionsProvider>
-      <CreateInput />
-      <CreateImageLists edit={edit} />
-      <KeyboardProvider>
-        <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
-      </KeyboardProvider>
-      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
-      {validityModal && <ValidityModal title={validityMsg} />}
-    </View>
+    <TouchableWithoutFeedback onPress={onPressEmpty}>
+      <View style={style.background}>
+        <Header
+          title={edit ? '데일리 편집' : '데일리 작성'}
+          titleStyle={style.headertitle}
+          landings={[<BackLandings onPressBack={onPressBack} />]}
+          actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
+        />
+        <SongActionsProvider>
+          <CreateSong />
+        </SongActionsProvider>
+        <CreateInput />
+        <CreateImageLists edit={edit} />
+        <KeyboardProvider>
+          <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
+        </KeyboardProvider>
+        <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+        {validityModal && <ValidityModal title={validityMsg} />}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

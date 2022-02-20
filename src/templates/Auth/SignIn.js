@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { COLOR_1 } from 'constants/colors';
 import FS from 'lib/utils/normalize';
 import style from 'constants/styles';
@@ -10,14 +10,20 @@ import SocialLogin from 'components/Auth/SocialLogin';
 import LoginSignUp from 'components/Auth/LoginSignUp';
 
 export default function SignIn() {
+  const onPressEmpty = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={[style.background, styles.container]}>
-      <Header title="로그인" titleStyle={styles.header} />
-      <LogoGreeting />
-      <LoginInput />
-      <SocialLogin />
-      <LoginSignUp />
-    </View>
+    <TouchableWithoutFeedback onPress={onPressEmpty}>
+      <View style={[style.background, styles.container]}>
+        <Header title="로그인" titleStyle={styles.header} />
+        <LogoGreeting />
+        <LoginInput />
+        <SocialLogin />
+        <LoginSignUp />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

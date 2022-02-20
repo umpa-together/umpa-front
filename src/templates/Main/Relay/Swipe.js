@@ -23,6 +23,7 @@ import RecommendButton from 'components/Relay/RecommendButton';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useFocusEffect } from '@react-navigation/native';
 import GuideModal from 'components/Modal/GuideModal';
+import LikeModal from 'components/Modal/LikeModal';
 
 export default function Swipe() {
   const {
@@ -43,7 +44,7 @@ export default function Swipe() {
   const [firstView, setFirstView] = useState(true);
 
   const hiddentranslateX = 800;
-  const rotate = useDerivedValue(() => `${interpolate(translateX.value, [0, 600], [0, 60])}deg`);
+  const rotate = useDerivedValue(() => `${interpolate(translateX.value, [0, 600], [0, 45])}deg`);
 
   const { addedModal, guideModal, setGuideModal } = useModal();
 
@@ -67,7 +68,7 @@ export default function Swipe() {
       translateX.value = context.startX + event.translationX;
     },
     onEnd: (event, context) => {
-      if (Math.abs(event.translationX) < 140) {
+      if (Math.abs(event.velocityX) < 150 && Math.abs(event.translationX) < 100) {
         translateX.value = 0;
         context.startX = translateX.value;
         return;
@@ -172,6 +173,7 @@ export default function Swipe() {
         })
       )}
       <RecommendButton playlistId={playlistId} firstView={firstView} setFirstView={setFirstView} />
+      <LikeModal like={like} />
       <GuideModal modal={guideModal === 'swipe'} setModal={setGuideModal} />
       {addedModal && <AddedModal customContainer={styles.addedModal} />}
       <HarmfulModal />

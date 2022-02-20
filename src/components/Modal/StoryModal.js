@@ -20,6 +20,7 @@ import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
 import PlayAnimation from 'components/PlayAnimation';
 import ProgressProvider from 'providers/progress';
+import CopySongName from 'components/CopySongName';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
@@ -108,21 +109,23 @@ const SongBody = () => {
   return (
     <View style={styles.songContainer}>
       <SongImage url={artwork.url} imgStyle={styles.songImg} />
-      <MoveText
-        isExplicit={contentRating === 'explicit'}
-        container={styles.textArea}
-        text={name}
-        isMove
-        textStyle={styles.name}
-        center
-      />
-      <MoveText
-        container={[styles.textArea, styles.textBetween]}
-        text={artistName}
-        isMove
-        textStyle={styles.artist}
-        center
-      />
+      <CopySongName>
+        <MoveText
+          isExplicit={contentRating === 'explicit'}
+          container={styles.textArea}
+          text={name}
+          isMove
+          textStyle={styles.name}
+          center
+        />
+        <MoveText
+          container={[styles.textArea, styles.textBetween]}
+          text={artistName}
+          isMove
+          textStyle={styles.artist}
+          center
+        />
+      </CopySongName>
     </View>
   );
 };

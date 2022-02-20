@@ -59,10 +59,8 @@ export default function CreateSongList() {
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      setSongReady(true);
-    }, 50);
-  }, [songs]);
+    setSongReady(!searchModal);
+  }, [searchModal]);
 
   return (
     <View style={styles.container}>

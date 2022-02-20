@@ -111,7 +111,10 @@ export default function SwipeCard({ image, card, like, setLike }) {
         <View style={styles.imgContainer}>
           <View style={styles.blurContainerFirst} />
           <View style={styles.blurContainerSecond} />
-          <FastImage source={{ uri: image }} style={[styles.backImageContainer, imageTop]} />
+          <FastImage
+            source={{ uri: image }}
+            style={[styles.backImageContainer, topOffset !== 0 && imageTop]}
+          />
         </View>
       )}
       <View style={[style.flexRow, styles.headerContainer]}>
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
   backImageContainer: {
     width: 375 * SCALE_WIDTH,
     height: 812 * SCALE_HEIGHT,
-    top: -215 * SCALE_HEIGHT,
+    top: -215.5 * SCALE_HEIGHT,
     left: -20 * SCALE_WIDTH,
     borderRadius: 15 * SCALE_HEIGHT,
     position: 'absolute',
