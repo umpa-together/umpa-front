@@ -59,11 +59,7 @@ export default function CreateSongList() {
   );
 
   useEffect(() => {
-    if (searchModal === true) {
-      setSongReady(false);
-    } else {
-      setSongReady(true);
-    }
+    setSongReady(!searchModal);
   }, [searchModal]);
 
   return (
