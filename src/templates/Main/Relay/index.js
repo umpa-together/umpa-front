@@ -16,6 +16,7 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import RelayCardView from 'components/Relay/RelayCardView';
 import { Context as NoticeContext } from 'context/Notice';
+import { useTabRef } from 'providers/tabRef';
 
 const ListsHeader = () => {
   const onClickYoutube = () => {
@@ -47,6 +48,7 @@ export default function () {
   } = useContext(UserContext);
   const { addedModal } = useModal();
   const [loading, setLoading] = useState(false);
+  const { relayRef } = useTabRef();
   const dataFetch = async () => {
     await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation(), setNoticeToken()]);
   };
@@ -114,6 +116,7 @@ export default function () {
           ListFooterComponent={ListFooterComponent}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.6}
+          ref={relayRef}
         />
       )}
       <PlayBar />

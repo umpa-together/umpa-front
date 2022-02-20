@@ -26,9 +26,9 @@ export default memo(function Daily({ daily }) {
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
+        <Footer object={daily} type="daily" />
+        <View style={styles.divider} />
       </TouchableNoDouble>
-      <Footer object={daily} type="daily" />
-      <View style={styles.divider} />
     </View>
   );
 });
@@ -38,14 +38,13 @@ const styles = StyleSheet.create({
     paddingBottom: 4 * SCALE_HEIGHT,
   },
   contentArea: {
-    paddingHorizontal: 18 * SCALE_WIDTH,
     paddingTop: 8 * SCALE_HEIGHT,
-    marginBottom: 20 * SCALE_HEIGHT,
   },
   content: {
     color: COLOR_1,
     fontSize: FS(14),
     lineHeight: 24 * SCALE_HEIGHT,
+    paddingHorizontal: 18 * SCALE_WIDTH,
   },
   songsContainer: {
     paddingLeft: 18 * SCALE_WIDTH,
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: 343 * SCALE_WIDTH,
-    borderBottomColor: '#dcdcdc',
+    borderBottomColor: 'rgba(220, 220, 220, 0.5)',
     borderBottomWidth: 1 * SCALE_WIDTH,
     marginLeft: 16 * SCALE_WIDTH,
   },

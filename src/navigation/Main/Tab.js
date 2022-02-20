@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyAccount from 'screens/Main/Account';
 import Relay from 'screens/Main/Relay';
@@ -9,6 +9,8 @@ import Notice from 'screens/Main/Notice';
 import Icon from 'widgets/Icon';
 import style from 'constants/styles';
 import { MAIN_COLOR } from 'constants/colors';
+import { useTabRef } from 'providers/tabRef';
+import { SCALE_HEIGHT } from 'lib/utils/normalize';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,31 +52,60 @@ const tabLists = [
   },
 ];
 
-const TabScreen = () => (
-  <Tab.Navigator
-    screenOptions={() => ({
+const TabScreen = () => {
+  const { relayRef, feedRef, searchRef, noticeRef } = useTabRef();
+  const [currentScreen, setCurrentScreen] = useState('Relay');
+  const screenOptions = useCallback(
+    () => ({
       headerShown: false,
       activeTintColor: MAIN_COLOR,
       inactiveTintColor: '#4B4B4B',
-    })}
-  >
-    {tabLists.map((tab) => {
-      const { name, title, component, activeIcon, inactiveIcon } = tab;
-      return (
-        <Tab.Screen
-          name={title}
-          key={title}
-          component={component}
-          options={{
-            tabBarLabel: name,
-            tabBarIcon: ({ focused }) => {
-              return <Icon style={style.icons} source={focused ? activeIcon : inactiveIcon} />;
-            },
-          }}
-        />
-      );
-    })}
-  </Tab.Navigator>
-);
+      tabBarStyle: {
+        height: 88 * SCALE_HEIGHT,
+      },
+    }),
+    [],
+  );
+  return (
+    <Tab.Navigator screenOptions={screenOptions}>
+      {tabLists.map((tab) => {
+        const { name, title, component, activeIcon, inactiveIcon } = tab;
+        return (
+          <Tab.Screen
+            name={title}
+            key={title}
+            component={component}
+            listeners={{
+              tabPress: () => {
+                if (currentScreen === title) {
+                  if (title === 'Relay') {
+                    relayRef.current.scrollToOffset({ offset: 0, animated: true });
+                  } else if (title === 'Feed') {
+                    feedRef.current.scrollToOffset({ offset: 0, animated: true });
+                  } else if (title === 'Search') {
+                    searchRef.current.scrollTo({ x: 5, y: 5, animated: true });
+                  } else if (title === 'Notice') {
+                    noticeRef.current.scrollToOffset({ offset: 0, animated: true });
+                  }
+                } else {
+                  setCurrentScreen(title);
+                }
+              },
+            }}
+            options={{
+              tabBarLabel: name,
+              tabBarLabelStyle: {
+                marginBottom: 11 * SCALE_HEIGHT,
+              },
+              tabBarIcon: ({ focused }) => {
+                return <Icon style={style.icons} source={focused ? activeIcon : inactiveIcon} />;
+              },
+            }}
+          />
+        );
+      })}
+    </Tab.Navigator>
+  );
+};
 
 export default TabScreen;

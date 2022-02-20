@@ -63,9 +63,7 @@ export function GenreSection() {
   }, [genreLists]);
   return (
     <View style={styles.genreContainer}>
-      <Text style={styles.title}>
-        선호장르<Text style={styles.accent}>*</Text>
-      </Text>
+      <Text style={[styles.title, styles.accent]}>선호장르 *</Text>
       <TouchableOpacity
         style={[styles.sectionBox, style.flexRow, style.space_between]}
         onPress={onClickSelect}
@@ -145,9 +143,7 @@ export function RepresentSongSection() {
   return (
     <View style={styles.representContainer}>
       <View style={[styles.songHeader, style.flexRow, style.space_between]}>
-        <Text style={styles.title}>
-          대표곡<Text style={styles.accent}>*</Text> (최대 3곡)
-        </Text>
+        <Text style={[styles.title, styles.accent]}>대표곡 * (최대 3곡)</Text>
         <TouchableOpacity style={styles.plusBox} onPress={onClickAddSong}>
           <Text style={styles.plusText}>+ 곡 추가</Text>
         </TouchableOpacity>
@@ -180,7 +176,7 @@ export default function EditSection({ title, placeholder }) {
   return (
     <View style={styles.sectionContainer}>
       <View style={style.flexRow}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, title === '닉네임' && styles.accent]}>{title}</Text>
         {title === '닉네임' && <Text style={styles.accent}>*</Text>}
       </View>
       <TextInput

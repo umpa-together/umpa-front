@@ -9,13 +9,11 @@ import { Provider as DailyProvider } from 'context/Daily';
 import { Provider as AddedProvider } from 'context/Added';
 import ModalProvider from 'providers/modal';
 import TrackPlayerProvider from 'providers/trackPlayer';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { fcmService } from 'lib/utils/fcmService';
 import { localNotificationService } from 'lib/utils/localNotificationService';
-
 import SplashScreen from 'react-native-splash-screen';
+import TabRefProvider from 'providers/tabRef';
 import MainNavigator from './src/navigation';
 
 export default () => {
@@ -63,7 +61,9 @@ export default () => {
                 <RelayProvider>
                   <ModalProvider>
                     <TrackPlayerProvider>
-                      <MainNavigator />
+                      <TabRefProvider>
+                        <MainNavigator />
+                      </TabRefProvider>
                     </TrackPlayerProvider>
                   </ModalProvider>
                 </RelayProvider>

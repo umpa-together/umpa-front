@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { navigate } from 'lib/utils/navigation';
 import { Context as RelayContext } from 'context/Relay';
@@ -23,7 +23,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
   const {
     state: { user },
   } = useContext(UserContext);
-  const { searchInfoRef, selectedSongs } = useSongActions();
+  const { searchInfoRef, selectedSongs, setSelectedSongs } = useSongActions();
   const [searchModal, setSearchModal] = useState(false);
   const { onValidityModal } = useModal();
 
@@ -68,6 +68,12 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
       };
     }, [selectedSongs]),
   );
+
+  useEffect(() => {
+    if (!searchModal) {
+      setSelectedSongs([]);
+    }
+  }, [searchModal]);
 
   return (
     <View style={[style.flexRow, style.space_between, styles.container]}>

@@ -63,7 +63,11 @@ const editPlaylist =
         playlistId,
       });
       dispatch({ type: 'getPlaylist', payload: response.data });
-      navigate('SelectedPlaylist');
+      popToTop();
+      navigate('SelectedPlaylist', {
+        id: response.data._id,
+        postUserId: response.data.postUserId,
+      });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with editPlaylist' });
     }
