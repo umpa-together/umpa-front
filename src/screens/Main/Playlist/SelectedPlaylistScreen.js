@@ -4,12 +4,12 @@ import StatusBar from 'components/StatusBar';
 import { Provider as ReportProvider } from 'context/Report';
 
 export default function ({ route }) {
-  const { post, id, postUserId } = route.params;
+  const { id, postUserId } = route.params;
   return (
     <>
       <StatusBar />
       <ReportProvider>
-        <SelectedPlaylist post={post} id={id} postUserId={postUserId} />
+        <SelectedPlaylist id={id} postUserId={postUserId} />
       </ReportProvider>
     </>
   );

@@ -54,14 +54,17 @@ export default function Footer({ object, type }) {
       </View>
       <View style={style.flexRow}>
         <TouchableOpacity onPress={onClickLikes}>
-          <Icon
-            source={
-              isLike
-                ? require('public/icons/like-filled.png')
-                : require('public/icons/like-empty.png')
-            }
-            style={styles.icon}
-          />
+          <View style={style.flexRow}>
+            <Icon
+              source={
+                isLike
+                  ? require('public/icons/like-filled.png')
+                  : require('public/icons/like-empty.png')
+              }
+              style={styles.icon}
+            />
+            <Text style={styles.indicator}>{likes && likes.length > 0 && likes.length}</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={onClickShare}>
           <Icon source={require('public/icons/share.png')} style={styles.icon} />

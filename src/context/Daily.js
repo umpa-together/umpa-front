@@ -54,11 +54,15 @@ const addDaily =
 
 const editDaily =
   (dispatch) =>
-  async ({ textcontent, song, hashtag, DailyId }) => {
+  async ({ textcontent, song, hashtag, dailyId }) => {
     try {
-      const response = await server.post('/daily/edit', { textcontent, song, hashtag, DailyId });
+      const response = await server.post('/daily/edit', { textcontent, song, hashtag, dailyId });
       dispatch({ type: 'getDaily', payload: response.data });
-      navigate('SelectedDaily');
+      popToTop();
+      navigate('SelectedDaily', {
+        id: response.data._id,
+        postUserId: response.data.postUserId._id,
+      });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with addDaily' });
     }

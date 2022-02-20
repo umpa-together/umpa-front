@@ -4,13 +4,13 @@ import SelectedDaily from 'templates/Main/Daily/SelectedDaily';
 import { Provider as ReportProvider } from 'context/Report';
 
 export default function ({ route }) {
-  const { post, id, postUserId } = route.params;
+  const { id, postUserId } = route.params;
 
   return (
     <>
       <StatusBar />
       <ReportProvider>
-        <SelectedDaily post={post} id={id} postUserId={postUserId} />
+        <SelectedDaily id={id} postUserId={postUserId} />
       </ReportProvider>
     </>
   );

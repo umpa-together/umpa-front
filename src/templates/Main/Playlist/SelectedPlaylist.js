@@ -25,6 +25,7 @@ import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
 import LoadingIndicator from 'components/LoadingIndicator';
 import KeyboardProvider from 'providers/keyboard';
+import GuideModal from 'components/Modal/GuideModal';
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -60,7 +61,8 @@ export default function SelectedPlaylist({ id, postUserId }) {
   } = useContext(PlaylistContext);
   const { postAddedPlaylist } = useContext(AddedContext);
   const { postReport } = useContext(ReportContext);
-  const { addedModal } = useModal();
+  const { addedModal, guideModal, setGuideModal } = useModal();
+
   const {
     state: { user },
     getMyInformation,
@@ -172,6 +174,11 @@ export default function SelectedPlaylist({ id, postUserId }) {
           SendList({ playlist });
         }
       };
+  useEffect(() => {
+    if (user && !user.guide.playlist) {
+      setGuideModal('playlist');
+    }
+  }, [user]);
 
   const selectInfo = { func: selectFunction, list: selectLists };
   return (
@@ -205,6 +212,7 @@ export default function SelectedPlaylist({ id, postUserId }) {
       ) : (
         <LoadingIndicator />
       )}
+      <GuideModal modal={guideModal === 'playlist'} setModal={setGuideModal} />
     </View>
   );
 }

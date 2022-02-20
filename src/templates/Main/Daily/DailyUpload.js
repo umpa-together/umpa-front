@@ -35,7 +35,7 @@ const BackLandings = ({ edit }) => {
 
   return (
     <TouchableOpacity onPress={onPressBack}>
-      <Icon source={require('public/icons/back-40.png')} style={style.icons} />
+      <Icon source={require('public/icons/back-40.png')} style={[style.icons, styles.iconMargin]} />
     </TouchableOpacity>
   );
 };
@@ -104,5 +104,8 @@ const styles = StyleSheet.create({
   containerStyle: {
     marginLeft: 21 * SCALE_WIDTH,
     marginTop: 10 * SCALE_HEIGHT,
+  },
+  iconMargin: {
+    right: 10 * SCALE_WIDTH,
   },
 });

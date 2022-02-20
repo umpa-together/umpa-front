@@ -12,6 +12,7 @@ export default function DailyCreateProvider({ children }) {
   const [information, setInformation] = useState({
     content: '',
     hashtags: [],
+    dailyId: '',
   });
   const [song, setSong] = useState(null);
   const [images, setImages] = useState([]);
@@ -32,19 +33,19 @@ export default function DailyCreateProvider({ children }) {
   };
 
   const onChangeValue = (value) => {
-    setInformation({
-      ...information,
+    setInformation((prev) => ({
+      ...prev,
       content: value,
-    });
+    }));
   };
 
   const onClickAddHashtag = (textRef) => {
     const addhashtag = (txt) => {
       if (txt !== '' && !information.hashtags.includes(txt)) {
-        setInformation({
-          ...information,
-          hashtags: [...information.hashtags, txt],
-        });
+        setInformation((prev) => ({
+          ...prev,
+          hashtags: [...prev.hashtags, txt],
+        }));
         return true;
       }
       return false;
@@ -63,10 +64,10 @@ export default function DailyCreateProvider({ children }) {
   };
 
   const onClickDeleteHashtag = (text) => {
-    setInformation({
-      ...information,
-      hashtags: information.hashtags.filter((item) => item !== text),
-    });
+    setInformation((prev) => ({
+      ...prev,
+      hashtags: prev.hashtags.filter((item) => item !== text),
+    }));
   };
 
   const onClickDeleteSong = () => {
@@ -83,7 +84,7 @@ export default function DailyCreateProvider({ children }) {
         textcontent: information.content,
         song,
         hashtag: information.hashtags,
-        DailyId: information.dailyId,
+        dailyId: information.dailyId,
       });
     } else {
       const fd = new FormData();
@@ -103,7 +104,6 @@ export default function DailyCreateProvider({ children }) {
         fd,
       });
     }
-
     getMyInformation();
   };
 

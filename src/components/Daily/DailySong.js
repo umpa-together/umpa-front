@@ -13,7 +13,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import HapticFeedback from 'lib/utils/haptic';
 
 export default memo(function DailySong({ song, containerStyle, time, selected }) {
-  const { onClickSong, isPlayingId } = useTrackPlayer();
+  const { onClickSong, isPlayingId, addTrackSong } = useTrackPlayer();
   const {
     id,
     attributes: { contentRating, name, artistName },
@@ -33,9 +33,10 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
 
   useEffect(() => {
     if (selected && contentRating !== 'explicit') {
-      onClickSong(song);
+      addTrackSong(song);
     }
   }, []);
+
   return (
     <View style={[containerStyle, style.flexRow, style.space_between]}>
       <TouchableOpacity

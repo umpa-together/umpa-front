@@ -183,6 +183,7 @@ export default function ({ id }) {
     func: reportActionFunction,
     list: actionLists,
   };
+
   return (
     <View style={style.background}>
       {selectedRelay && swipeSongs && (

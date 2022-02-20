@@ -123,8 +123,6 @@ const styles = StyleSheet.create({
   activeText: {
     fontSize: FS(14),
     color: MAIN_COLOR,
-    paddingVertical: 10 * SCALE_WIDTH,
-    paddingHorizontal: 10 * SCALE_WIDTH,
   },
   inactiveText: {
     fontSize: FS(14),

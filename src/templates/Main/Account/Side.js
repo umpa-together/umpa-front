@@ -118,7 +118,7 @@ const Feedback = () => {
         <TextInput
           value={feedback}
           onChangeText={onChangeText}
-          placeholder="피드백 및 건의사항을 남겨주세요. &#13;&#10;앱을 더 좋은 방향으로 발전시키고자 회원분들의 사소한 &#13;&#10;의견에도 귀 기울이겠습니다."
+          placeholder="음파 앱 이용에 지장을 겪고 계시거나 건의사항이 있으시다면 아래에 남겨주세요.&#13;&#13;보내주신 의견은 음파 팀 전원이 함께 읽고 고민하여 음파를 더 좋은 방향으로 발전시키도록 하겠습니다.&#13;&#13;소중한 의견 감사드립니다:)"
           autoCapitalize="none"
           autoCorrect={false}
           multiline
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 20 * SCALE_HEIGHT,
+    bottom: 60 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
   },
   active: {
