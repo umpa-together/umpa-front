@@ -133,11 +133,7 @@ export function RepresentSongSection() {
   );
 
   useEffect(() => {
-    if (searchModal === true) {
-      setSongReady(false);
-    } else {
-      setSongReady(true);
-    }
+    setSongReady(!searchModal);
   }, [searchModal]);
 
   return (
