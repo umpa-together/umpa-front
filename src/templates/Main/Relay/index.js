@@ -15,6 +15,7 @@ import Text from 'components/Text';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1 } from 'constants/colors';
 import RelayCardView from 'components/Relay/RelayCardView';
+import { Context as NoticeContext } from 'context/Notice';
 
 const ListsHeader = () => {
   const onClickYoutube = () => {
@@ -38,6 +39,8 @@ export default function () {
     initRelay,
     getNextRelayLists,
   } = useContext(RelayContext);
+
+  const { setNoticeToken } = useContext(NoticeContext);
   const {
     getMyInformation,
     state: { user },
@@ -45,7 +48,7 @@ export default function () {
   const { addedModal } = useModal();
   const [loading, setLoading] = useState(false);
   const dataFetch = async () => {
-    await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation()]);
+    await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation(), setNoticeToken()]);
   };
   const getData = async () => {
     if (relayLists.length >= 20 && !notNextRelay) {
