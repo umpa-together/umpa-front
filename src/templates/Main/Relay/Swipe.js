@@ -24,6 +24,7 @@ import HarmfulModal from 'components/Modal/HarmfulModal';
 import { useFocusEffect } from '@react-navigation/native';
 import GuideModal from 'components/Modal/GuideModal';
 import LikeModal from 'components/Modal/LikeModal';
+import EmptySwipe from 'components/Relay/EmptySwipe';
 
 export default function Swipe() {
   const {
@@ -42,6 +43,7 @@ export default function Swipe() {
   const [isEnd, setIsEnd] = useState(false);
   const [like, setLike] = useState(false);
   const [firstView, setFirstView] = useState(true);
+  const [swipeEnd, setSwipeEnd] = useState(false);
 
   const hiddentranslateX = 800;
   const rotate = useDerivedValue(() => `${interpolate(translateX.value, [0, 600], [0, 45])}deg`);
@@ -127,6 +129,9 @@ export default function Swipe() {
       } else if (swipeSongs[currentIdx]) {
         addTrackSong(swipeSongs[currentIdx].song);
       }
+      if (swipeSongs.length === currentIdx) {
+        setSwipeEnd(true);
+      }
     }, [currentIdx, firstView]),
   );
 
@@ -152,6 +157,8 @@ export default function Swipe() {
         <View>
           <SwipeCard image={image} card={representCard} like={like} setLike={setLike} />
         </View>
+      ) : swipeEnd ? (
+        <EmptySwipe />
       ) : (
         swipeSongs.map((item, index) => {
           return (
@@ -172,7 +179,12 @@ export default function Swipe() {
           );
         })
       )}
-      <RecommendButton playlistId={playlistId} firstView={firstView} setFirstView={setFirstView} />
+      <RecommendButton
+        swipeEnd={swipeEnd}
+        playlistId={playlistId}
+        firstView={firstView}
+        setFirstView={setFirstView}
+      />
       <LikeModal like={like} />
       <GuideModal modal={guideModal === 'swipe'} setModal={setGuideModal} />
       {addedModal && <AddedModal customContainer={styles.addedModal} />}

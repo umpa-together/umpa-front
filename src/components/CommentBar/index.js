@@ -47,6 +47,7 @@ export default function CommentBar() {
       <View style={[keyboardStyle, style.flexRow, styles.container]}>
         <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
         <TextInput
+          textAlignVertical="center"
           style={styles.textInput}
           onChangeText={onChangeText}
           placeholder="코멘트를 남겨주세요"
@@ -64,14 +65,17 @@ export default function CommentBar() {
 
 const styles = StyleSheet.create({
   container: {
-    height: 68 * SCALE_HEIGHT,
-    paddingHorizontal: 13 * SCALE_WIDTH,
+    height: 88 * SCALE_HEIGHT,
+    paddingTop: 12 * SCALE_HEIGHT,
+    paddingLeft: 19 * SCALE_WIDTH,
+    paddingRight: 12 * SCALE_WIDTH,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
       height: -1 * SCALE_WIDTH,
       width: 0,
     },
+    alignItems: 'flex-start',
     shadowRadius: 2 * SCALE_WIDTH,
     shadowOpacity: 0.1,
     elevation: 10,
@@ -84,8 +88,14 @@ const styles = StyleSheet.create({
   textInput: {
     marginLeft: 18 * SCALE_WIDTH,
     width: 257 * SCALE_WIDTH,
+    lineHeight: 23 * SCALE_HEIGHT,
+    paddingVertical: 14 * SCALE_HEIGHT,
+    fontSize: FS(14),
   },
   submitButton: {
+    position: 'absolute',
+    right: 12 * SCALE_WIDTH,
+    top: 12 * SCALE_HEIGHT,
     width: 45 * SCALE_WIDTH,
     height: 32 * SCALE_HEIGHT,
     justifyContent: 'center',

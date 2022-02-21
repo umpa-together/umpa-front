@@ -15,7 +15,7 @@ export default function GuideBox({ time }) {
         <Timer time={time} timeStyle={styles.time} />
       </View>
       <Text style={styles.text}>
-        플레이리스트에 어울리는 <Text style={styles.bold}>곡</Text>을 투표해주세요!
+        릴레이 플레이리스트에 어울리는 <Text style={styles.bold}>곡</Text>을 투표해주세요!
       </Text>
     </View>
   );
@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: COLOR_1,
-    fontSize: FS(16),
+    fontSize: FS(14),
     marginLeft: 19 * SCALE_WIDTH,
     marginTop: 3 * SCALE_HEIGHT,
   },
   bold: {
     fontWeight: 'bold',
-    fontSize: FS(17),
+    fontSize: FS(14),
   },
   icon: {
     width: 24 * SCALE_WIDTH,

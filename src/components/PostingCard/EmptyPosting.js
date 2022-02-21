@@ -49,7 +49,7 @@ export default function EmptyPosting({ my, opt }) {
 
 const styles = StyleSheet.create({
   myHeight: {
-    marginTop: 100 * SCALE_HEIGHT,
+    marginTop: 90 * SCALE_HEIGHT,
   },
   otherHeight: {
     marginTop: 130 * SCALE_HEIGHT,

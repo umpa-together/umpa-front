@@ -26,7 +26,7 @@ export default function Information() {
       <FastImage source={{ uri: image }} style={styles.img} />
       <View style={styles.infoContainer}>
         <View style={[styles.statusBox, !currentStatus && styles.completeBox]}>
-          <Text style={styles.statusText}>{currentStatus ? '진행중' : '마감'}</Text>
+          <Text style={styles.statusText}>{currentStatus ? '진행중' : '플리완성'}</Text>
         </View>
         <Text style={styles.title}>{title.map((item) => `${item} `)}</Text>
         <View style={[style.flexRow, styles.callengerContainer]}>
@@ -95,6 +95,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   completeBox: {
-    backgroundColor: COLOR_5,
+    backgroundColor: '#85A0FF',
+    width: 47 * SCALE_WIDTH,
+    borderRadius: 6 * SCALE_HEIGHT,
   },
 });

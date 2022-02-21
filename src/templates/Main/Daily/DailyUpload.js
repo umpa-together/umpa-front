@@ -69,7 +69,7 @@ export default function DailyUpload({ data, edit }) {
       />
       <UploadInfo />
       <View style={styles.hashtagContainer}>
-        <UploadHashtag info={info} containerStyle={styles.containerStyle} />
+        <UploadHashtag daily info={info} containerStyle={styles.containerStyle} />
       </View>
     </View>
   );

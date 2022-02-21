@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
-import { MAIN_COLOR } from 'constants/colors';
+import { MAIN_COLOR, SUB_COLOR, COLOR_3 } from 'constants/colors';
 import style from 'constants/styles';
 import HashtagModal from 'components/Modal/HashtagModal';
 import Text from 'components/Text';
 
-export default function UploadHashtag({ info, containerStyle }) {
+export default function UploadHashtag({ daily, info, containerStyle }) {
   const [hashtagModal, setHashtagModal] = useState(false);
 
   const hashtags = info.data;
@@ -20,13 +20,26 @@ export default function UploadHashtag({ info, containerStyle }) {
       <View style={[style.flexRow, containerStyle]}>
         {hashtags.map((item) => {
           return (
-            <View key={item} style={styles.hashtagBox}>
-              <Text style={styles.hashtagsStyle}>{`# ${item}`}</Text>
+            <View key={item} style={[styles.hashtagBox, daily && styles.dailyColor]}>
+              <Text style={[styles.hashtagsStyle, daily && styles.dailyColor]}>{`# ${item}`}</Text>
             </View>
           );
         })}
-        <TouchableOpacity onPress={onPressAdd} style={[styles.hashtagBox, styles.hashtagEdit]}>
-          <Text style={[styles.hashtagsStyle, styles.hashtagEdit]}>
+        <TouchableOpacity
+          onPress={onPressAdd}
+          style={[
+            styles.hashtagBox,
+            hashtagCheck && styles.hashtagEdit,
+            daily && styles.dailyColor,
+          ]}
+        >
+          <Text
+            style={[
+              styles.hashtagsStyle,
+              hashtagCheck && styles.hashtagEdit,
+              daily && styles.dailyColor,
+            ]}
+          >
             {hashtagCheck ? '+ 태그 편집' : '+ 태그 추가'}
           </Text>
         </TouchableOpacity>
@@ -52,7 +65,11 @@ const styles = StyleSheet.create({
     color: MAIN_COLOR,
   },
   hashtagEdit: {
-    color: MAIN_COLOR,
-    borderColor: MAIN_COLOR,
+    color: COLOR_3,
+    borderColor: COLOR_3,
+  },
+  dailyColor: {
+    borderColor: SUB_COLOR,
+    color: SUB_COLOR,
   },
 });
