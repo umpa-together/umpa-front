@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     height: 92 * SCALE_HEIGHT,
     backgroundColor: MAIN_COLOR,
     alignItems: 'center',
-    borderWidth: 1,
     position: 'absolute',
     bottom: -10 * SCALE_HEIGHT,
   },
