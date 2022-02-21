@@ -7,7 +7,7 @@ import Text from 'components/Text';
 import { navigate } from 'lib/utils/navigation';
 import { useTrackPlayer } from 'providers/trackPlayer';
 
-export default function RecommendButton({ playlistId, firstView, setFirstView }) {
+export default function RecommendButton({ swipeEnd, playlistId, firstView, setFirstView }) {
   const { stopTrackSong } = useTrackPlayer();
 
   const onClickMove = async () => {
@@ -20,7 +20,10 @@ export default function RecommendButton({ playlistId, firstView, setFirstView })
   };
 
   return (
-    <TouchableNoDouble style={styles.container} onPress={onClickMove}>
+    <TouchableNoDouble
+      style={[styles.container, !swipeEnd && !firstView && styles.inactiveContainer]}
+      onPress={onClickMove}
+    >
       <Text style={styles.text}>{firstView ? '투표 시작하기' : '나도 곡 추천하기'}</Text>
     </TouchableNoDouble>
   );
@@ -43,5 +46,10 @@ const styles = StyleSheet.create({
     fontSize: FS(16),
     color: '#FFF',
     fontWeight: 'bold',
+  },
+  inactiveContainer: {
+    borderWidth: 2 * SCALE_WIDTH,
+    borderColor: '#E4E4E450',
+    backgroundColor: '#FFFFFF00',
   },
 });

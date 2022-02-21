@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, memo } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import ProfileImage from 'widgets/ProfileImage';
 import style from 'constants/styles';
@@ -18,7 +18,7 @@ import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
 import HapticFeedback from 'lib/utils/haptic';
 
-const Footer = ({ song, like, setLike }) => {
+const Footer = memo(({ song, like, setLike }) => {
   const { id } = song;
   const { isPlayingId, onClickPlayBar, state, addTrackSong } = useTrackPlayer();
   const { postAddedSong } = useContext(AddedContext);
@@ -71,7 +71,7 @@ const Footer = ({ song, like, setLike }) => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default function SwipeCard({ image, card, like, setLike }) {
   const {

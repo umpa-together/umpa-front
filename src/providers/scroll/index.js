@@ -78,11 +78,19 @@ export default function ScrollProvider({ children }) {
     return result;
   };
 
-  const onLayoutScroll = () => {
-    scrollViewRef.current.measure((x, y, width, height, pagex, pagey) => {
-      setTopOffset(pagey);
-      setLeftOffset(pagex);
-    });
+  const onLayoutScroll = ({ initRender, song }) => {
+    if (song && !initRender) {
+      scrollViewRef.current.measure((x, y, width, height, pagex, pagey) => {
+        setTopOffset(pagey);
+        setLeftOffset(pagex);
+      });
+    }
+    if (!song) {
+      scrollViewRef.current.measure((x, y, width, height, pagex, pagey) => {
+        setTopOffset(pagey);
+        setLeftOffset(pagex);
+      });
+    }
   };
 
   const updatePosition = (songs) => {

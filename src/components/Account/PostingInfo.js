@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   },
   elementContainer: {
     width: 44 * SCALE_WIDTH,
-    height: 34 * SCALE_HEIGHT,
     alignItems: 'center',
   },
   profileImage: {
