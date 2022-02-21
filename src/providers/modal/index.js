@@ -35,7 +35,7 @@ export default function ModalProvider({ children }) {
     } else if (opt === 'copy') {
       setAddedModalText('노래제목을 복사하였습니다.');
     } else {
-      setAddedModalText('플레이리스트를 담았습니다.');
+      setAddedModalText('플레이리스트가 저장되었습니다.');
     }
     setAddedModal(true);
     setTimeout(() => {
