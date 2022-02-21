@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import SelectedInfo from 'components/Playlist/SelectedInfo';
