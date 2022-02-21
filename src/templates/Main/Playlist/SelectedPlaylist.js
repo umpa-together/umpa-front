@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import SelectedInfo from 'components/Playlist/SelectedInfo';
@@ -21,11 +21,44 @@ import Footer from 'components/Footer';
 import { Context as AddedContext } from 'context/Added';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import ActionModal from 'components/Modal/ActionModal';
-import SendList from 'lib/utils/kakaoShare';
 import CommentProvider from 'providers/comment';
 import LoadingIndicator from 'components/LoadingIndicator';
 import KeyboardProvider from 'providers/keyboard';
 import GuideModal from 'components/Modal/GuideModal';
+
+const AddedAction = ({ playlistId }) => {
+  const {
+    state: { playlists },
+    postAddedPlaylist,
+    deleteAddedPlaylist,
+  } = useContext(AddedContext);
+  const { onClickAdded } = useModal();
+
+  const isAdded = playlists.map((added) => added.playlistId._id).includes(playlistId);
+  const onClickAddedPlaylist = () => {
+    if (isAdded) {
+      deleteAddedPlaylist({
+        id: playlists.filter((item) => item.playlistId._id === playlistId)[0]._id,
+      });
+    } else {
+      postAddedPlaylist({ id: playlistId });
+      onClickAdded({ opt: 'playlist' });
+    }
+  };
+
+  return (
+    <TouchableOpacity onPress={onClickAddedPlaylist}>
+      <Icon
+        source={
+          isAdded
+            ? require('public/icons/playlist-add-active.png')
+            : require('public/icons/playlist-add-inactive.png')
+        }
+        style={styles.icon}
+      />
+    </TouchableOpacity>
+  );
+};
 
 const PostUserAction = ({ setSelectModal }) => {
   const onClickMenu = () => {
@@ -33,7 +66,10 @@ const PostUserAction = ({ setSelectModal }) => {
   };
   return (
     <TouchableOpacity onPress={onClickMenu} activeOpacity={0.5}>
-      <Icon source={require('public/icons/dot-menu.png')} style={[styles.actions, style.icons]} />
+      <Icon
+        source={require('public/icons/playlist-dot.png')}
+        style={[styles.actions, style.icons]}
+      />
     </TouchableOpacity>
   );
 };
@@ -59,7 +95,6 @@ export default function SelectedPlaylist({ id, postUserId }) {
     getSelectedPlaylist,
     deletePlaylist,
   } = useContext(PlaylistContext);
-  const { postAddedPlaylist } = useContext(AddedContext);
   const { postReport } = useContext(ReportContext);
   const { addedModal, guideModal, setGuideModal } = useModal();
 
@@ -97,11 +132,7 @@ export default function SelectedPlaylist({ id, postUserId }) {
         { title: '편집하기', key: 'edit' },
         { title: '삭제하기', key: 'delete' },
       ]
-    : [
-        { title: '신고하기', key: 'report' },
-        { title: '플레이리스트 저장', key: 'save' },
-        { title: '플레이리스트 공유', key: 'share' },
-      ];
+    : [{ title: '신고하기', key: 'report' }];
 
   const deleteActionLists = [
     { title: '취소하기', key: 'cancel' },
@@ -168,10 +199,6 @@ export default function SelectedPlaylist({ id, postUserId }) {
           setTimeout(() => {
             setActionModal(true);
           }, 400);
-        } else if (key === 'save') {
-          postAddedPlaylist({ id: playlist._id });
-        } else if (key === 'share') {
-          SendList({ playlist });
         }
       };
   useEffect(() => {
@@ -187,7 +214,10 @@ export default function SelectedPlaylist({ id, postUserId }) {
         title="플레이리스트"
         titleStyle={style.headertitle}
         back
-        actions={[<PostUserAction setSelectModal={setSelectModal} />]}
+        actions={[
+          <AddedAction playlistId={playlist._id} />,
+          <PostUserAction setSelectModal={setSelectModal} />,
+        ]}
       />
       {comment ? (
         <>
@@ -230,6 +260,11 @@ const styles = StyleSheet.create({
     marginBottom: 16 * SCALE_HEIGHT,
   },
   actions: {
-    right: -10 * SCALE_WIDTH,
+    right: -15 * SCALE_WIDTH,
+  },
+  icon: {
+    width: 40 * SCALE_WIDTH,
+    height: 40 * SCALE_WIDTH,
+    right: -15 * SCALE_WIDTH,
   },
 });

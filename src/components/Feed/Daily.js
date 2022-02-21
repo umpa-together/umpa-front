@@ -9,23 +9,26 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
 import { COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
+import SelectedHashtag from 'components/SelectedHashtag';
 import FollowAction from './FollowAction';
 
 export default memo(function Daily({ daily }) {
-  const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
+  const { _id: id, postUserId: postUser, song, textcontent: content, image, hashtag } = daily;
   const onClickDaily = () => {
     push('SelectedDaily', { id, postUserId: postUser._id });
   };
-
   return (
     <View style={styles.container}>
       <PostUser user={postUser} action={<FollowAction id={postUser._id} />} />
-      {image.length > 0 && <DailyImage image={image} />}
       <DailySong song={song} containerStyle={styles.dailySongContainer} />
+      {image.length > 0 && <DailyImage image={image} />}
       <TouchableNoDouble style={styles.contentArea} onPress={onClickDaily} activeOpacity={0.8}>
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
+        {hashtag.length > 0 && (
+          <SelectedHashtag hashtag={hashtag} customContainer={styles.hashtagContainer} />
+        )}
         <Footer object={daily} type="daily" />
         <View style={styles.divider} />
       </TouchableNoDouble>
@@ -59,5 +62,10 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(220, 220, 220, 0.5)',
     borderBottomWidth: 1 * SCALE_WIDTH,
     marginLeft: 16 * SCALE_WIDTH,
+  },
+  hashtagContainer: {
+    paddingLeft: 15 * SCALE_WIDTH,
+    paddingBottom: 11 * SCALE_HEIGHT,
+    paddingTop: 16 * SCALE_HEIGHT,
   },
 });

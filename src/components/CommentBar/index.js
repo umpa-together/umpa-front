@@ -50,7 +50,7 @@ export default function CommentBar() {
           textAlignVertical="center"
           style={styles.textInput}
           onChangeText={onChangeText}
-          placeholder="코멘트를 남겨주세요"
+          placeholder="댓글을 입력해주세요"
           autoCorrect={false}
           ref={commentRef}
           multiline

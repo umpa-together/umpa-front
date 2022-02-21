@@ -17,6 +17,8 @@ import { COLOR_1 } from 'constants/colors';
 import RelayCardView from 'components/Relay/RelayCardView';
 import { Context as NoticeContext } from 'context/Notice';
 import { useTabRef } from 'providers/tabRef';
+import { Context as AddedContext } from 'context/Added';
+import appRate from 'lib/utils/appRate';
 
 const ListsHeader = () => {
   const onClickYoutube = () => {
@@ -40,7 +42,7 @@ export default function () {
     initRelay,
     getNextRelayLists,
   } = useContext(RelayContext);
-
+  const { getAddedPlaylist } = useContext(AddedContext);
   const { setNoticeToken } = useContext(NoticeContext);
   const {
     getMyInformation,
@@ -50,7 +52,13 @@ export default function () {
   const [loading, setLoading] = useState(false);
   const { relayRef } = useTabRef();
   const dataFetch = async () => {
-    await Promise.all([getCurrentRelay(), getRelayLists(), getMyInformation(), setNoticeToken()]);
+    await Promise.all([
+      getCurrentRelay(),
+      getRelayLists(),
+      getMyInformation(),
+      getAddedPlaylist(),
+      setNoticeToken(),
+    ]);
   };
   const getData = async () => {
     if (relayLists.length >= 20 && !notNextRelay) {
@@ -68,6 +76,7 @@ export default function () {
 
   useEffect(() => {
     dataFetch();
+    appRate();
   }, []);
 
   useFocusEffect(

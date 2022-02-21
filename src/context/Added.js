@@ -7,6 +7,13 @@ const addedReducer = (state, action) => {
       return { ...state, songLists: action.payload };
     case 'getAddedPlaylist':
       return { ...state, playlists: action.payload };
+    case 'postAddedPlaylist':
+      return { ...state, playlists: [action.payload].concat(state.playlists) };
+    case 'deleteAddedPlaylist':
+      return {
+        ...state,
+        playlists: state.playlists.filter((playlist) => playlist._id !== action.payload),
+      };
     case 'error':
       return { ...state, errorMessage: action.payload };
     default:
@@ -48,7 +55,8 @@ const postAddedPlaylist =
   (dispatch) =>
   async ({ id }) => {
     try {
-      await server.post(`/added/playlist/${id}`);
+      const response = await server.post(`/added/playlist/${id}`);
+      dispatch({ type: 'postAddedPlaylist', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with postAddedPlaylist' });
     }
@@ -67,8 +75,8 @@ const deleteAddedPlaylist =
   (dispatch) =>
   async ({ id }) => {
     try {
-      const response = await server.delete(`/added/playlist/${id}`);
-      dispatch({ type: 'getAddedPlaylist', payload: response.data });
+      await server.delete(`/added/playlist/${id}`);
+      dispatch({ type: 'deleteAddedPlaylist', payload: id });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with deleteAddedPlaylist' });
     }

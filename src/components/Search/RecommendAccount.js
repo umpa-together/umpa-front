@@ -30,15 +30,15 @@ export default function RecommendAcocunt() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 34 * SCALE_HEIGHT,
+    marginTop: 41 * SCALE_HEIGHT,
   },
   title: {
-    fontSize: FS(16),
+    fontSize: FS(14),
     color: COLOR_1,
     marginLeft: 16 * SCALE_WIDTH,
   },
   flatList: {
-    paddingHorizontal: 11.5 * SCALE_WIDTH,
-    paddingVertical: 12 * SCALE_HEIGHT,
+    paddingHorizontal: 16 * SCALE_WIDTH,
+    paddingVertical: 15 * SCALE_HEIGHT,
   },
 });

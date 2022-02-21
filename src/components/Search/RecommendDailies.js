@@ -42,17 +42,13 @@ export default function RecommendDailies() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 22 * SCALE_HEIGHT,
+    marginTop: 26 * SCALE_HEIGHT,
   },
   title: {
-    fontSize: FS(16),
+    fontSize: FS(14),
     color: COLOR_1,
-    marginBottom: 2 * SCALE_HEIGHT,
+    marginBottom: 5 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
-    marginRight: 8 * SCALE_WIDTH,
-  },
-  flatList: {
-    paddingHorizontal: 11.5 * SCALE_WIDTH,
   },
   wrap: {
     flexWrap: 'wrap',
