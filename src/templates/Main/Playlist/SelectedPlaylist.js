@@ -148,7 +148,7 @@ export default function SelectedPlaylist({ id, postUserId }) {
           });
         } else if (key === 'delete') {
           setActions({
-            mainTitle: '삭제된 플레이리스트는 복구할 수 없습니다. 삭제하시겠습니까?',
+            mainTitle: '삭제된 플레이리스트는 복구할 수 없습니다. \n삭제하시겠습니까?',
             func: deleteActionFunction,
             list: deleteActionLists,
           });
