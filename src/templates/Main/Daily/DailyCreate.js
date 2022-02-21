@@ -27,7 +27,6 @@ import Icon from 'widgets/Icon';
 import ActionModal from 'components/Modal/ActionModal';
 
 const NextActions = ({ edit, setValidityMsg }) => {
-  const [validity, setValidity] = useState(false);
   const { information, song, images, setImages } = useDailyCreate();
   const { arraySortImage } = useScroll();
   const { onValidityModal } = useModal();
@@ -35,27 +34,30 @@ const NextActions = ({ edit, setValidityMsg }) => {
   const onPressNext = async () => {
     Keyboard.dismiss();
     setTimeout(() => {
-      if (validity) {
+      if (information.content.length > 0 && song) {
         const imageChange = arraySortImage(images, setImages);
         navigate('DailyUpload', {
           data: { information, song, images: imageChange },
           edit,
         });
-      } else if (!song) {
-        setValidityMsg('※ 데일리 곡을 선택해주세요');
+      } else {
+        if (!song) {
+          setValidityMsg('※ 데일리 곡을 선택해주세요');
+        } else if (information.content.length === 0) {
+          setValidityMsg('※ 데일리 내용을 입력해주세요');
+        }
         onValidityModal();
       }
     }, 30);
   };
-  useEffect(() => {
-    if (information.content.length > 0 && song) {
-      setValidity(true);
-    }
-  }, [information, song]);
 
   return (
     <TouchableOpacity onPress={onPressNext}>
-      <Text style={validity ? styles.activeText : styles.inactiveText}>다음</Text>
+      <Text
+        style={information.content.length > 0 && song ? styles.activeText : styles.inactiveText}
+      >
+        다음
+      </Text>
     </TouchableOpacity>
   );
 };

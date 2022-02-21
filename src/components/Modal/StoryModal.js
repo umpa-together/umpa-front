@@ -407,7 +407,6 @@ const styles = StyleSheet.create({
   },
   textArea: {
     width: 270 * SCALE_WIDTH,
-    textAlign: 'center',
     marginTop: 16 * SCALE_HEIGHT,
   },
   textBetween: {
@@ -417,12 +416,13 @@ const styles = StyleSheet.create({
     fontSize: FS(18),
     color: '#fff',
     fontWeight: 'bold',
-    marginRight: 9 * SCALE_WIDTH,
+    textAlign: 'center',
   },
   artist: {
     fontSize: FS(14),
     marginBottom: 19 * SCALE_HEIGHT,
     color: '#fff',
+    textAlign: 'center',
   },
   exitIcon: {
     width: 40 * SCALE_WIDTH,

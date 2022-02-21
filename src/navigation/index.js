@@ -4,18 +4,20 @@ import navigationRef from 'lib/utils/navigation';
 import { Context as AuthContext } from 'context/Auth';
 import { StatusBar } from 'react-native';
 import analytics from '@react-native-firebase/analytics';
+import TrackPlayerInitializer from 'lib/utils/trackPlayer';
 import MainStackScreen from './Main';
 import AuthStackScreen from './Auth';
 
 const MainNavigator = () => {
   const routeNameRef = useRef();
-
   const {
     state: { token },
     tryLocalSignIn,
   } = useContext(AuthContext);
+
   useEffect(() => {
     tryLocalSignIn();
+    TrackPlayerInitializer();
   }, []);
 
   return (

@@ -38,6 +38,7 @@ export default memo(function SelectedInfo({ playlist }) {
   const onClickYoutube = () => {
     OpenPlaylist(youtubeUrl);
   };
+
   return (
     <View style={[style.flexRow, styles.container]}>
       <View style={style.flexRow}>
@@ -46,7 +47,7 @@ export default memo(function SelectedInfo({ playlist }) {
           <View>
             <Text style={styles.titleText}>{title}</Text>
             {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
-            <Text style={styles.contextText}>{convertedTime}</Text>
+            <Text style={styles.contextText}>{convertedTime.replaceAll('-', '.')}</Text>
           </View>
           {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} func={onClickYoutube} />}
           <TouchableOpacity onPress={onClickProfile}>

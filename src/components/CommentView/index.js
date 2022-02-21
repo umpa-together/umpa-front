@@ -125,7 +125,7 @@ const CommentAction = ({ postUserId, commentId, likes, opt }) => {
   };
 
   const actionInfo = {
-    mainTitle: '댓글을 삭제하시겠습니까??',
+    mainTitle: '댓글을 삭제하시겠습니까?',
     func: actionFunction,
     list: actionLists,
   };

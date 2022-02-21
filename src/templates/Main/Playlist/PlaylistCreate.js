@@ -16,32 +16,39 @@ import Text from 'components/Text';
 import Icon from 'widgets/Icon';
 import ActionModal from 'components/Modal/ActionModal';
 
-const NextActions = ({ edit }) => {
-  const [validity, setValidity] = useState(false);
+const NextActions = ({ edit, setValidityMsg }) => {
   const { information, setSongs, songs, image } = usePlaylistCreate();
   const { arraySort } = useScroll();
   const { onValidityModal } = useModal();
 
   const onPressNext = async () => {
-    if (validity) {
+    if (information.title.length > 0 && songs.length >= 3) {
       const songsChange = arraySort(songs, setSongs);
       navigate('PlaylistUpload', {
         data: { information, songs: songsChange, image },
         edit,
       });
-    } else if (songs.length < 3) {
+    } else {
+      if (songs.length < 3) {
+        setValidityMsg('※ 최소 3곡을 담아주세요');
+      } else if (information.title.length === 0) {
+        setValidityMsg('※ 플레이리스트 제목을 입력해주세요');
+      }
       onValidityModal();
     }
   };
-  useEffect(() => {
-    if (information.title.length > 0 && songs.length >= 3) {
-      setValidity(true);
-    }
-  }, [information, songs]);
 
   return (
     <TouchableOpacity onPress={onPressNext}>
-      <Text style={validity ? styles.activeText : styles.inactiveText}>다음</Text>
+      <Text
+        style={
+          information.title.length > 0 && songs.length >= 3
+            ? styles.activeText
+            : styles.inactiveText
+        }
+      >
+        다음
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -59,6 +66,7 @@ export default function PlaylistCreate({ data, edit }) {
   const { handleOutsideScroll, outsideScrollViewRef } = useScroll();
   const { validityModal } = useModal();
   const [actionModal, setActionModal] = useState(false);
+  const [validityMsg, setValidityMsg] = useState('');
 
   const deleteActionLists = [
     { title: '작성취소', key: 'cancel' },
@@ -82,8 +90,6 @@ export default function PlaylistCreate({ data, edit }) {
     setActionModal(true);
   };
 
-  const validityMsg = '최소 3곡을 담아주세요';
-
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -101,7 +107,7 @@ export default function PlaylistCreate({ data, edit }) {
         title={edit ? '플레이리스트 편집' : '새 플레이리스트 추가'}
         titleStyle={style.headertitle}
         landings={[<BackLandings onPressBack={onPressBack} />]}
-        actions={[<NextActions edit={edit} />]}
+        actions={[<NextActions edit={edit} setValidityMsg={setValidityMsg} />]}
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
