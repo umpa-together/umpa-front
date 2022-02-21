@@ -70,7 +70,7 @@ const ModalView = ({ onClose }) => {
   return (
     <>
       {guideModal && (
-        <Swiper height="100%" loop={false}>
+        <Swiper height="100%" loop={false} activeDotColor="#fff" dotColor="#ffffff40">
           {guideLists[guideModal].map((guide) => {
             return (
               <View key={Math.random()} style={styles.backgroundImg}>

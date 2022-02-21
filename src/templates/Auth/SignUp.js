@@ -25,6 +25,7 @@ export default function SignUp({ data }) {
         information.passwordCheck.length > 0,
     );
   }, [information]);
+
   const CompleteBox = useCallback(() => {
     return (
       <TouchableOpacity
