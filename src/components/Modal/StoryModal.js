@@ -21,6 +21,7 @@ import Text from 'components/Text';
 import PlayAnimation from 'components/PlayAnimation';
 import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
+import { navigate, push } from 'lib/utils/navigation';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
@@ -41,6 +42,16 @@ const Header = ({ onClose }) => {
   } = useStory();
   const isMyStory = user._id === id;
   const [deleteModal, setDeleteModal] = useState(false);
+
+  const onClickProfile = () => {
+    if (isMyStory) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id });
+    }
+    onClose();
+  };
+
   const onExit = () => {
     onClose();
     stopTrackSong();
@@ -82,7 +93,9 @@ const Header = ({ onClose }) => {
   return (
     <View style={[style.flexRow, styles.profileContainer, style.space_between]}>
       <View style={style.flexRow}>
-        <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
+        <TouchableOpacity onPress={onClickProfile}>
+          <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
+        </TouchableOpacity>
         <Text style={styles.profileName}>{name}</Text>
         <TouchableOpacity activeOpacity={0.8} onPress={onClickOption}>
           <Text style={styles.optionText}>

@@ -52,14 +52,6 @@ const styles = StyleSheet.create({
     borderRadius: 6 * SCALE_HEIGHT,
     marginHorizontal: 4.5 * SCALE_WIDTH,
     backgroundColor: '#fff',
-    shadowColor: 'rgb(103, 103, 103)',
-    shadowOffset: {
-      height: 2 * SCALE_HEIGHT,
-      width: 0,
-    },
-    shadowRadius: 6 * SCALE_HEIGHT,
-    shadowOpacity: 0.1,
-    elevation: 3,
     minHeight: 130 * SCALE_HEIGHT,
   },
   img: {

@@ -18,7 +18,7 @@ export default function RecommendPlaylist() {
 
   return (
     <>
-      <View style={[style.flexRow, styles.titleContainer]}>
+      <View style={[style.flexRow, styles.conatiner]}>
         <Text style={styles.title}>음파 강력 추천 플리🔥</Text>
         <TouchableOpacity onPress={onPressRefresh}>
           <Icon source={require('public/icons/search-refresh.png')} style={styles.icon} />
@@ -39,20 +39,18 @@ export default function RecommendPlaylist() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    alignItems: 'center',
+  conatiner: {
+    marginBottom: 6 * SCALE_HEIGHT,
   },
   title: {
-    fontSize: FS(16),
+    fontSize: FS(14),
     color: COLOR_1,
-    marginBottom: 12 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
   },
   flatList: {
-    paddingHorizontal: 11.5 * SCALE_WIDTH,
+    paddingHorizontal: 16 * SCALE_WIDTH,
   },
   icon: {
-    bottom: 5 * SCALE_HEIGHT,
     width: 34 * SCALE_WIDTH,
     height: 34 * SCALE_WIDTH,
   },

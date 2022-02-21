@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5 * SCALE_HEIGHT,
     backgroundColor: '#E4E4E460',
     borderRadius: 8 * SCALE_HEIGHT,
-    paddingLeft: 18 * SCALE_WIDTH,
+    paddingLeft: 30 * SCALE_WIDTH,
   },
   optionBoxVote: {
     width: 159 * SCALE_WIDTH,

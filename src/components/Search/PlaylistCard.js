@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#fff',
     fontSize: FS(12),
-    lineHeight: 14 * SCALE_HEIGHT,
+    lineHeight: 20 * SCALE_HEIGHT,
   },
   titleArea: {
     width: 95 * SCALE_WIDTH,
