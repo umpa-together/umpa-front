@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
   followBox: {
     marginLeft: 7 * SCALE_WIDTH,
     paddingHorizontal: 7.5 * SCALE_WIDTH,
-    paddingVertical: 4 * SCALE_HEIGHT,
+    paddingVertical: 3.5 * SCALE_HEIGHT,
+    borderWidth: 1 * SCALE_WIDTH,
+    borderColor: MAIN_COLOR,
     backgroundColor: MAIN_COLOR,
     borderRadius: 100 * SCALE_HEIGHT,
     justifyContent: 'center',
@@ -43,8 +45,8 @@ const styles = StyleSheet.create({
   unfollowBox: {
     marginLeft: 7 * SCALE_WIDTH,
     paddingHorizontal: 7.5 * SCALE_WIDTH,
-    paddingVertical: 4 * SCALE_HEIGHT,
-    borderWidth: 1,
+    paddingVertical: 3.5 * SCALE_HEIGHT,
+    borderWidth: 1 * SCALE_WIDTH,
     borderColor: COLOR_5,
     borderRadius: 100 * SCALE_HEIGHT,
     justifyContent: 'center',
