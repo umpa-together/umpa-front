@@ -9,6 +9,7 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="true"
+      android:usesCleartextTraffic="true"
       android:theme="@style/AppTheme">
         <!-- Change the value to true to enable pop-up for in foreground on receiving remote notifications (for prevent duplicating while showing local notifications set this to false) -->
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
@@ -43,8 +44,6 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
-            <data android:host="oauth"
-                android:scheme="kakaob754cdf62b33d818f51425d17d87018c" />
         </intent-filter>
       </activity>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
@@ -52,7 +51,6 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
                 <data android:host="oauth"
                     android:scheme="kakaob754cdf62b33d818f51425d17d87018c" />
