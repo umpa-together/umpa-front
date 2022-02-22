@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "217008100787-ks5140euqimnj1so0gi30g6fiqculad2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.umpatogether",
+            "certificate_hash": "e1757b589d41aa2efe0045ff58debb4d2a3e86b5"
+          }
+        },
+        {
           "client_id": "217008100787-pal3jinci6qgoiv5evejaa12hisvntfa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
