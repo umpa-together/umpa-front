@@ -16,7 +16,7 @@ export default function Dailyimage({ image, upload }) {
   };
   return (
     <Swiper
-      height={410 * SCALE_WIDTH}
+      height={image.length === 1 ? 375 * SCALE_WIDTH : 410 * SCALE_WIDTH}
       loop={false}
       activeDotColor={MAIN_COLOR}
       dotColor="#999"

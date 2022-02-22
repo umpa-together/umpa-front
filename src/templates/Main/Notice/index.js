@@ -102,9 +102,16 @@ export default function Notice() {
     navigate('Relay');
   };
 
+  const refreshFunc = () => {
+    getNotice();
+    setNewNotice([]);
+    setWeekNotice([]);
+    setLastNotice([]);
+  };
+
   useEffect(() => {
     getNotice();
-    setRefresh(getNotice);
+    setRefresh(refreshFunc);
   }, []);
 
   useEffect(() => {
@@ -177,7 +184,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     marginLeft: 20 * SCALE_WIDTH,
-    // marginTop: 20 * SCALE_HEIGHT,
     fontSize: FS(16),
     fontWeight: 'bold',
     color: COLOR_1,

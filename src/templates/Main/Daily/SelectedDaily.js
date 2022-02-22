@@ -165,6 +165,7 @@ export default function SelectedDaily({ id, postUserId }) {
           }, 400);
         }
       };
+
   const selectInfo = { func: selectFunction, list: selectLists };
   return (
     <View style={style.background}>
