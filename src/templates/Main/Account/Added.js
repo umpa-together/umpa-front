@@ -24,6 +24,7 @@ export default function Added({ type }) {
   const {
     state: { songLists, playlists },
     getAddedSong,
+    getAddedPlaylist,
   } = useContext(AddedContext);
   const [edit, setEdit] = useState(false);
 
@@ -41,6 +42,8 @@ export default function Added({ type }) {
   const dataFetch = () => {
     if (type === 'Song') {
       getAddedSong();
+    } else {
+      getAddedPlaylist();
     }
   };
 

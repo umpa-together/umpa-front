@@ -79,13 +79,21 @@ const TabScreen = () => {
               tabPress: () => {
                 if (currentScreen === title) {
                   if (title === 'Relay') {
-                    relayRef.current.scrollToOffset({ offset: 0, animated: true });
+                    if (relayRef.current) {
+                      relayRef.current.scrollToOffset({ offset: 0, animated: true });
+                    }
                   } else if (title === 'Feed') {
-                    feedRef.current.scrollToOffset({ offset: 0, animated: true });
+                    if (feedRef.current) {
+                      feedRef.current.scrollToOffset({ offset: 0, animated: true });
+                    }
                   } else if (title === 'Search') {
-                    searchRef.current.scrollTo({ x: 5, y: 5, animated: true });
+                    if (searchRef.current) {
+                      searchRef.current.scrollTo({ x: 5, y: 5, animated: true });
+                    }
                   } else if (title === 'Notice') {
-                    noticeRef.current.scrollToOffset({ offset: 0, animated: true });
+                    if (noticeRef.currnet) {
+                      noticeRef.current.scrollToOffset({ offset: 0, animated: true });
+                    }
                   }
                 } else {
                   setCurrentScreen(title);

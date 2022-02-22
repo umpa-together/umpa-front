@@ -18,7 +18,7 @@ export default function Footer({ object, type }) {
   const { likeRelayPlaylist, unlikeRelayPlaylist } = useContext(RelayContext);
   const { likes, comments, _id: id } = object;
   const [isLike, setIsLike] = useState(likes.includes(state.user._id));
-
+  const [likeCount, setLikeCount] = useState(likes.length);
   const onClickLikes = () => {
     if (isLike) {
       if (type === 'playlist') {
@@ -28,12 +28,16 @@ export default function Footer({ object, type }) {
       } else if (type === 'relay') {
         unlikeRelayPlaylist({ id });
       }
-    } else if (type === 'playlist') {
-      likePlaylist({ id });
-    } else if (type === 'daily') {
-      likeDaily({ id });
-    } else if (type === 'relay') {
-      likeRelayPlaylist({ id });
+      setLikeCount(likeCount - 1);
+    } else {
+      if (type === 'playlist') {
+        likePlaylist({ id });
+      } else if (type === 'daily') {
+        likeDaily({ id });
+      } else if (type === 'relay') {
+        likeRelayPlaylist({ id });
+      }
+      setLikeCount(likeCount + 1);
     }
     setIsLike(!isLike);
   };
@@ -63,7 +67,7 @@ export default function Footer({ object, type }) {
               }
               style={styles.icon}
             />
-            <Text style={styles.indicator}>{likes && likes.length > 0 && likes.length}</Text>
+            <Text style={styles.indicator}>{likes && likeCount > 0 && likeCount}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={onClickShare}>

@@ -9,10 +9,10 @@ import RelayNoticeForm from 'components/Notice/RelayNoticeForm';
 import StoryNoticeForm from 'components/Notice/StoryNoticeForm';
 import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
-import { push, navigate } from 'lib/utils/navigation';
+import { push } from 'lib/utils/navigation';
 
 export default function Section({ data }) {
-  const { noticinguser: user, _id: id, isRead, noticetype: type, playlist, daily } = data;
+  const { noticinguser: user, _id: id, isRead, noticetype: type, playlist, daily, relay } = data;
   const { readNotice } = useContext(NoticeContext);
   const playlistTypeLists = ['plike', 'pcom', 'pcomlike', 'precom', 'precomlike'];
   const dailyTypeLists = ['dlike', 'dcom', 'dcomlike', 'drecom', 'drecomlike'];
@@ -36,9 +36,9 @@ export default function Section({ data }) {
     } else if (dailyTypeLists.includes(type)) {
       push('SelectedDaily', { id: daily._id, postUserId: daily.postUserId });
     } else if (relayTypeLists.includes(type)) {
-      push('SelectedRelay', { id });
+      push('SelectedRelay', { id: relay._id });
     } else if (storyTypeLists.includes(type)) {
-      navigate('Feed');
+      onClickProfile();
     }
   };
 

@@ -9,6 +9,7 @@ import DeleteModal from 'components/Modal/DeleteModal';
 import Text from 'components/Text';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
+import { push } from 'lib/utils/navigation';
 import EmptySaved from './EmptySaved';
 
 const DeleteLandings = ({ type, id }) => {
@@ -85,16 +86,21 @@ export function AddedPlaylist({ edit }) {
   const {
     state: { playlists },
   } = useContext(AddedContext);
+  const onClickPlaylist = (id, postUserId) => {
+    push('SelectedPlaylist', { id, postUserId });
+  };
   const keyExtractor = useCallback((_) => _._id, []);
   const renderItem = useCallback(
     ({ item }) => {
       const { playlistId: playlist, _id: id } = item;
       return (
-        <PlaylistView
-          playlist={playlist}
-          landings={edit && <DeleteLandings type="playlist" id={id} />}
-          play={!edit}
-        />
+        <TouchableOpacity onPress={() => onClickPlaylist(playlist._id, playlist.postUserId)}>
+          <PlaylistView
+            playlist={playlist}
+            landings={edit && <DeleteLandings type="playlist" id={id} />}
+            play={!edit}
+          />
+        </TouchableOpacity>
       );
     },
     [edit],
