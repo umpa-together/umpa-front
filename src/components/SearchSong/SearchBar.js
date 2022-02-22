@@ -45,6 +45,7 @@ export default function SearchBar() {
           onChangeText={onChangeInput}
           placeholderTextColor={COLOR_3}
           onSubmitEditing={onSubmitEditing}
+          allowFontScaling={false}
         />
       </View>
       {(searching || text.length > 0) && (
@@ -63,8 +64,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16 * SCALE_WIDTH,
     width: 343 * SCALE_WIDTH,
-    paddingVertical: 5 * SCALE_HEIGHT,
-    minHeight: 40 * SCALE_HEIGHT,
+    height: 40 * SCALE_HEIGHT,
     paddingLeft: 15 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     backgroundColor: '#EEE',

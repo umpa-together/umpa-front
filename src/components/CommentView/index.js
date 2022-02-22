@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: FS(14),
     marginRight: 16 * SCALE_WIDTH,
+    color: '#000',
   },
   timeText: {
     fontSize: FS(12),
@@ -252,6 +253,7 @@ const styles = StyleSheet.create({
   commentText: {
     fontSize: FS(14),
     marginTop: 8 * SCALE_HEIGHT,
+    color: '#000',
   },
   actionContainer: {
     marginTop: 9 * SCALE_HEIGHT,

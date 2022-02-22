@@ -119,11 +119,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FS(18),
     fontWeight: 'bold',
+    color: '#000',
   },
   artist: {
     fontSize: FS(14),
     marginTop: 8 * SCALE_HEIGHT,
     marginBottom: 6 * SCALE_HEIGHT,
+    color: '#000',
   },
   release: {
     fontSize: FS(13),
@@ -149,5 +151,6 @@ const styles = StyleSheet.create({
   option: {
     fontSize: FS(14),
     marginLeft: 10 * SCALE_WIDTH,
+    color: '#000',
   },
 });

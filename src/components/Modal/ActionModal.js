@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     marginBottom: 25 * SCALE_HEIGHT,
     textAlign: 'center',
     lineHeight: 24 * SCALE_HEIGHT,
+    color: '#000',
   },
   box: {
     width: 116 * SCALE_HEIGHT,

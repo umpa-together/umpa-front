@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useCallback, useState } from 'react';
+import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyAccount from 'screens/Main/Account';
 import Relay from 'screens/Main/Relay';
@@ -102,6 +103,9 @@ const TabScreen = () => {
             }}
             options={{
               tabBarLabel: name,
+              tabBarLabelStyle: {
+                bottom: Platform.OS === 'android' ? 10 * SCALE_HEIGHT : 0,
+              },
               tabBarIcon: ({ focused }) => {
                 return <Icon style={style.icons} source={focused ? activeIcon : inactiveIcon} />;
               },

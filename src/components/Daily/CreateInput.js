@@ -18,6 +18,7 @@ export default function CreateInput() {
         autoCorrect={false}
         onChangeText={onChangeText}
         placeholderTextColor="rgb(164,164,164)"
+        allowFontScaling={false}
       />
     </View>
   );

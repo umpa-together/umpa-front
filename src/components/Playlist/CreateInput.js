@@ -30,6 +30,7 @@ export default function CreateInput() {
               autoCorrect={false}
               onChangeText={(text) => onChangeValue(key, text)}
               placeholderTextColor="rgb(164,164,164)"
+              allowFontScaling={false}
             />
           </View>
         );

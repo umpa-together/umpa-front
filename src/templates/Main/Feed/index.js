@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: FS(16),
     right: -8 * SCALE_WIDTH,
+    color: '#000',
   },
   alertBox: {
     alignItems: 'center',

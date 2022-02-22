@@ -55,6 +55,7 @@ export default function CommentBar() {
           autoCorrect={false}
           ref={commentRef}
           multiline
+          allowFontScaling={false}
         />
         <TouchableOpacity style={styles.submitButton} onPress={onPressSubmit}>
           <Text style={styles.submitText}>등록</Text>

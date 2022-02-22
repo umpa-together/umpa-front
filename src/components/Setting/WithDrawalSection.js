@@ -76,6 +76,7 @@ export default function WithDrawalSection() {
               autoCorrect={false}
               onChangeText={onChangeText}
               placeholderTextColor={COLOR_5}
+              allowFontScaling={false}
             />
           </View>
         )}
@@ -208,8 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ebebeb',
     borderRadius: 6 * SCALE_HEIGHT,
     width: 343 * SCALE_WIDTH,
-    paddingVertical: 5 * SCALE_HEIGHT,
-    minHeight: 40 * SCALE_HEIGHT,
+    height: 38 * SCALE_HEIGHT,
     marginBottom: 47 * SCALE_HEIGHT,
     justifyContent: 'center',
     paddingHorizontal: 12 * SCALE_WIDTH,

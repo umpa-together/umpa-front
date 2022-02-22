@@ -26,6 +26,7 @@ export default function FollowSearch({ text, setText, opt }) {
             placeholder={`${opt} 검색`}
             placeholderTextColor={COLOR_3}
             onChangeText={onChangeText}
+            allowFontScaling={false}
           />
         </View>
         {text.length > 0 && (

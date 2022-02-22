@@ -5,7 +5,7 @@ import { Context as RelayContext } from 'context/Relay';
 import { Context as UserContext } from 'context/User';
 import SearchSongModal from 'components/Modal/SearchSongModal';
 import Icon from 'widgets/Icon';
-import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import style from 'constants/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSongActions } from 'providers/songActions';
@@ -89,7 +89,7 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
             key={title}
           >
             {icon}
-            <Text>{title}</Text>
+            <Text style={styles.title}>{title}</Text>
           </TouchableOpacity>
         );
       })}
@@ -124,5 +124,9 @@ const styles = StyleSheet.create({
   icon: {
     width: 30 * SCALE_WIDTH,
     height: 30 * SCALE_WIDTH,
+  },
+  title: {
+    fontSize: FS(14),
+    color: '#000',
   },
 });

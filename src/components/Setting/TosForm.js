@@ -5,12 +5,7 @@ import Text from 'components/Text';
 
 export default function TosForm() {
   return (
-    <ScrollView
-      contentContainerStyle={{
-        marginHorizontal: 20 * SCALE_WIDTH,
-        paddingBottom: 30 * SCALE_HEIGHT,
-      }}
-    >
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>제1장. 총칙</Text>
       <Text style={styles.title}>제 1 조 (목적)</Text>
       <Text style={styles.top}>
@@ -501,20 +496,28 @@ export default function TosForm() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 20 * SCALE_WIDTH,
+    paddingBottom: 30 * SCALE_HEIGHT,
+  },
   top: {
     marginTop: 6 * SCALE_HEIGHT,
+    color: '#000',
   },
   title: {
     fontWeight: 'bold',
     marginTop: 20 * SCALE_HEIGHT,
+    color: '#000',
   },
   site: {
     marginTop: 6 * SCALE_HEIGHT,
     fontWeight: '500',
+    color: '#000',
   },
   footer: {
     marginTop: 18 * SCALE_HEIGHT,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#000',
   },
 });
