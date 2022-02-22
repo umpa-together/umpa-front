@@ -86,6 +86,7 @@ class LocalNotificationService {
         return {
             id: id,
             channelId: "umpa", // (required)
+            channelName: `Default channel`, // (required)
             autoCancel: true,
             largeIcon: options.largeIcon || "ic_launcher",
             smallIcon: options.smallIcon || "ic_notification",

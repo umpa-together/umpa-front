@@ -26,6 +26,7 @@ export default function CommentBar() {
     commentAction(commentRef.current.value);
     commentRef.current.clear();
     commentRef.current.blur();
+    commentRef.current.value = '';
   };
 
   const onChangeText = useCallback((text) => setCommentRef(text), []);
