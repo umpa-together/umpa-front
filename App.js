@@ -18,6 +18,9 @@ import MainNavigator from './src/navigation';
 
 export default () => {
   useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 300);
     fcmService.registerAppWithFCM();
     fcmService.register(onRegister, onNotification, onOpenNotification);
     localNotificationService.configure(onOpenNotification);
@@ -39,11 +42,6 @@ export default () => {
     function onOpenNotification(notify) {
       console.log('[App] onOpenNotification: ', notify);
     }
-
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 2000);
-
     return () => {
       console.log('[App] unRegsiter');
       fcmService.unRegister();
