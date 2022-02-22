@@ -52,6 +52,7 @@ export default function InformationInput() {
               style={styles.textBox}
               secureTextEntry={key !== 'email'}
               maxLength={key !== 'email' ? 14 : null}
+              allowFontScaling={false}
             />
             {!validity[key] && <Text style={styles.validity}>{validityLists[key]}</Text>}
           </View>

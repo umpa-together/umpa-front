@@ -94,8 +94,6 @@ const styles = StyleSheet.create({
   uploatText: {
     fontSize: FS(14),
     color: MAIN_COLOR,
-    paddingVertical: 10 * SCALE_WIDTH,
-    paddingHorizontal: 10 * SCALE_WIDTH,
   },
   textContainer: {
     justifyContent: 'center',

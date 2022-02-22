@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: FS(16),
+    color: '#000',
   },
   textSort: {
     fontSize: FS(14),

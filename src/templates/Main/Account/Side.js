@@ -124,6 +124,7 @@ const Feedback = () => {
           multiline
           style={styles.feedbackContainer}
           placeholderTextColor={COLOR_5}
+          allowFontScaling={false}
         />
       </ScrollView>
       <TouchableOpacity

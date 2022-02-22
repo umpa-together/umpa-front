@@ -50,6 +50,7 @@ export default function LoginInput() {
               style={styles.textBox}
               secureTextEntry={key !== 'email'}
               maxLength={key !== 'email' ? 14 : null}
+              allowFontScaling={false}
             />
           </View>
         );

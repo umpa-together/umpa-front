@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: FS(14),
     lineHeight: 16 * SCALE_HEIGHT,
+    color: '#000',
   },
   artist: {
     fontSize: FS(13),

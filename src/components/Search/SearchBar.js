@@ -39,6 +39,7 @@ export default function SearchBar() {
             autoFocus
             onFocus={onFocus}
             ref={textInputRef}
+            allowFontScaling={false}
           />
         </View>
         <TouchableOpacity onPress={onClickDelete}>

@@ -38,6 +38,7 @@ export default function CreateHashtag({ addAction, hashtagCount, onValidityModal
         autoCorrect={false}
         maxLength={9}
         ref={hashtagRef}
+        allowFontScaling={false}
       />
       <Text style={styles.hashtagText}>#</Text>
       <TouchableOpacity onPress={onPressCancle}>

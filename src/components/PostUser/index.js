@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: FS(14),
-    fontWeight: '500',
+    color: '#000',
   },
 });

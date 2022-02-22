@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginTop: 4 * SCALE_HEIGHT,
     textAlign: 'center',
+    color: '#000',
   },
   nameArea: {
     width: 64 * SCALE_WIDTH,

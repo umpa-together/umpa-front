@@ -184,6 +184,7 @@ export default function EditSection({ title, placeholder }) {
         placeholderTextColor={COLOR_3}
         maxLength={title === '닉네임' ? 10 : title === '소개글' ? 17 : null}
         onChangeText={(text) => onChangeValue(title, text)}
+        allowFontScaling={false}
       />
       {title === '닉네임' ? (
         <Text style={styles.subText}>* 한글 7자 이내, 영문 포함 10자 이내</Text>
