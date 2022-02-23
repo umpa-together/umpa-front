@@ -78,11 +78,11 @@ export default function Swipe() {
       }
       if (event.translationX > 0) {
         translateX.value = withTiming(hiddentranslateX, {
-          duration: 400,
+          duration: 300,
         });
       } else {
         translateX.value = withTiming(-hiddentranslateX, {
-          duration: 400,
+          duration: 300,
         });
       }
       runOnJS(setIsEnd)(true);
@@ -111,7 +111,7 @@ export default function Swipe() {
       stopTrackSong();
       setTimeout(() => {
         setCurrentIdx(currentIdx + 1);
-      }, 400);
+      }, 300);
     }
   }, [isEnd]);
 
@@ -157,6 +157,7 @@ export default function Swipe() {
         <EmptySwipe />
       ) : (
         swipeSongs.map((item, index) => {
+          const cardIndex = currentIdx === index ? 20 : currentIdx === index - 1 ? 10 : -100;
           return (
             <PanGestureHandler key={item._id} onGestureEvent={gestureHandler}>
               <Animated.View
@@ -169,7 +170,13 @@ export default function Swipe() {
                     : styles.hiddenCard,
                 ]}
               >
-                <SwipeCard image={image} card={item} like={like} setLike={setLike} />
+                <SwipeCard
+                  zIndex={cardIndex}
+                  image={image}
+                  card={item}
+                  like={like}
+                  setLike={setLike}
+                />
               </Animated.View>
             </PanGestureHandler>
           );

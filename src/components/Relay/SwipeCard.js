@@ -73,7 +73,7 @@ const Footer = memo(({ song, like, setLike }) => {
   );
 });
 
-export default function SwipeCard({ image, card, like, setLike }) {
+export default function SwipeCard({ zIndex, image, card, like, setLike }) {
   const {
     postUserId: { name, profileImage },
     song,
@@ -95,6 +95,10 @@ export default function SwipeCard({ image, card, like, setLike }) {
     top: -1 * topOffset - 2 * SCALE_HEIGHT,
   };
 
+  const zIndexStyle = {
+    zIndex,
+  };
+
   const ParentView = useRef();
 
   return (
@@ -105,7 +109,7 @@ export default function SwipeCard({ image, card, like, setLike }) {
           setTopOffset(py);
         });
       }}
-      style={styles.container}
+      style={[styles.container, zIndexStyle]}
     >
       {image && (
         <View style={styles.imgContainer}>
