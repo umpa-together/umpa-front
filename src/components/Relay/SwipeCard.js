@@ -66,9 +66,9 @@ const Footer = memo(({ song, like, setLike }) => {
           }
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={onClickAdd}>
+      <TouchableNoDouble onPress={onClickAdd}>
         <Icon style={styles.songIcon} source={require('public/icons/swipe-save.png')} />
-      </TouchableOpacity>
+      </TouchableNoDouble>
     </View>
   );
 });

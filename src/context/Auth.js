@@ -55,7 +55,6 @@ const signOut = (dispatch) => async () => {
   try {
     await AsyncStorage.removeItem('token');
     dispatch({ type: 'signOut' });
-    navigate('SignIn');
   } catch (err) {
     dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
   }
@@ -73,7 +72,7 @@ const getGoogleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await server.get(`/social/google/${email}/${id}`);
+      const response = await server.post('/social/google', { email, id });
       if (response.data[0] === false) {
         navigate('SignUp', {
           data: { email: response.data[1], password: response.data[2], social: true },
@@ -95,7 +94,7 @@ const getAppleInfo =
   (dispatch) =>
   async ({ email, id }) => {
     try {
-      const response = await server.get(`/social/apple/${email}/${id}`);
+      const response = await server.post('/social/apple', { email, id });
       if (response.data[0] === false) {
         navigate('SignUp', {
           data: { email: response.data[1], password: response.data[2], social: true },
@@ -117,7 +116,7 @@ const getKakaoInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await server.get(`/social/kakao/${token}`);
+      const response = await server.post('/social/kakao', { token });
       if (response.data[0] === false) {
         navigate('SignUp', {
           data: { email: response.data[1], password: response.data[2], social: true },
@@ -139,7 +138,7 @@ const getNaverInfo =
   (dispatch) =>
   async ({ token }) => {
     try {
-      const response = await server.get(`/social/naver/${token}`);
+      const response = await server.post('/social/naver', { token });
       if (response.data[0] === false) {
         navigate('SignUp', {
           data: { email: response.data[1], password: response.data[2], social: true },

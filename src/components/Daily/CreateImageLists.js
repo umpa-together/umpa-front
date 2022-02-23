@@ -13,7 +13,7 @@ export default function CreateImageLists({ edit = false }) {
 
   return (
     <ScrollImage images={images}>
-      <View style={[style.flexRow, styles.container]}>
+      <View style={[style.flexRow, edit ? styles.editContainer : styles.container]}>
         {images.map((item) => {
           const { uri } = item;
           return (
@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     paddingBottom: 80 * SCALE_WIDTH,
+  },
+  editContainer: {
+    width: '100%',
+    paddingLeft: 12 * SCALE_WIDTH,
   },
   imageContainer: {
     width: 90 * SCALE_WIDTH,

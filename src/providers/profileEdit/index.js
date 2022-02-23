@@ -69,6 +69,11 @@ export default function ProfileEditProvider({ children }) {
   };
 
   const onClickEdit = async (signUp) => {
+    if (songs.length > 3) {
+      setValidityMsg('※ 대표곡을 3곡 이내로 설정해주세요.');
+      onValidityModal();
+      return;
+    }
     if (profile.nickName.length === 0 || songs.length === 0 || profile.genre.length === 0) {
       setValidityMsg('※ 닉네임, 대표곡, 선호장르를 입력해주세요.');
       onValidityModal();

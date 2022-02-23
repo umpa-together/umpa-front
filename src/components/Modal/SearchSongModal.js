@@ -97,14 +97,14 @@ export default function SearchSongModal({ modal, setModal, activeCheck }) {
 const styles = StyleSheet.create({
   container: {
     margin: 0,
-    position: 'absolute',
-    marginTop: 60 * SCALE_HEIGHT,
+    justifyContent: 'flex-end',
   },
   viewContainer: {
     width: '100%',
     height: 750 * SCALE_HEIGHT,
     backgroundColor: 'rgb(254,254,254)',
-    borderRadius: 10 * SCALE_HEIGHT,
+    borderTopLeftRadius: 10 * SCALE_HEIGHT,
+    borderTopRightRadius: 10 * SCALE_HEIGHT,
   },
   headerTouch: {
     width: 40 * SCALE_WIDTH,

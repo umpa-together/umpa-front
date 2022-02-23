@@ -11,16 +11,17 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Playlist/UploadInfo';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 const NextActions = ({ edit }) => {
   const { onClickUpload } = usePlaylistCreate();
   return (
-    <TouchableOpacity
+    <TouchableNoDouble
       style={[style.icons, styles.textContainer]}
       onPress={() => onClickUpload(edit)}
     >
       <Text style={styles.uploatText}>저장</Text>
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 };
 

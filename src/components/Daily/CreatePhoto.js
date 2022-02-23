@@ -17,7 +17,10 @@ export default function CreatePhoto({ edit, setValidityMsg }) {
   const { onValidityModal } = useModal();
   const onPressAdd = () => {
     if (!edit && !imageCheck) onClickMultiple(setImages);
-    if (imageCheck) {
+    if (edit) {
+      setValidityMsg('※ 데일리 편집은 사진 수정이 불가능합니다.');
+      onValidityModal();
+    } else if (imageCheck) {
       setValidityMsg('※ 현재 사진 전체 삭제 후, 사진 추가가 가능합니다.');
       onValidityModal();
     }

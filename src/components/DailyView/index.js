@@ -74,9 +74,9 @@ export default function DailyView({ info, actions, isSelected, titleCustom }) {
                 style={styles.icon}
               />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} onPress={onClickAdd}>
+            <TouchableNoDouble activeOpacity={0.8} onPress={onClickAdd}>
               <Icon source={require('public/icons/add-song.png')} style={styles.add} />
-            </TouchableOpacity>
+            </TouchableNoDouble>
           </View>
         )}
       </View>

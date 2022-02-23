@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import style from 'constants/styles';
 import TabTitle from 'components/TabTitle';
 import { Context as MainContentsContext } from 'context/MainContents';
-import { Context as UserContext } from 'context/User';
 import RecommendPlaylist from 'components/Search/RecommendPlaylist';
 import RecommendAccount from 'components/Search/RecommendAccount';
 import SearchBarView from 'components/Search/SearchBarView';
@@ -16,6 +15,7 @@ import { useModal } from 'providers/modal';
 import LoadingIndicator from 'components/LoadingIndicator';
 import GuideModal from 'components/Modal/GuideModal';
 import { useTabRef } from 'providers/tabRef';
+import guideChecker from 'lib/utils/guideChecker';
 
 export default function Search() {
   const {
@@ -24,9 +24,6 @@ export default function Search() {
     getMainRecommendDJ,
     getMainRecommendDailies,
   } = useContext(MainContentsContext);
-  const {
-    state: { user },
-  } = useContext(UserContext);
   const { addedModal, guideModal, setGuideModal } = useModal();
   const { searchRef } = useTabRef();
   const dataFetch = async () => {
@@ -38,14 +35,9 @@ export default function Search() {
   };
 
   useEffect(() => {
+    guideChecker('search', setGuideModal);
     dataFetch();
   }, []);
-
-  useEffect(() => {
-    if (user && !user.guide.search) {
-      setGuideModal('search');
-    }
-  }, [user]);
 
   return (
     <View style={style.background}>
