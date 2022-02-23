@@ -14,7 +14,7 @@ export default function CopySongName({ name, children, initAction }) {
   };
 
   return (
-    <TouchableOpacity onPress={initAction && initAction} onLongPress={onClickCopy}>
+    <TouchableOpacity onPress={initAction} onLongPress={onClickCopy}>
       {children}
     </TouchableOpacity>
   );
