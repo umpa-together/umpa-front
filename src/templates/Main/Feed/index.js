@@ -135,8 +135,8 @@ export default function Feed() {
           <Contents setIsScroll={setIsScroll} />
         </RefreshProvider>
       </SongActionsProvider>
-      <FloatingButton show={isScroll} />
       <PlayBar />
+      <FloatingButton show={isScroll} />
       <GuideModal modal={guideModal === 'feed'} setModal={setGuideModal} />
       {addedModal && <AddedModal />}
       <SortModal

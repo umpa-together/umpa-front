@@ -28,10 +28,9 @@ const playlistConverter = (el, round) => {
 };
 
 const relayConverter = (el) => {
-  const { playlist, song } = el;
-  const { _id, title, createdTime } = playlist;
+  const { _id, title, time, song } = el;
   const { artwork, name } = song.attributes;
-  const convertTime = createdTime.slice(0, 10).replaceAll('-', '.');
+  const convertTime = time.slice(0, 10).replaceAll('-', '.');
 
   const onClickRelay = async () => {
     push('SelectedRelay', { id: _id });

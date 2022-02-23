@@ -44,6 +44,18 @@ export default function MyAccount() {
     }, []),
   );
 
+  const relayData = relay.map((item) => {
+    // eslint-disable-next-line no-shadow
+    const { playlist, song } = item;
+    return {
+      _id: playlist._id,
+      title: playlist.title,
+      likes: playlist.likes,
+      time: playlist.createdTime,
+      song,
+    };
+  });
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'playlist':
@@ -51,7 +63,7 @@ export default function MyAccount() {
       case 'daily':
         return <TabSection my data={daily} opt="daily" />;
       case 'relay':
-        return <TabSection my data={relay} opt="relay" />;
+        return <TabSection my data={relayData} opt="relay" />;
       default:
         return null;
     }
