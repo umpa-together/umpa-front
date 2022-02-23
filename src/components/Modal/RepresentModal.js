@@ -12,6 +12,7 @@ import Icon from 'widgets/Icon';
 import AddedModal from 'components/Modal/AddedModal';
 import HarmfulModal from 'components/Modal/HarmfulModal';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import Modal from '.';
 
 const ModalView = () => {
@@ -29,9 +30,9 @@ const ModalView = () => {
 
   const onClickAddActions = useCallback((song) => {
     return (
-      <TouchableOpacity onPress={() => onClickAdd(song)}>
+      <TouchableNoDouble onPress={() => onClickAdd(song)}>
         <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-      </TouchableOpacity>
+      </TouchableNoDouble>
     );
   });
 

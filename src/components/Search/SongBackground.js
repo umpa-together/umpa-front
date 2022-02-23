@@ -11,6 +11,7 @@ import { COLOR_4 } from 'constants/colors';
 import style from 'constants/styles';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default function Songbackground({ song }) {
   const { name, artistName, artwork, contentRating, releaseDate } = song.attributes;
@@ -70,7 +71,7 @@ export default function Songbackground({ song }) {
         {optionLists.map((option) => {
           const { title, icon, func } = option;
           return (
-            <TouchableOpacity
+            <TouchableNoDouble
               key={title}
               style={[style.flexRow, styles.box]}
               onPress={func}
@@ -78,7 +79,7 @@ export default function Songbackground({ song }) {
             >
               {icon}
               <Text style={styles.option}>{title}</Text>
-            </TouchableOpacity>
+            </TouchableNoDouble>
           );
         })}
       </View>

@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Context as UserContext } from 'context/User';
 import { useModal } from 'providers/modal';
 import FastImage from 'react-native-fast-image';
 import Swiper from 'react-native-swiper';
+import { checkGuide } from 'lib/utils/guideChecker';
 import Modal from '.';
 
 const ModalView = ({ onClose }) => {
@@ -85,11 +85,10 @@ const ModalView = ({ onClose }) => {
 };
 
 export default function GuideModal({ modal, setModal }) {
-  const { checkGuide } = useContext(UserContext);
   const { guideModal } = useModal();
   const onBackdropPress = () => {
     setModal(null);
-    checkGuide({ type: guideModal });
+    checkGuide(guideModal);
   };
   return (
     <Modal isVisible={modal} onBackdropPress={onBackdropPress} style={styles.container}>

@@ -1,5 +1,5 @@
 import React, { useContext, useCallback } from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import Icon from 'widgets/Icon';
@@ -8,6 +8,7 @@ import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import { COLOR_1, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default function MusicSection({ title, songs, icon }) {
   const { onClickAdded } = useModal();
@@ -20,9 +21,9 @@ export default function MusicSection({ title, songs, icon }) {
 
   const onClickAddActions = useCallback((song) => {
     return (
-      <TouchableOpacity onPress={() => onClickAdd(song)}>
+      <TouchableNoDouble onPress={() => onClickAdd(song)}>
         <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-      </TouchableOpacity>
+      </TouchableNoDouble>
     );
   }, []);
 

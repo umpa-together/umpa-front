@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback } from 'react';
-import { ScrollView, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { Context as AuthContext } from 'context/Auth';
 import { Context as ReportContext } from 'context/Report';
 import { Context as UserContext } from 'context/User';
@@ -8,7 +8,6 @@ import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_1, COLOR_5, COLOR_2, COLOR_3, MAIN_COLOR } from 'constants/colors';
 import style from 'constants/styles';
 import WithdrawalModal from 'components/Modal/WithDrawalModal';
-import { TextInput } from 'react-native-gesture-handler';
 import Text from 'components/Text';
 
 export default function WithDrawalSection() {

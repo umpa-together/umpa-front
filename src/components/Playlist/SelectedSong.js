@@ -1,5 +1,5 @@
 import React, { useContext, memo } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Context as AddedContext } from 'context/Added';
 import SongView from 'components/SongView';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
@@ -7,6 +7,7 @@ import { COLOR_3 } from 'constants/colors';
 import Icon from 'widgets/Icon';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 const AddActions = (song) => {
   const { postAddedSong } = useContext(AddedContext);
@@ -18,9 +19,9 @@ const AddActions = (song) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => onClickAdd(song)}>
+    <TouchableNoDouble onPress={() => onClickAdd(song)}>
       <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 };
 

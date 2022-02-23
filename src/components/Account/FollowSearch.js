@@ -55,8 +55,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: 343 * SCALE_WIDTH,
-    paddingVertical: 5 * SCALE_HEIGHT,
-    minHeight: 40 * SCALE_HEIGHT,
+    height: 40 * SCALE_HEIGHT,
     paddingLeft: 15 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     backgroundColor: '#EEE',

@@ -25,6 +25,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import GuideModal from 'components/Modal/GuideModal';
 import LikeModal from 'components/Modal/LikeModal';
 import EmptySwipe from 'components/Relay/EmptySwipe';
+import guideChecker from 'lib/utils/guideChecker';
 
 export default function Swipe() {
   const {
@@ -115,6 +116,7 @@ export default function Swipe() {
   }, [isEnd]);
 
   useEffect(() => {
+    guideChecker('swipe', setGuideModal);
     setFirstView(!evaluateUserId.includes(user._id));
     return () => {
       stopTrackSong();
@@ -134,12 +136,6 @@ export default function Swipe() {
       }
     }, [currentIdx, firstView]),
   );
-
-  useEffect(() => {
-    if (user && !user.guide.swipe) {
-      setGuideModal('swipe');
-    }
-  }, [user]);
 
   const representCard = {
     postUserId: {

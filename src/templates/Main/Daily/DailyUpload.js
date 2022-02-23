@@ -10,16 +10,17 @@ import { MAIN_COLOR } from 'constants/colors';
 import UploadInfo from 'components/Daily/UploadInfo';
 import UploadHashtag from 'components/UploadHashtag';
 import Text from 'components/Text';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 const NextActions = ({ edit }) => {
   const { onClickUpload } = useDailyCreate();
   return (
-    <TouchableOpacity
+    <TouchableNoDouble
       style={[style.icons, styles.textContainer]}
       onPress={() => onClickUpload(edit)}
     >
       <Text style={styles.uploatText}>저장</Text>
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 };
 

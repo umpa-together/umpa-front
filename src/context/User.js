@@ -191,17 +191,6 @@ const postGenre =
     }
   };
 
-const checkGuide =
-  (dispatch) =>
-  async ({ type }) => {
-    try {
-      const response = await server.put(`/user/guide/${type}`);
-      dispatch({ type: 'getProfile', payload: response.data });
-    } catch (err) {
-      dispatch({ type: 'error', payload: 'Something went wrong with checkGuide' });
-    }
-  };
-
 export const { Provider, Context } = createDataContext(
   userReducer,
   {
@@ -219,7 +208,6 @@ export const { Provider, Context } = createDataContext(
     editRepresentSongs,
     getGenreLists,
     postGenre,
-    checkGuide,
   },
   {
     user: null,

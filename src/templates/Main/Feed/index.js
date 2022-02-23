@@ -19,6 +19,7 @@ import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import GuideModal from 'components/Modal/GuideModal';
+import guideChecker from 'lib/utils/guideChecker';
 
 const FOLLOWING_NUMBER = 30;
 const FeedActions = ({ setModal }) => {
@@ -114,18 +115,13 @@ export default function Feed() {
   };
 
   useEffect(() => {
+    guideChecker('feed', setGuideModal);
     getFeedType();
   }, []);
 
   useEffect(() => {
     if (type !== null) dataFetch();
   }, [type]);
-
-  useEffect(() => {
-    if (user && !user.guide.feed) {
-      setGuideModal('feed');
-    }
-  }, [user]);
 
   return (
     <View style={style.background}>

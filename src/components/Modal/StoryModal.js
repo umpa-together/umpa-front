@@ -22,6 +22,7 @@ import PlayAnimation from 'components/PlayAnimation';
 import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
 import { navigate, push } from 'lib/utils/navigation';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 import Modal from '.';
 
 const Header = ({ onClose }) => {
@@ -228,7 +229,7 @@ const Footer = ({ onClose }) => {
 
   return (
     <View style={[styles.footerContainer, style.flexRow]}>
-      <TouchableOpacity onPress={onClickLeftOption} style={styles.left}>
+      <TouchableNoDouble onPress={onClickLeftOption} style={styles.left}>
         {isMyStory ? (
           <>
             {storyViewer.length > 0 && (
@@ -241,7 +242,7 @@ const Footer = ({ onClose }) => {
         ) : (
           <Icon source={require('public/icons/story-add-song.png')} style={styles.icon} />
         )}
-      </TouchableOpacity>
+      </TouchableNoDouble>
       <TouchableOpacity activeOpacity={0.8} onPress={onClickPlay}>
         <Icon
           source={

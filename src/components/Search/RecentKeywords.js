@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Context as SearchContext } from 'context/Search';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSearch } from 'providers/search';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 import Divider from 'widgets/Divider';
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     marginLeft: 16 * SCALE_WIDTH,
   },
   keyword: {
-    marginBottom: 16 * SCALE_HEIGHT,
+    marginVertical: 8 * SCALE_HEIGHT,
     fontSize: FS(16),
     color: COLOR_3,
   },
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    paddingTop: 21 * SCALE_HEIGHT,
+    paddingTop: 13 * SCALE_HEIGHT,
     marginHorizontal: 0,
     marginLeft: 22 * SCALE_WIDTH,
   },

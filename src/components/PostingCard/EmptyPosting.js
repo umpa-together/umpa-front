@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FS, { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
 import { COLOR_3 } from 'constants/colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { navigate } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import EmptyData from 'components/EmptyData';
