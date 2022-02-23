@@ -40,7 +40,7 @@ export default function SearchSongView({ info }) {
       <View style={style.flexRow}>
         <SongImage url={artwork.url} imgStyle={styles.img} />
         <View style={styles.area}>
-          <CopySongName name={name}>
+          <CopySongName initAction={onClickSongView} name={name}>
             <MoveText
               isExplicit={contentRating === 'explicit'}
               text={name}

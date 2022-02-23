@@ -169,10 +169,11 @@ export default function Notice() {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: FS(24),
+    fontSize: FS(22),
     color: COLOR_1,
     marginLeft: 16 * SCALE_WIDTH,
-    marginVertical: 20 * SCALE_HEIGHT,
+    marginTop: 13 * SCALE_HEIGHT,
+    marginBottom: 20 * SCALE_HEIGHT,
     fontWeight: 'bold',
   },
   divider: {

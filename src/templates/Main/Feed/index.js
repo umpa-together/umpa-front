@@ -39,6 +39,10 @@ const FeedActions = ({ setModal }) => {
   );
 };
 
+const Logo = () => {
+  return <Icon source={require('public/icons/feed-logo.png')} style={styles.logoIcon} />;
+};
+
 export default function Feed() {
   const [sortModal, setSortModal] = useState(false);
   const [alertModal, setAlertModal] = useState(false);
@@ -125,11 +129,7 @@ export default function Feed() {
 
   return (
     <View style={style.background}>
-      <TabTitle
-        title="피드"
-        titleStyle={styles.title}
-        actions={[<FeedActions setModal={setSortModal} />]}
-      />
+      <TabTitle logo={<Logo />} actions={[<FeedActions setModal={setSortModal} />]} />
       <SongActionsProvider>
         <RefreshProvider>
           <Contents setIsScroll={setIsScroll} />
@@ -151,11 +151,11 @@ export default function Feed() {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: FS(24),
+    fontSize: FS(22),
     color: COLOR_1,
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 6 * SCALE_HEIGHT,
-    marginBottom: 15 * SCALE_HEIGHT,
+    marginBottom: 30 * SCALE_HEIGHT,
     fontWeight: 'bold',
   },
   floating: {
@@ -197,5 +197,11 @@ const styles = StyleSheet.create({
     width: 278 * SCALE_WIDTH,
     height: 103 * SCALE_HEIGHT,
     position: 'absolute',
+  },
+  logoIcon: {
+    width: 75.9 * SCALE_WIDTH,
+    height: 18.3 * SCALE_WIDTH,
+    left: 16 * SCALE_WIDTH,
+    top: 13 * SCALE_HEIGHT,
   },
 });

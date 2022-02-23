@@ -38,8 +38,8 @@ const ModalView = ({ onCloseSearchSongModal, onClose }) => {
 
   return (
     <View style={styles.viewContainer}>
-      <Text style={styles.title}>등록한 곡은 변경 및 편집이 불가합니다.</Text>
-      <Text style={styles.title}>등록하시겠습니까?</Text>
+      <Text style={styles.title}>곡 추천이 가능한 횟수는 1회입니다.</Text>
+      <Text style={styles.title}>이 곡을 추천할까요?</Text>
       <View style={styles.songArea}>
         <Text numberOfLines={1} style={styles.info}>
           {info}

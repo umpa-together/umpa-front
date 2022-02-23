@@ -4,7 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useModal } from 'providers/modal';
 import HapticFeedback from 'lib/utils/haptic';
 
-export default function CopySongName({ name, children }) {
+export default function CopySongName({ name, children, initAction }) {
   const { onClickAdded } = useModal();
 
   const onClickCopy = () => {
@@ -13,5 +13,9 @@ export default function CopySongName({ name, children }) {
     Clipboard.setString(name);
   };
 
-  return <TouchableOpacity onLongPress={onClickCopy}>{children}</TouchableOpacity>;
+  return (
+    <TouchableOpacity onPress={initAction} onLongPress={onClickCopy}>
+      {children}
+    </TouchableOpacity>
+  );
 }

@@ -61,10 +61,10 @@ export default function Search() {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: FS(24),
+    fontSize: FS(22),
     color: COLOR_1,
-    lineHeight: 35 * SCALE_HEIGHT,
-    marginTop: 6 * SCALE_HEIGHT,
+    marginTop: 13 * SCALE_HEIGHT,
+    marginBottom: 15 * SCALE_HEIGHT,
     marginLeft: 16 * SCALE_WIDTH,
     fontWeight: 'bold',
   },

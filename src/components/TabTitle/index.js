@@ -2,9 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Text from 'components/Text';
 
-export default function TabTitle({ title, titleStyle, actions = [] }) {
+export default function TabTitle({ logo = null, title, titleStyle, actions = [] }) {
   return (
     <View>
+      {logo}
       <Text style={titleStyle}>{title}</Text>
       <View style={styles.actions}>
         {actions.map((action) => {
