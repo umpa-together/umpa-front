@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "217008100787-lf4id7vg7l37nn6jrrn94590u4fhgkio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.umpatogether",
+            "certificate_hash": "fdb1c8f57c3fbdd479201fc835277495c59f9297"
+          }
+        },
+        {
           "client_id": "217008100787-pal3jinci6qgoiv5evejaa12hisvntfa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

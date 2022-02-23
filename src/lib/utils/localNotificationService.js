@@ -90,6 +90,7 @@ class LocalNotificationService {
             autoCancel: true,
             largeIcon: options.largeIcon || "ic_launcher",
             smallIcon: options.smallIcon || "ic_notification",
+            color: "black", // (optional) default: system default
             bigText: message || '',
             subText: title || '',
             vibrate: options.vibrate || true,
