@@ -1,86 +1,39 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useModal } from 'providers/modal';
 import FastImage from 'react-native-fast-image';
-import Swiper from 'react-native-swiper';
 import { checkGuide } from 'lib/utils/guideChecker';
+import server from 'lib/api/server';
 import Modal from '.';
 
 const ModalView = ({ onClose }) => {
   const { guideModal } = useModal();
-  const guideLists = {
-    swipe: [
-      <FastImage
-        source={require('public/images/swipe-guide-1.png')}
-        style={styles.backgroundImg}
-      />,
-      <FastImage
-        source={require('public/images/swipe-guide-2.png')}
-        style={styles.backgroundImg}
-      />,
-      <FastImage
-        source={require('public/images/swipe-guide-3.png')}
-        style={styles.backgroundImg}
-      />,
-      <FastImage
-        source={require('public/images/swipe-guide-4.png')}
-        style={styles.backgroundImg}
-      />,
-      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
-        <FastImage
-          source={require('public/images/swipe-guide-5.png')}
-          style={styles.backgroundImg}
-        />
-      </TouchableOpacity>,
-    ],
-    feed: [
-      <FastImage source={require('public/images/feed-guide-1.png')} style={styles.backgroundImg} />,
-      <FastImage source={require('public/images/feed-guide-2.png')} style={styles.backgroundImg} />,
-      <FastImage source={require('public/images/feed-guide-3.png')} style={styles.backgroundImg} />,
-      <FastImage source={require('public/images/feed-guide-4.png')} style={styles.backgroundImg} />,
-      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
-        <FastImage
-          source={require('public/images/feed-guide-5.png')}
-          style={styles.backgroundImg}
-        />
-      </TouchableOpacity>,
-    ],
-    playlist: [
-      <FastImage
-        source={require('public/images/playlist-guide-1.png')}
-        style={styles.backgroundImg}
-      />,
-      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
-        <FastImage
-          source={require('public/images/playlist-guide-2.png')}
-          style={styles.backgroundImg}
-        />
-      </TouchableOpacity>,
-    ],
-    search: [
-      <TouchableOpacity style={styles.backgroundImg} onPress={onClose}>
-        <FastImage
-          source={require('public/images/search-guide-1.png')}
-          style={styles.backgroundImg}
-        />
-      </TouchableOpacity>,
-    ],
+  const [guide, setGuide] = useState(null);
+  const [currentIdx, setCureentIdx] = useState(0);
+
+  const getGuide = async () => {
+    const response = await server.get(`/user/guide/${guideModal}`);
+    setGuide(response.data);
   };
 
+  const onClickGuide = () => {
+    if (currentIdx === guide.length - 1) {
+      onClose();
+    } else {
+      setCureentIdx(currentIdx + 1);
+    }
+  };
+
+  useEffect(() => {
+    getGuide();
+  }, []);
+
   return (
-    <>
-      {guideModal && (
-        <Swiper height="100%" loop={false} activeDotColor="#fff" dotColor="#ffffff40">
-          {guideLists[guideModal].map((guide) => {
-            return (
-              <View key={Math.random()} style={styles.backgroundImg}>
-                {guide}
-              </View>
-            );
-          })}
-        </Swiper>
+    <TouchableOpacity activeOpacity={1} onPress={onClickGuide}>
+      {guide && (
+        <FastImage style={styles.backgroundImg} source={{ uri: guide[currentIdx].image }} />
       )}
-    </>
+    </TouchableOpacity>
   );
 };
 
@@ -100,14 +53,10 @@ export default function GuideModal({ modal, setModal }) {
 const styles = StyleSheet.create({
   container: {
     margin: 0,
-  },
-  viewContainer: {
-    width: '100%',
-    height: '100%',
+    backgroundColor: '#00000040',
   },
   backgroundImg: {
     width: '100%',
     height: '100%',
-    position: 'absolute',
   },
 });

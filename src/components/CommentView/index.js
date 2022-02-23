@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: FS(14),
     marginRight: 16 * SCALE_WIDTH,
     color: '#000',
+    fontWeight: 'bold',
   },
   timeText: {
     fontSize: FS(12),
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: FS(12),
-    color: '#5D5D5D',
+    color: '#767676',
     marginRight: 16 * SCALE_WIDTH,
   },
   active: {

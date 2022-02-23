@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     paddingLeft: 16 * SCALE_WIDTH,
   },
   profileImg: {
-    width: 40 * SCALE_WIDTH,
-    height: 40 * SCALE_WIDTH,
-    borderRadius: 40 * SCALE_HEIGHT,
+    width: 32 * SCALE_WIDTH,
+    height: 32 * SCALE_WIDTH,
+    borderRadius: 32 * SCALE_HEIGHT,
     marginRight: 8 * SCALE_WIDTH,
   },
   name: {

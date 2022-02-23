@@ -62,7 +62,7 @@ const TabScreen = () => {
       activeTintColor: MAIN_COLOR,
       inactiveTintColor: '#4B4B4B',
       tabBarStyle: {
-        height: 80 * SCALE_HEIGHT,
+        height: Platform.OS === 'android' ? 60 * SCALE_HEIGHT : 75 * SCALE_HEIGHT,
       },
     }),
     [],
@@ -104,7 +104,7 @@ const TabScreen = () => {
             options={{
               tabBarLabel: name,
               tabBarLabelStyle: {
-                bottom: Platform.OS === 'android' ? 10 * SCALE_HEIGHT : 0,
+                bottom: Platform.OS === 'android' ? 5 * SCALE_HEIGHT : 0,
               },
               tabBarIcon: ({ focused }) => {
                 return <Icon style={style.icons} source={focused ? activeIcon : inactiveIcon} />;

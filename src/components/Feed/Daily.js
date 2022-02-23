@@ -9,11 +9,10 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import DailyImage from 'components/DailyImage';
 import { COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
-import SelectedHashtag from 'components/SelectedHashtag';
 import FollowAction from './FollowAction';
 
 export default memo(function Daily({ daily }) {
-  const { _id: id, postUserId: postUser, song, textcontent: content, image, hashtag } = daily;
+  const { _id: id, postUserId: postUser, song, textcontent: content, image } = daily;
   const onClickDaily = () => {
     push('SelectedDaily', { id, postUserId: postUser._id });
   };
@@ -26,9 +25,6 @@ export default memo(function Daily({ daily }) {
         <Text style={styles.content} numberOfLines={3}>
           {content}
         </Text>
-        {hashtag.length > 0 && (
-          <SelectedHashtag hashtag={hashtag} customContainer={styles.hashtagContainer} />
-        )}
         <Footer object={daily} type="daily" />
         <View style={styles.divider} />
       </TouchableNoDouble>

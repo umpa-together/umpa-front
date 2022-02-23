@@ -105,7 +105,7 @@ const CompletedRelay = () => {
           <Information />
           <HashtagView />
           <MusicSection title={`총 ${songs.length}곡`} songs={songs} />
-          <Divider />
+          <Divider containerStyle={styles.divide} />
           <Participant />
           <Footer object={FooterData} type="relay" />
           <Divider containerStyle={styles.dividerContainer} />
@@ -220,6 +220,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingBottom: 30 * SCALE_HEIGHT,
+  },
+  divide: {
+    backgroundColor: '#f5f5f5',
+    marginTop: 18 * SCALE_HEIGHT,
   },
   dividerContainer: {
     height: 1 * SCALE_HEIGHT,

@@ -303,7 +303,6 @@ const ModalView = ({ onClose }) => {
       onClickLeft();
     }
   };
-
   const onClickStoryRight = () => {
     if (!isMyStory) {
       onClickRight();

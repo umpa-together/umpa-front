@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
   songContainer: {
     paddingLeft: 17 * SCALE_WIDTH,
     paddingRight: 14 * SCALE_WIDTH,
-    paddingVertical: 10 * SCALE_HEIGHT,
+    paddingTop: 10 * SCALE_HEIGHT,
+    paddingBottom: 1 * SCALE_HEIGHT,
   },
   dividerContainer: {
     height: 1 * SCALE_HEIGHT,

@@ -105,7 +105,8 @@ export default function NavButton({ isSwipe, setValidityMsg }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 22 * SCALE_WIDTH,
-    marginTop: 33 * SCALE_HEIGHT,
+    marginTop: 20 * SCALE_HEIGHT,
+    marginBottom: 13 * SCALE_HEIGHT,
   },
   optionBoxTry: {
     width: 159 * SCALE_WIDTH,
