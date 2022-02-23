@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -53,21 +53,19 @@ const FloatingButton = ({ show }) => {
     opacity: opacity.value,
   }));
 
-  const backgroundOpacity = useAnimatedStyle(() => ({
-    transform: [{ scale: animation.value >= 0.9 ? 1 : 0 }],
-    opacity: animation.value,
-  }));
-
   const rotateStyle = useAnimatedStyle(() => ({
     alignSelf: 'center',
     transform: [{ rotate: rotate.value }],
   }));
   const textList = ['데일리 생성', '플레이리스트 생성'];
+  const backgroundPositionStyle = currentSong ? styles.active : styles.inActive;
   return (
     <Animated.View style={[currentSong ? styles.playingContainer : styles.container, opacityStyle]}>
-      <TouchableWithoutFeedback onPress={toggleMenu}>
-        <Animated.View style={[styles.backContainer, backgroundOpacity]} />
-      </TouchableWithoutFeedback>
+      {isopen && (
+        <TouchableWithoutFeedback onPress={toggleMenu}>
+          <View style={[styles.backContainer, backgroundPositionStyle]} />
+        </TouchableWithoutFeedback>
+      )}
       {writeList.map((item, index) => {
         const translateY = useDerivedValue(() =>
           interpolate(animation.value, [0, 1], [0, -60 * (index + 1)]),
@@ -102,12 +100,10 @@ const FloatingButton = ({ show }) => {
         );
       })}
       <TouchableWithoutFeedback onPress={toggleMenu}>
-        <Animated.View>
-          <Animated.Image
-            source={require('public/icons/create-floating.png')}
-            style={[styles.floating, rotateStyle]}
-          />
-        </Animated.View>
+        <Animated.Image
+          source={require('public/icons/create-floating.png')}
+          style={[styles.floating, rotateStyle]}
+        />
       </TouchableWithoutFeedback>
     </Animated.View>
   );
@@ -116,13 +112,13 @@ const FloatingButton = ({ show }) => {
 const styles = StyleSheet.create({
   playingContainer: {
     position: 'absolute',
-    bottom: 120 * SCALE_HEIGHT,
-    right: 70 * SCALE_WIDTH,
+    bottom: 90 * SCALE_HEIGHT,
+    right: 40 * SCALE_WIDTH,
   },
   container: {
     position: 'absolute',
-    bottom: 70 * SCALE_HEIGHT,
-    right: 70 * SCALE_WIDTH,
+    bottom: 30 * SCALE_HEIGHT,
+    right: 40 * SCALE_WIDTH,
   },
   button: {
     width: 49 * SCALE_WIDTH,
@@ -132,12 +128,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    left: 6 * SCALE_WIDTH,
+    right: -27.5 * SCALE_WIDTH,
+    bottom: 0 * SCALE_HEIGHT,
   },
   createIcon: {
     width: 30 * SCALE_WIDTH,
     height: 30 * SCALE_WIDTH,
-    borderRadius: 30 * SCALE_WIDTH,
   },
   store: {
     fontSize: FS(12),
@@ -152,15 +148,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   floating: {
-    left: 0,
     width: 59 * SCALE_WIDTH,
     height: 59 * SCALE_WIDTH,
     position: 'absolute',
+    bottom: -10 * SCALE_HEIGHT,
+  },
+  active: {
+    right: -40 * SCALE_WIDTH,
+    bottom: -90 * SCALE_HEIGHT,
+  },
+  inActive: {
+    right: -40 * SCALE_WIDTH,
+    bottom: -30 * SCALE_HEIGHT,
   },
   backContainer: {
     position: 'absolute',
-    right: -70 * SCALE_WIDTH,
-    bottom: -120 * SCALE_HEIGHT,
+    right: -40 * SCALE_WIDTH,
+    bottom: -30 * SCALE_HEIGHT,
     width: 375 * SCALE_WIDTH,
     height: 812 * SCALE_HEIGHT,
     backgroundColor: '#00000070',

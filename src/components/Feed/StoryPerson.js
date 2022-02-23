@@ -16,14 +16,9 @@ export default function StoryPerson({ person, onClickStory, viewer }) {
   } = useContext(UserContext);
   const { name, profileImage, _id: personId } = person;
   const isMyStory = personId === user._id;
-
   return (
     <View style={styles.nameArea}>
-      <TouchableOpacity
-        style={styles.story}
-        activeOpacity={0.9}
-        onPress={() => onClickStory(myStory)}
-      >
+      <TouchableOpacity style={styles.story} activeOpacity={0.9} onPress={onClickStory}>
         <ImageBackground
           style={styles.story}
           source={

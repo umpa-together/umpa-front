@@ -135,8 +135,8 @@ export default function Feed() {
           <Contents setIsScroll={setIsScroll} />
         </RefreshProvider>
       </SongActionsProvider>
-      <PlayBar />
       <FloatingButton show={isScroll} />
+      <PlayBar />
       <GuideModal modal={guideModal === 'feed'} setModal={setGuideModal} />
       {addedModal && <AddedModal />}
       <SortModal
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: FS(16),
     right: -8 * SCALE_WIDTH,
-    color: '#000',
+    color: '#303030',
   },
   alertBox: {
     alignItems: 'center',

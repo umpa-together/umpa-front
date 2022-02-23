@@ -7,12 +7,11 @@ import TouchableNoDouble from 'components/TouchableNoDouble';
 import Footer from 'components/Footer';
 import { MAIN_COLOR, COLOR_1 } from 'constants/colors';
 import Text from 'components/Text';
-import SelectedHashtag from 'components/SelectedHashtag';
 import SongsLists from './SongsLists';
 import FollowAction from './FollowAction';
 
 export default memo(function Playlist({ playlist }) {
-  const { _id: id, postUserId: postUser, songs, title, textcontent, hashtag } = playlist;
+  const { _id: id, postUserId: postUser, songs, title, textcontent } = playlist;
 
   const onClickPlaylist = async () => {
     push('SelectedPlaylist', { id, postUserId: postUser._id });
@@ -27,9 +26,6 @@ export default memo(function Playlist({ playlist }) {
           {textcontent}
         </Text>
       </View>
-      {hashtag.length > 0 && (
-        <SelectedHashtag hashtag={hashtag} customContainer={styles.hashtagContainer} />
-      )}
       <SongsLists songs={songs} />
       <Footer object={playlist} type="playlist" />
       <View style={styles.divider} />
