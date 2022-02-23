@@ -17,7 +17,6 @@ export default function TabSection({ my, data, opt }) {
   const onPressModal = () => {
     setSortModal(!sortModal);
   };
-
   const sortFunction = (key) => {
     if (key === 'like') {
       data.sort(function (a, b) {

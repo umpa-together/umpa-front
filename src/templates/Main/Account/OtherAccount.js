@@ -55,6 +55,18 @@ export default function OtherAccount({ id }) {
 
   const { playlist, daily, relay } = content;
 
+  const relayData = relay.map((item) => {
+    // eslint-disable-next-line no-shadow
+    const { playlist, song } = item;
+    return {
+      _id: playlist._id,
+      title: playlist.title,
+      likes: playlist.likes,
+      time: playlist.createdTime,
+      song,
+    };
+  });
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'playlist':
@@ -62,7 +74,7 @@ export default function OtherAccount({ id }) {
       case 'daily':
         return <TabSection data={daily} opt="daily" />;
       case 'relay':
-        return <TabSection data={relay} opt="relay" />;
+        return <TabSection data={relayData} opt="relay" />;
       default:
         return null;
     }

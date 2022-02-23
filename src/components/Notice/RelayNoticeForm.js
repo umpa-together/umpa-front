@@ -52,7 +52,7 @@ export default function RelayNoticeForm({ notice, onClickProfile }) {
           <ProfileImage img={user.profileImage} imgStyle={styles.profileImg} />
         </TouchableOpacity>
       )}
-      <View style={styles.content}>
+      <View style={user ? styles.content : styles.approved}>
         <Text style={styles.name} numberOfLines={2}>
           {user && `${user.name} 님이 `}
           {textLists[type]}
@@ -68,6 +68,10 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 12 * SCALE_WIDTH,
+  },
+  approved: {
+    flex: 1,
+    paddingRight: 12 * SCALE_WIDTH,
   },
   profileImg: {
     height: 48 * SCALE_WIDTH,
