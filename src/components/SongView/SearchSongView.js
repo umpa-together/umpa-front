@@ -12,6 +12,7 @@ import { push } from 'lib/utils/navigation';
 import { useModal } from 'providers/modal';
 import Text from 'components/Text';
 import CopySongName from 'components/CopySongName';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default function SearchSongView({ info }) {
   const { id } = info.song;
@@ -69,9 +70,9 @@ export default function SearchSongView({ info }) {
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} onPress={onClickAdd}>
+        <TouchableNoDouble activeOpacity={0.8} onPress={onClickAdd}>
           <Icon source={require('public/icons/add-song.png')} style={styles.add} />
-        </TouchableOpacity>
+        </TouchableNoDouble>
       </View>
     </TouchableOpacity>
   );

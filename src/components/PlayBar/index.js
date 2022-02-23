@@ -11,6 +11,7 @@ import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
 import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
+import TouchableNoDouble from 'components/TouchableNoDouble';
 
 export default memo(function PlayBar() {
   const { currentSong, state, onClickPlayBar } = useTrackPlayer();
@@ -60,9 +61,9 @@ export default memo(function PlayBar() {
                   style={styles.icon}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={onClickAdd} activeOpacity={0.8}>
+              <TouchableNoDouble onPress={onClickAdd} activeOpacity={0.8}>
                 <Icon source={require('public/icons/add-song.png')} style={styles.icon} />
-              </TouchableOpacity>
+              </TouchableNoDouble>
             </View>
           </View>
         </View>

@@ -25,6 +25,8 @@ import CommentProvider from 'providers/comment';
 import LoadingIndicator from 'components/LoadingIndicator';
 import KeyboardProvider from 'providers/keyboard';
 import GuideModal from 'components/Modal/GuideModal';
+import TouchableNoDouble from 'components/TouchableNoDouble';
+import guideChecker from 'lib/utils/guideChecker';
 
 const AddedAction = ({ playlistId }) => {
   const {
@@ -47,7 +49,7 @@ const AddedAction = ({ playlistId }) => {
   };
 
   return (
-    <TouchableOpacity onPress={onClickAddedPlaylist}>
+    <TouchableNoDouble onPress={onClickAddedPlaylist}>
       <Icon
         source={
           isAdded
@@ -56,7 +58,7 @@ const AddedAction = ({ playlistId }) => {
         }
         style={styles.icon}
       />
-    </TouchableOpacity>
+    </TouchableNoDouble>
   );
 };
 
@@ -201,11 +203,10 @@ export default function SelectedPlaylist({ id, postUserId }) {
           }, 400);
         }
       };
+
   useEffect(() => {
-    if (user && !user.guide.playlist) {
-      setGuideModal('playlist');
-    }
-  }, [user]);
+    guideChecker('playlist', setGuideModal);
+  }, []);
 
   const selectInfo = { func: selectFunction, list: selectLists };
   return (
