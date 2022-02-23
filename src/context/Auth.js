@@ -87,7 +87,7 @@ const getGoogleInfo =
         dispatch({ type: 'signIn', payload: res.data.token });
       }
     } catch (err) {
-      dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+      dispatch({ type: 'add_error', payload: '※ 이메일,비밀번호가 일치하지 않습니다.' });
     }
   };
 
@@ -109,7 +109,7 @@ const getAppleInfo =
         dispatch({ type: 'signIn', payload: res.data.token });
       }
     } catch (err) {
-      dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+      dispatch({ type: 'add_error', payload: '※ 이메일,비밀번호가 일치하지 않습니다.' });
     }
   };
 
@@ -131,7 +131,7 @@ const getKakaoInfo =
         dispatch({ type: 'signIn', payload: res.data.token });
       }
     } catch (err) {
-      dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+      dispatch({ type: 'add_error', payload: '※ 이메일,비밀번호가 일치하지 않습니다.' });
     }
   };
 
@@ -153,7 +153,7 @@ const getNaverInfo =
         dispatch({ type: 'signIn', payload: res.data.token });
       }
     } catch (err) {
-      dispatch({ type: 'add_error', payload: '이메일과 비밀번호가 틀립니다' });
+      dispatch({ type: 'add_error', payload: '※ 이메일,비밀번호가 일치하지 않습니다.' });
     }
   };
 
