@@ -89,7 +89,7 @@ export default function Story() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 32 * SCALE_HEIGHT,
+    paddingTop: 17 * SCALE_HEIGHT,
     paddingBottom: 10 * SCALE_HEIGHT,
     borderBottomWidth: 1 * SCALE_HEIGHT,
     borderBottomColor: '#dcdcdc',

@@ -40,14 +40,6 @@ export default function StoryPerson({ person, onClickStory, viewer }) {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 10 * SCALE_HEIGHT,
-    borderBottomWidth: 1 * SCALE_HEIGHT,
-    borderBottomColor: '#dcdcdc',
-  },
-  scrollContainer: {
-    paddingHorizontal: 16 * SCALE_WIDTH,
-  },
   story: {
     justifyContent: 'center',
     alignItems: 'center',
