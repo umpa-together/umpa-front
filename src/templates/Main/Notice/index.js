@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     color: COLOR_1,
     marginLeft: 16 * SCALE_WIDTH,
     marginTop: 13 * SCALE_HEIGHT,
-    marginBottom: 20 * SCALE_HEIGHT,
+    marginBottom: 15 * SCALE_HEIGHT,
     fontWeight: 'bold',
   },
   divider: {
@@ -181,12 +181,13 @@ const styles = StyleSheet.create({
     height: 0.7 * SCALE_HEIGHT,
     width: '100%',
     backgroundColor: '#CFCFCF',
-    marginBottom: 20 * SCALE_HEIGHT,
+    marginBottom: 15 * SCALE_HEIGHT,
   },
   titleText: {
     marginLeft: 20 * SCALE_WIDTH,
     fontSize: FS(16),
     fontWeight: 'bold',
     color: COLOR_1,
+    marginTop: 5 * SCALE_HEIGHT,
   },
 });

@@ -92,7 +92,7 @@ const TabScreen = () => {
                       searchRef.current.scrollTo({ x: 5, y: 5, animated: true });
                     }
                   } else if (title === 'Notice') {
-                    if (noticeRef.currnet) {
+                    if (noticeRef.current) {
                       noticeRef.current.scrollToOffset({ offset: 0, animated: true });
                     }
                   }

@@ -129,7 +129,11 @@ export default function Feed() {
 
   return (
     <View style={style.background}>
-      <TabTitle logo={<Logo />} actions={[<FeedActions setModal={setSortModal} />]} />
+      <TabTitle
+        logo={<Logo />}
+        actions={[<FeedActions setModal={setSortModal} />]}
+        titleStyle={styles.titleStyle}
+      />
       <SongActionsProvider>
         <RefreshProvider>
           <Contents setIsScroll={setIsScroll} />
@@ -157,6 +161,9 @@ const styles = StyleSheet.create({
     marginTop: 6 * SCALE_HEIGHT,
     marginBottom: 30 * SCALE_HEIGHT,
     fontWeight: 'bold',
+  },
+  titleStyle: {
+    marginBottom: 15 * SCALE_HEIGHT,
   },
   floating: {
     width: 52 * SCALE_WIDTH,
