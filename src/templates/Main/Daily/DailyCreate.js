@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  BackHandler,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet, BackHandler, Keyboard } from 'react-native';
 import Header from 'components/Header';
 import style from 'constants/styles';
 import { navigate, goBack } from 'lib/utils/navigation';
@@ -98,10 +91,6 @@ export default function DailyCreate({ data, edit }) {
     setActionModal(true);
   };
 
-  const onPressEmpty = () => {
-    Keyboard.dismiss();
-  };
-
   useEffect(() => {
     if (data) {
       setParams(data);
@@ -114,26 +103,24 @@ export default function DailyCreate({ data, edit }) {
   }, []);
 
   return (
-    <TouchableWithoutFeedback onPress={onPressEmpty}>
-      <View style={style.background}>
-        <Header
-          title={edit ? '데일리 편집' : '데일리 작성'}
-          titleStyle={style.headertitle}
-          landings={[<BackLandings onPressBack={onPressBack} />]}
-          actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
-        />
-        <SongActionsProvider>
-          <CreateSong />
-        </SongActionsProvider>
-        <CreateInput />
-        <CreateImageLists edit={edit} />
-        <KeyboardProvider>
-          <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
-        </KeyboardProvider>
-        <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
-        {validityModal && <ValidityModal title={validityMsg} />}
-      </View>
-    </TouchableWithoutFeedback>
+    <View style={style.background}>
+      <Header
+        title={edit ? '데일리 편집' : '데일리 작성'}
+        titleStyle={style.headertitle}
+        landings={[<BackLandings onPressBack={onPressBack} />]}
+        actions={[<NextActions setValidityMsg={setValidityMsg} edit={edit} />]}
+      />
+      <SongActionsProvider>
+        <CreateSong />
+      </SongActionsProvider>
+      <CreateInput />
+      <CreateImageLists edit={edit} />
+      <KeyboardProvider>
+        <CreatePhoto setValidityMsg={setValidityMsg} edit={edit} />
+      </KeyboardProvider>
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+      {validityModal && <ValidityModal title={validityMsg} />}
+    </View>
   );
 }
 

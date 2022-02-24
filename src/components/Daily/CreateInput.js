@@ -1,13 +1,17 @@
 import React, { useCallback } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { useDailyCreate } from 'providers/dailyCreate';
 import FS, { SCALE_HEIGHT, SCALE_WIDTH } from 'lib/utils/normalize';
 
 export default function CreateInput() {
   const { information, onChangeValue } = useDailyCreate();
   const onChangeText = useCallback((text) => onChangeValue(text), []);
+  const onPressEmpty = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={1} onPress={onPressEmpty} style={styles.container}>
       <TextInput
         value={information.content}
         style={styles.inputBox}
@@ -20,19 +24,19 @@ export default function CreateInput() {
         placeholderTextColor="rgb(164,164,164)"
         allowFontScaling={false}
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 12 * SCALE_HEIGHT,
+    paddingHorizontal: 18 * SCALE_WIDTH,
   },
   inputBox: {
     width: '100%',
     height: 400 * SCALE_HEIGHT,
-    paddingHorizontal: 18 * SCALE_WIDTH,
-    paddingBottom: 100 * SCALE_HEIGHT,
+    paddingBottom: 150 * SCALE_HEIGHT,
     marginBottom: 32 * SCALE_HEIGHT,
     fontSize: FS(14),
   },
