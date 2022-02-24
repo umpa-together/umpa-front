@@ -50,7 +50,11 @@ export default function CreatePhoto({ edit, setValidityMsg }) {
   };
 
   return (
-    <View style={[styles.container, keyboardStyle]}>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={onPressDown}
+      style={[styles.container, keyboardStyle]}
+    >
       <View style={[style.flexRow, styles.touchContainer]}>
         <TouchableOpacity onPress={onPressAdd} style={style.flexRow}>
           <Icon
@@ -69,7 +73,7 @@ export default function CreatePhoto({ edit, setValidityMsg }) {
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

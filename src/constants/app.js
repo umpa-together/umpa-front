@@ -1,7 +1,7 @@
-const isDev = true;
+const isDev = false;
 const DEV_ANDROID = '217008100787-dmpqcjn1lj44u5jr124rhqaomhol8ic6.apps.googleusercontent.com';
 const RELEASE_ANDROID = '217008100787-lf4id7vg7l37nn6jrrn94590u4fhgkio.apps.googleusercontent.com';
-const DEV_SERVER = 'https://910a-175-193-213-153.ngrok.io';
+const DEV_SERVER = 'http://52.78.209.215:3000';
 const RELEASE_SERVER = 'http://52.78.209.215:3000';
 
 export const kConsumerKey = 'so3Gjl6buzJ29rXRalJm';

@@ -72,7 +72,7 @@ const getNextFeedWithFollowing =
 
 const getFeedType = (dispatch) => async () => {
   try {
-    const feedType = await AsyncStorage.getItem('feed');
+    const feedType = await AsyncStorage.getItem('feedOpt');
     dispatch({ type: 'getFeedType', payload: feedType === null });
   } catch (err) {
     dispatch({ type: 'error', payload: 'Something went wrong with getFeedType' });
@@ -81,12 +81,12 @@ const getFeedType = (dispatch) => async () => {
 
 const setFeedType = (dispatch) => async () => {
   try {
-    const feedType = await AsyncStorage.getItem('feed');
+    const feedType = await AsyncStorage.getItem('feedOpt');
     if (feedType) {
-      await AsyncStorage.removeItem('feed');
+      await AsyncStorage.removeItem('feedOpt');
       getFeeds();
     } else {
-      await AsyncStorage.setItem('feed', 'following');
+      await AsyncStorage.setItem('feedOpt', 'following');
       getFeedWithFollowing();
     }
     dispatch({ type: 'getFeedType', payload: feedType !== null });

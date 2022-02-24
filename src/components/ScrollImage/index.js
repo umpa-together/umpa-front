@@ -21,7 +21,9 @@ export default function ScrollImage({ images, children }) {
           horizontal
           showsHorizontalScrollIndicator={false}
           ref={scrollViewRef}
-          onLayout={onLayoutScroll}
+          onLayout={() => {
+            onLayoutScroll({ song: false });
+          }}
           onScroll={handleScroll}
           contentContainerStyle={{
             width: TOTAL_WIDTH * images.length + TOTAL_WIDTH / 2,
