@@ -23,7 +23,7 @@ export default function Contents({ setIsScroll }) {
   const {
     state: { user },
   } = useContext(UserContext);
-  const { getMyStory, getOtherStoryWithAll } = useContext(StoryContext);
+  const { getMyStory, getOtherStoryWithAll, getOtherStoryWithFollower } = useContext(StoryContext);
   const { refreshing, onRefresh, setRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
   const { feedRef } = useTabRef();
@@ -49,7 +49,7 @@ export default function Contents({ setIsScroll }) {
     if (type) {
       await Promise.all([getFeeds(), getMyStory(), getOtherStoryWithAll()]);
     } else {
-      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithAll()]);
+      await Promise.all([getFeedWithFollowing(), getMyStory(), getOtherStoryWithFollower()]);
     }
   };
 
