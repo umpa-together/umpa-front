@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useCallback, useState } from 'react';
-import { View } from 'react-native';
+import React, { useContext, useCallback, useState, memo } from 'react';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
@@ -16,6 +16,19 @@ import PlayBar from 'components/PlayBar';
 import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import { Provider as NoticeProvider } from 'context/Notice';
+import Icon from 'widgets/Icon';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+
+const HamburgerMenu = memo(({ setSideModal }) => {
+  const onPressMenu = () => {
+    setSideModal(true);
+  };
+  return (
+    <TouchableOpacity style={styles.hamburger} onPress={onPressMenu}>
+      <Icon style={style.icons} source={require('public/icons/account-hamburger.png')} />
+    </TouchableOpacity>
+  );
+});
 
 export default function MyAccount() {
   const {
@@ -31,10 +44,6 @@ export default function MyAccount() {
   const postingCount = playlist.length + daily.length + relay.length;
   const [sideModal, setSideModal] = useState(false);
   const { addedModal } = useModal();
-
-  const onPressMenu = () => {
-    setSideModal(true);
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -80,7 +89,7 @@ export default function MyAccount() {
     <View style={style.background}>
       {user && (
         <>
-          <AccountHeader user={user} hamburger={onPressMenu} />
+          <AccountHeader user={user} actions={<HamburgerMenu setSideModal={setSideModal} />} />
           <PostingInfo my posting={postingCount} user={user} />
           <UserInfo myaccount user={user} />
           <TabView
@@ -99,3 +108,11 @@ export default function MyAccount() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  hamburger: {
+    position: 'absolute',
+    bottom: 40 * SCALE_HEIGHT,
+    right: 9 * SCALE_WIDTH,
+  },
+});

@@ -6,7 +6,7 @@ import { goBack } from 'lib/utils/navigation';
 import Icon from 'widgets/Icon';
 import ProfileBackground from './ProfileBackground';
 
-export default memo(function AccountHeader({ user, back, hamburger }) {
+export default memo(function AccountHeader({ user, back, actions }) {
   const { backgroundImage } = user;
   const onPressBack = () => {
     goBack();
@@ -20,11 +20,7 @@ export default memo(function AccountHeader({ user, back, hamburger }) {
             <Icon style={style.icons} source={require('public/icons/account-back.png')} />
           </TouchableOpacity>
         )}
-        {hamburger && (
-          <TouchableOpacity style={styles.hamburger} onPress={hamburger}>
-            <Icon style={style.icons} source={require('public/icons/account-hamburger.png')} />
-          </TouchableOpacity>
-        )}
+        {actions}
       </View>
     </View>
   );
@@ -39,11 +35,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 48 * SCALE_HEIGHT,
     left: 9 * SCALE_WIDTH,
-  },
-  hamburger: {
-    position: 'absolute',
-    bottom: 40 * SCALE_HEIGHT,
-    right: 9 * SCALE_WIDTH,
   },
   backgroundImage: {
     width: '100%',

@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import React, { useContext, useState, useEffect, useCallback, memo } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Context as UserContext } from 'context/User';
+import { Context as ReportContext } from 'context/Report';
 import UserInfo from 'components/Account/UserInfo';
 import PostingInfo from 'components/Account/PostingInfo';
 import TabView from 'components/TabView';
@@ -12,6 +13,21 @@ import AccountTabBar from 'components/TabView/AccountTabBar';
 import RepresentModal from 'components/Modal/RepresentModal';
 import TabSection from 'components/Account/TabSection';
 import LoadingIndicator from 'components/LoadingIndicator';
+import Icon from 'widgets/Icon';
+import { SCALE_WIDTH, SCALE_HEIGHT } from 'lib/utils/normalize';
+import SelectModal from 'components/Modal/SelectModal';
+import ActionModal from 'components/Modal/ActionModal';
+
+const DotMenu = memo(({ setSelectModal }) => {
+  const onPressMenu = () => {
+    setSelectModal(true);
+  };
+  return (
+    <TouchableOpacity style={styles.dot} onPress={onPressMenu}>
+      <Icon style={style.icons} source={require('public/icons/account-dot.png')} />
+    </TouchableOpacity>
+  );
+});
 
 export default function OtherAccount({ id }) {
   const {
@@ -19,9 +35,60 @@ export default function OtherAccount({ id }) {
     initRepresentSongs,
     getOtherInformation,
   } = useContext(UserContext);
+  const { postReport } = useContext(ReportContext);
   const [user, setUser] = useState(null);
   const [content, setContent] = useState({ playlist: [], daily: [], relay: [] });
   const [loading, setLoading] = useState(true);
+  const [selectModal, setSelectModal] = useState(false);
+  const [actionModal, setActionModal] = useState(false);
+  const [actions, setActions] = useState(null);
+  const selectLists = [
+    { title: '차단하기', key: 'block' },
+    { title: '신고하기', key: 'report' },
+  ];
+  const reportActionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '신고하기', key: 'report' },
+  ];
+  const blockActionLists = [
+    { title: '취소하기', key: 'cancel' },
+    { title: '차단하기', key: 'block' },
+  ];
+
+  const reportActionFunction = (key) => {
+    if (key === 'report') {
+      postReport({ type: 'user', reason: '유저 부적절', subjectId: user._id });
+    }
+    setActionModal(false);
+  };
+
+  const blockActionFunction = async (key) => {
+    if (key === 'block') {
+      postReport({ type: 'user', reason: '유저 차단', subjectId: user._id });
+    }
+    setActionModal(false);
+  };
+
+  const selectFunction = (key) => {
+    setSelectModal(false);
+    if (key === 'report') {
+      setActions({
+        mainTitle: '해당 유저를 신고하시겠습니까?',
+        func: reportActionFunction,
+        list: reportActionLists,
+      });
+    } else if (key === 'block') {
+      setActions({
+        mainTitle: '해당 유저를 차단하시겠습니까?',
+        func: blockActionFunction,
+        list: blockActionLists,
+      });
+    }
+    setTimeout(() => {
+      setActionModal(true);
+    }, 500);
+  };
+  const selectInfo = { func: selectFunction, list: selectLists };
 
   const postingCount =
     content && content.playlist.length + content.daily.length + content.relay.length;
@@ -90,7 +157,7 @@ export default function OtherAccount({ id }) {
     <View style={style.background}>
       {!loading ? (
         <>
-          <AccountHeader user={user} back />
+          <AccountHeader user={user} back actions={<DotMenu setSelectModal={setSelectModal} />} />
           <PostingInfo posting={postingCount} user={user} />
           <UserInfo user={user} />
           <TabView
@@ -103,6 +170,16 @@ export default function OtherAccount({ id }) {
       ) : (
         <LoadingIndicator />
       )}
+      <ActionModal modal={actionModal} setModal={setActionModal} actionInfo={actions} />
+      <SelectModal modal={selectModal} setModal={setSelectModal} selectInfo={selectInfo} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  dot: {
+    position: 'absolute',
+    bottom: 40 * SCALE_HEIGHT,
+    right: 5 * SCALE_WIDTH,
+  },
+});
