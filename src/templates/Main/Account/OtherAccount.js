@@ -34,6 +34,7 @@ export default function OtherAccount({ id }) {
     state: { otherUser, otherContents },
     initRepresentSongs,
     getOtherInformation,
+    blockUser,
   } = useContext(UserContext);
   const { postReport } = useContext(ReportContext);
   const [user, setUser] = useState(null);
@@ -64,7 +65,7 @@ export default function OtherAccount({ id }) {
 
   const blockActionFunction = async (key) => {
     if (key === 'block') {
-      postReport({ type: 'user', reason: '유저 차단', subjectId: user._id });
+      blockUser({ subjectId: user._id });
     }
     setActionModal(false);
   };

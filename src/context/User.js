@@ -191,6 +191,16 @@ const postGenre =
     }
   };
 
+const blockUser =
+  (dispatch) =>
+  async ({ subjectId }) => {
+    try {
+      await server.post('/user/block', { subjectId });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with blcokUser' });
+    }
+  };
+
 export const { Provider, Context } = createDataContext(
   userReducer,
   {
@@ -208,6 +218,7 @@ export const { Provider, Context } = createDataContext(
     editRepresentSongs,
     getGenreLists,
     postGenre,
+    blockUser,
   },
   {
     user: null,
