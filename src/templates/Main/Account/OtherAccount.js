@@ -31,10 +31,15 @@ const DotMenu = memo(({ setSelectModal }) => {
 
 export default function OtherAccount({ id }) {
   const {
-    state: { otherUser, otherContents },
+    state: {
+      user: { block },
+      otherUser,
+      otherContents,
+    },
     initRepresentSongs,
     getOtherInformation,
     blockUser,
+    unblockUser,
   } = useContext(UserContext);
   const { postReport } = useContext(ReportContext);
   const [user, setUser] = useState(null);
@@ -44,7 +49,7 @@ export default function OtherAccount({ id }) {
   const [actionModal, setActionModal] = useState(false);
   const [actions, setActions] = useState(null);
   const selectLists = [
-    { title: '차단하기', key: 'block' },
+    { title: user && block.includes(user._id) ? '차단해제' : '차단하기', key: 'block' },
     { title: '신고하기', key: 'report' },
   ];
   const reportActionLists = [
@@ -53,7 +58,7 @@ export default function OtherAccount({ id }) {
   ];
   const blockActionLists = [
     { title: '취소하기', key: 'cancel' },
-    { title: '차단하기', key: 'block' },
+    { title: user && block.includes(user._id) ? '차단해제' : '차단하기', key: 'block' },
   ];
 
   const reportActionFunction = (key) => {
@@ -65,7 +70,11 @@ export default function OtherAccount({ id }) {
 
   const blockActionFunction = async (key) => {
     if (key === 'block') {
-      blockUser({ subjectId: user._id });
+      if (user && block.includes(user._id)) {
+        unblockUser({ id: user._id });
+      } else {
+        blockUser({ id: user._id });
+      }
     }
     setActionModal(false);
   };
@@ -80,7 +89,10 @@ export default function OtherAccount({ id }) {
       });
     } else if (key === 'block') {
       setActions({
-        mainTitle: '해당 유저를 차단하시겠습니까?',
+        mainTitle:
+          user && block.includes(user._id)
+            ? '차단을 해제하시겠습니까?'
+            : '해당 유저를 차단하시겠습니까?',
         func: blockActionFunction,
         list: blockActionLists,
       });

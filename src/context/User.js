@@ -193,11 +193,23 @@ const postGenre =
 
 const blockUser =
   (dispatch) =>
-  async ({ subjectId }) => {
+  async ({ id }) => {
     try {
-      await server.post('/user/block', { subjectId });
+      const response = await server.put(`/user/block/${id}`);
+      dispatch({ type: 'getProfile', payload: response.data });
     } catch (err) {
       dispatch({ type: 'error', payload: 'Something went wrong with blcokUser' });
+    }
+  };
+
+const unblockUser =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      const response = await server.put(`/user/unblock/${id}`);
+      dispatch({ type: 'getProfile', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with unblockUser' });
     }
   };
 
@@ -219,6 +231,7 @@ export const { Provider, Context } = createDataContext(
     getGenreLists,
     postGenre,
     blockUser,
+    unblockUser,
   },
   {
     user: null,
