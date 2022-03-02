@@ -73,7 +73,7 @@ const NotCompletedRelay = () => {
         </SongActionsProvider>
         {challengeSong.length > 0 && <MusicSection title="내가 도전한 곡" songs={challengeSong} />}
         <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
-        {songs.length > 0 && <MusicSection title="실시간 순위" songs={songs} />}
+        {songs.length > 0 && <MusicSection title="실시간 순위 TOP 8" songs={songs.slice(0, 8)} />}
       </ScrollView>
       <PlayBar />
       {validityModal && <ValidityModal title={validityMsg} />}

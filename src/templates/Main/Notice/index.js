@@ -17,6 +17,7 @@ import AddedModal from 'components/Modal/AddedModal';
 import { useModal } from 'providers/modal';
 import { useTabRef } from 'providers/tabRef';
 import TabTitle from 'components/TabTitle';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Notice() {
   const {
@@ -119,6 +120,12 @@ export default function Notice() {
       divideSection(notice.slice(20 * (currentNoticePage - 1), 20 * currentNoticePage));
     }
   }, [notice]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshFunc();
+    }, []),
+  );
 
   const keyExtractor = useCallback((_) => _._id, []);
   const ListFooterComponent = useCallback(() => loading && <ActivityIndicator />, [loading]);

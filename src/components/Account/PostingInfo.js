@@ -37,7 +37,7 @@ export default memo(function PostingInfo({ my, user, posting }) {
   return (
     <View style={[style.flexRow, styles.container]}>
       <ProfileImage img={profileImage} imgStyle={styles.profileImage} />
-      <View style={[style.flexRow, style.spaceEven, styles.postingContainer]}>
+      <View style={[style.flexRow, styles.postingContainer]}>
         {optionLists.map((item) => {
           const { count, title, onClick } = item;
           return (
@@ -59,8 +59,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16 * SCALE_WIDTH,
   },
   postingContainer: {
-    marginLeft: 159 * SCALE_WIDTH,
-    width: 200 * SCALE_WIDTH,
+    marginLeft: 149 * SCALE_WIDTH,
+    justifyContent: 'flex-end',
+    paddingRight: 16 * SCALE_WIDTH,
+    width: 210 * SCALE_WIDTH,
   },
   countText: {
     fontSize: FS(14),
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     color: COLOR_3,
   },
   elementContainer: {
-    width: 44 * SCALE_WIDTH,
+    marginLeft: 25 * SCALE_WIDTH,
     alignItems: 'center',
   },
   profileImage: {
