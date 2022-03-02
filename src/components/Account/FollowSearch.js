@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 7 * SCALE_HEIGHT,
   },
   textInput: {
+    padding: 0,
     width: 250 * SCALE_WIDTH,
   },
   cancelIcon: {

@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: 250 * SCALE_WIDTH,
+    padding: 0,
   },
   searchIcon: {
     width: 18 * SCALE_WIDTH,

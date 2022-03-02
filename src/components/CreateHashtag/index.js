@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: 294 * SCALE_WIDTH,
     height: 40 * SCALE_HEIGHT,
+    padding: 0,
     paddingLeft: 43 * SCALE_WIDTH,
     paddingRight: 15 * SCALE_WIDTH,
     backgroundColor: '#EEE',
