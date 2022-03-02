@@ -10,13 +10,14 @@ import { useTrackPlayer } from 'providers/trackPlayer';
 import { Context as AddedContext } from 'context/Added';
 import { useModal } from 'providers/modal';
 import PlayAnimation from 'components/PlayAnimation';
-import { navigate } from 'lib/utils/navigation';
+import { navigate, push } from 'lib/utils/navigation';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 import FastImage from 'react-native-fast-image';
 import MoveText from 'components/MoveText';
 import ProgressProvider from 'providers/progress';
 import CopySongName from 'components/CopySongName';
 import HapticFeedback from 'lib/utils/haptic';
+import { Context as UserContext } from 'context/User';
 
 const Footer = memo(({ song, like, setLike }) => {
   const { id } = song;
@@ -75,16 +76,22 @@ const Footer = memo(({ song, like, setLike }) => {
 
 export default function SwipeCard({ zIndex, image, card, like, setLike }) {
   const {
-    postUserId: { name, profileImage },
+    postUserId: { name, profileImage, _id: userId },
     song,
     playlistId,
   } = card;
+
   const {
     id,
     attributes: { artwork, artistName, name: songName, contentRating },
   } = song;
   const [topOffset, setTopOffset] = useState(0);
   const { stopTrackSong, isPlayingId } = useTrackPlayer();
+  const {
+    state: {
+      user: { _id: myId },
+    },
+  } = useContext(UserContext);
 
   const onClickMove = () => {
     stopTrackSong();
@@ -93,6 +100,14 @@ export default function SwipeCard({ zIndex, image, card, like, setLike }) {
 
   const imageTop = {
     top: -1 * topOffset - 2 * SCALE_HEIGHT,
+  };
+
+  const onClickProfile = () => {
+    if (userId === myId) {
+      navigate('MyAccount');
+    } else {
+      push('OtherAccount', { id: userId });
+    }
   };
 
   const zIndexStyle = {
@@ -122,10 +137,10 @@ export default function SwipeCard({ zIndex, image, card, like, setLike }) {
         </View>
       )}
       <View style={[style.flexRow, styles.headerContainer]}>
-        <View style={style.flexRow}>
+        <TouchableOpacity style={style.flexRow} onPress={onClickProfile}>
           <ProfileImage img={profileImage} imgStyle={styles.profileImg} />
           <Text style={styles.nameText}>{name}</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableNoDouble onPress={onClickMove}>
           <Text style={styles.rankingText}>현재 순위 보기</Text>
         </TouchableNoDouble>
@@ -289,8 +304,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   adultIcon: {
-    position: 'absolute',
-    top: 18 * SCALE_HEIGHT,
+    top: 10 * SCALE_HEIGHT,
     right: 10 * SCALE_WIDTH,
   },
 });

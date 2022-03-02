@@ -45,9 +45,15 @@ export default memo(function SelectedInfo({ playlist }) {
         <PlaylistAlbumImage round image={image} songs={songs} size={140} />
         <View style={[styles.textContainer, style.space_between]}>
           <View>
-            <Text style={styles.titleText}>{title}</Text>
-            {textcontent.length > 0 && <Text style={styles.contextText}>{textcontent}</Text>}
-            <Text style={styles.contextText}>{convertedTime.replaceAll('-', '.')}</Text>
+            <Text numberOfLines={2} style={styles.titleText}>
+              {title}
+            </Text>
+            {textcontent.length > 0 && (
+              <Text numberOfLines={2} style={styles.contextText}>
+                {textcontent}
+              </Text>
+            )}
+            <Text style={styles.timeText}>{convertedTime.replaceAll('-', '.')}</Text>
           </View>
           {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} func={onClickYoutube} />}
           <TouchableOpacity onPress={onClickProfile}>
@@ -80,17 +86,21 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: 15 * SCALE_WIDTH,
     width: 176 * SCALE_WIDTH,
-    height: 140 * SCALE_HEIGHT,
+    height: 140 * SCALE_WIDTH,
   },
   titleText: {
     fontSize: FS(16),
-    marginBottom: 16 * SCALE_HEIGHT,
     color: '#000',
   },
   contextText: {
     fontSize: FS(11),
     color: COLOR_5,
-    marginBottom: 10 * SCALE_HEIGHT,
+    marginTop: 8 * SCALE_WIDTH,
+  },
+  timeText: {
+    marginTop: 6 * SCALE_WIDTH,
+    fontSize: FS(11),
+    color: COLOR_5,
   },
   nameText: {
     fontSize: FS(11),

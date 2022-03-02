@@ -11,7 +11,7 @@ export default function YoutubeLink({ func, relay = false }) {
     width: relay ? 96 * SCALE_WIDTH : 123 * SCALE_WIDTH,
   };
   const paddingStyle = {
-    right: relay ? -10 * SCALE_WIDTH : 10 * SCALE_WIDTH,
+    right: relay ? -10 * SCALE_WIDTH : 5 * SCALE_WIDTH,
   };
   return (
     <TouchableOpacity

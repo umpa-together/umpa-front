@@ -62,6 +62,7 @@ export default memo(function DailySong({ song, containerStyle, time, selected })
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: FS(11),
+    maxWidth: 230 * SCALE_WIDTH,
     color: COLOR_2,
   },
   icon: {

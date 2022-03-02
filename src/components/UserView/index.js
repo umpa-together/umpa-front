@@ -35,7 +35,7 @@ export default function UserView({ user, func }) {
       </TouchableNoDouble>
       <View style={styles.infoContainer}>
         <Text style={styles.nameText}>{name}</Text>
-        <UserRepresentSong song={songs[0]} />
+        {songs.length > 0 && <UserRepresentSong song={songs[0]} />}
       </View>
       {userId !== id && <FollowButton id={id} />}
     </View>

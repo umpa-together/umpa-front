@@ -36,7 +36,7 @@ export default function SignUp({ data }) {
         <Text style={styles.complete}>완료</Text>
       </TouchableOpacity>
     );
-  }, [isComplete]);
+  }, [isComplete, information.passwordCheck === information.password]);
   return (
     <View style={style.background}>
       <Header title="회원가입" back titleStyle={styles.header} />
