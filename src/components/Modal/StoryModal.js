@@ -280,7 +280,7 @@ const Footer = ({ onClose }) => {
 };
 
 const ModalView = ({ onClose }) => {
-  const { onClickSong, stopTrackSong } = useTrackPlayer();
+  const { addTrackSong, stopTrackSong } = useTrackPlayer();
   const {
     state: { user },
   } = useContext(UserContext);
@@ -319,7 +319,7 @@ const ModalView = ({ onClose }) => {
   useEffect(() => {
     readStory({ id: storyId });
     if (contentRating !== 'explicit') {
-      onClickSong(song);
+      addTrackSong(song);
     } else {
       stopTrackSong();
     }

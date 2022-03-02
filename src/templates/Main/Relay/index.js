@@ -19,6 +19,7 @@ import { Context as NoticeContext } from 'context/Notice';
 import { useTabRef } from 'providers/tabRef';
 import { Context as AddedContext } from 'context/Added';
 import appRate from 'lib/utils/appRate';
+import { useRefresh } from 'providers/refresh';
 
 const ListsHeader = () => {
   const onClickYoutube = () => {
@@ -51,6 +52,8 @@ export default function () {
   const { addedModal } = useModal();
   const [loading, setLoading] = useState(false);
   const { relayRef } = useTabRef();
+  const { refreshing, onRefresh, setRefresh } = useRefresh();
+
   const dataFetch = async () => {
     await Promise.all([
       getCurrentRelay(),
@@ -60,6 +63,11 @@ export default function () {
       setNoticeToken(),
     ]);
   };
+
+  const refreshData = async () => {
+    await Promise.all([getCurrentRelay(), getRelayLists()]);
+  };
+
   const getData = async () => {
     if (relayLists.length >= 20 && !notNextRelay) {
       setLoading(true);
@@ -77,6 +85,7 @@ export default function () {
   useEffect(() => {
     dataFetch();
     appRate();
+    setRefresh(refreshData);
   }, []);
 
   useFocusEffect(
@@ -126,6 +135,8 @@ export default function () {
           onEndReached={onEndReached}
           onEndReachedThreshold={0.6}
           ref={relayRef}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
         />
       )}
       <PlayBar />

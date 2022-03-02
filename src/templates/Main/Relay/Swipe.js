@@ -134,7 +134,7 @@ export default function Swipe() {
       if (swipeSongs.length === currentIdx) {
         setSwipeEnd(true);
       }
-    }, [currentIdx, firstView]),
+    }, [currentIdx, firstView, swipeSongs]),
   );
 
   const representCard = {
