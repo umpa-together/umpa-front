@@ -43,7 +43,7 @@ export default function AddSongView({ song }) {
             style={style.icons}
           />
         </TouchableOpacity>
-        <View style={styles.moveArea}>
+        <View style={contentRating === 'explicit' ? styles.explicityArea : styles.moveArea}>
           <MoveText
             isExplicit={contentRating === 'explicit'}
             text={name}
@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
   moveArea: {
     maxWidth: 240 * SCALE_WIDTH,
   },
-  moveArea_actions: {
-    maxWidth: 200 * SCALE_WIDTH,
+  explicityArea: {
+    maxWidth: 220 * SCALE_WIDTH,
   },
   playContainer: {
     width: 40 * SCALE_WIDTH,
