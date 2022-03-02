@@ -87,7 +87,11 @@ export default function SwipeCard({ zIndex, image, card, like, setLike }) {
   } = song;
   const [topOffset, setTopOffset] = useState(0);
   const { stopTrackSong, isPlayingId } = useTrackPlayer();
-  const { state } = useContext(UserContext);
+  const {
+    state: {
+      user: { _id: myId },
+    },
+  } = useContext(UserContext);
 
   const onClickMove = () => {
     stopTrackSong();
@@ -99,7 +103,7 @@ export default function SwipeCard({ zIndex, image, card, like, setLike }) {
   };
 
   const onClickProfile = () => {
-    if (userId === state.user._id) {
+    if (userId === myId) {
       navigate('MyAccount');
     } else {
       push('OtherAccount', { id: userId });
