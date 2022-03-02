@@ -104,9 +104,9 @@ const CompletedRelay = () => {
         <ScrollView>
           <Information />
           <HashtagView />
-          <MusicSection title={`총 ${songs.length}곡`} songs={songs} />
+          <MusicSection title={`총 ${songs.length}곡`} songs={songs.slice(0, 8)} />
           <Divider containerStyle={styles.divide} />
-          <Participant />
+          <Participant songs={songs.slice(0, 8)} />
           <Footer object={FooterData} type="relay" />
           <Divider containerStyle={styles.dividerContainer} />
           <SelectedComment opt="relay" comments={currentComments} />

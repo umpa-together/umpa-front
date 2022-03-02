@@ -77,5 +77,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: 220 * SCALE_WIDTH,
+    padding: 0,
   },
 });
