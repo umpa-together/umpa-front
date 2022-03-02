@@ -103,10 +103,12 @@ export default function SwipeCard({ zIndex, image, card, like, setLike }) {
   };
 
   const onClickProfile = () => {
-    if (userId === myId) {
-      navigate('MyAccount');
-    } else {
-      push('OtherAccount', { id: userId });
+    if (name !== '첫 곡') {
+      if (userId === myId) {
+        navigate('MyAccount');
+      } else {
+        push('OtherAccount', { id: userId });
+      }
     }
   };
 
