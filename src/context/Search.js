@@ -104,6 +104,26 @@ const getRecentKeywords = (dispatch) => async () => {
     dispatch({ type: 'error', payload: 'Something went wrong with getRecentKeywords' });
   }
 };
+
+const deleteRecentKeyword =
+  (dispatch) =>
+  async ({ id }) => {
+    try {
+      const response = await server.delete(`/search/keyword/${id}`);
+      dispatch({ type: 'getRecentKeywords', payload: response.data });
+    } catch (err) {
+      dispatch({ type: 'error', payload: 'Something went wrong with deletRecentKeyword' });
+    }
+  };
+
+const deleteRecentKeywordAll = (dispatch) => async () => {
+  try {
+    const response = await server.delete('/search/keywordAll');
+    dispatch({ type: 'getRecentKeywords', payload: response.data });
+  } catch (err) {
+    dispatch({ type: 'error', payload: 'Something went wrong with deletRecentKeywordAll' });
+  }
+};
 export const { Provider, Context } = createDataContext(
   searchReducer,
   {
@@ -113,6 +133,8 @@ export const { Provider, Context } = createDataContext(
     getSelectedContents,
     getAllContentsWithHashatg,
     getRecentKeywords,
+    deleteRecentKeyword,
+    deleteRecentKeywordAll,
   },
   {
     result: null,

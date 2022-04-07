@@ -10,6 +10,7 @@ import { MAIN_COLOR, COLOR_5 } from 'constants/colors';
 import YoutubeLink from 'components/youtubeLink';
 import FastImage from 'react-native-fast-image';
 import Text from 'components/Text';
+import { OpenPlaylist } from 'lib/utils/youtube';
 
 export default function Information() {
   const {
@@ -20,7 +21,9 @@ export default function Information() {
     },
   } = useContext(RelayContext);
   const currentStatus = completeChecker(createdTime);
-
+  const onClickYoutube = () => {
+    OpenPlaylist(youtubeUrl);
+  };
   return (
     <View style={styles.container}>
       <FastImage source={{ uri: image }} style={styles.img} />
@@ -36,7 +39,7 @@ export default function Information() {
           </Text>
         </View>
         {currentStatus && <Timer time={createdTime} timeStyle={styles.time} />}
-        {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} />}
+        {youtubeUrl !== '' && <YoutubeLink url={youtubeUrl} func={onClickYoutube} />}
       </View>
     </View>
   );

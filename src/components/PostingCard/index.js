@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   imagePlaylist: {
     width: 80 * SCALE_WIDTH,
     height: 80 * SCALE_WIDTH,
-    borderWidth: 1 * SCALE_WIDTH,
   },
   imageDaily: {
     width: 60 * SCALE_WIDTH,

@@ -25,7 +25,7 @@ const naverid = Platform.select({
     kConsumerKey: env.kConsumerKey,
     kConsumerSecret: env.kConsumerSecret,
     kServiceAppName: 'umpa',
-    kServiceAppUrlScheme: 'naverlogin', // only for iOS
+    kServiceAppUrlScheme: 'naverloginUMPA', // only for iOS
   },
   android: {
     kConsumerKey: env.kConsumerKey,

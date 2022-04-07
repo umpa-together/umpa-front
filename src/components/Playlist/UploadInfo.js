@@ -17,6 +17,10 @@ export default function UploadInfo({ edit }) {
     information: { title, content },
   } = usePlaylistCreate();
 
+  const imageInit = () => {
+    setImage(null);
+  };
+
   return (
     <View style={[style.flexRow, styles.container]}>
       {edit ? (
@@ -28,7 +32,13 @@ export default function UploadInfo({ edit }) {
           )}
         </View>
       ) : (
-        <TouchableOpacity style={styles.imageBlur} onPress={() => onClickSingle(setImage)}>
+        <TouchableOpacity
+          style={styles.imageBlur}
+          onPress={() => {
+            // eslint-disable-next-line no-unused-expressions
+            image ? imageInit() : onClickSingle(setImage);
+          }}
+        >
           {image ? (
             <FastImage source={{ uri: image.uri }} style={styles.imageContainer} />
           ) : (
@@ -57,16 +67,16 @@ const styles = StyleSheet.create({
     borderRadius: 6 * SCALE_HEIGHT,
   },
   imageBlur: {
-    zIndex: 2,
-    backgroundColor: 'rgba(0,0,0,0.9)',
+    zIndex: 4,
+    backgroundColor: 'rgba(0,0,0,1)',
     borderRadius: 6 * SCALE_HEIGHT,
   },
   imageText: {
     fontSize: FS(20),
     color: '#FFF',
     position: 'absolute',
-    left: 52 * SCALE_WIDTH,
-    top: 58 * SCALE_HEIGHT,
+    left: 55 * SCALE_WIDTH,
+    top: 60 * SCALE_WIDTH,
   },
   textContainer: {
     marginLeft: 15 * SCALE_WIDTH,

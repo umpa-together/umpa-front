@@ -10,7 +10,7 @@ import style from 'constants/styles';
 import Text from 'components/Text';
 import TouchableNoDouble from 'components/TouchableNoDouble';
 
-export default function MusicSection({ title, songs, icon }) {
+export default function MusicSection({ title, songs, icon, rank }) {
   const { onClickAdded } = useModal();
   const { postAddedSong } = useContext(AddedContext);
 
@@ -26,7 +26,6 @@ export default function MusicSection({ title, songs, icon }) {
       </TouchableNoDouble>
     );
   }, []);
-
   return (
     <>
       <View style={[styles.titleContainer, style.flexRow]}>
@@ -38,12 +37,17 @@ export default function MusicSection({ title, songs, icon }) {
         )}
       </View>
       {songs &&
-        songs.map((item) => {
+        songs.map((item, index) => {
           const key = item._id || item.id;
           const song = item.song ? item.song : item;
           return (
             <View style={title === '내가 도전한 곡' && styles.active} key={key}>
-              <SongView song={song} actions={onClickAddActions(song)} playlist />
+              <SongView
+                song={song}
+                actions={onClickAddActions(song)}
+                playlist
+                rank={rank && index + 1}
+              />
             </View>
           );
         })}

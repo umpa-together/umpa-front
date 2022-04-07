@@ -8,14 +8,26 @@ import { COLOR_3, COLOR_5 } from 'constants/colors';
 import MoveText from 'components/MoveText';
 import Icon from 'widgets/Icon';
 import CopySongName from 'components/CopySongName';
+import Text from 'components/Text';
 
-export default function SongView({ song, actions = null, landings = null, play = true, playlist }) {
+export default function SongView({
+  song,
+  actions = null,
+  landings = null,
+  play = true,
+  playlist,
+  rank = null,
+}) {
   const { artwork, artistName, name, contentRating } = song.attributes;
   const { onClickSong, isPlayingId } = useTrackPlayer();
   const playingCheck = song.id === isPlayingId && !playlist;
   const widthCount = (play && 1) + (actions && 1) + (landings && 1);
   const defaultArea = contentRating !== 'explicit' ? 280 : 260;
-  const areaStyles = { maxWidth: (defaultArea - 40 * widthCount) * SCALE_WIDTH };
+  const areaStyles = {
+    maxWidth: rank
+      ? (defaultArea - 40 * widthCount - 10) * SCALE_WIDTH
+      : (defaultArea - 40 * widthCount) * SCALE_WIDTH,
+  };
 
   const onClickView = () => {
     onClickSong(song);
@@ -27,16 +39,23 @@ export default function SongView({ song, actions = null, landings = null, play =
     >
       <View style={style.flexRow}>
         {landings}
-        <SongImage url={artwork.url} imgStyle={styles.img} />
+        <SongImage url={artwork.url} imgStyle={[styles.img, rank && styles.imgRank]} />
         <CopySongName initAction={onClickView} name={name}>
           <View style={areaStyles}>
+            <View style={style.flexRow}>
+              {rank && <Text style={styles.rankText}>{rank}</Text>}
+              <MoveText
+                isExplicit={contentRating === 'explicit'}
+                text={name}
+                isMove={playingCheck}
+                textStyle={styles.title}
+              />
+            </View>
             <MoveText
-              isExplicit={contentRating === 'explicit'}
-              text={name}
+              text={artistName}
               isMove={playingCheck}
-              textStyle={styles.title}
+              textStyle={[styles.artist, rank && styles.artistRank]}
             />
-            <MoveText text={artistName} isMove={playingCheck} textStyle={styles.artist} />
           </View>
         </CopySongName>
       </View>
@@ -69,6 +88,9 @@ const styles = StyleSheet.create({
     borderRadius: 4 * SCALE_HEIGHT,
     marginRight: 10 * SCALE_WIDTH,
   },
+  imgRank: {
+    marginRight: 15 * SCALE_WIDTH,
+  },
   title: {
     fontSize: FS(13),
     color: COLOR_3,
@@ -78,6 +100,9 @@ const styles = StyleSheet.create({
     color: COLOR_5,
     marginTop: 10 * SCALE_HEIGHT,
   },
+  artistRank: {
+    marginLeft: 18 * SCALE_HEIGHT,
+  },
   actions: {
     marginRight: 10 * SCALE_WIDTH,
   },
@@ -85,5 +110,9 @@ const styles = StyleSheet.create({
     width: 32 * SCALE_WIDTH,
     height: 32 * SCALE_WIDTH,
     marginRight: 5 * SCALE_WIDTH,
+  },
+  rankText: {
+    fontWeight: 'bold',
+    marginRight: 8 * SCALE_WIDTH,
   },
 });

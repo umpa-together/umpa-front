@@ -73,7 +73,9 @@ const NotCompletedRelay = () => {
         </SongActionsProvider>
         {challengeSong.length > 0 && <MusicSection title="내가 도전한 곡" songs={challengeSong} />}
         <MusicSection title="릴레이 플리 첫 곡" songs={[playlist.representSong]} icon />
-        {songs.length > 0 && <MusicSection title="실시간 순위 TOP 8" songs={songs.slice(0, 8)} />}
+        {songs.length > 0 && (
+          <MusicSection title="실시간 순위 TOP 8" rank songs={songs.slice(0, 8)} />
+        )}
       </ScrollView>
       <PlayBar />
       {validityModal && <ValidityModal title={validityMsg} />}
@@ -93,9 +95,9 @@ const CompletedRelay = () => {
     likes: playlist.likes,
     comments: playlist.comments,
     _id: playlist._id,
-    title: playlist.title,
-    songs: songs.map(({ song }) => {
-      return song;
+    title: playlist.title.join(''),
+    songs: songs.map((item) => {
+      return item.song;
     }),
   };
   return (
@@ -104,7 +106,7 @@ const CompletedRelay = () => {
         <ScrollView>
           <Information />
           <HashtagView />
-          <MusicSection title={`총 ${songs.length}곡`} songs={songs.slice(0, 8)} />
+          <MusicSection title="총 8곡" songs={songs.slice(0, 8)} rank />
           <Divider containerStyle={styles.divide} />
           <Participant songs={songs.slice(0, 8)} />
           <Footer object={FooterData} type="relay" />

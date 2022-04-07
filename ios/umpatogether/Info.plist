@@ -39,7 +39,7 @@
 			<string>naverlogin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>naverlogin</string>
+				<string>naverloginUMPA</string>
 			</array>
 		</dict>
 		<dict>

@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 400 * SCALE_HEIGHT,
     backgroundColor: 'rgb(254,254,254)',
-    borderRadius: 28 * SCALE_HEIGHT,
+    borderTopRightRadius: 28 * SCALE_HEIGHT,
+    borderTopLeftRadius: 28 * SCALE_HEIGHT,
     paddingTop: 21 * SCALE_HEIGHT,
   },
   padding: {

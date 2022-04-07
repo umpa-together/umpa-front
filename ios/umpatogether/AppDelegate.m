@@ -78,7 +78,7 @@ static void InitializeFlipper(UIApplication *application) {
      return [RNKakaoLogins handleOpenUrl: url];
   }
   
-  if ([url.scheme isEqualToString:@"naverlogin"]) {
+  if ([url.scheme isEqualToString:@"naverloginUMPA"]) {
     return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
   }
   
